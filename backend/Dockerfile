@@ -27,7 +27,7 @@ COPY ./app.py /code
 COPY ./scripts/install.sh install.sh
 RUN chmod u+x install.sh && ./install.sh
 
-COPY ./scripts/start.sh start.sh
+COPY ./scripts/start.sh ./gunicorn_config.py ./
 RUN chmod u+x start.sh
 
 CMD ["./start.sh"]
