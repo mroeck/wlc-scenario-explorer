@@ -1,8 +1,5 @@
-FROM python:3.12.3-bookworm
-EXPOSE 5000
-ARG ENV
-ENV ENV=${ENV} \
-    PYTHONFAULTHANDLER=1 \
+FROM python:3.12.3-bookworm as base
+ENV PYTHONFAULTHANDLER=1 \
     PYTHONUNBUFFERED=1 \
     PYTHONHASHSEED=random \
     # pip's configuration:
@@ -16,18 +13,15 @@ ENV ENV=${ENV} \
     POETRY_HOME='/usr/local' \
     POETRY_VERSION='1.8.2'
 WORKDIR /code
-
-
 COPY poetry.lock pyproject.toml /code/
+RUN pip install poetry
+COPY ./app.py /code/
 
-RUN pip install poetry && poetry install --only main --no-root --no-directory
+FROM base as dev
+RUN poetry install
+CMD ["flask", "--app", "app", "run", "--host", "0.0.0.0", "--port=8080"]
 
-COPY ./app.py /code
-
-COPY ./scripts/install.sh install.sh
-RUN chmod u+x install.sh && ./install.sh
-
-COPY ./scripts/start.sh ./gunicorn_config.py ./
-RUN chmod u+x start.sh
-
-CMD ["./start.sh"]
+FROM base as prod
+RUN poetry install --only main --no-root --no-directory
+COPY ./gunicorn_config.py /code/
+CMD ["poetry", "run", "gunicorn", "--config", "./gunicorn_config.py", "app:app"]

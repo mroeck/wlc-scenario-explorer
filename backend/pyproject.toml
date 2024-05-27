@@ -20,6 +20,7 @@ requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
 
 [tool.taskipy.tasks]
-docker_build = { cmd = "docker build -t EUBS/backend:0.1.0 ." }
-docker_dev = { cmd = "docker run -p 5000:5000 --env ENV=DEV" }
-docker_prod = { cmd = "docker run -p 8080:8080 --env ENV=PROD" }
+docker_build_dev = { cmd = "docker build --target dev -t EUBS/backend:0.1.0 ." }
+docker_build_prod = { cmd = "docker build --target prod -t EUBS/backend:0.1.0 ." }
+docker_dev = { cmd = "docker run -p 8080:8080" }
+docker_prod = { cmd = "docker run -p 8081:8081" }
