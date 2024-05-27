@@ -19,7 +19,7 @@ COPY ./app.py /code/
 
 FROM base as dev
 RUN poetry install
-CMD ["flask", "--app", "app", "run", "--host", "0.0.0.0", "--port=8080"]
+CMD ["flask", "--app", "app", "run", "--host", "0.0.0.0", "--port=8080", "--debug"]
 
 FROM base as prod
 RUN poetry install --only main --no-root --no-directory
