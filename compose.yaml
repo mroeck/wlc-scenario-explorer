@@ -1,34 +1,4 @@
 services:
-# DEV:
-  frontend:
-    build:
-      context: ./frontend
-      dockerfile: Dockerfile
-      target: dev
-    ports:
-      - "3000:3000"
-    depends_on:
-      - backend
-    profiles: ["dev"]
-
-  backend:
-    build:
-      context: ./backend
-      dockerfile: Dockerfile
-      target: dev
-    ports:
-      - "8080:8080"
-    profiles: ["dev"]
-
-  documentation:
-    build:
-      context: ./documentation
-      dockerfile: Dockerfile
-    ports:
-      - "4000:4000"
-    profiles: ["dev"]
-
-# PROD:
   frontend-prod:
     build:
       context: ./frontend

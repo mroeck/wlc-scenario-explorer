@@ -1,0 +1,12 @@
+{
+  "name": "EUBS Dev Container",
+  "build": {
+    "dockerfile": "Dockerfile",
+    "target": "dev"
+  },
+  "shutdownAction": "none",
+  "initializeCommand": "echo 'this is needed to use devcontainer.json @see: https://github.com/microsoft/vscode-remote-release/issues/9302#issuecomment-1854476541';",
+  "mounts": [
+    "source=${localEnv:HOME}/.ssh,target=/home/vscode/.ssh,type=bind,consistency=cached"
+  ]
+}

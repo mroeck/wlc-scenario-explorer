@@ -8,9 +8,7 @@
     "build": "vite build",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
-    "docker:build:dev": "docker build --target dev -t EUBS/frontend:0.1.0 .",
     "docker:build:prod": "docker build --target prod -t EUBS/frontend:0.1.0 .",
-    "docker:dev": "docker run -p 3000:3000",
     "docker:prod": "docker run -p 3001:3001"
   },
   "dependencies": {

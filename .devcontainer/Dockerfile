@@ -1,4 +1,4 @@
-FROM python:3.12.3-bookworm as base
+FROM nikolaik/python-nodejs:python3.12-nodejs20 as base
 ENV PYTHONFAULTHANDLER=1 \
     PYTHONUNBUFFERED=1 \
     PYTHONHASHSEED=random \
@@ -13,11 +13,9 @@ ENV PYTHONFAULTHANDLER=1 \
     POETRY_HOME='/usr/local' \
     POETRY_VERSION='1.8.2'
 WORKDIR /code
-COPY poetry.lock pyproject.toml /code/
-RUN pip install poetry
-COPY ./app.py /code/
 
-FROM base as prod
-RUN poetry install --only main --no-root --no-directory
-COPY ./gunicorn_config.py /code/
-CMD ["poetry", "run", "gunicorn", "--config", "./gunicorn_config.py", "app:app"]
+FROM base as dev
+RUN pip install poetry
+RUN npm install -g pnpm
+CMD ["echo", "'stuff'"]
+

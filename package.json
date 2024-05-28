@@ -1,6 +1,5 @@
 {
   "scripts": {
-    "compose:dev": "docker-compose --profile dev up --build",
     "compose:prod": "docker-compose --profile prod up --build"
   }
 }
