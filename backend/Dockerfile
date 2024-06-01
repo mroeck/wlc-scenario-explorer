@@ -12,12 +12,12 @@ ENV PYTHONFAULTHANDLER=1 \
     POETRY_CACHE_DIR='/var/cache/pypoetry' \
     POETRY_HOME='/usr/local' \
     POETRY_VERSION='1.8.2'
-WORKDIR /code
-COPY poetry.lock pyproject.toml /code/
+WORKDIR /app
+COPY poetry.lock pyproject.toml /app/
 RUN pip install poetry
-COPY ./app.py /code/
+COPY ./app.py /app/
 
 FROM base as prod
 RUN poetry install --only main --no-root --no-directory
-COPY ./gunicorn_config.py /code/
+COPY ./gunicorn_config.py /app/
 CMD ["poetry", "run", "gunicorn", "--config", "./gunicorn_config.py", "app:app"]

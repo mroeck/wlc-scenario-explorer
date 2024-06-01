@@ -1,8 +1,8 @@
 FROM node:20-bookworm as base
-WORKDIR /code
-COPY pnpm-lock.yaml package.json /code/
+WORKDIR /app
+COPY pnpm-lock.yaml package.json /app/
 RUN npm install -g pnpm && pnpm install
-COPY . /code
+COPY . /app
 
 FROM base as prod
 RUN npm install -g serve

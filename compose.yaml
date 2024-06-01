@@ -18,3 +18,12 @@ services:
     ports:
       - "8081:8081"
     profiles: ["prod"]
+
+  playwright:
+    image: mcr.microsoft.com/playwright:v1.44.1-jammy
+    depends_on:
+      - frontend-prod
+    volumes:
+      - ./tests:/tests
+    working_dir: /tests
+    entrypoint: ["/bin/sh", "-c", "while ! curl -s http://frontend-prod:3001/health; do sleep 5; done && pnpm exec playwright test"]
