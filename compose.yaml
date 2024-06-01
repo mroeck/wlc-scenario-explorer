@@ -1,29 +1,39 @@
 services:
-  frontend-prod:
+  frontend:
     build:
       context: ./frontend
       dockerfile: Dockerfile
       target: prod
     ports:
       - "3001:3001"
-    depends_on:
-      - backend-prod
-    profiles: ["prod"]
+    healthcheck:
+      test: ["CMD-SHELL", "curl --fail http://localhost:3001/health || exit 1"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
 
-  backend-prod:
+  backend:
     build:
       context: ./backend
       dockerfile: Dockerfile
       target: prod
     ports:
       - "8081:8081"
-    profiles: ["prod"]
+    healthcheck:
+      test: ["CMD-SHELL", "curl --fail http://localhost:8081/health || exit 1"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
 
-  playwright:
+  e2e:
     image: mcr.microsoft.com/playwright:v1.44.1-jammy
     depends_on:
-      - frontend-prod
+      frontend:
+        condition: service_healthy 
+      backend:
+        condition: service_healthy 
     volumes:
-      - ./tests:/tests
-    working_dir: /tests
-    entrypoint: ["/bin/sh", "-c", "while ! curl -s http://frontend-prod:3001/health; do sleep 5; done && pnpm exec playwright test"]
+      - ./frontend:/app/frontend
+    working_dir: /app/frontend
+    command: /bin/bash -c "npm run e2e"
+

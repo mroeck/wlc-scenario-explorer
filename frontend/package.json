@@ -9,8 +9,10 @@
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "typecheck": "tsc --noEmit",
     "preview": "vite preview",
-    "docker:build:prod": "docker build --target prod -t EUBS/frontend:0.1.0 .",
-    "docker:prod": "docker run -p 3001:3001"
+    "prod": "serve --single -p 3001 --no-port-switching dist",
+    "docker:build:prod": "docker build --target prod -t scenario-explorer/front:0.1.0 .",
+    "docker:prod": "docker run -p 3001:3001 --rm scenario-explorer/front:0.1.0",
+    "e2e": "playwright test"
   },
   "dependencies": {
     "react": "^18.2.0",
@@ -27,6 +29,7 @@
     "eslint": "^8.57.0",
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-react-refresh": "^0.4.6",
+    "serve": "^14.2.3",
     "typescript": "^5.4.5",
     "vite": "^5.2.0"
   }

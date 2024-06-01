@@ -1,5 +1,5 @@
 {
-  "name": "EUBS Dev Container",
+  "name": "Scenario-explorer Dev Container",
   "build": {
     "dockerfile": "Dockerfile",
     "target": "dev"
