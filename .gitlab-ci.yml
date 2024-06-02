@@ -1,74 +1,51 @@
 stages:
   - test
 
-e2e2:
-  stage: test
-  image: docker:26.1.3-cli
-  script:
-    # use docker compose image
-    # run docker compose up e2e
-    - apk add --no-cache python3 py3-pip npm
-    - pip install docker-compose
-    - npm install -g pnpm
-    - docker compose --profile prod up -d
-    - docker compose --profile prod run playwright
-  after_script:
-    - docker compose --profile prod down
-
 e2e:
   stage: test
-  image: mcr.microsoft.com/playwright:v1.44.1-jammy
+  image: docker:26.1.3-cli
+  services:
+    - docker:dind
+  variables:
+    DOCKER_HOST: tcp://docker:2375/
+    DOCKER_DRIVER: overlay2
   script:
-    - apt update -y && apt upgrade -y
-    - apt install python3 -y
-    # - url -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
-    # - nvm install 20.13.1
+    - docker compose up e2e --build --exit-code-from=e2e
+# BACKEND
+.backend:base:
+  image: python:3.12.3-bookworm
+  before_script:
     - cd backend
     - pip install poetry
     - poetry install --no-interaction
-    - poetry run task docker_build_prod
-    - poetry run task docker_prod &
-    - cd ../frontend
-    - npm install -g pnpm wait-on
+
+backend:lint:
+  stage: test
+  extends: .backend:base
+  script:
+    - poetry run task lint
+
+backend:typecheck:
+  extends: .backend:base
+  script:
+    - poetry run task typecheck
+
+# FRONTEND
+.frontend:base:
+  image: node:20-bookworm
+  before_script:
+    - cd frontend
+    - npm install -g pnpm
     - pnpm install
-    - pnpm playwright install --with-deps
-    - pnpm run build
-    - pnpm run preview &
-    - wait-on http://localhost:8081/health
-    - wait-on http://localhost:3001/
-    - pnpm exec playwright test
-# # BACKEND
-# .backend:base:
-#   image: python:3.12.3-bookworm
-#   before_script:
-#     - cd backend
-#     - pip install poetry
-#     - poetry install --no-interaction
 
-# backend:lint:
-#   extends: .backend:base
-#   script:
-#     - poetry run task lint
+frontend:lint:
+  stage: test
+  extends: .frontend:base
+  script:
+    - pnpm run lint
 
-# backend:typecheck:
-#   extends: .backend:base
-#   script:
-#     - poetry run task typecheck
-
-# # FRONTEND
-# .frontend:base:
-#   image: node:20-bookworm
-#   before_script:
-#     - cd frontend
-#     - npm install -g pnpm
-#     - pnpm install
-
-# frontend:lint:
-#   extends: .frontend:base
-#   script:
-#     - pnpm run lint
-
-# frontend:typecheck:
-#   extends: .frontend:base
-#   script:
-#     - pnpm run typecheck
+frontend:typecheck:
+  stage: test
+  extends: .frontend:base
+  script:
+    - pnpm run typecheck

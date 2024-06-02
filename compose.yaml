@@ -26,14 +26,19 @@ services:
       retries: 5
 
   e2e:
-    image: mcr.microsoft.com/playwright:v1.44.1-jammy
+    build:
+      context: ./frontend
+      dockerfile: e2e.Dockerfile
+    environment:
+      - CI='true'
     depends_on:
       frontend:
-        condition: service_healthy 
+        condition: service_healthy
       backend:
-        condition: service_healthy 
-    volumes:
-      - ./frontend:/app/frontend
-    working_dir: /app/frontend
-    command: /bin/bash -c "npm run e2e"
+        condition: service_healthy
+    # volumes:
+    #   - ./frontend:/app/frontend
+    # working_dir: /app/frontend
+    # command: /bin/bash -c "pnpm run e2e"
+    # command: pnpm run e2e
 
