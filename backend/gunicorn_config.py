@@ -1,3 +1,4 @@
+"""used to get info about current os"""
 import os
 
 
@@ -10,6 +11,7 @@ threads = int(os.environ.get("GUNICORN_THREADS", "4"))
 bind = os.environ.get("GUNICORN_BIND", "0.0.0.0:8081")
 
 
-forwarded_allow_ips = "*"
+FORWARDED_ALLOW_IPS = "*"
+
 
 secure_scheme_headers = {"X-Forwarded-Proto": "https"}
