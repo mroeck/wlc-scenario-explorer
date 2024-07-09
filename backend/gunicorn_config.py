@@ -15,3 +15,5 @@ FORWARDED_ALLOW_IPS = "*"
 
 
 secure_scheme_headers = {"X-Forwarded-Proto": "https"}
+
+loglevel = os.environ.get('GUNICORN_LOG_LEVEL', 'INFO')

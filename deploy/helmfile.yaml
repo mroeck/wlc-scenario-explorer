@@ -1,0 +1,161 @@
+environments:
+  default:
+    missingFileHandler: Info
+    values:
+    - env/values.yaml.gotmpl
+    secrets:
+    - env/secrets.yaml
+  production:
+    missingFileHandler: Info
+    values:
+    - env/values.yaml.gotmpl
+    - env/values.production.yaml
+    secrets:
+    - env/secrets.yaml
+    - env/secrets.production.yaml
+---
+helmDefaults:
+  atomic: true
+  wait: true
+  createNamespace: false
+
+repositories:
+  - name: setit
+    url: https://gitlab.kuleuven.be/api/v4/projects/6776/packages/helm/stable
+
+releases:
+# Release for the frontend
+- name: {{ .Values.frontend.releaseName }}
+  chart: setit/webapp
+  version: ^1.0.1
+  missingFileHandler: Info
+  installed: true
+  namespace: {{ .Values.frontend.releaseNamespace }}
+  values:
+    ## Ref: https://gitlab.kuleuven.be/setit-kaas/charts/-/tree/main/setit/webapp
+  - image:
+      registry: {{ .Values.frontend.image.registry }}
+      repository: {{ .Values.frontend.image.repository }}
+      tag: "{{ .Values.frontend.image.tag }}"
+      pullSecrets:
+      - gitlab-registry
+
+    # drop "-webapp" postfix in resource names
+    fullnameOverride: {{ .Values.frontend.releaseName }}
+
+    ingress:
+      enabled: true
+      forceSSLRedirect: true
+      path: /
+      hostname: {{ .Values.ingress.hostname }}
+
+    containerPorts:
+      http: 8080
+
+    service:
+      type: ClusterIP
+      ports:
+        http: 8080
+      
+    envConfigMap:
+      enabled: true
+      data:
+        LOGGER_LEVEL: INFO
+        SERVER_PORT: "8080"
+
+    envSecret:
+      enabled: false
+      data: {}
+
+    persistence:
+      enabled: false
+
+    livenessProbe:
+      enabled: false
+      path: /health
+      periodSeconds: 30
+
+    readinessProbe:
+      enabled: false
+      path: /health
+
+    ## Optional environment specific overrides
+    ##
+  - values/frontend.{{ .Environment.Name }}.yaml
+
+# Release for the backend
+- name: {{ .Values.backend.releaseName }}
+  chart: setit/webapp
+  version: ^1.0.1
+  missingFileHandler: Info
+  installed: true
+  namespace: {{ .Values.backend.releaseNamespace }}
+  values:
+    ## Ref: https://gitlab.kuleuven.be/setit-kaas/charts/-/tree/main/setit/webapp
+  - image:
+      registry: {{ .Values.backend.image.registry }}
+      repository: {{ .Values.backend.image.repository }}
+      tag: "{{ .Values.backend.image.tag }}"
+      pullSecrets:
+      - gitlab-registry
+
+    # drop "-webapp" postfix in resource names
+    fullnameOverride: {{ .Values.backend.releaseName }}
+
+    ingress:
+      enabled: true
+      forceSSLRedirect: true
+
+      path: /api
+
+      annotations:
+        nginx.ingress.kubernetes.io/proxy-body-size: "500M"
+        nginx.ingress.kubernetes.io/proxy-connect-timeout: "300"
+        nginx.ingress.kubernetes.io/proxy-read-timeout: "300"
+
+      hostname: {{ .Values.ingress.hostname }}
+
+    containerPorts:
+      http: 8080
+
+    service:
+      type: ClusterIP
+      ports:
+        http: 8080
+
+    envConfigMap:
+      enabled: true
+      data:
+        GUNICORN_LOG_LEVEL: INFO
+        GUNICORN_BIND: "0.0.0.0:8080"
+
+    envSecret:
+      enabled: false
+      data: {}
+
+    persistence:
+      enabled: {{ eq .Environment.Name "production" }}
+      ## If defined, storageClassName: <storageClass>
+      ## If set to "-", storageClassName: "", which disables dynamic provisioning
+      ## If undefined (the default) or set to null, no storageClassName spec is
+      ##   set, choosing the default provisioner.
+      ##
+      storageClass: lvm-type-1
+      accessMode: ReadWriteOnce
+      size: 50Gi
+      ## Path to mount persistent volume into  container
+      mountPath: /app/data
+
+    livenessProbe:
+      enabled: false
+      path: /health
+      periodSeconds: 30
+
+    readinessProbe:
+      enabled: false
+      path: /health
+
+    ## Optional environment specific overrides
+    ##
+  - values/backend.{{ .Environment.Name }}.yaml
+
