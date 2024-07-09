@@ -1,51 +1,74 @@
-stages:
-  - test
+include:
+  - component: "gitlab.kuleuven.be/to-be-continuous/docker/gitlab-ci-docker@5.10"
+    # Ref: https://to-be-continuous.pages.gitlab.kuleuven.be/doc/ref/docker/
+    inputs:
+      # Docker file and image names for frontend and backend are defined in the
+      # .docker-base job below as a matrix.
+      release-extra-tags: "latest \\g<major>.\\g<minor>\\g<build>"
+      prod-publish-strategy: "auto"
+      registry-mirror: "https://dockerhub.rdmrepo.icts.kuleuven.be"
+      healthcheck-disabled: true
+      trivy-disabled: true
+  - component: "gitlab.kuleuven.be/to-be-continuous/helmfile/gitlab-ci-helmfile@3.2"
+    # Ref: https://to-be-continuous.pages.gitlab.kuleuven.be/doc/ref/helmfile/
+    inputs:
+      scripts-dir: "./deploy"
+      path: "./deploy/helmfile.yaml"
+      base-app-name: "scenario-explorer"
+      environment-url: "https://%{environment_name}.arch01.cloud.set.kuleuven.be"
+      lint-enabled: false
+      review-enabled: false
+      integ-enabled: false
+      prod-enabled: false
+      prod-deploy-strategy: "auto"
+      review-namespace: "scenario-explorer-29934-review"
+  - component: "gitlab.kuleuven.be/to-be-continuous/python/gitlab-ci-python@7.0"
+    # Ref: https://to-be-continuous.pages.gitlab.kuleuven.be/doc/ref/python/
+    inputs:
+      image: "python:3.12.3-bookworm"
+      project-dir: "./backend"
+      build-system: "poetry"
+      pylint-enabled: false
+      pytest-enabled: false
+      ruff-enabled: true
+      mypy-enabled: true
+      mypy-args: "--strict"
+  - component: "gitlab.kuleuven.be/to-be-continuous/node/gitlab-ci-node@3.13"
+    # Ref: https://to-be-continuous.pages.gitlab.kuleuven.be/doc/ref/node/
+    inputs:
+      image: "node:20-bookworm"
+      manager: "pnpm"
+      project-dir: "./frontend"
+      build-args: "run build"
+      lint-enabled: true
+      audit-disabled: true
+      outdated-disabled: true
+      semgrep-disabled: true
+  - component: "gitlab.kuleuven.be/to-be-continuous/playwright/gitlab-ci-playwright@1.4"
+    # Ref: https://to-be-continuous.pages.gitlab.kuleuven.be/doc/ref/playwright/
+    inputs:
+      image: "mcr.microsoft.com/playwright:v1.44.1-jammy"
 
-e2e:
-  stage: test
-  image: docker:26.1.3-cli
-  services:
-    - docker:dind
-  variables:
-    DOCKER_HOST: tcp://docker:2375/
-    DOCKER_DRIVER: overlay2
+# secret variables
+# (define the variables below in your GitLab group/project variables)
+# HELMFILE_PGP_PRIVATE_KEY_FILE: PGP Private key for decrypting helmfile secrets with SOPS (optional). Should be set as a File type variable.
+# HELMFILE_PGP_PASSPHRASE: Passphrase for PGP private key (optional)
+
+.docker-base:
+  parallel:
+    matrix:
+    - DOCKER_FILE: "frontend/Dockerfile"
+      DOCKER_SNAPSHOT_IMAGE: "$CI_REGISTRY_IMAGE/frontend/snapshot:$CI_COMMIT_REF_SLUG"
+      DOCKER_RELEASE_IMAGE: "$CI_REGISTRY_IMAGE/frontend:$CI_COMMIT_SHORT_SHA"
+    - DOCKER_FILE: "backend/Dockerfile"
+      DOCKER_SNAPSHOT_IMAGE: "$CI_REGISTRY_IMAGE/backend/snapshot:$CI_COMMIT_REF_SLUG"
+      DOCKER_RELEASE_IMAGE: "$CI_REGISTRY_IMAGE/backend:$CI_COMMIT_SHORT_SHA"
+
+node-typecheck:
+  extends: .node-base
+  stage: build
   script:
-    - docker compose up e2e --build --exit-code-from=e2e
-# BACKEND
-.backend:base:
-  image: python:3.12.3-bookworm
-  before_script:
-    - cd backend
-    - pip install poetry
-    - poetry install --no-interaction
-
-backend:lint:
-  stage: test
-  extends: .backend:base
-  script:
-    - poetry run task lint
-
-backend:typecheck:
-  extends: .backend:base
-  script:
-    - poetry run task typecheck
-
-# FRONTEND
-.frontend:base:
-  image: node:20-bookworm
-  before_script:
-    - cd frontend
-    - npm install -g pnpm
-    - pnpm install
-
-frontend:lint:
-  stage: test
-  extends: .frontend:base
-  script:
-    - pnpm run lint
-
-frontend:typecheck:
-  stage: test
-  extends: .frontend:base
-  script:
-    - pnpm run typecheck
+    - $NODE_MANAGER run typecheck
+  rules:
+    # on production or integration branch(es): auto & failing
+    - !reference [.test-policy, rules]
