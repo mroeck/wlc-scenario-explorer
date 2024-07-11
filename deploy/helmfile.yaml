@@ -5,6 +5,22 @@ environments:
     - env/values.yaml.gotmpl
     secrets:
     - env/secrets.yaml
+  review:
+    missingFileHandler: Info
+    values:
+    - env/values.yaml.gotmpl
+    - env/values.review.yaml
+    secrets:
+    - env/secrets.yaml
+    - env/secrets.review.yaml
+  integration:
+    missingFileHandler: Info
+    values:
+    - env/values.yaml.gotmpl
+    - env/values.integration.yaml
+    secrets:
+    - env/secrets.yaml
+    - env/secrets.integration.yaml
   production:
     missingFileHandler: Info
     values:
