@@ -1,9 +1,16 @@
-FROM node:20-bookworm as base
+FROM node:20-slim as build
+RUN npm install -g pnpm@9.0.5
+# Set the working directory to /app inside the container
 WORKDIR /app
-COPY pnpm-lock.yaml package.json /app/
-RUN npm install -g pnpm@9.0.5 && pnpm install
-COPY . /app
-
-FROM base as prod
+# Copy app files
+COPY . .
+# Install dependencies
+RUN pnpm install --frozen-lockfile
+# Build the app
 RUN pnpm build
-CMD ["pnpm", "exec", "serve", "--single", "-p", "3001", "--no-port-switching", "dist"]
+
+# Bundle static assets in nginx image
+FROM bitnami/nginx:1.27 as prod
+ENV NODE_ENV production
+# Copy built assets from `builder` image
+COPY --from=build /app/dist /app
