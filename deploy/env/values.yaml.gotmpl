@@ -1,0 +1,56 @@
+# Initialize from CI/CD environment variables
+{{- $kube_namespace := env "kube_namespace" | default "scenario-explorer-19853-production" -}}
+{{- $ingress_base_domain := env "KUBE_INGRESS_BASE_DOMAIN" |
+  default "ae-01.cloud.set.kuleuven.be" -}}
+{{- $base_app_name := env "HELMFILE_BASE_APP_NAME" | default "scenario-explorer" -}}
+{{- $environment_name := env "environment_name" | default $base_app_name -}}
+{{- $environment_hostname := env "environment_hostname" |
+  default (printf "%s.%s" $environment_name $ingress_base_domain ) -}}
+{{- $environment_url := env "environment_url" |
+  default (printf "https://%s" $environment_hostname) -}}
+{{- $release_name_regexp := printf "^(%s)(.*)$" $base_app_name -}}
+
+# Because this is a mono-repo with both frontend and backend, we need to define the Docker
+# image for both our selves based on the environment variables.
+{{- $image_base := env "CI_REGISTRY_IMAGE" | default "registry.gitlab.kuleuven.be/ae/sustainable-construction/dg-grow-eu-scenariotool/scenario-explorer" -}}
+{{- $frontend_image := printf "%s/frontend" $image_base -}}
+{{- $backend_image := printf "%s/backend" $image_base -}}
+{{- $image_tag := env "CI_COMMIT_SHORT_SHA" | default "latest" -}}
+
+{{- if ne .Environment.Name "production" -}}
+  {{- $frontend_image = printf "%s/snapshot" $frontend_image -}}
+  {{- $backend_image = printf "%s/snapshot" $backend_image -}}
+  {{- $image_tag = env "CI_COMMIT_REF_SLUG" | default "main" -}}
+  {{- if env "CI_COMMIT_SHORT_SHA" -}}
+    {{- $image_tag = printf "%s-%s" $image_tag (env "CI_COMMIT_SHORT_SHA") -}}
+  {{- end -}}
+{{- end -}}
+
+# Define ingress hostname for current environment
+ingress:
+  hostname: {{ $environment_hostname }}
+
+# Environment settings for frontend
+frontend:
+  # Define release name and namespace for current environment
+  releaseName: {{ regexReplaceAll $release_name_regexp $environment_name "${1}-frontend${2}" }}
+  releaseNamespace: {{ $kube_namespace }}
+
+  # Define Docker image for current environment
+  image:
+    registry: {{ regexReplaceAll "^([^/]+)\\/([^:^@]+)(@|:|)(.*)$" $frontend_image "${1}" }}
+    repository: {{ regexReplaceAll "^([^/]+)\\/([^:^@]+)(@|:|)(.*)$" $frontend_image "${2}" }}
+    tag: "{{ $image_tag }}"
+
+# Environment settings for backend
+backend:
+  # Define release name and namespace for current environment
+  releaseName: {{ regexReplaceAll $release_name_regexp $environment_name "${1}-backend${2}" }}
+  releaseNamespace: {{ $kube_namespace }}
+
+  # Define Docker image for current environment
+  image:
+    registry: {{ regexReplaceAll "^([^/]+)\\/([^:^@]+)(@|:|)(.*)$" $backend_image "${1}" }}
+    repository: {{ regexReplaceAll "^([^/]+)\\/([^:^@]+)(@|:|)(.*)$" $backend_image "${2}" }}
+    tag: "{{ $image_tag }}"
+

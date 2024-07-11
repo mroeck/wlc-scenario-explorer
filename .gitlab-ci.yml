@@ -48,9 +48,17 @@ include:
     # Ref: https://to-be-continuous.pages.gitlab.kuleuven.be/doc/ref/playwright/
     inputs:
       image: "mcr.microsoft.com/playwright:v1.44.1-jammy"
+  - component: "gitlab.kuleuven.be/to-be-continuous/helmfile/gitlab-ci-helmfile@3.2"
+    # Ref: https://to-be-continuous.pages.gitlab.kuleuven.be/doc/ref/helmfile/
+    inputs:
+      scripts-dir: "./deploy"
+      path: "./deploy/helmfile.yaml"
+      environment-url: "https://%{environment_name}.ae-01.cloud.set.kuleuven.be"
+      integ-enabled: true
+      prod-enabled: true
 
 # secret variables
-# (define the variables below in your GitLab group/project variables)
+# (define the variables below in your GitLab group/project variables, if helmfile secrets are used)
 # HELMFILE_PGP_PRIVATE_KEY_FILE: PGP Private key for decrypting helmfile secrets with SOPS (optional). Should be set as a File type variable.
 # HELMFILE_PGP_PASSPHRASE: Passphrase for PGP private key (optional)
 
@@ -58,10 +66,10 @@ include:
   parallel:
     matrix:
     - DOCKER_FILE: "frontend/Dockerfile"
-      DOCKER_SNAPSHOT_IMAGE: "$CI_REGISTRY_IMAGE/frontend/snapshot:$CI_COMMIT_REF_SLUG"
+      DOCKER_SNAPSHOT_IMAGE: "$CI_REGISTRY_IMAGE/frontend/snapshot:$CI_COMMIT_REF_SLUG-$CI_COMMIT_SHORT_SHA"
       DOCKER_RELEASE_IMAGE: "$CI_REGISTRY_IMAGE/frontend:$CI_COMMIT_SHORT_SHA"
     - DOCKER_FILE: "backend/Dockerfile"
-      DOCKER_SNAPSHOT_IMAGE: "$CI_REGISTRY_IMAGE/backend/snapshot:$CI_COMMIT_REF_SLUG"
+      DOCKER_SNAPSHOT_IMAGE: "$CI_REGISTRY_IMAGE/backend/snapshot:$CI_COMMIT_REF_SLUG-$CI_COMMIT_SHORT_SHA"
       DOCKER_RELEASE_IMAGE: "$CI_REGISTRY_IMAGE/backend:$CI_COMMIT_SHORT_SHA"
 
 node-typecheck:
