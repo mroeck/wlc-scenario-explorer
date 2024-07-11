@@ -11,6 +11,14 @@ RUN pnpm build
 
 # Bundle static assets in nginx image
 FROM bitnami/nginx:1.27 as prod
+
+### Change user to perform privileged actions
+USER 0
+### Install 'vim'
+RUN install_packages curl
+### Revert to the original non-root user
+USER 1001
+
 ENV NODE_ENV production
 # Copy built assets from `builder` image
 COPY --from=build /app/dist /app
