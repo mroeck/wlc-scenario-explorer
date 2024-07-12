@@ -50,6 +50,7 @@ include:
     inputs:
       image: "mcr.microsoft.com/playwright:v1.45.1-jammy"
       project-dir: "./e2e"
+      review-enabled: true
 
 # secret variables
 # (define the variables below in your GitLab group/project variables, if helmfile secrets are used)
