@@ -4,10 +4,8 @@ WORKDIR /app
 
 COPY package-lock.json package.json /app/
 
-RUN npm install
+RUN npm ci
 
 COPY . /app/
 
-RUN npx playwright install
-
-CMD ["npm", "run", "e2e"]
+CMD ["npx", "playwright", "test"]
