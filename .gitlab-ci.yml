@@ -49,6 +49,7 @@ include:
     # Ref: https://to-be-continuous.pages.gitlab.kuleuven.be/doc/ref/playwright/
     inputs:
       image: "mcr.microsoft.com/playwright:v1.44.1-jammy"
+      project-dir: "./e2e"
   - component: "gitlab.kuleuven.be/to-be-continuous/helmfile/gitlab-ci-helmfile@3.2"
     # Ref: https://to-be-continuous.pages.gitlab.kuleuven.be/doc/ref/helmfile/
     inputs:
