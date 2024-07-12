@@ -144,6 +144,7 @@ releases:
       data:
         GUNICORN_LOG_LEVEL: INFO
         GUNICORN_BIND: "0.0.0.0:8080"
+        SCRIPT_NAME: "/api"
 
     envSecret:
       enabled: false
