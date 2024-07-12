@@ -7,6 +7,8 @@ services:
       target: prod
     ports:
       - "8080:8080"
+    environment:
+      - API_URL=http://backend:8081 
     healthcheck:
       test:
         [
@@ -39,10 +41,12 @@ services:
 
   e2e:
     build:
-      context: ./frontend
-      dockerfile: e2e.Dockerfile
+      context: ./e2e
+      dockerfile: Dockerfile
     environment:
       - CI='true'
+      - APP_URL=http://frontend:8080
+      - API_URL=http://backend:8081 
     depends_on:
       frontend:
         condition: service_healthy
