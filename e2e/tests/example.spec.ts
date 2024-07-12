@@ -1,15 +1,14 @@
 import { test, expect } from "@playwright/test";
+import { env } from "../env";
 
 test("has title", async ({ page }) => {
-  await page.goto("http://frontend:8080");
+  await page.goto(env.APP_URL);
 
-  // Expect a title "to contain" a substring.
   await expect(page).toHaveTitle(/Vite/);
 });
 
 test("has hellow world", async ({ page }) => {
-  await page.goto("http://backend:8081/health");
+  await page.goto(`${env.API_URL}/health`);
   const helloWorld = page.getByText("Hello, World!");
-  // Expect a title "to contain" a substring.
   await expect(helloWorld).toBeVisible();
 });
