@@ -16,13 +16,13 @@ include:
       scripts-dir: "./deploy"
       path: "./deploy/helmfile.yaml"
       base-app-name: "scenario-explorer"
-      environment-url: "https://%{environment_name}.arch01.cloud.set.kuleuven.be"
+      environment-url: "https://%{environment_name}.ae-01.cloud.set.kuleuven.be"
       lint-enabled: false
       review-enabled: true
-      integ-enabled: false
-      prod-enabled: false
+      integ-enabled: true
+      prod-enabled: true
       prod-deploy-strategy: "auto"
-      review-namespace: "scenario-explorer-29934-review"
+      review-namespace: "${CI_PROJECT_NAME}-${CI_PROJECT_ID}-review"
   - component: "gitlab.kuleuven.be/to-be-continuous/python/gitlab-ci-python@7.0"
     # Ref: https://to-be-continuous.pages.gitlab.kuleuven.be/doc/ref/python/
     inputs:
@@ -50,14 +50,6 @@ include:
     inputs:
       image: "mcr.microsoft.com/playwright:v1.45.1-jammy"
       project-dir: "./e2e"
-  - component: "gitlab.kuleuven.be/to-be-continuous/helmfile/gitlab-ci-helmfile@3.2"
-    # Ref: https://to-be-continuous.pages.gitlab.kuleuven.be/doc/ref/helmfile/
-    inputs:
-      scripts-dir: "./deploy"
-      path: "./deploy/helmfile.yaml"
-      environment-url: "https://%{environment_name}.ae-01.cloud.set.kuleuven.be"
-      integ-enabled: true
-      prod-enabled: true
 
 # secret variables
 # (define the variables below in your GitLab group/project variables, if helmfile secrets are used)
