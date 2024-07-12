@@ -18,7 +18,7 @@ include:
       base-app-name: "scenario-explorer"
       environment-url: "https://%{environment_name}.arch01.cloud.set.kuleuven.be"
       lint-enabled: false
-      review-enabled: false
+      review-enabled: true
       integ-enabled: false
       prod-enabled: false
       prod-deploy-strategy: "auto"
