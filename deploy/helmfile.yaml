@@ -151,16 +151,7 @@ releases:
       data: {}
 
     persistence:
-      enabled: {{ eq .Environment.Name "production" }}
-      ## If defined, storageClassName: <storageClass>
-      ## If set to "-", storageClassName: "", which disables dynamic provisioning
-      ## If undefined (the default) or set to null, no storageClassName spec is
-      ##   set, choosing the default provisioner.
-      ##
-      storageClass: lvm-type-1
-      accessMode: ReadWriteOnce
-      size: 50Gi
-      ## Path to mount persistent volume into  container
+      enabled: false
       mountPath: /app/data
 
     livenessProbe:
