@@ -1,0 +1,8 @@
+{
+    "eslint.workingDirectories": [
+      "./frontend", "./e2e",
+    ],
+    // "hadolint.hadolintPath": "/root/.asdf/shims/hadolint",
+    "mypy-type-checker.cwd": "${workspaceFolder}/backend",
+    "mypy-type-checker.args": ["--strict", "--config-file=pyproject.toml"],
+  }

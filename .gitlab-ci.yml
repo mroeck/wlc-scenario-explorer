@@ -60,12 +60,12 @@ include:
 .docker-base:
   parallel:
     matrix:
-    - DOCKER_FILE: "frontend/Dockerfile"
-      DOCKER_SNAPSHOT_IMAGE: "$CI_REGISTRY_IMAGE/frontend/snapshot:$CI_COMMIT_REF_SLUG-$CI_COMMIT_SHORT_SHA"
-      DOCKER_RELEASE_IMAGE: "$CI_REGISTRY_IMAGE/frontend:$CI_COMMIT_SHORT_SHA"
-    - DOCKER_FILE: "backend/Dockerfile"
-      DOCKER_SNAPSHOT_IMAGE: "$CI_REGISTRY_IMAGE/backend/snapshot:$CI_COMMIT_REF_SLUG-$CI_COMMIT_SHORT_SHA"
-      DOCKER_RELEASE_IMAGE: "$CI_REGISTRY_IMAGE/backend:$CI_COMMIT_SHORT_SHA"
+      - DOCKER_FILE: "frontend/Dockerfile"
+        DOCKER_SNAPSHOT_IMAGE: "$CI_REGISTRY_IMAGE/frontend/snapshot:$CI_COMMIT_REF_SLUG-$CI_COMMIT_SHORT_SHA"
+        DOCKER_RELEASE_IMAGE: "$CI_REGISTRY_IMAGE/frontend:$CI_COMMIT_SHORT_SHA"
+      - DOCKER_FILE: "backend/Dockerfile"
+        DOCKER_SNAPSHOT_IMAGE: "$CI_REGISTRY_IMAGE/backend/snapshot:$CI_COMMIT_REF_SLUG-$CI_COMMIT_SHORT_SHA"
+        DOCKER_RELEASE_IMAGE: "$CI_REGISTRY_IMAGE/backend:$CI_COMMIT_SHORT_SHA"
 
 node-typecheck:
   extends: .node-base
@@ -75,3 +75,9 @@ node-typecheck:
   rules:
     # on production or integration branch(es): auto & failing
     - !reference [.test-policy, rules]
+
+playwright:
+  artifacts:
+    paths:
+      - $PLAYWRIGHT_PROJECT_DIR/reports/playwright.*
+      - $PLAYWRIGHT_PROJECT_DIR/test-results/**/*.png

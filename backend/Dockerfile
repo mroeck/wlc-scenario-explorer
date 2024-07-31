@@ -15,7 +15,7 @@ ENV PYTHONFAULTHANDLER=1 \
 WORKDIR /app
 COPY poetry.lock pyproject.toml /app/
 RUN pip install --no-cache-dir poetry==1.8.3
-COPY ./app.py /app/
+COPY . /app/
 
 FROM base as prod
 RUN poetry install --only main --no-root --no-directory

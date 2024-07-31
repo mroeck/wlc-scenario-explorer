@@ -15,7 +15,15 @@ ENV PYTHONFAULTHANDLER=1 \
 WORKDIR /app
 
 FROM base as dev
-RUN pip install poetry
-RUN npm install -g pnpm
-CMD ["echo", "'stuff'"]
+RUN npm install -g pnpm@9.4.0
+
+RUN git clone https://github.com/asdf-vm/asdf.git ~/.asdf --branch v0.13.1 && \
+    echo ". $HOME/.asdf/asdf.sh" >> ~/.bashrc && \
+    echo ". $HOME/.asdf/completions/asdf.bash" >> ~/.bashrc && \   
+    source ~/.bashrc && \
+    asdf plugin add hadolint && \
+    asdf install hadolint 2.12.0 && \
+    asdf global hadolint 2.12.0
+
+
 
