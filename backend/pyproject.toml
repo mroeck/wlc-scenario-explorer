@@ -10,6 +10,13 @@ package-mode = false
 python = "^3.12"
 Flask = "^3.0.3"
 gunicorn = "^22.0.0"
+duckdb = "^1.0.0"
+numpy = "^1.26.4"
+pandas = "^2.2.2"
+flask-cors = "^4.0.1"
+pydantic = "^2.8.0"
+sqlalchemy = "^2.0.31"
+duckdb-engine = "^0.13.0"
 
 
 [tool.poetry.group.dev.dependencies]
@@ -21,10 +28,29 @@ ruff = "^0.4.6"
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
 
+
+[tool.mypy]
+plugins = ["pydantic.mypy"]
+ignore_missing_imports = true
+follow_imports = "silent"
+warn_redundant_casts = true
+warn_unused_ignores = true
+disallow_any_generics = true
+check_untyped_defs = true
+no_implicit_reexport = true
+disallow_untyped_defs = true
+explicit_package_bases = true
+
+[tool.pydantic-mypy]
+init_forbid_extra = true
+init_typed = true
+warn_required_dynamic_aliases = true
+
+
 [tool.taskipy.tasks]
 docker_build_prod = { cmd = "docker build --target prod -t scenario-explorer/back:0.1.0 ." }
 docker_prod = { cmd = "docker run -p 8081:8081 --rm scenario-explorer/back:0.1.0" }
 dev = { cmd = "flask --app app run --host 0.0.0.0 --port=8080 --debug" }
 preview = { cmd = "poetry run gunicorn --config ./gunicorn_config.py app:app" }
 lint = { cmd = "ruff check" }
-typecheck = { cmd = "mypy --strict ./" }
+typecheck = { cmd = "mypy --strict --config-file=pyproject.toml ." }
