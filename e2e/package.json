@@ -10,7 +10,7 @@
     "e2e:dev": "playwright test --ui --project='chromium'",
     "e2e:dev:headed": "playwright test --headed --project='chromium'",
     "e2e:dev:headed:mobile": "playwright test --headed --project='Mobile Chrome'",
-    "e2e:update:snapshots": "playwright test --update-snapshots",
+    "e2e:update:snapshots": "cd ../ && npm run e2e:update:snapshots && cd e2e",
     "e2e:report": "serve ./playwright-report/ -l 9323",
     "prepare": "cd .. && husky e2e/.husky",
     "pre-push": "sh ./scripts/prevent-.only-page.pause-push.sh"

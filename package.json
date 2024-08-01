@@ -1,6 +1,6 @@
 {
   "scripts": {
     "compose:prod": "docker-compose up frontend backend --build",
-    "compose:e2e": "docker compose up e2e --build --exit-code-from=e2e"
+    "e2e:update:snapshots": "docker compose up e2e --build --exit-code-from=e2e"
   }
 }

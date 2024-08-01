@@ -43,14 +43,14 @@ test.describe("filters", () => {
   test("snapshot when multiple filters are on", async ({ page }) => {
     await page.getByTestId(BREAKDOWN_BY_TESTID).getByRole("combobox").click();
     await page
-      .getByLabel(BREAKDOWN_BY_OBJ.countries)
-      .getByText(BREAKDOWN_BY_OBJ.countries)
+      .getByLabel(BREAKDOWN_BY_OBJ.country)
+      .getByText(BREAKDOWN_BY_OBJ.country)
       .click();
     await page.getByRole("tab", { name: "Filters" }).click();
     const countryFilterTestId: keyof z.infer<typeof FiltersSchema> =
-      "Countries";
+      "country";
     const materialTypeFilterTestId: keyof z.infer<typeof FiltersSchema> =
-      "Material Type";
+      "Material Class";
     await page.getByTestId(countryFilterTestId).click();
     await page.getByRole("option", { name: "FR" }).click();
 
@@ -75,12 +75,12 @@ test.describe("filters", () => {
   test("snapshot when multiple filter options are on", async ({ page }) => {
     await page.getByTestId(BREAKDOWN_BY_TESTID).getByRole("combobox").click();
     await page
-      .getByLabel(BREAKDOWN_BY_OBJ.countries)
-      .getByText(BREAKDOWN_BY_OBJ.countries)
+      .getByLabel(BREAKDOWN_BY_OBJ.country)
+      .getByText(BREAKDOWN_BY_OBJ.country)
       .click();
     await page.getByRole("tab", { name: "Filters" }).click();
     const countryFilterTestId: keyof z.infer<typeof FiltersSchema> =
-      "Countries";
+      "country";
     await page.getByTestId(countryFilterTestId).click();
     await page.getByRole("option", { name: "FR" }).click();
     await page.getByRole("option", { name: "IT" }).click();
@@ -130,8 +130,8 @@ test.describe("filters", () => {
       .getByTestId(FILTERS_OBJ.activityInOut)
       .getByRole("combobox");
 
-    const countriesSelect = page
-      .getByTestId(FILTERS_OBJ.countries)
+    const countrySelect = page
+      .getByTestId(FILTERS_OBJ.country)
       .getByRole("combobox");
 
     const energyInOption = "Energy in";
@@ -154,17 +154,17 @@ test.describe("filters", () => {
     await page.getByRole("option", { name: materialInOption }).click();
     await expect(activityInOutSelect).not.toHaveText(energyInOption);
 
-    await countriesSelect.click();
+    await countrySelect.click();
 
     await expect(page.getByRole("dialog")).toHaveCount(1);
 
     await page.getByRole("dialog").getByPlaceholder("Search").fill(FR);
     await page.getByRole("option", { name: FR }).click();
-    await expect(countriesSelect).toHaveText(FR);
+    await expect(countrySelect).toHaveText(FR);
 
     await page.getByRole("dialog").getByPlaceholder("Search").click();
     await page.getByRole("dialog").getByPlaceholder("Search").fill("");
     await page.getByRole("option", { name: SELECT_ALL_LABEL }).click();
-    await expect(countriesSelect).toHaveText(ALL_LABEL);
+    await expect(countrySelect).toHaveText(ALL_LABEL);
   });
 });

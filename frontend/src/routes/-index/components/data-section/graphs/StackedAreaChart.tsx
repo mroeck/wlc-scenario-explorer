@@ -9,12 +9,10 @@ import {
   Legend,
   Label,
 } from "recharts";
-import { colors } from "../temp_data";
 import { CustomTooltip } from "../CustomTooltip";
 import { cn, getColor, tickFormatter } from "@/lib/utils";
 import { type z } from "zod";
 import {
-  DEFAULT_COLOR,
   GRAPH_FONT_SIZE,
   STACKED_AREA_CHART_TESTID,
   TEST,
@@ -24,8 +22,6 @@ import { YEAR_KEY } from "@/lib/shared_with_backend/constants";
 import type { ScenarioRowsAggregatedArraySchema } from "@/lib/schemas";
 import { CustomLegend } from "../Legend/CustomLegend";
 import type { Attribute, Unit } from "@/lib/types";
-
-const Y_AXIS_LABEL_MARGIN = 0;
 
 type StackedAreaChartProps = {
   data: z.infer<typeof ScenarioRowsAggregatedArraySchema>;
@@ -63,7 +59,6 @@ export const StackedAreaChart = ({
         className={cn(
           "h-0 min-h-[500px] min-w-[600px] lg:min-h-full lg:min-w-[unset] lg:flex-1 [&_svg]:overflow-visible",
         )}
-        style={{ paddingLeft: Y_AXIS_LABEL_MARGIN + 5 }}
         data-testid={STACKED_AREA_CHART_TESTID}
       >
         <ResponsiveContainer width="100%" height="100%">
@@ -108,15 +103,15 @@ export const StackedAreaChart = ({
               cursor={false}
             />
             {attributeOptions
-              .map((attribute, index) => {
-                const areaColor = colors[index] ?? DEFAULT_COLOR;
+              .map((option) => {
+                const areaColor = getColor({ breakdownBy, option });
 
                 return (
                   <Area
-                    key={attribute + "B"}
+                    key={option + "B"}
                     type="monotone"
                     stackId="0"
-                    dataKey={attribute}
+                    dataKey={option}
                     stroke={areaColor}
                     strokeWidth={0.5}
                     fill={areaColor}
@@ -155,8 +150,9 @@ export const StackedAreaChart = ({
                 value={unit}
                 angle={-90}
                 position="insideLeft"
-                dx={Y_AXIS_LABEL_MARGIN * -1}
+                dx={10}
                 fontSize={GRAPH_FONT_SIZE}
+                fill="hsl(223 0% 20%)"
               />
             </YAxis>
           </AreaChart>

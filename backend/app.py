@@ -4,7 +4,7 @@ from src.queries import get_scenario_rows, get_filters
 from src.shared_with_frontend.schemas import (
     AttributeEnumSchema,
     ScenarioEnumSchema,
-    UnitEnumSchema,
+    IndicatorEnumSchema,
     FiltersSchema,
     SCENARIO_TO_FILE_NAME,
     UNIT_TO_DB_COLUMNS,
@@ -15,6 +15,9 @@ from src.shared_with_frontend.schemas import (
 
 from src.utils import convert_keys_to_columns
 from typing import Dict, cast, List, Any
+from dotenv import load_dotenv
+
+load_dotenv()
 
 app = Flask(__name__)
 CORS(app)
@@ -31,7 +34,7 @@ def scenario() -> Dict[str, int]:
     requestdata = request.json
     attribute = ATTRIBUTE_TO_DB_COLUMNS[AttributeEnumSchema(requestdata["attribute"])]  # type:ignore[index]
     scenario = SCENARIO_TO_FILE_NAME[ScenarioEnumSchema(requestdata["scenario"])]  # type:ignore[index]
-    unit = UNIT_TO_DB_COLUMNS[UnitEnumSchema(requestdata["unit"])]  # type:ignore[index]
+    unit = UNIT_TO_DB_COLUMNS[IndicatorEnumSchema(requestdata["unit"])]  # type:ignore[index]
     filters = None
 
     if (
@@ -46,7 +49,7 @@ def scenario() -> Dict[str, int]:
     data = get_scenario_rows(
         cast(ScenarioEnumSchema, scenario),
         cast(ColumnsEnumSchema, attribute),
-        cast(UnitEnumSchema, unit),
+        cast(IndicatorEnumSchema, unit),
         cast(FiltersSchema | None, filters),
     )
 

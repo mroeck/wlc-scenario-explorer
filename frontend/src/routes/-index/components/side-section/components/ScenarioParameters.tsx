@@ -26,7 +26,7 @@ export const ScenarioParameters = () => {
               </div>
               <div className={cn("flex items-center justify-center")}>
                 <ParameterLevel
-                  level={2.5}
+                  level={undefined}
                   status="active"
                   editable
                   className={cn("h-6 w-7 rounded-sm")}

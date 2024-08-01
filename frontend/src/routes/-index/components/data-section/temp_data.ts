@@ -46,41 +46,11 @@ export const colors = [
   "#5f87bf",
 ];
 
-export const countriesColors = {
-  AT: "#2d99b4",
-  BE: "#41aac4",
-  BG: "#4bb2cc",
-  CY: "#54bad4",
-  CZ: "#62c9d0",
-  DE: "#63cbbf",
-  DK: "#57c2a1",
-  EE: "#6abb7d",
-  EL: "#91bf65",
-  ES: "#cdce59",
-  FI: "#ebcb59",
-  FR: "#fabc55",
-  HR: "#faa14e",
-  HU: "#f48d54",
-  IE: "#ed7859",
-  IT: "#ec676c",
-  LT: "#f76d8a",
-  LU: "#fb8cad",
-  LV: "#f498c4",
-  MT: "#ea94c9",
-  NL: "#e08fce",
-  PL: "#be93cf",
-  PT: "#9b96d0",
-  RO: "#7b9dcb",
-  SE: "#6d92c5",
-  SI: "#5f87bf",
-  SK: "#5f87bf",
-} as const;
-
 export const ATTRIBUTE_OPTIONS_COLOR: Record<
-  Exclude<Attribute, "stock activity type name" | "carbon category">,
+  Exclude<Attribute, "stock building stock activity name">,
   Record<string, `#${string}`>
 > = {
-  "activity in out": {
+  "flow type": {
     "Energy in": "#54BAD4",
     MATERIAL_IN: "#6ABB7D",
     MATERIAL_LOSS_IN: "#EBCB59",
@@ -90,7 +60,7 @@ export const ATTRIBUTE_OPTIONS_COLOR: Record<
     TRANSPORT_EOL: "#F498C4",
     TRANSPORT_TO_SITE: "#E08FCE",
   },
-  "element class generic name": {
+  "element class": {
     "Common walls": "#54BAD4",
     "Electrical services": "#6ABB7D",
     "External openings": "#EBCB59",
@@ -103,16 +73,16 @@ export const ATTRIBUTE_OPTIONS_COLOR: Record<
     Substructure: "#5F87BF",
     "Technical services": "#41AAC4",
   },
-  "building use subtype name": {
+  "use subtype": {
     "Multi-family house": "#54BAD4",
     Office: "#6ABB7D",
     "Single-family house": "#EBCB59",
   },
-  "building use type name": {
+  "use type": {
     "Non-residential": "#54BAD4",
     Residential: "#6ABB7D",
   },
-  "country name": {
+  country: {
     AT: "#2D99B4",
     BE: "#41AAC4",
     BG: "#4BB2CC",
@@ -141,7 +111,7 @@ export const ATTRIBUTE_OPTIONS_COLOR: Record<
     SI: "#7B9DCB",
     SK: "#6D92C5",
   },
-  "material name JRC CDW": {
+  "material class": {
     Aluminium: "#2D99B4",
     Brick: "#41AAC4",
     Ceramics: "#4BB2CC",
@@ -163,12 +133,24 @@ export const ATTRIBUTE_OPTIONS_COLOR: Record<
     Undefined: "#F76D8A",
     Wood: "#FB8CAD",
   },
-  // "region": {
-  //   Continental: "#54BAD4",
-  //   Mediterranean: "#6ABB7D",
-  //   Nordic: "#EBCB59",
-  //   Oceanic: "#FAA14E",
-  // },
+  region: {
+    Continental: "#54BAD4",
+    Mediterranean: "#6ABB7D",
+    Nordic: "#EBCB59",
+    Oceanic: "#FAA14E",
+  },
+  "building stock activity": {
+    "Existing buildings": "#54BAD4",
+    "New buildings": "#6ABB7D",
+    Refurbishment: "#EBCB59",
+  },
+  "WLC Category": {
+    "Demolition embodied carbon": "#54BAD4",
+    "Use phase operational carbon": "#6ABB7D",
+    "Construction embodied carbon": "#EBCB59",
+    "Use phase embodied carbon": "#FAA14E",
+    "Renovation embodied carbon": "#ED7859",
+  },
 } as const;
 
 export const data = [

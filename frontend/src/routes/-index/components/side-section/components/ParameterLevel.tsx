@@ -2,7 +2,7 @@ import { PARAMETER_STATUS } from "@/lib/constants";
 import { cn } from "@/lib/utils";
 
 type ParameterLevelProps = {
-  level: number;
+  level: number | undefined;
   status?: (typeof PARAMETER_STATUS)[keyof typeof PARAMETER_STATUS];
   editable?: boolean;
   className?: string;

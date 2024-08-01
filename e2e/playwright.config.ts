@@ -39,7 +39,7 @@ export default defineConfig({
           timeout: 30 * 1000,
         },
         {
-          command: "cd ../backend && poetry run task preview",
+          command: "cd ../backend && DATA_PATH=./data poetry run task preview",
           url: "http://localhost:8081/health",
           reuseExistingServer: true,
           timeout: 30 * 1000,

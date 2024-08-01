@@ -27,18 +27,20 @@ class ColumnsEnumSchema(Enum):
 
 
 class AttributeEnumSchema(str, Enum):
+    STOCK_REGION_NAME = "region"
+    COUNTRY_NAME = "country"
     STOCK_PROJECTION_YEAR = "stock projection year"
-    COUNTRY_NAME = "country name"
-    BUILDING_USE_TYPE_NAME = "building use type name"
-    BUILDING_USE_SUBTYPE_NAME = "building use subtype name"
-    ELEMENT_CLASS_GENERIC_NAME = "element class generic name"
-    MATERIAL_NAME_JRC_CDW = "material name JRC CDW"
-    ACTIVITY_IN_OUT = "activity in out"
-    STOCK_ACTIVITY_TYPE_NAME = "stock activity type name"
-    CARBON_CATEGORY = "carbon category"
+    BUILDING_USE_TYPE_NAME = "use type"
+    BUILDING_USE_SUBTYPE_NAME = "use subtype"
+    ELEMENT_CLASS_GENERIC_NAME = "element class"
+    MATERIAL_NAME_JRC_CDW = "material class"
+    ACTIVITY_IN_OUT = "flow type"
+    STOCK_ACTIVITY_TYPE_NAME = "building stock activity"
+    CARBON_CATEGORY = "WLC Category"
 
 
 ATTRIBUTE_TO_DB_COLUMNS: Mapping[str, str] = {
+    AttributeEnumSchema.STOCK_REGION_NAME.value: ColumnsEnumSchema.STOCK_REGION_NAME.value,
     AttributeEnumSchema.STOCK_PROJECTION_YEAR.value: ColumnsEnumSchema.STOCK_PROJECTION_YEAR.value,
     AttributeEnumSchema.COUNTRY_NAME.value: ColumnsEnumSchema.COUNTRY_NAME.value,
     AttributeEnumSchema.BUILDING_USE_TYPE_NAME.value: ColumnsEnumSchema.BUILDING_USE_TYPE_NAME.value,
@@ -51,20 +53,20 @@ ATTRIBUTE_TO_DB_COLUMNS: Mapping[str, str] = {
 }
 
 
-class UnitEnumSchema(str, Enum):
-    TOTAL_GWP = "total GWP"
-    FOSSIL_GWP = "fossil GWP"
-    BIO_GWP = "bio GWP"
-    LULUC_GWP = "luluc GWP"
-    MATERIAL_AMOUNT_PER_BUILDING = "material amount"
+class IndicatorEnumSchema(str, Enum):
+    TOTAL_GWP = "GWP total"
+    FOSSIL_GWP = "GWP fossil"
+    BIO_GWP = "GWP bio"
+    LULUC_GWP = "GWP luluc"
+    MATERIAL_AMOUNT_PER_BUILDING = "Material mass"
 
 
 UNIT_TO_DB_COLUMNS: Dict[str, str] = {
-    UnitEnumSchema.TOTAL_GWP.value: ColumnsEnumSchema.IND_GWP_TOT.value,
-    UnitEnumSchema.FOSSIL_GWP.value: ColumnsEnumSchema.IND_GWP_FOS.value,
-    UnitEnumSchema.BIO_GWP.value: ColumnsEnumSchema.IND_GWP_BIO.value,
-    UnitEnumSchema.LULUC_GWP.value: ColumnsEnumSchema.IND_GWP_LULUC.value,
-    UnitEnumSchema.MATERIAL_AMOUNT_PER_BUILDING.value: ColumnsEnumSchema.AMOUNT_MATERIAL_KG_PER_BUILDING.value,
+    IndicatorEnumSchema.TOTAL_GWP.value: ColumnsEnumSchema.IND_GWP_TOT.value,
+    IndicatorEnumSchema.FOSSIL_GWP.value: ColumnsEnumSchema.IND_GWP_FOS.value,
+    IndicatorEnumSchema.BIO_GWP.value: ColumnsEnumSchema.IND_GWP_BIO.value,
+    IndicatorEnumSchema.LULUC_GWP.value: ColumnsEnumSchema.IND_GWP_LULUC.value,
+    IndicatorEnumSchema.MATERIAL_AMOUNT_PER_BUILDING.value: ColumnsEnumSchema.AMOUNT_MATERIAL_KG_PER_BUILDING.value,
 }
 
 
@@ -81,25 +83,29 @@ class YearSchema(BaseModel):
 class FilterFrontEnumSchema(str, Enum):
     FROM = "From"
     TO = "To"
-    COUNTRIES = "Countries"
-    BUILDING_USE_TYPE = "Building Use Type"
-    BUILDING_ELEMENT_CLASS = "Building Element Class"
-    MATERIAL_TYPE = "Material Type"
-    BUILDING_USE_SUBTYPE = "Building Use Subtype"
-    ACTIVITY_IN_OUT = "Activity in out"
+    country = "country"
+    BUILDING_USE_TYPE = "use type"
+    BUILDING_ELEMENT_CLASS = "Element Class"
+    MATERIAL_CLASS = "Material Class"
+    BUILDING_USE_SUBTYPE = "use subtype"
+    ACTIVITY_IN_OUT = "flow type"
     REGION = "Region"
+    STOCK_ACTIVITY_TYPE_NAME = "building stock activity"
+    CARBON_CATEGORY = "WLC Category"
 
 
 FILTER_TO_DB_COLUMN: Dict[str, str] = {
     FilterFrontEnumSchema.FROM.value: ColumnsEnumSchema.STOCK_PROJECTION_YEAR.value,
     FilterFrontEnumSchema.TO.value: ColumnsEnumSchema.STOCK_PROJECTION_YEAR.value,
-    FilterFrontEnumSchema.COUNTRIES.value: ColumnsEnumSchema.COUNTRY_NAME.value,
+    FilterFrontEnumSchema.country.value: ColumnsEnumSchema.COUNTRY_NAME.value,
     FilterFrontEnumSchema.BUILDING_USE_TYPE.value: ColumnsEnumSchema.BUILDING_USE_TYPE_NAME.value,
     FilterFrontEnumSchema.BUILDING_ELEMENT_CLASS.value: ColumnsEnumSchema.ELEMENT_CLASS_GENERIC_NAME.value,
-    FilterFrontEnumSchema.MATERIAL_TYPE.value: ColumnsEnumSchema.MATERIAL_NAME_JRC_CDW.value,
+    FilterFrontEnumSchema.MATERIAL_CLASS.value: ColumnsEnumSchema.MATERIAL_NAME_JRC_CDW.value,
     FilterFrontEnumSchema.BUILDING_USE_SUBTYPE.value: ColumnsEnumSchema.BUILDING_USE_SUBTYPE_NAME.value,
     FilterFrontEnumSchema.ACTIVITY_IN_OUT.value: ColumnsEnumSchema.ACTIVITY_IN_OUT.value,
     FilterFrontEnumSchema.REGION.value: ColumnsEnumSchema.STOCK_REGION_NAME.value,
+    FilterFrontEnumSchema.STOCK_ACTIVITY_TYPE_NAME.value: ColumnsEnumSchema.STOCK_ACTIVITY_TYPE_NAME.value,
+    FilterFrontEnumSchema.CARBON_CATEGORY.value: ColumnsEnumSchema.CARBON_CATEGORY.value,
 }
 
 DB_COLUMN_TO_FILTER = {v: k for k, v in FILTER_TO_DB_COLUMN.items()}
@@ -128,15 +134,25 @@ class FiltersSchema(BaseModel, extra=Extra.forbid):
 
 
 class ScenarioEnumSchema(str, Enum):
-    SCENARIO_1 = "scenario 1"
-    SCENARIO_2 = "scenario 2"
-    SCENARIO_3 = "scenario 3"
+    CPOO = "Current policy optimistic scenario"
+    CPOC = "Current policy conservative scenario"
+    APOL = "Additional policy scenario (APOL)"
+    APOI = "APOL + Improve"
+    APOS = "APOL + Shift"
+    APOA = "APOL + Avoid"
+    AASI = "APOL + A+S+I"
+    CUSR = "Custom scenario results"
 
 
 SCENARIO_TO_FILE_NAME: Dict[str, str] = {
-    ScenarioEnumSchema.SCENARIO_1.value: "scenario",
-    ScenarioEnumSchema.SCENARIO_2.value: "scenario",
-    ScenarioEnumSchema.SCENARIO_3.value: "scenario",
+    ScenarioEnumSchema.AASI.value: "scenario",
+    ScenarioEnumSchema.APOA.value: "scenario",
+    ScenarioEnumSchema.APOI.value: "scenario",
+    ScenarioEnumSchema.APOL.value: "scenario",
+    ScenarioEnumSchema.APOS.value: "scenario",
+    ScenarioEnumSchema.CPOC.value: "scenario",
+    ScenarioEnumSchema.CPOO.value: "scenario",
+    ScenarioEnumSchema.CUSR.value: "scenario",
 }
 
 

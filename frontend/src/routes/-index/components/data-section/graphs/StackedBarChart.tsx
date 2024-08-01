@@ -23,7 +23,6 @@ import type { ScenarioRowsAggregatedArraySchema } from "@/lib/schemas";
 import { CustomLegend } from "../Legend/CustomLegend";
 import type { Attribute, Unit } from "@/lib/types";
 
-const Y_AXIS_LABEL_MARGIN = 20;
 type StackedBarChartProps = {
   data: z.infer<typeof ScenarioRowsAggregatedArraySchema>;
   unit: Unit;
@@ -45,7 +44,6 @@ export const StackedBarChart = ({
         className={cn(
           "h-0 min-h-[500px] min-w-[600px] lg:min-h-full lg:min-w-[unset] lg:flex-1 [&_svg]:overflow-visible",
         )}
-        style={{ paddingLeft: Y_AXIS_LABEL_MARGIN + 5 }}
         data-testid={STACKED_BAR_CHART_TESTID}
       >
         <ResponsiveContainer width="100%" height="100%">
@@ -109,8 +107,9 @@ export const StackedBarChart = ({
                 value={unit}
                 angle={-90}
                 position="insideLeft"
-                dx={Y_AXIS_LABEL_MARGIN * -1}
+                dx={10}
                 fontSize={GRAPH_FONT_SIZE}
+                fill="hsl(223 0% 20%)"
               />
             </YAxis>
           </BarChart>

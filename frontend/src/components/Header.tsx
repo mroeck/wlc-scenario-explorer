@@ -2,7 +2,7 @@ import {
   DEFAULT_ATTRIBUTE,
   DEFAULT_DISPLAY,
   DEFAULT_SCENARIO,
-  DEFAULT_UNIT,
+  DEFAULT_INDICATOR,
   PROJECT_NAME,
   ROUTES,
 } from "@/lib/constants";
@@ -33,7 +33,7 @@ const NavLinks = ({ className }: NavLinksProps) => {
             attribute: DEFAULT_ATTRIBUTE,
             display: DEFAULT_DISPLAY,
             scenarioA: DEFAULT_SCENARIO,
-            unit: DEFAULT_UNIT,
+            unit: DEFAULT_INDICATOR,
           }}
         >
           Dashboard
@@ -84,7 +84,7 @@ const BurgerNavigation = () => {
                 attribute: DEFAULT_ATTRIBUTE,
                 display: DEFAULT_DISPLAY,
                 scenarioA: DEFAULT_SCENARIO,
-                unit: DEFAULT_UNIT,
+                unit: DEFAULT_INDICATOR,
               }}
             >
               <DrawerClose>Dashboard</DrawerClose>

@@ -17,6 +17,7 @@ flask-cors = "^4.0.1"
 pydantic = "^2.8.0"
 sqlalchemy = "^2.0.31"
 duckdb-engine = "^0.13.0"
+python-dotenv = "^1.0.1"
 
 
 [tool.poetry.group.dev.dependencies]

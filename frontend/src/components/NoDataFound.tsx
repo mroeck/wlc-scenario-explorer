@@ -15,7 +15,7 @@ export const NoDataFound = () => {
             It looks like there is no data available with the current filters.
             This may be due to incompatible filter combinations, such as
             selecting a Region that does not match the chosen Country, same for
-            Building Use Type/Subtype.
+            use type/Subtype.
           </p>
         </div>
       </div>

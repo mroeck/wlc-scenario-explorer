@@ -11,6 +11,7 @@ import {
   SELECT_UNIT_TESTID,
   INDICATOR_TO_UNIT,
 } from "@/lib/constants";
+import { UNITS } from "@/lib/shared_with_backend/constants";
 import { test, expect } from "@playwright/test";
 import { waitLoadingEnds } from "@tests/functions";
 
@@ -27,14 +28,14 @@ test.describe("data viz", () => {
       .getByTestId(GRAPH_TITLE_TESTID)
       .getByTestId(ATTRIBUTE_TESTID);
     const buildingUseSubtypeOption = page
-      .getByLabel("building use subtype name")
-      .getByText("building use subtype name");
+      .getByLabel("use subtype")
+      .getByText("use subtype");
     const colorLegend = page.getByTestId(COLOR_LEGEND_TESTID);
 
     await breakdownByDropdown.click();
     await buildingUseSubtypeOption.click();
 
-    await expect(attributeInGraphTitle).toHaveText("building use subtype name");
+    await expect(attributeInGraphTitle).toHaveText("use subtype");
     await expect(colorLegend.getByText("Multi-family house")).toBeVisible();
     await expect(colorLegend.getByText("Office")).toBeVisible();
     await expect(colorLegend.getByText("Single-family house")).toBeVisible();
@@ -56,13 +57,13 @@ test.describe("data viz", () => {
     const unitInGraphTitle = page
       .getByTestId(GRAPH_TITLE_TESTID)
       .getByTestId(UNIT_TESTID);
-    const optionText = "bio GWP";
+    const optionText = "GWP bio";
     const unitOption = page.getByLabel(optionText).getByText(optionText);
     const unitOption2 = page
-      .getByLabel("material amount")
-      .getByText("material amount");
-    const unit1 = "ktCO2";
-    const unit2 = "kt/building";
+      .getByLabel("Material mass")
+      .getByText("Material mass");
+    const unit1 = UNITS[0];
+    const unit2 = UNITS[1];
 
     await expect(page.getByText(unit1)).toBeVisible();
 
@@ -70,8 +71,10 @@ test.describe("data viz", () => {
     await unitOption.click();
 
     await expect(unitInGraphTitle).toHaveText(optionText);
-    await expect(page.getByText(INDICATOR_TO_UNIT[optionText])).toBeVisible();
-    await expect(page.getByText(unit1)).toBeVisible();
+    await expect(
+      page.getByText(INDICATOR_TO_UNIT[optionText], { exact: true }),
+    ).toBeVisible();
+    await expect(page.getByText(unit1, { exact: true })).toBeVisible();
 
     await page.bringToFront();
     await expect(
