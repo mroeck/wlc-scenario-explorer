@@ -3,6 +3,7 @@
       "./frontend", "./e2e",
     ],
     // "hadolint.hadolintPath": "/root/.asdf/shims/hadolint",
+    "hadolint.hadolintPath": "/usr/bin/hadolint",
     "mypy-type-checker.cwd": "${workspaceFolder}/backend",
     "mypy-type-checker.args": ["--strict", "--config-file=pyproject.toml"],
   }

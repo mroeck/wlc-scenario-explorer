@@ -7,15 +7,15 @@ export const TEST = "test";
 export const PROJECT_NAME = "GHG Emissions of EU Building Stock Scenarios";
 
 export const DEFAULT_FILTERS = undefined;
-export const DEFAULT_ATTRIBUTE: Attribute = "building use type name";
-export const DEFAULT_UNIT: Indicator = "total GWP";
-export const DEFAULT_UNIT_MINIMIZED = "ktCO2";
+export const DEFAULT_ATTRIBUTE: Attribute = "use type";
+export const DEFAULT_INDICATOR: Indicator = "GWP total";
+export const DEFAULT_UNIT_MINIMIZED = "MtCO2e";
 export const INDICATOR_TO_UNIT: Record<Indicator, Unit> = {
-  "bio GWP": "ktCO2",
-  "fossil GWP": "ktCO2",
-  "luluc GWP": "ktCO2",
-  "material amount": "kt/building",
-  "total GWP": "ktCO2",
+  "GWP bio": "MtCO2e",
+  "GWP fossil": "MtCO2e",
+  "GWP luluc": "MtCO2e",
+  "Material mass": "Mt",
+  "GWP total": "MtCO2e",
 } as const;
 export const SCENARIO_A_ONLY = "Scenario A only";
 export const SCENARIO_B_ONLY = "Scenario B only";
@@ -28,7 +28,7 @@ export const DISPLAY_OPTIONS = [
 export const DEFAULT_DISPLAY: (typeof DISPLAY_OPTIONS)[number] =
   SCENARIO_A_ONLY;
 export const DEFAULT_SCENARIO: (typeof SCENARIOS_OPTIONS)[number] =
-  "scenario 1";
+  "Current policy optimistic scenario";
 export const DEFAULT_FROM = 2020;
 export const DEFAULT_TO = 2050;
 export const HEADER_HEIGHT = "72";
@@ -39,7 +39,7 @@ export const ROUTES = {
 } as const;
 export const DEFAULT_SEARCH_PARAMS = {
   attribute: DEFAULT_ATTRIBUTE,
-  unit: DEFAULT_UNIT,
+  unit: DEFAULT_INDICATOR,
   display: DEFAULT_DISPLAY,
   scenarioA: DEFAULT_SCENARIO,
   filters: {
@@ -72,3 +72,14 @@ export const SELECT_ALL_LABEL = "Select All";
 export const ALL_LABEL = "All";
 export const GRAPH_FONT_SIZE = 14;
 export const SELECT_UNIT_TESTID = "SELECT_UNIT_TESTID";
+export const FILTERS_ORDER = [
+  "region",
+  "country",
+  "use type",
+  "use subtype",
+  "element class",
+  "material class",
+  "flow type",
+  "building stock activity",
+  "wlc category",
+] as const;

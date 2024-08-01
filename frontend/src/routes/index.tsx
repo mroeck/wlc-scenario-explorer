@@ -7,7 +7,7 @@ import {
   DEFAULT_ATTRIBUTE,
   DEFAULT_DISPLAY,
   DEFAULT_SCENARIO,
-  DEFAULT_UNIT,
+  DEFAULT_INDICATOR,
   HEADER_HEIGHT,
   ROUTES,
 } from "@/lib/constants";
@@ -28,7 +28,7 @@ import { useEffect, useState } from "react";
 const SearchParamsSchema = z.object({
   filters: FiltersSchema.optional(),
   attribute: AttributeSchema.catch(DEFAULT_ATTRIBUTE),
-  unit: IndicatorSchema.catch(DEFAULT_UNIT),
+  unit: IndicatorSchema.catch(DEFAULT_INDICATOR),
   display: DisplaySchema.catch(DEFAULT_DISPLAY),
   scenarioA: ScenarioSchema.catch(DEFAULT_SCENARIO),
   scenarioB: ScenarioSchema.optional().catch(undefined),
@@ -54,7 +54,7 @@ function Dashboard() {
   }, []);
 
   return (
-    <div
+    <main
       className={cn(
         "flex flex-col justify-stretch gap-5 py-primary-y sm:px-primary-x",
         "lg:flex-row",
@@ -69,6 +69,6 @@ function Dashboard() {
         <Settings />
       </div>
       <DataViz />
-    </div>
+    </main>
   );
 }

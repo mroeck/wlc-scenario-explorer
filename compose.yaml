@@ -41,14 +41,15 @@ services:
 
   e2e:
     build:
-      context: ./e2e
+      context: ./
       dockerfile: Dockerfile
     environment:
       - CI='true'
-      - APP_URL=http://frontend:8080
-      - API_URL=http://backend:8081 
+      - BASE_URL=http://frontend:8080
     depends_on:
       frontend:
         condition: service_healthy
       backend:
         condition: service_healthy
+    volumes:
+      - ./e2e/tests:/app/e2e/tests

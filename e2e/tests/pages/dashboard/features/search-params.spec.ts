@@ -49,11 +49,11 @@ test.describe("search params", () => {
 
     const displaySelect = page.getByTestId(DISPLAY_SELECT_TESTID);
 
-    const attribute = "building use subtype name";
-    const unit = UNITS[2];
-    const scenario = "scenario 2";
+    const attribute = "use subtype";
+    const unit = UNITS[1];
+    const scenario = "Current policy optimistic scenario";
     const display = SCENARIO_B_ONLY;
-    const filters = { From: DEFAULT_FROM, To: DEFAULT_TO, Countries: ["FR"] };
+    const filters = { From: DEFAULT_FROM, To: DEFAULT_TO, country: ["FR"] };
     const filtersEncoded = encodeURIComponent(JSON.stringify(filters));
     const url = `${ROUTES.DASHBOARD}?attribute=${attribute}&unit=${unit}&display=${display}&scenarioA=${scenario}&filters=${filtersEncoded}`;
 
@@ -68,21 +68,24 @@ test.describe("search params", () => {
     const filterElements = {
       From: page.getByLabel("From"),
       To: page.getByLabel("To"),
-      Countries: page
+      country: page
         .getByRole("combobox")
-        .filter({ hasText: filters.Countries[0] }),
+        .filter({ hasText: filters.country[0] }),
     };
     await expect(filterElements.From).toHaveText(filters.From.toString());
     await expect(filterElements.To).toHaveText(filters.To.toString());
-    await expect(filterElements.Countries).toBeVisible();
+    await expect(filterElements.country).toBeVisible();
 
     await page.getByRole("tab", { name: "Scenarios" }).click();
     await scenarioASelect.click();
-    await page.getByLabel("scenario 3").getByText("scenario").click();
+    await page
+      .getByLabel("Additional policy scenario (APOL)")
+      .getByText("Additional policy scenario (APOL)")
+      .click();
     await page.getByRole("tab", { name: "Filters" }).click();
 
     await expect(filterElements.From).toHaveText(filters.From.toString());
     await expect(filterElements.To).toHaveText(filters.To.toString());
-    await expect(filterElements.Countries).toBeVisible();
+    await expect(filterElements.country).toBeVisible();
   });
 });

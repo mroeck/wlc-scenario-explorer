@@ -6,7 +6,7 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { PROD, ROUTES } from "@/lib/constants";
+import { FILTERS_ORDER, PROD, ROUTES } from "@/lib/constants";
 import { cn } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { getRouteApi } from "@tanstack/react-router";
@@ -43,13 +43,15 @@ const SelectOptionArraySchema = z
   .array();
 
 const formSchema = z.object({
-  "Activity in out": SelectOptionArraySchema,
-  "Building Element Class": SelectOptionArraySchema,
-  "Building Use Subtype": SelectOptionArraySchema,
-  "Building Use Type": SelectOptionArraySchema,
-  Countries: SelectOptionArraySchema,
-  "Material Type": SelectOptionArraySchema,
+  "flow type": SelectOptionArraySchema,
+  "Element Class": SelectOptionArraySchema,
+  "use subtype": SelectOptionArraySchema,
+  "use type": SelectOptionArraySchema,
+  country: SelectOptionArraySchema,
+  "Material Class": SelectOptionArraySchema,
   Region: SelectOptionArraySchema,
+  "building stock activity": SelectOptionArraySchema,
+  "WLC Category": SelectOptionArraySchema,
   From: YearSchema.transform((number) => number.toString()),
   To: YearSchema.transform((number) => number.toString()),
 } satisfies Record<(typeof FILTERS)[number], z.ZodType>);
@@ -159,13 +161,15 @@ export const Filters = () => {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      "Activity in out": [] satisfies SelectOption[],
-      "Building Element Class": [] satisfies SelectOption[],
-      "Building Use Subtype": [] satisfies SelectOption[],
-      "Building Use Type": [] satisfies SelectOption[],
-      Countries: [] satisfies SelectOption[],
-      "Material Type": [] satisfies SelectOption[],
+      "flow type": [] satisfies SelectOption[],
+      "Element Class": [] satisfies SelectOption[],
+      "use subtype": [] satisfies SelectOption[],
+      "use type": [] satisfies SelectOption[],
+      country: [] satisfies SelectOption[],
+      "Material Class": [] satisfies SelectOption[],
       Region: [] satisfies SelectOption[],
+      "building stock activity": [] satisfies SelectOption[],
+      "WLC Category": [] satisfies SelectOption[],
       From: "2020",
       To: "2050",
     },
@@ -238,7 +242,7 @@ export const Filters = () => {
               className="space-y-8"
             >
               <div className={cn("flex flex-col gap-1")}>
-                <span className={cn("text-sm font-medium")}>Time Range:</span>
+                <span className={cn("text-sm font-medium")}>Year:</span>
                 <div className={cn("flex justify-between")}>
                   <FormField
                     control={form.control}
@@ -259,7 +263,9 @@ export const Filters = () => {
                           value={field.value.toString()}
                         >
                           <FormControl>
-                            <SelectTrigger className={cn("w-fit min-w-16")}>
+                            <SelectTrigger
+                              className={cn("w-fit min-w-16 capitalize")}
+                            >
                               <SelectValue placeholder="Select..." />
                             </SelectTrigger>
                           </FormControl>
@@ -297,7 +303,9 @@ export const Filters = () => {
                           value={field.value.toString()}
                         >
                           <FormControl>
-                            <SelectTrigger className={cn("w-fit min-w-16")}>
+                            <SelectTrigger
+                              className={cn("w-fit min-w-16 capitalize")}
+                            >
                               <SelectValue placeholder="Select..." />
                             </SelectTrigger>
                           </FormControl>
@@ -318,8 +326,18 @@ export const Filters = () => {
                   />
                 </div>
               </div>
-              {Object.entries(filtersWithoutTimeFilters).map(
-                ([keyRaw, dataValue]) => {
+              {Object.entries(filtersWithoutTimeFilters)
+                .sort(([keyA], [keyB]) => {
+                  return FILTERS_ORDER.indexOf(
+                    keyA.toLowerCase() as keyof typeof filtersWithoutTimeFilters,
+                  ) <
+                    FILTERS_ORDER.indexOf(
+                      keyB.toLowerCase() as keyof typeof filtersWithoutTimeFilters,
+                    )
+                    ? -1
+                    : 1;
+                })
+                .map(([keyRaw, dataValue]) => {
                   const key = keyRaw as keyof Omit<
                     typeof data,
                     typeof YEAR_KEY
@@ -336,7 +354,7 @@ export const Filters = () => {
                       name={key}
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel className={cn("font-medium")}>
+                          <FormLabel className={cn("font-medium capitalize")}>
                             {key}:
                           </FormLabel>
                           <div className={cn("flex gap-5")}>
@@ -371,8 +389,7 @@ export const Filters = () => {
                       )}
                     />
                   );
-                },
-              )}
+                })}
             </form>
           </Form>
           <div

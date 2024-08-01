@@ -18,6 +18,7 @@ import {
   SCENARIO_B_ONLY,
   SCENARIO_A_AND_B,
   SELECT_UNIT_TESTID,
+  FILTERS_ORDER,
 } from "@/lib/constants";
 import {
   Select,
@@ -116,7 +117,7 @@ export const DataVizForm = () => {
               >
                 <FormControl>
                   <SelectMenuStyle>
-                    <SelectTrigger>
+                    <SelectTrigger className={cn("text-left capitalize")}>
                       <SelectValue placeholder="Select a unit" />
                     </SelectTrigger>
                   </SelectMenuStyle>
@@ -150,14 +151,31 @@ export const DataVizForm = () => {
               >
                 <FormControl>
                   <SelectMenuStyle>
-                    <SelectTrigger>
+                    <SelectTrigger className={cn("text-left capitalize")}>
                       <SelectValue placeholder="Select what to breakdown" />
                     </SelectTrigger>
                   </SelectMenuStyle>
                 </FormControl>
                 <SelectContent>
-                  {ATTRIBUTES.map((attribute) => (
-                    <SelectItem key={attribute} value={attribute}>
+                  {ATTRIBUTES.sort((keyA, keyB) => {
+                    return FILTERS_ORDER.indexOf(
+                      keyA.toLowerCase() as Writable<
+                        typeof FILTERS_ORDER
+                      >[number],
+                    ) <
+                      FILTERS_ORDER.indexOf(
+                        keyB.toLowerCase() as Writable<
+                          typeof FILTERS_ORDER
+                        >[number],
+                      )
+                      ? -1
+                      : 1;
+                  }).map((attribute) => (
+                    <SelectItem
+                      key={attribute}
+                      value={attribute}
+                      className={cn("capitalize")}
+                    >
                       {attribute}
                     </SelectItem>
                   ))}
@@ -185,7 +203,10 @@ export const DataVizForm = () => {
               >
                 <FormControl>
                   <SelectMenuStyle>
-                    <SelectTrigger data-testid={DISPLAY_SELECT_TESTID}>
+                    <SelectTrigger
+                      className={cn("text-left capitalize")}
+                      data-testid={DISPLAY_SELECT_TESTID}
+                    >
                       <SelectValue placeholder="Select what to breakdown" />
                     </SelectTrigger>
                   </SelectMenuStyle>

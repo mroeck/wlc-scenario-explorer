@@ -40,13 +40,15 @@ export const YearSchema = z.coerce
 
 export const FiltersSchema = z
   .object({
-    "Activity in out": z.string().array(),
-    "Building Element Class": z.string().array(),
-    "Building Use Subtype": z.string().array(),
-    "Building Use Type": z.string().array(),
-    Countries: z.string().array(),
-    "Material Type": z.string().array(),
+    "flow type": z.string().array(),
+    "Element Class": z.string().array(),
+    "use subtype": z.string().array(),
+    "use type": z.string().array(),
+    country: z.string().array(),
+    "Material Class": z.string().array(),
     Region: z.string().array(),
+    "building stock activity": z.string().array(),
+    "WLC Category": z.string().array(),
     From: YearSchema,
     To: YearSchema,
   } satisfies Record<(typeof FILTERS)[number], z.ZodType>)

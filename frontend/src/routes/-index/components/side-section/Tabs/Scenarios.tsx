@@ -140,7 +140,7 @@ export const Scenarios = () => {
                     <FormControl>
                       <SelectMenuStyle>
                         <SelectTrigger
-                          className={cn("w-full max-w-full")}
+                          className={cn("w-full max-w-full capitalize")}
                           data-testid={SCENARIO_A_TESTID}
                         >
                           <SelectValue placeholder="Select a scenario" />
