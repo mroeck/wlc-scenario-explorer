@@ -1,5 +1,6 @@
 import { TriangleAlertIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { ERROR_OCCURED } from "@/lib/constants";
 
 export const ErrorOccurred = () => {
   return (
@@ -8,7 +9,7 @@ export const ErrorOccurred = () => {
         <TriangleAlertIcon className="size-12 text-destructive" />
         <div className="space-y-2 text-center">
           <h2 className="text-2xl font-bold text-destructive">
-            Oops, an error occurred
+            {ERROR_OCCURED}
           </h2>
           <p className="text-muted-foreground">
             We&apos;re sorry, but something went wrong on our end. Please try

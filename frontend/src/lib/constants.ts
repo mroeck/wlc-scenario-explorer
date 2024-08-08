@@ -39,7 +39,7 @@ export const ROUTES = {
 } as const;
 export const DEFAULT_SEARCH_PARAMS = {
   attribute: DEFAULT_ATTRIBUTE,
-  unit: DEFAULT_INDICATOR,
+  indicator: DEFAULT_INDICATOR,
   display: DEFAULT_DISPLAY,
   scenarioA: DEFAULT_SCENARIO,
   filters: {
@@ -71,7 +71,7 @@ export const ABOUT_HEADING = "ABOUT";
 export const SELECT_ALL_LABEL = "Select All";
 export const ALL_LABEL = "All";
 export const GRAPH_FONT_SIZE = 14;
-export const SELECT_UNIT_TESTID = "SELECT_UNIT_TESTID";
+export const SELECT_INDICATOR_TESTID = "SELECT_INDICATOR_TESTID";
 export const FILTERS_ORDER = [
   "region",
   "country",
@@ -83,3 +83,5 @@ export const FILTERS_ORDER = [
   "building stock activity",
   "wlc category",
 ] as const;
+
+export const ERROR_OCCURED = "Oops, an error occurred";

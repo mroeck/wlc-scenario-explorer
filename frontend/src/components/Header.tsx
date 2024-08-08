@@ -33,7 +33,7 @@ const NavLinks = ({ className }: NavLinksProps) => {
             attribute: DEFAULT_ATTRIBUTE,
             display: DEFAULT_DISPLAY,
             scenarioA: DEFAULT_SCENARIO,
-            unit: DEFAULT_INDICATOR,
+            indicator: DEFAULT_INDICATOR,
           }}
         >
           Dashboard
@@ -84,7 +84,7 @@ const BurgerNavigation = () => {
                 attribute: DEFAULT_ATTRIBUTE,
                 display: DEFAULT_DISPLAY,
                 scenarioA: DEFAULT_SCENARIO,
-                unit: DEFAULT_INDICATOR,
+                indicator: DEFAULT_INDICATOR,
               }}
             >
               <DrawerClose>Dashboard</DrawerClose>

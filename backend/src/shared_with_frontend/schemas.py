@@ -121,6 +121,8 @@ class FiltersSchema(BaseModel, extra=Extra.forbid):
     building_use_subtype_name: Optional[List[str]] = None
     activity_in_out: Optional[List[str]] = None
     stock_region_name: Optional[List[str]] = None
+    stock_activity_type_name: Optional[List[str]] = None
+    carbon_category: Optional[List[str]] = None
 
     @field_validator("From", "To")
     def validate_year(cls, year: Optional[int]) -> Optional[int]:

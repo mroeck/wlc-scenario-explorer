@@ -27,7 +27,7 @@ import { useEffect, useState } from "react";
 const SearchParamsSchema = z.object({
   filters: FiltersSchema.optional(),
   attribute: AttributeSchema.catch(DEFAULT_ATTRIBUTE),
-  unit: IndicatorSchema.catch(DEFAULT_INDICATOR),
+  indicator: IndicatorSchema.catch(DEFAULT_INDICATOR),
   display: DisplaySchema.catch(DEFAULT_DISPLAY),
   scenarioA: ScenarioSchema.catch(DEFAULT_SCENARIO),
   scenarioB: ScenarioSchema.optional().catch(undefined),

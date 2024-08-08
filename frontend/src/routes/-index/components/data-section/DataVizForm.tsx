@@ -4,7 +4,6 @@ import {
   FormField,
   FormItem,
   FormLabel,
-  FormMessage,
 } from "@/components/ui/form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -17,7 +16,7 @@ import {
   SCENARIO_A_ONLY,
   SCENARIO_B_ONLY,
   SCENARIO_A_AND_B,
-  SELECT_UNIT_TESTID,
+  SELECT_INDICATOR_TESTID,
   FILTERS_ORDER,
 } from "@/lib/constants";
 import {
@@ -42,22 +41,23 @@ import { useEffect } from "react";
 const route = getRouteApi(ROUTES.DASHBOARD);
 
 const DataVizFormSchema = z.object<{
-  unit: z.ZodEnum<Writable<typeof INDICATORS>>;
+  indicator: z.ZodEnum<Writable<typeof INDICATORS>>;
   attribute: z.ZodEnum<Writable<typeof ATTRIBUTES>>;
   display: z.ZodEnum<Writable<typeof DISPLAY_OPTIONS>>;
 }>({
-  unit: IndicatorSchema,
+  indicator: IndicatorSchema,
   attribute: AttributeSchema,
   display: DisplaySchema,
 });
 
 export const DataVizForm = () => {
   const navigate = route.useNavigate();
-  const { attribute, unit, display, scenarioA, scenarioB } = route.useSearch();
+  const { attribute, indicator, display, scenarioA, scenarioB } =
+    route.useSearch();
   const form = useForm<z.infer<typeof DataVizFormSchema>>({
     resolver: zodResolver(DataVizFormSchema),
     defaultValues: {
-      unit,
+      indicator,
       attribute,
       display,
     },
@@ -65,14 +65,14 @@ export const DataVizForm = () => {
 
   async function onSubmit({
     attribute,
-    unit,
+    indicator,
     display,
   }: z.infer<typeof DataVizFormSchema>) {
     await navigate({
       search: (prev) => ({
         ...prev,
         attribute,
-        unit,
+        indicator,
         display,
       }),
     });
@@ -101,9 +101,43 @@ export const DataVizForm = () => {
       >
         <FormField
           control={form.control}
+          name="indicator"
+          render={({ field }) => (
+            <FormItem data-testid={SELECT_INDICATOR_TESTID}>
+              <FormLabel className={cn("font-medium")}>Indicator:</FormLabel>
+              <Select
+                onValueChange={(value) => {
+                  onSelectChange({
+                    fieldOnChange: field.onChange,
+                    form,
+                    value,
+                  });
+                }}
+                defaultValue={field.value}
+              >
+                <FormControl>
+                  <SelectMenuStyle>
+                    <SelectTrigger className={cn("text-left capitalize")}>
+                      <SelectValue placeholder="Select a indicator" />
+                    </SelectTrigger>
+                  </SelectMenuStyle>
+                </FormControl>
+                <SelectContent>
+                  {INDICATORS.map((indicator) => (
+                    <SelectItem key={indicator} value={indicator}>
+                      {indicator}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </FormItem>
+          )}
+        />
+        {/* <FormField
+          control={form.control}
           name="unit"
           render={({ field }) => (
-            <FormItem data-testid={SELECT_UNIT_TESTID}>
+            <FormItem data-testid={SELECT_INDICATOR_TESTID}>
               <FormLabel className={cn("font-medium")}>Indicator:</FormLabel>
               <Select
                 onValueChange={(value) => {
@@ -132,7 +166,7 @@ export const DataVizForm = () => {
               </Select>
             </FormItem>
           )}
-        />
+        /> */}
         <FormField
           control={form.control}
           name="attribute"
@@ -181,7 +215,6 @@ export const DataVizForm = () => {
                   ))}
                 </SelectContent>
               </Select>
-              <FormMessage />
             </FormItem>
           )}
         />
@@ -223,7 +256,6 @@ export const DataVizForm = () => {
                   </SelectItem>
                 </SelectContent>
               </Select>
-              <FormMessage />
             </FormItem>
           )}
         />

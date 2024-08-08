@@ -7,6 +7,7 @@ import {
   DATA_TABLE_TESTID,
   SELECT_ALL_LABEL,
   ALL_LABEL,
+  ERROR_OCCURED,
 } from "@/lib/constants";
 import {
   BREAKDOWN_BY_OBJ,
@@ -14,6 +15,7 @@ import {
 } from "@/lib/shared_with_backend/constants";
 import type { FiltersSchema } from "@/lib/shared_with_backend/schemas";
 import { test, expect } from "@playwright/test";
+import { waitLoadingEnds } from "@tests/functions";
 import type { z } from "zod";
 
 test.describe("filters", () => {
@@ -47,8 +49,7 @@ test.describe("filters", () => {
       .getByText(BREAKDOWN_BY_OBJ.country)
       .click();
     await page.getByRole("tab", { name: "Filters" }).click();
-    const countryFilterTestId: keyof z.infer<typeof FiltersSchema> =
-      "country";
+    const countryFilterTestId: keyof z.infer<typeof FiltersSchema> = "country";
     const materialTypeFilterTestId: keyof z.infer<typeof FiltersSchema> =
       "Material Class";
     await page.getByTestId(countryFilterTestId).click();
@@ -79,8 +80,7 @@ test.describe("filters", () => {
       .getByText(BREAKDOWN_BY_OBJ.country)
       .click();
     await page.getByRole("tab", { name: "Filters" }).click();
-    const countryFilterTestId: keyof z.infer<typeof FiltersSchema> =
-      "country";
+    const countryFilterTestId: keyof z.infer<typeof FiltersSchema> = "country";
     await page.getByTestId(countryFilterTestId).click();
     await page.getByRole("option", { name: "FR" }).click();
     await page.getByRole("option", { name: "IT" }).click();
@@ -166,5 +166,39 @@ test.describe("filters", () => {
     await page.getByRole("dialog").getByPlaceholder("Search").fill("");
     await page.getByRole("option", { name: SELECT_ALL_LABEL }).click();
     await expect(countrySelect).toHaveText(ALL_LABEL);
+  });
+
+  test.describe("Filters do not error", () => {
+    const comboboxCount = 11;
+    const FILTERS_TAB = "Filters";
+    const xAxisValue = "2025";
+
+    for (let i = 0; i < comboboxCount; i++) {
+      const id = i + 1;
+      test(`Filter ${id.toString()} does not error`, async ({ page }) => {
+        await page.goto(ROUTES.DASHBOARD);
+        const filtersTab = page.getByRole("tab", { name: FILTERS_TAB });
+        await filtersTab.click();
+        await waitLoadingEnds({ page });
+
+        const filtersForm = page.getByLabel(FILTERS_TAB).locator("form");
+        const comboboxes = await filtersForm.getByRole("combobox").all();
+        const combobox = comboboxes[i];
+
+        expect(comboboxes).toHaveLength(comboboxCount);
+
+        await combobox.click();
+        const options = await page.getByRole("option").all();
+        await options[1].click();
+        await waitLoadingEnds({ page });
+
+        const errorMessage = page.getByText(ERROR_OCCURED);
+        const graph = page.getByTestId(STACKED_AREA_CHART_TESTID);
+        await expect(errorMessage).not.toBeVisible();
+        await expect(
+          graph.getByText(xAxisValue, { exact: true }),
+        ).toBeVisible();
+      });
+    }
   });
 });
