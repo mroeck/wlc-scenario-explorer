@@ -8,7 +8,6 @@ import {
   DEFAULT_DISPLAY,
   DEFAULT_SCENARIO,
   DEFAULT_INDICATOR,
-  HEADER_HEIGHT,
   ROUTES,
 } from "@/lib/constants";
 import { z } from "zod";
@@ -58,11 +57,10 @@ function Dashboard() {
       className={cn(
         "flex flex-col justify-stretch gap-5 py-primary-y sm:px-primary-x",
         "lg:flex-row",
-        "h-[calc(100dvh-72px)]",
+        "h-[calc(100dvh-72px)]", // = screen height - HEADER_HEIGHT
+        "max-h-[900px]",
+        "min-h-[700px]",
       )}
-      style={{
-        minHeight: `calc(100dvh - ${HEADER_HEIGHT}px)`,
-      }}
     >
       <h1 className={cn("sr-only")}>{DASHBOARD_HEADING}</h1>
       <div className={cn("hidden lg:flex")}>

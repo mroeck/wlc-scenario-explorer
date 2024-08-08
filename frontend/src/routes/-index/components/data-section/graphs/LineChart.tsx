@@ -5,16 +5,15 @@ import {
   Tooltip,
   ResponsiveContainer,
   Legend,
+  Label,
   LineChart,
   Line,
 } from "recharts";
-import { colors } from "../temp_data";
 import { CustomTooltip } from "../CustomTooltip";
-import { cn, tickFormatter } from "@/lib/utils";
+import { cn, getColor, tickFormatter } from "@/lib/utils";
 import { type z } from "zod";
 import {
-  DEFAULT_COLOR,
-  DEFAULT_UNIT_MINIMIZED,
+  GRAPH_FONT_SIZE,
   STACKED_BAR_CHART_TESTID,
   TEST,
 } from "@/lib/constants";
@@ -24,17 +23,13 @@ import type { ScenarioRowsAggregatedArraySchema } from "@/lib/schemas";
 import { CustomLegend } from "../Legend/CustomLegend";
 import type { Attribute, Unit } from "@/lib/types";
 
-type StackedBarChartProps = {
+type LineGraphProps = {
   data: z.infer<typeof ScenarioRowsAggregatedArraySchema>;
   unit: Unit;
   breakdownBy: Attribute;
 };
-export const StackedBarChart = ({
-  data,
-  unit,
-  breakdownBy,
-}: StackedBarChartProps) => {
-  const attributes =
+export const LineGraph = ({ data, unit, breakdownBy }: LineGraphProps) => {
+  const attributeOptions =
     data.length > 0
       ? Object.keys(data[0]).filter((key) => key !== YEAR_KEY)
       : [];
@@ -54,21 +49,7 @@ export const StackedBarChart = ({
             data={data}
             margin={{ top: 0, left: 0, right: 0, bottom: 0 }}
           >
-            <CartesianGrid
-              strokeDasharray="3 3"
-              horizontal={true}
-              vertical={false}
-            />
-            <XAxis dataKey={YEAR_KEY} />
-            <YAxis
-              label={{
-                value: DEFAULT_UNIT_MINIMIZED,
-                angle: -90,
-                position: "insideLeft",
-              }}
-              tickFormatter={tickFormatter}
-              tickCount={4}
-            />
+            <CartesianGrid strokeDasharray="3 3" />
             <Tooltip
               content={(props) => (
                 <CustomTooltip
@@ -79,19 +60,23 @@ export const StackedBarChart = ({
               )}
               cursor={false}
             />
-            {attributes
-              .map((attribute, index) => (
-                <Line
-                  key={attribute}
-                  type="monotone"
-                  dataKey={attribute}
-                  stroke={colors[index] ?? DEFAULT_COLOR}
-                  fill={colors[index] ?? DEFAULT_COLOR}
-                  fillOpacity="0.7"
-                  isAnimationActive={env.PUBLIC_NODE_ENV !== TEST}
-                  strokeWidth={3}
-                />
-              ))
+            {attributeOptions
+              .map((option) => {
+                const color = getColor({ breakdownBy, option });
+
+                return (
+                  <Line
+                    key={option}
+                    type="monotone"
+                    dataKey={option}
+                    stroke={color}
+                    fill={color}
+                    strokeWidth={3}
+                    fillOpacity="0.7"
+                    isAnimationActive={env.PUBLIC_NODE_ENV !== TEST}
+                  />
+                );
+              })
               .reverse()}
             <Legend
               content={(props) => (
@@ -101,6 +86,27 @@ export const StackedBarChart = ({
                 />
               )}
             />
+            <XAxis
+              dataKey={YEAR_KEY}
+              stroke="hsl(223 0% 20%)"
+              tick={{ fontSize: GRAPH_FONT_SIZE }}
+            />
+
+            <YAxis
+              tickFormatter={tickFormatter}
+              tickCount={4}
+              stroke="hsl(223 0% 20%)"
+              tick={{ fontSize: GRAPH_FONT_SIZE }}
+            >
+              <Label
+                value={unit}
+                angle={-90}
+                position="insideLeft"
+                dx={10}
+                fontSize={GRAPH_FONT_SIZE}
+                fill="hsl(223 0% 20%)"
+              />
+            </YAxis>
           </LineChart>
         </ResponsiveContainer>
       </div>
