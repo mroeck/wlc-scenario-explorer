@@ -55,7 +55,8 @@ def get_scenario_rows(
         {statement}
     )
         SELECT
-            CAST(COLUMNS(*) AS INTEGER)  / 1000
+            CAST(COLUMNS(*) AS INTEGER) / 1000,
+            stock_projection_year
         FROM (
             PIVOT filtered_data
             ON {attribute}
