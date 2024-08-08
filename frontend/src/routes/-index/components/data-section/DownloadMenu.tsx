@@ -11,7 +11,7 @@ import { cn } from "@/lib/utils";
 import { Download } from "lucide-react";
 
 const imageFormats = ["png", "jpeg", "pdf", "svg"];
-const spreadsheetFormats = ["csv"];
+const spreadsheetFormats = ["csv", "xlsx"];
 
 export const DownloadMenu = () => {
   return (

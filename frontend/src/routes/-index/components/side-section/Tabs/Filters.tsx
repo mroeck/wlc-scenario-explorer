@@ -232,7 +232,7 @@ export const Filters = () => {
       {data != null && (
         <ScrollArea
           className={cn(
-            "relative flex min-h-0 min-w-0 flex-1 flex-col gap-5 overflow-x-visible overflow-y-scroll px-primary-x",
+            "relative flex min-h-0 min-w-0 flex-1 flex-col gap-5 overflow-x-visible px-primary-x",
           )}
           type="always"
         >

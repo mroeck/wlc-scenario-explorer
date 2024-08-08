@@ -30,6 +30,7 @@ import { StackedBarChart } from "./graphs/StackedBarChart";
 import { DataTable } from "./DataTable";
 import { SettingsDrawer } from "./SettingsDrawer";
 import type { Attribute, Indicator } from "@/lib/types";
+import { LineGraph } from "./graphs/LineChart";
 
 const route = getRouteApi(ROUTES.DASHBOARD);
 
@@ -43,6 +44,16 @@ const tabs = [
     name: "Stacked Area Chart",
     content: ({ data, indicator, breakdownBy }: ContentProps) => (
       <StackedAreaChart
+        data={data}
+        unit={INDICATOR_TO_UNIT[indicator]}
+        breakdownBy={breakdownBy}
+      />
+    ),
+  },
+  {
+    name: "Line Chart",
+    content: ({ data, indicator, breakdownBy }: ContentProps) => (
+      <LineGraph
         data={data}
         unit={INDICATOR_TO_UNIT[indicator]}
         breakdownBy={breakdownBy}
@@ -171,9 +182,7 @@ export const DataViz = () => {
         >
           <div className={cn("w-full md:w-auto")}>
             <TabsList
-              className={cn(
-                "mx-auto flex max-w-[500px] flex-col md:flex-row lg:flex-row",
-              )}
+              className={cn("mx-auto flex flex-col md:flex-row lg:flex-row")}
             >
               {tabs.map((tab) => (
                 <TabsTrigger

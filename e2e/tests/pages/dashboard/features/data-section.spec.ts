@@ -22,6 +22,11 @@ test.describe("data viz", () => {
     await waitLoadingEnds({ page });
   });
 
+  test("years from X axis", async ({ page }) => {
+    await expect(page.getByText("2020", { exact: true })).toBeVisible();
+    await expect(page.getByText("2035", { exact: true })).toBeVisible();
+  });
+
   test("select breakdown by", async ({ page }) => {
     const breakdownByDropdown = page.getByTestId(BREAKDOWN_BY_TESTID);
     const attributeInGraphTitle = page
