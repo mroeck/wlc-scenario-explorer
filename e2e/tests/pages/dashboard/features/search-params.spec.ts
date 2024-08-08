@@ -6,7 +6,6 @@ import {
   DEFAULT_FROM,
   DEFAULT_TO,
   SCENARIO_A_TESTID,
-  SCENARIO_A_ONLY,
   SCENARIO_B_TESTID,
   SCENARIO_B_ONLY,
 } from "@/lib/constants";

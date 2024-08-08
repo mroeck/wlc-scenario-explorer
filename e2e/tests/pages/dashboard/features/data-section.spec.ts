@@ -8,7 +8,7 @@ import {
   DATA_TABLE_TESTID,
   STACKED_BAR_CHART_TESTID,
   UNIT_TESTID,
-  SELECT_UNIT_TESTID,
+  SELECT_INDICATOR_TESTID,
   INDICATOR_TO_UNIT,
 } from "@/lib/constants";
 import { UNITS } from "@/lib/shared_with_backend/constants";
@@ -58,7 +58,7 @@ test.describe("data viz", () => {
   });
 
   test("select indicator/unit", async ({ page }) => {
-    const unitSelect = page.getByTestId(SELECT_UNIT_TESTID);
+    const unitSelect = page.getByTestId(SELECT_INDICATOR_TESTID);
     const unitInGraphTitle = page
       .getByTestId(GRAPH_TITLE_TESTID)
       .getByTestId(UNIT_TESTID);

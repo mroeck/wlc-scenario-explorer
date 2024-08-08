@@ -121,7 +121,7 @@ export const DataViz = () => {
   const {
     attribute,
     display,
-    unit: indicator,
+    indicator: indicator,
     filters,
     scenarioA,
     scenarioB,

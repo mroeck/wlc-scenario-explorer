@@ -69,7 +69,9 @@ export const CustomTooltip = ({
               </div>
               <span>{item.name}:</span>
               <span className={cn("font-bold")}>
-                {item.value?.toLocaleString("en-US")}
+                {item.value?.toLocaleString("en-US", {
+                  maximumFractionDigits: 2,
+                })}
               </span>
             </li>
           );
