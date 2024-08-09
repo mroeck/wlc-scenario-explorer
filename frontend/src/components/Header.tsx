@@ -5,6 +5,7 @@ import {
   DEFAULT_INDICATOR,
   PROJECT_NAME,
   ROUTES,
+  DEFAULT_UNIT,
 } from "@/lib/constants";
 import { cn } from "@/lib/utils";
 import { Link, useRouterState } from "@tanstack/react-router";
@@ -34,6 +35,7 @@ const NavLinks = ({ className }: NavLinksProps) => {
             display: DEFAULT_DISPLAY,
             scenarioA: DEFAULT_SCENARIO,
             indicator: DEFAULT_INDICATOR,
+            unit: DEFAULT_UNIT,
           }}
         >
           Dashboard
@@ -85,6 +87,7 @@ const BurgerNavigation = () => {
                 display: DEFAULT_DISPLAY,
                 scenarioA: DEFAULT_SCENARIO,
                 indicator: DEFAULT_INDICATOR,
+                unit: DEFAULT_UNIT,
               }}
             >
               <DrawerClose>Dashboard</DrawerClose>

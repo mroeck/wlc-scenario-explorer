@@ -21,14 +21,18 @@ import { env } from "@/env";
 import { YEAR_KEY } from "@/lib/shared_with_backend/constants";
 import type { ScenarioRowsAggregatedArraySchema } from "@/lib/schemas";
 import { CustomLegend } from "../Legend/CustomLegend";
-import type { Attribute, Unit } from "@/lib/types";
+import type { Attribute, IndicatorUnit } from "@/lib/types";
 
 type LineGraphProps = {
   data: z.infer<typeof ScenarioRowsAggregatedArraySchema>;
-  unit: Unit;
+  indicatorUnit: IndicatorUnit;
   breakdownBy: Attribute;
 };
-export const LineGraph = ({ data, unit, breakdownBy }: LineGraphProps) => {
+export const LineGraph = ({
+  data,
+  indicatorUnit: unit,
+  breakdownBy,
+}: LineGraphProps) => {
   const attributeOptions =
     data.length > 0
       ? Object.keys(data[0]).filter((key) => key !== YEAR_KEY)
@@ -54,7 +58,7 @@ export const LineGraph = ({ data, unit, breakdownBy }: LineGraphProps) => {
               content={(props) => (
                 <CustomTooltip
                   {...props}
-                  unit={unit}
+                  indicatorUnit={unit}
                   breakdownBy={breakdownBy}
                 />
               )}

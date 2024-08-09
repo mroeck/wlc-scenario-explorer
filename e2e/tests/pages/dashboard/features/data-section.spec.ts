@@ -10,6 +10,7 @@ import {
   UNIT_TESTID,
   SELECT_INDICATOR_TESTID,
   INDICATOR_TO_UNIT,
+  INDICATORS_UNITS,
 } from "@/lib/constants";
 import { UNITS } from "@/lib/shared_with_backend/constants";
 import { test, expect } from "@playwright/test";
@@ -57,29 +58,30 @@ test.describe("data viz", () => {
     await expect(page.getByTestId(DATA_TABLE_TESTID)).toHaveScreenshot();
   });
 
-  test("select indicator/unit", async ({ page }) => {
-    const unitSelect = page.getByTestId(SELECT_INDICATOR_TESTID);
-    const unitInGraphTitle = page
+  test("select indicator", async ({ page }) => {
+    const indicatorSelect = page.getByTestId(SELECT_INDICATOR_TESTID);
+    const indicatorInGraphTitle = page
       .getByTestId(GRAPH_TITLE_TESTID)
       .getByTestId(UNIT_TESTID);
     const optionText = "GWP bio";
-    const unitOption = page.getByLabel(optionText).getByText(optionText);
-    const unitOption2 = page
+    const indicatorOption = page.getByLabel(optionText).getByText(optionText);
+    const indicatorOption2 = page
       .getByLabel("Material mass")
       .getByText("Material mass");
-    const unit1 = UNITS[0];
-    const unit2 = UNITS[1];
+    const indicator1 = INDICATORS_UNITS[0];
+    const indicator2 = INDICATORS_UNITS[1];
+    const graph = page.getByTestId(STACKED_AREA_CHART_TESTID);
 
-    await expect(page.getByText(unit1)).toBeVisible();
+    await expect(graph.getByText(indicator1)).toBeVisible();
 
-    await unitSelect.click();
-    await unitOption.click();
+    await indicatorSelect.click();
+    await indicatorOption.click();
 
-    await expect(unitInGraphTitle).toHaveText(optionText);
+    await expect(indicatorInGraphTitle).toHaveText(optionText);
     await expect(
-      page.getByText(INDICATOR_TO_UNIT[optionText], { exact: true }),
+      graph.getByText(INDICATOR_TO_UNIT[optionText], { exact: true }),
     ).toBeVisible();
-    await expect(page.getByText(unit1, { exact: true })).toBeVisible();
+    await expect(graph.getByText(indicator1, { exact: true })).toBeVisible();
 
     await page.bringToFront();
     await expect(
@@ -93,8 +95,12 @@ test.describe("data viz", () => {
     await expect(page.getByTestId(DATA_TABLE_TESTID)).toHaveScreenshot();
 
     await page.getByRole("tab", { name: "Stacked Bar Chart" }).click();
-    await unitSelect.click();
-    await unitOption2.click();
-    await expect(page.getByText(unit2, { exact: true })).toBeVisible();
+    await indicatorSelect.click();
+    await indicatorOption2.click();
+    await expect(
+      page
+        .getByTestId(STACKED_BAR_CHART_TESTID)
+        .getByText(indicator2, { exact: true }),
+    ).toBeVisible();
   });
 });

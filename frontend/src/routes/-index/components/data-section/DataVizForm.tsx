@@ -18,6 +18,7 @@ import {
   SCENARIO_A_AND_B,
   SELECT_INDICATOR_TESTID,
   FILTERS_ORDER,
+  SELECT_UNIT_TESTID,
 } from "@/lib/constants";
 import {
   Select,
@@ -33,9 +34,14 @@ import { type Writable } from "type-fest";
 import {
   AttributeSchema,
   IndicatorSchema,
+  UnitSchema,
 } from "@/lib/shared_with_backend/schemas";
 import { DisplaySchema } from "@/lib/schemas";
-import { ATTRIBUTES, INDICATORS } from "@/lib/shared_with_backend/constants";
+import {
+  ATTRIBUTES,
+  INDICATORS,
+  UNITS,
+} from "@/lib/shared_with_backend/constants";
 import { useEffect } from "react";
 
 const route = getRouteApi(ROUTES.DASHBOARD);
@@ -43,22 +49,25 @@ const route = getRouteApi(ROUTES.DASHBOARD);
 const DataVizFormSchema = z.object<{
   indicator: z.ZodEnum<Writable<typeof INDICATORS>>;
   attribute: z.ZodEnum<Writable<typeof ATTRIBUTES>>;
+  unit: z.ZodEnum<Writable<typeof UNITS>>;
   display: z.ZodEnum<Writable<typeof DISPLAY_OPTIONS>>;
 }>({
   indicator: IndicatorSchema,
   attribute: AttributeSchema,
+  unit: UnitSchema,
   display: DisplaySchema,
 });
 
 export const DataVizForm = () => {
   const navigate = route.useNavigate();
-  const { attribute, indicator, display, scenarioA, scenarioB } =
+  const { attribute, indicator, unit, display, scenarioA, scenarioB } =
     route.useSearch();
   const form = useForm<z.infer<typeof DataVizFormSchema>>({
     resolver: zodResolver(DataVizFormSchema),
     defaultValues: {
       indicator,
       attribute,
+      unit,
       display,
     },
   });
@@ -67,12 +76,14 @@ export const DataVizForm = () => {
     attribute,
     indicator,
     display,
+    unit,
   }: z.infer<typeof DataVizFormSchema>) {
     await navigate({
       search: (prev) => ({
         ...prev,
         attribute,
         indicator,
+        unit,
         display,
       }),
     });
@@ -133,12 +144,12 @@ export const DataVizForm = () => {
             </FormItem>
           )}
         />
-        {/* <FormField
+        <FormField
           control={form.control}
           name="unit"
           render={({ field }) => (
-            <FormItem data-testid={SELECT_INDICATOR_TESTID}>
-              <FormLabel className={cn("font-medium")}>Indicator:</FormLabel>
+            <FormItem data-testid={SELECT_UNIT_TESTID}>
+              <FormLabel className={cn("font-medium")}>Per:</FormLabel>
               <Select
                 onValueChange={(value) => {
                   onSelectChange({
@@ -157,7 +168,7 @@ export const DataVizForm = () => {
                   </SelectMenuStyle>
                 </FormControl>
                 <SelectContent>
-                  {INDICATORS.map((unit) => (
+                  {UNITS.map((unit) => (
                     <SelectItem key={unit} value={unit}>
                       {unit}
                     </SelectItem>
@@ -166,7 +177,7 @@ export const DataVizForm = () => {
               </Select>
             </FormItem>
           )}
-        /> */}
+        />
         <FormField
           control={form.control}
           name="attribute"

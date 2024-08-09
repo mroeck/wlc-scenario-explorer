@@ -3,16 +3,16 @@ import { NoDataFound } from "@/components/NoDataFound";
 import { Button } from "@/components/ui/button";
 import type { ScenarioRowsAggregatedArraySchema } from "@/lib/schemas";
 import { YEAR_KEY } from "@/lib/shared_with_backend/constants";
-import type { Unit } from "@/lib/types";
+import type { IndicatorUnit } from "@/lib/types";
 import type { ColumnDef } from "@tanstack/react-table";
 import { ArrowUpDown } from "lucide-react";
 import type { z } from "zod";
 
 type DataTableProps = {
   data: z.infer<typeof ScenarioRowsAggregatedArraySchema>;
-  unit: Unit;
+  indicator: IndicatorUnit;
 };
-export const DataTable = ({ data, unit }: DataTableProps) => {
+export const DataTable = ({ data, indicator }: DataTableProps) => {
   if (data.length < 1) {
     return <NoDataFound />;
   }
@@ -20,7 +20,7 @@ export const DataTable = ({ data, unit }: DataTableProps) => {
     (key) => ({
       accessorKey: key,
       header: ({ column }) => {
-        const unitString = key === YEAR_KEY ? "" : ` (${unit})`;
+        const unitString = key === YEAR_KEY ? "" : ` (${indicator})`;
 
         return (
           <Button

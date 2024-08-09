@@ -21,16 +21,16 @@ import { env } from "@/env";
 import { YEAR_KEY } from "@/lib/shared_with_backend/constants";
 import type { ScenarioRowsAggregatedArraySchema } from "@/lib/schemas";
 import { CustomLegend } from "../Legend/CustomLegend";
-import type { Attribute, Unit } from "@/lib/types";
+import type { Attribute, IndicatorUnit } from "@/lib/types";
 
 type StackedAreaChartProps = {
   data: z.infer<typeof ScenarioRowsAggregatedArraySchema>;
-  unit: Unit;
+  indicatorUnit: IndicatorUnit;
   breakdownBy: Attribute;
 };
 export const StackedAreaChart = ({
   data,
-  unit,
+  indicatorUnit: unit,
   breakdownBy,
 }: StackedAreaChartProps) => {
   const attributeOptions =
@@ -96,7 +96,7 @@ export const StackedAreaChart = ({
               content={(props) => (
                 <CustomTooltip
                   {...props}
-                  unit={unit}
+                  indicatorUnit={unit}
                   breakdownBy={breakdownBy}
                 />
               )}

@@ -45,7 +45,7 @@ const tabs = [
     content: ({ data, indicator, breakdownBy }: ContentProps) => (
       <StackedAreaChart
         data={data}
-        unit={INDICATOR_TO_UNIT[indicator]}
+        indicatorUnit={INDICATOR_TO_UNIT[indicator]}
         breakdownBy={breakdownBy}
       />
     ),
@@ -55,7 +55,7 @@ const tabs = [
     content: ({ data, indicator, breakdownBy }: ContentProps) => (
       <LineGraph
         data={data}
-        unit={INDICATOR_TO_UNIT[indicator]}
+        indicatorUnit={INDICATOR_TO_UNIT[indicator]}
         breakdownBy={breakdownBy}
       />
     ),
@@ -65,7 +65,7 @@ const tabs = [
     content: ({ data, indicator, breakdownBy }: ContentProps) => (
       <StackedBarChart
         data={data}
-        unit={INDICATOR_TO_UNIT[indicator]}
+        indicatorUnit={INDICATOR_TO_UNIT[indicator]}
         breakdownBy={breakdownBy}
       />
     ),
@@ -73,7 +73,7 @@ const tabs = [
   {
     name: "Table",
     content: ({ data, indicator }: ContentProps) => (
-      <DataTable data={data} unit={INDICATOR_TO_UNIT[indicator]} />
+      <DataTable data={data} indicator={INDICATOR_TO_UNIT[indicator]} />
     ),
   },
 ] as const;

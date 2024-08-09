@@ -9,6 +9,7 @@ import {
   DEFAULT_SCENARIO,
   DEFAULT_INDICATOR,
   ROUTES,
+  DEFAULT_UNIT,
 } from "@/lib/constants";
 import { z } from "zod";
 
@@ -17,6 +18,7 @@ import {
   FiltersSchema,
   ScenarioSchema,
   IndicatorSchema,
+  UnitSchema,
 } from "@/lib/shared_with_backend/schemas";
 import { DisplaySchema } from "@/lib/schemas";
 import { Settings } from "./-index/components/side-section/Settings";
@@ -28,6 +30,7 @@ const SearchParamsSchema = z.object({
   filters: FiltersSchema.optional(),
   attribute: AttributeSchema.catch(DEFAULT_ATTRIBUTE),
   indicator: IndicatorSchema.catch(DEFAULT_INDICATOR),
+  unit: UnitSchema.catch(DEFAULT_UNIT),
   display: DisplaySchema.catch(DEFAULT_DISPLAY),
   scenarioA: ScenarioSchema.catch(DEFAULT_SCENARIO),
   scenarioB: ScenarioSchema.optional().catch(undefined),

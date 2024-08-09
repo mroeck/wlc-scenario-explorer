@@ -56,7 +56,12 @@ export const INDICATORS = [
   "GWP luluc",
 ] as const;
 
-export const UNITS = ["MtCO2e", "Mt"] as const;
+export const UNITS = [
+  "m² (country)",
+  "m² (archetype)",
+  "capita (country)",
+  "capita (archetype)",
+] as const;
 
 export const YEAR_KEY = "stock_projection_year";
 export const MAX_YEAR = 2500;
