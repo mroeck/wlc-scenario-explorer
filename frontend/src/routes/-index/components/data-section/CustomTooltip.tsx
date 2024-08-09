@@ -7,7 +7,7 @@ import type {
 } from "recharts/types/component/DefaultTooltipContent";
 import { ColorCube } from "./Legend/ColorCube";
 import { GRAPH_FONT_SIZE } from "@/lib/constants";
-import type { Attribute, Unit } from "@/lib/types";
+import type { Attribute, IndicatorUnit } from "@/lib/types";
 
 const removeDuplicates = (arr: Payload<ValueType, NameType>[]) => {
   const seen = new Set();
@@ -21,12 +21,12 @@ const removeDuplicates = (arr: Payload<ValueType, NameType>[]) => {
 type CustomTooltipProps = Pick<
   TooltipProps<ValueType, NameType>,
   "active" | "payload" | "label"
-> & { unit: Unit; breakdownBy: Attribute };
+> & { indicatorUnit: IndicatorUnit; breakdownBy: Attribute };
 export const CustomTooltip = ({
   active,
   payload,
   label,
-  unit,
+  indicatorUnit,
   breakdownBy,
 }: CustomTooltipProps) => {
   if (!active || payload == null || payload.length < 1) return null;
@@ -45,7 +45,7 @@ export const CustomTooltip = ({
           className={cn("pb-2 text-left")}
           style={{ fontSize: GRAPH_FONT_SIZE }}
         >
-          From top to bottom on graph in {unit}
+          From top to bottom on graph in {indicatorUnit}
         </span>
       </div>
       <ul

@@ -9,8 +9,13 @@ export const PROJECT_NAME = "GHG Emissions of EU Building Stock Scenarios";
 export const DEFAULT_FILTERS = undefined;
 export const DEFAULT_ATTRIBUTE: Attribute = "use type";
 export const DEFAULT_INDICATOR: Indicator = "GWP total";
+export const DEFAULT_UNIT: Unit = "m² (country)";
 export const DEFAULT_UNIT_MINIMIZED = "MtCO2e";
-export const INDICATOR_TO_UNIT: Record<Indicator, Unit> = {
+export const INDICATORS_UNITS = ["MtCO2e", "Mt"] as const;
+export const INDICATOR_TO_UNIT: Record<
+  Indicator,
+  (typeof INDICATORS_UNITS)[number]
+> = {
   "GWP bio": "MtCO2e",
   "GWP fossil": "MtCO2e",
   "GWP luluc": "MtCO2e",
@@ -40,6 +45,7 @@ export const ROUTES = {
 export const DEFAULT_SEARCH_PARAMS = {
   attribute: DEFAULT_ATTRIBUTE,
   indicator: DEFAULT_INDICATOR,
+  unit: DEFAULT_UNIT,
   display: DEFAULT_DISPLAY,
   scenarioA: DEFAULT_SCENARIO,
   filters: {
@@ -72,6 +78,7 @@ export const SELECT_ALL_LABEL = "Select All";
 export const ALL_LABEL = "All";
 export const GRAPH_FONT_SIZE = 14;
 export const SELECT_INDICATOR_TESTID = "SELECT_INDICATOR_TESTID";
+export const SELECT_UNIT_TESTID = "SELECT_UNIT_TESTID";
 export const FILTERS_ORDER = [
   "region",
   "country",
