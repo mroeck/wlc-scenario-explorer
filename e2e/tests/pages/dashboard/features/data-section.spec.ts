@@ -34,14 +34,14 @@ test.describe("data viz", () => {
       .getByTestId(GRAPH_TITLE_TESTID)
       .getByTestId(ATTRIBUTE_TESTID);
     const buildingUseSubtypeOption = page
-      .getByLabel("use subtype")
-      .getByText("use subtype");
+      .getByLabel("Building subtype")
+      .getByText("Building subtype");
     const colorLegend = page.getByTestId(COLOR_LEGEND_TESTID);
 
     await breakdownByDropdown.click();
     await buildingUseSubtypeOption.click();
 
-    await expect(attributeInGraphTitle).toHaveText("use subtype");
+    await expect(attributeInGraphTitle).toHaveText("Building subtype");
     await expect(colorLegend.getByText("Multi-family house")).toBeVisible();
     await expect(colorLegend.getByText("Office")).toBeVisible();
     await expect(colorLegend.getByText("Single-family house")).toBeVisible();

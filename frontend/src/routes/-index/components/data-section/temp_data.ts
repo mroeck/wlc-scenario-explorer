@@ -73,12 +73,12 @@ export const ATTRIBUTE_OPTIONS_COLOR: Record<
     Substructure: "#5F87BF",
     "Technical services": "#41AAC4",
   },
-  "use subtype": {
+  "Building subtype": {
     "Multi-family house": "#54BAD4",
     Office: "#6ABB7D",
     "Single-family house": "#EBCB59",
   },
-  "use type": {
+  "Building type": {
     "Non-residential": "#54BAD4",
     Residential: "#6ABB7D",
   },
@@ -144,7 +144,7 @@ export const ATTRIBUTE_OPTIONS_COLOR: Record<
     "New buildings": "#6ABB7D",
     Refurbishment: "#EBCB59",
   },
-  "WLC Category": {
+  "Whole life cycle stages": {
     "Demolition embodied carbon": "#54BAD4",
     "Use phase operational carbon": "#6ABB7D",
     "Construction embodied carbon": "#EBCB59",
