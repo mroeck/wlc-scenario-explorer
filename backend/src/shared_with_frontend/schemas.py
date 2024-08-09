@@ -30,13 +30,13 @@ class AttributeEnumSchema(str, Enum):
     STOCK_REGION_NAME = "region"
     COUNTRY_NAME = "country"
     STOCK_PROJECTION_YEAR = "stock projection year"
-    BUILDING_USE_TYPE_NAME = "use type"
-    BUILDING_USE_SUBTYPE_NAME = "use subtype"
+    BUILDING_USE_TYPE_NAME = "Building type"
+    BUILDING_USE_SUBTYPE_NAME = "Building subtype"
     ELEMENT_CLASS_GENERIC_NAME = "element class"
     MATERIAL_NAME_JRC_CDW = "material class"
     ACTIVITY_IN_OUT = "flow type"
     STOCK_ACTIVITY_TYPE_NAME = "building stock activity"
-    CARBON_CATEGORY = "WLC Category"
+    CARBON_CATEGORY = "Whole life cycle stages"
 
 
 ATTRIBUTE_TO_DB_COLUMNS: Mapping[str, str] = {
@@ -84,14 +84,14 @@ class FilterFrontEnumSchema(str, Enum):
     FROM = "From"
     TO = "To"
     country = "country"
-    BUILDING_USE_TYPE = "use type"
+    BUILDING_USE_TYPE = "Building type"
     BUILDING_ELEMENT_CLASS = "Element Class"
     MATERIAL_CLASS = "Material Class"
-    BUILDING_USE_SUBTYPE = "use subtype"
+    BUILDING_USE_SUBTYPE = "Building subtype"
     ACTIVITY_IN_OUT = "flow type"
     REGION = "Region"
     STOCK_ACTIVITY_TYPE_NAME = "building stock activity"
-    CARBON_CATEGORY = "WLC Category"
+    CARBON_CATEGORY = "Whole life cycle stages"
 
 
 FILTER_TO_DB_COLUMN: Dict[str, str] = {

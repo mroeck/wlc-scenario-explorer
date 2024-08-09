@@ -160,7 +160,7 @@ function Help() {
 
           <ul className={cn("px-primary-x")}>
             <li>- GHG emissions produced</li>
-            <li>- use type (Residential, Non-residential)</li>
+            <li>- Building type (Residential, Non-residential)</li>
             <li>- Amount of material used per building</li>
             <li>- Country of the building</li>
             <li>- and more...</li>

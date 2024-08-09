@@ -48,7 +48,7 @@ test.describe("search params", () => {
 
     const displaySelect = page.getByTestId(DISPLAY_SELECT_TESTID);
 
-    const attribute = "use subtype";
+    const attribute = "Building subtype";
     const unit = UNITS[1];
     const scenario = "Current policy optimistic scenario";
     const display = SCENARIO_B_ONLY;

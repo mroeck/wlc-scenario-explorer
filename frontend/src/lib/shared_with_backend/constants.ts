@@ -6,13 +6,13 @@
 export const BREAKDOWN_BY_OBJ = {
   region: "region",
   country: "country",
-  buildingUseType: "use type",
-  buildingUseSubtype: "use subtype",
+  buildingUseType: "Building type",
+  buildingUseSubtype: "Building subtype",
   elementClass: "element class",
   material: "material class",
   activityInOut: "flow type",
   activityType: "building stock activity",
-  carbonCategory: "WLC Category",
+  carbonCategory: "Whole life cycle stages",
 } as const;
 
 type AttributesEnum = [
@@ -36,14 +36,14 @@ export const FILTERS_OBJ = {
   From: "From",
   To: "To",
   country: "country",
-  buildingUseType: "use type",
-  buildingUseSubtype: "use subtype",
+  buildingUseType: "Building type",
+  buildingUseSubtype: "Building subtype",
   elementClass: "Element Class",
   material: "Material Class",
   activityInOut: "flow type",
   Region: "Region",
   activityType: "building stock activity",
-  carbonCategory: "WLC Category",
+  carbonCategory: "Whole life cycle stages",
 } as const;
 
 export const FILTERS = Object.values(FILTERS_OBJ);

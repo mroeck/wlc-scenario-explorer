@@ -42,13 +42,13 @@ export const FiltersSchema = z
   .object({
     "flow type": z.string().array(),
     "Element Class": z.string().array(),
-    "use subtype": z.string().array(),
-    "use type": z.string().array(),
+    "Building subtype": z.string().array(),
+    "Building type": z.string().array(),
     country: z.string().array(),
     "Material Class": z.string().array(),
     Region: z.string().array(),
     "building stock activity": z.string().array(),
-    "WLC Category": z.string().array(),
+    "Whole life cycle stages": z.string().array(),
     From: YearSchema,
     To: YearSchema,
   } satisfies Record<(typeof FILTERS)[number], z.ZodType>)
