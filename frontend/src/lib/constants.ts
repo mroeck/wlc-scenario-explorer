@@ -9,7 +9,7 @@ export const PROJECT_NAME = "GHG Emissions of EU Building Stock Scenarios";
 export const DEFAULT_FILTERS = undefined;
 export const DEFAULT_ATTRIBUTE: Attribute = "Building type";
 export const DEFAULT_INDICATOR: Indicator = "GWP total";
-export const DEFAULT_UNIT: Unit = "m² (country)";
+export const DEFAULT_UNIT: Unit = "none";
 export const DEFAULT_UNIT_MINIMIZED = "MtCO2e";
 export const INDICATORS_UNITS = ["MtCO2e", "Mt"] as const;
 export const INDICATOR_TO_UNIT: Record<

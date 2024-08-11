@@ -57,6 +57,7 @@ export const INDICATORS = [
 ] as const;
 
 export const UNITS = [
+  "none",
   "m² (country)",
   "m² (archetype)",
   "capita (country)",
