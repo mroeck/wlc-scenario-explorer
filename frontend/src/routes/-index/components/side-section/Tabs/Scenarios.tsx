@@ -148,9 +148,12 @@ export const Scenarios = () => {
                       </SelectMenuStyle>
                     </FormControl>
                     <SelectContent>
-                      {SCENARIOS_OPTIONS.map((scenario) => (
+                      {SCENARIOS_OPTIONS.map((scenario, index) => (
                         <SelectItem key={scenario} value={scenario}>
-                          {scenario}
+                          {/* temp: default scenario should be "example" to not confuse the user */}
+                          {index !== 0
+                            ? scenario
+                            : "Example scenario (for illustration purpose only)"}
                         </SelectItem>
                       ))}
                     </SelectContent>

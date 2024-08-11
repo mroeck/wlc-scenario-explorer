@@ -50,7 +50,8 @@ test.describe("search params", () => {
 
     const attribute = "Building subtype";
     const unit = UNITS[1];
-    const scenario = "Current policy optimistic scenario";
+    const scenario = "Example scenario (for illustration purpose only)";
+    // temp: Example label instead of "Current policy optimistic scenario";
     const display = SCENARIO_B_ONLY;
     const filters = { From: DEFAULT_FROM, To: DEFAULT_TO, country: ["FR"] };
     const filtersEncoded = encodeURIComponent(JSON.stringify(filters));
