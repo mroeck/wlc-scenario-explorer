@@ -69,20 +69,20 @@ export const MIN_YEAR = 1900;
 
 export const SCENARIO_PARAMETERS_OBJ = {
   improve: [
-    "Low carbon conventional",
+    "Increase low carbon conventional",
     "Reduce transport emissions",
     "Reduce construction process",
     "Reduce operational energy",
   ],
   shift: [
-    "Bio-based solutions",
-    "Circularity and reuse",
-    "Carbon dioxide removal",
+    "Increase bio-based solutions",
+    "Increase circularity and reuse",
+    "Increase carbon dioxide removal",
   ],
   avoid: [
     "Reduce space per capita",
-    "Repair and retrofit",
-    "Material efficiency",
+    "Increase repair and retrofit",
+    "Increase material efficiency",
     "Reduce construction waste",
   ],
 } as const;
