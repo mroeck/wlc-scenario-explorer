@@ -50,16 +50,16 @@ export const ATTRIBUTE_OPTIONS_COLOR: Record<
   Exclude<Attribute, "stock building stock activity name">,
   Record<string, `#${string}`>
 > = {
-  "flow type": {
-    "Energy in": "#5FB8CE",
-    MATERIAL_IN: "#5BB89F",
-    MATERIAL_LOSS_IN: "#56B770",
-    MATERIAL_LOSS_OUT: "#ABD561",
-    MATERIAL_OUT: "#FFF352",
-    PROCESS: "#FCC74B",
-    TRANSPORT_EOL: "#F99B43",
-    TRANSPORT_TO_SITE: "#E34542",
-  },
+  // "flow type": {
+  //   "Energy in": "#5FB8CE",
+  //   MATERIAL_IN: "#5BB89F",
+  //   MATERIAL_LOSS_IN: "#56B770",
+  //   MATERIAL_LOSS_OUT: "#ABD561",
+  //   MATERIAL_OUT: "#FFF352",
+  //   PROCESS: "#FCC74B",
+  //   TRANSPORT_EOL: "#F99B43",
+  //   TRANSPORT_TO_SITE: "#E34542",
+  // },
   "element class": {
     "Common walls": "#5FB8CE",
     "Electrical services": "#56B770",

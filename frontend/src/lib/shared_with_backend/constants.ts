@@ -10,7 +10,7 @@ export const BREAKDOWN_BY_OBJ = {
   buildingUseSubtype: "Building subtype",
   elementClass: "element class",
   material: "material class",
-  activityInOut: "flow type",
+  // activityInOut: "flow type", temp: hidden for now
   activityType: "building stock activity",
   carbonCategory: "Whole life cycle stages",
 } as const;
@@ -22,6 +22,7 @@ type AttributesEnum = [
 export const ATTRIBUTES = Object.values(BREAKDOWN_BY_OBJ) as AttributesEnum;
 
 export const SCENARIOS_OPTIONS = [
+  "Example scenario (for illustration purpose only)",
   "Current policy optimistic scenario",
   "Current policy conservative scenario",
   "Additional policy scenario (APOL)",
@@ -40,7 +41,7 @@ export const FILTERS_OBJ = {
   buildingUseSubtype: "Building subtype",
   elementClass: "Element Class",
   material: "Material Class",
-  activityInOut: "flow type",
+  // activityInOut: "flow type",
   Region: "Region",
   activityType: "building stock activity",
   carbonCategory: "Whole life cycle stages",
@@ -57,7 +58,7 @@ export const INDICATORS = [
 ] as const;
 
 export const UNITS = [
-  "none",
+  "none (total)",
   "m² (country)",
   "m² (archetype)",
   "capita (country)",

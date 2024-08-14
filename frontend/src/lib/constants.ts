@@ -9,7 +9,7 @@ export const PROJECT_NAME = "GHG Emissions of EU Building Stock Scenarios";
 export const DEFAULT_FILTERS = undefined;
 export const DEFAULT_ATTRIBUTE: Attribute = "Building type";
 export const DEFAULT_INDICATOR: Indicator = "GWP total";
-export const DEFAULT_UNIT: Unit = "none";
+export const DEFAULT_UNIT: Unit = "none (total)";
 export const DEFAULT_UNIT_MINIMIZED = "MtCO2e";
 export const INDICATORS_UNITS = ["MtCO2e", "Mt"] as const;
 export const INDICATOR_TO_UNIT: Record<
@@ -33,7 +33,7 @@ export const DISPLAY_OPTIONS = [
 export const DEFAULT_DISPLAY: (typeof DISPLAY_OPTIONS)[number] =
   SCENARIO_A_ONLY;
 export const DEFAULT_SCENARIO: (typeof SCENARIOS_OPTIONS)[number] =
-  "Current policy optimistic scenario";
+  "Example scenario (for illustration purpose only)";
 export const DEFAULT_FROM = 2020;
 export const DEFAULT_TO = 2050;
 export const HEADER_HEIGHT = "72";

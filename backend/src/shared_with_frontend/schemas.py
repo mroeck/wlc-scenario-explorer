@@ -102,7 +102,7 @@ FILTER_TO_DB_COLUMN: Dict[str, str] = {
     FilterFrontEnumSchema.BUILDING_ELEMENT_CLASS.value: ColumnsEnumSchema.ELEMENT_CLASS_GENERIC_NAME.value,
     FilterFrontEnumSchema.MATERIAL_CLASS.value: ColumnsEnumSchema.MATERIAL_NAME_JRC_CDW.value,
     FilterFrontEnumSchema.BUILDING_USE_SUBTYPE.value: ColumnsEnumSchema.BUILDING_USE_SUBTYPE_NAME.value,
-    FilterFrontEnumSchema.ACTIVITY_IN_OUT.value: ColumnsEnumSchema.ACTIVITY_IN_OUT.value,
+    # FilterFrontEnumSchema.ACTIVITY_IN_OUT.value: ColumnsEnumSchema.ACTIVITY_IN_OUT.value,
     FilterFrontEnumSchema.REGION.value: ColumnsEnumSchema.STOCK_REGION_NAME.value,
     FilterFrontEnumSchema.STOCK_ACTIVITY_TYPE_NAME.value: ColumnsEnumSchema.STOCK_ACTIVITY_TYPE_NAME.value,
     FilterFrontEnumSchema.CARBON_CATEGORY.value: ColumnsEnumSchema.CARBON_CATEGORY.value,
@@ -136,6 +136,7 @@ class FiltersSchema(BaseModel, extra=Extra.forbid):
 
 
 class ScenarioEnumSchema(str, Enum):
+    Example = "Example scenario (for illustration purpose only)"
     CPOO = "Current policy optimistic scenario"
     CPOC = "Current policy conservative scenario"
     APOL = "Additional policy scenario (APOL)"
@@ -155,6 +156,7 @@ SCENARIO_TO_FILE_NAME: Dict[str, str] = {
     ScenarioEnumSchema.CPOC.value: "scenario",
     ScenarioEnumSchema.CPOO.value: "scenario",
     ScenarioEnumSchema.CUSR.value: "scenario",
+    ScenarioEnumSchema.Example.value: "scenario",
 }
 
 
