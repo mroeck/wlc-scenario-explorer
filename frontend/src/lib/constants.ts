@@ -92,3 +92,4 @@ export const FILTERS_ORDER = [
 ] as const satisfies readonly Lowercase<string>[];
 
 export const ERROR_OCCURED = "Oops, an error occurred";
+export const HELP_TITLE = "Functionalities";
