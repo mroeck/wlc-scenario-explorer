@@ -13,21 +13,11 @@ import tableWithFilteredEmbodiedCaronUrl from "@/assets/table_with_filtered_embo
 import stackedBarChartForEmbodiedCarbonUrl from "@/assets/stacked_bar_chart_showing_filtered_results_for_embodied_carbon_by_building_element_class.png";
 import { TypographyFigure } from "@/components/TypographyFigure";
 import { HELP_TITLE } from "@/lib/constants";
+import { TypographyContent } from "@/components/TypographyContent";
 
 export const Route = createFileRoute("/help")({
   component: () => <Help />,
 });
-
-type ContentProps = React.ComponentPropsWithoutRef<"div"> & {
-  children: React.ReactNode;
-};
-const Content = ({ children, className }: ContentProps) => {
-  return (
-    <div className={cn("flex flex-col gap-2 px-primary-x", className)}>
-      {children}
-    </div>
-  );
-};
 
 function Help() {
   return (
@@ -49,7 +39,7 @@ function Help() {
 
             <Section className={cn("border-none shadow-none")}>
               <TypographyH3>Selection of predefined scenarios</TypographyH3>
-              <Content>
+              <TypographyContent>
                 <TypographyMuted>
                   [This functionality becomes active once the newly generated
                   scenario results are loaded to the tool.]
@@ -166,12 +156,12 @@ function Help() {
                   scenarios addressing whole life carbon and carbon removals
                   (Task 4).
                 </TypographyP>
-              </Content>
+              </TypographyContent>
             </Section>
 
             <Section className={cn("border-none shadow-none")}>
               <TypographyH3>Modification of scenario parameters</TypographyH3>
-              <Content>
+              <TypographyContent>
                 <TypographyMuted>
                   [This functionality becomes active once the newly generated
                   scenario results are loaded to the tool.]
@@ -193,7 +183,7 @@ function Help() {
 
                 <Section className={cn("border-none shadow-none")}>
                   <TypographyH3>Improve</TypographyH3>
-                  <Content>
+                  <TypographyContent>
                     <TypographyList>
                       <li>
                         <strong>Increase low carbon conventional:</strong> This
@@ -238,12 +228,12 @@ function Help() {
                         energy efficient options for new buildings.
                       </li>
                     </TypographyList>
-                  </Content>
+                  </TypographyContent>
                 </Section>
 
                 <Section className={cn("border-none shadow-none")}>
                   <TypographyH3>Shift</TypographyH3>
-                  <Content>
+                  <TypographyContent>
                     <TypographyList>
                       <li>
                         <strong>Increase bio-based solutions:</strong> This
@@ -280,12 +270,12 @@ function Help() {
                         built environment).
                       </li>
                     </TypographyList>
-                  </Content>
+                  </TypographyContent>
                 </Section>
 
                 <Section className={cn("border-none shadow-none")}>
                   <TypographyH3>Avoid</TypographyH3>
-                  <Content>
+                  <TypographyContent>
                     <TypographyList>
                       <li>
                         <strong>Reduce space per capita:</strong> This strategy
@@ -325,7 +315,7 @@ function Help() {
                         construction materials.
                       </li>
                     </TypographyList>
-                  </Content>
+                  </TypographyContent>
                 </Section>
                 <Section className={cn("border-none shadow-none")}>
                   <TypographyP>
@@ -342,7 +332,7 @@ function Help() {
                     Ambition level setpoints (numbers 1-5) for CRR strategy
                     implementation are modelled as follows:
                   </TypographyH3>
-                  <Content>
+                  <TypographyContent>
                     <TypographyList>
                       <li>
                         <strong>
@@ -391,7 +381,7 @@ function Help() {
                         across Member States by factor 2,0.
                       </li>
                     </TypographyList>
-                  </Content>
+                  </TypographyContent>
                 </Section>
                 <TypographyP>
                   Users can specify the ambition level for an individual
@@ -400,7 +390,7 @@ function Help() {
                   whole set of strategies (Improve/Shift/Avoid) by specifying
                   the desired number right next to the section heading.
                 </TypographyP>
-              </Content>
+              </TypographyContent>
             </Section>
           </Section>
         </Section>

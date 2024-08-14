@@ -73,7 +73,6 @@ export const PARAMETER_STATUS = {
 } as const;
 export const DEFAULT_COLOR = "lightgrey";
 export const DASHBOARD_HEADING = "Dashboard";
-export const ABOUT_HEADING = "ABOUT";
 export const SELECT_ALL_LABEL = "Select All";
 export const ALL_LABEL = "All";
 export const GRAPH_FONT_SIZE = 14;
@@ -93,3 +92,8 @@ export const FILTERS_ORDER = [
 
 export const ERROR_OCCURED = "Oops, an error occurred";
 export const HELP_TITLE = "Functionalities";
+export const ABOUT_TITLE = "Introduction";
+export const WEB_APP_URL = "https://ae-scenario-explorer.cloud.set.kuleuven.be";
+export const DOI_URL = "https://doi.org/10.5281/zenodo.13315281";
+export const MOSELEY_EMAIL = "philippe.moseley@ec.europa.eu";
+export const ROECK_EMAIL = "martin.roeck@kuleuven.be";

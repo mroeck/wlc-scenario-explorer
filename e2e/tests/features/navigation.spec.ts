@@ -1,5 +1,5 @@
 import {
-  ABOUT_HEADING,
+  ABOUT_TITLE,
   DASHBOARD_HEADING,
   PROJECT_NAME,
   ROUTES,
@@ -21,7 +21,7 @@ test.describe("header navigation", () => {
     test("navigation between pages", async ({ page }) => {
       await page.getByRole("link", { name: "About" }).click();
       await expect(page.getByRole("heading", { level: 1 })).toHaveText(
-        ABOUT_HEADING,
+        ABOUT_TITLE,
       );
 
       await page.getByRole("link", { name: "Dashboard" }).click();
@@ -38,7 +38,7 @@ test.describe("header navigation", () => {
       await page.getByRole("navigation").getByRole("button").click();
       await page.getByRole("button", { name: "About" }).click();
       await expect(page.getByRole("heading", { level: 1 })).toHaveText(
-        ABOUT_HEADING,
+        ABOUT_TITLE,
       );
 
       await page.getByRole("navigation").getByRole("button").click();
