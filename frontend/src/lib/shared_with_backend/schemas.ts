@@ -40,7 +40,7 @@ export const YearSchema = z.coerce
 
 export const FiltersSchema = z
   .object({
-    "flow type": z.string().array(),
+    // "flow type": z.string().array(),
     "Element Class": z.string().array(),
     "Building subtype": z.string().array(),
     "Building type": z.string().array(),

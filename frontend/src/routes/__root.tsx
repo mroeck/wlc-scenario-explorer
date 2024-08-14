@@ -15,7 +15,7 @@ const TanStackRouterDevtools = env.PUBLIC_DEBUG
 
 export const Route = createRootRoute({
   component: () => (
-    <div className={cn("mx-auto min-h-screen max-w-screen-2xl bg-accent")}>
+    <div className={cn("mx-auto h-max max-w-screen-2xl bg-accent")}>
       <Header />
       <Outlet />
       <Suspense>

@@ -100,10 +100,11 @@ test.describe("filters", () => {
   test("reset all filters", async ({ page }) => {
     await page.getByRole("tab", { name: "Filters" }).click();
     await page
-      .getByTestId(FILTERS_OBJ.activityInOut)
+      .getByTestId(FILTERS_OBJ.carbonCategory)
       .getByRole("combobox")
       .click();
-    await page.getByRole("option", { name: "MATERIAL_IN" }).click();
+    const carbonCategoryOptions = await page.getByRole("option").all();
+    await carbonCategoryOptions[1].click();
 
     await page
       .getByTestId(FILTERS_OBJ.elementClass)
@@ -112,13 +113,13 @@ test.describe("filters", () => {
     await page.getByRole("option", { name: "External openings" }).click();
 
     await page
-      .getByTestId(FILTERS_OBJ.activityInOut)
+      .getByTestId(FILTERS_OBJ.carbonCategory)
       .getByRole("combobox")
       .click();
 
     await page.getByRole("button", { name: "Reset all" }).click();
     await expect(
-      page.getByTestId(FILTERS_OBJ.activityInOut).getByRole("combobox"),
+      page.getByTestId(FILTERS_OBJ.carbonCategory).getByRole("combobox"),
     ).toHaveText(ALL_LABEL);
     await expect(
       page.getByTestId(FILTERS_OBJ.elementClass).getByRole("combobox"),
@@ -126,33 +127,37 @@ test.describe("filters", () => {
   });
 
   test("select all options", async ({ page }) => {
-    const activityInOutSelect = page
-      .getByTestId(FILTERS_OBJ.activityInOut)
+    const carbonCategorySelect = page
+      .getByTestId(FILTERS_OBJ.carbonCategory)
       .getByRole("combobox");
 
     const countrySelect = page
       .getByTestId(FILTERS_OBJ.country)
       .getByRole("combobox");
 
-    const energyInOption = "Energy in";
-    const materialInOption = "MATERIAL_IN";
     const FR = "FR";
 
     await page.getByRole("tab", { name: "Filters" }).click();
 
-    await expect(activityInOutSelect).toHaveText(ALL_LABEL);
-    await activityInOutSelect.click();
-    await page.getByRole("option", { name: energyInOption }).click();
-    await expect(activityInOutSelect).toHaveText(energyInOption);
+    await expect(carbonCategorySelect).toHaveText(ALL_LABEL);
+    await carbonCategorySelect.click();
+    const carbonCategoryOptions = await page.getByRole("option").all();
+    const option1 = carbonCategoryOptions[2];
+    const option1Text = await option1.innerText();
+    const option2 = carbonCategoryOptions[3];
+    const option2Text = await option2.innerText();
+
+    await option1.click();
+    await expect(carbonCategorySelect).toHaveText(option1Text);
 
     await page
       .getByRole("option", { name: SELECT_ALL_LABEL })
       .getByRole("checkbox")
       .click();
-    await expect(activityInOutSelect).toHaveText(ALL_LABEL);
+    await expect(carbonCategorySelect).toHaveText(ALL_LABEL);
 
-    await page.getByRole("option", { name: materialInOption }).click();
-    await expect(activityInOutSelect).not.toHaveText(energyInOption);
+    await option2.click();
+    await expect(carbonCategorySelect).not.toHaveText(option2Text);
 
     await countrySelect.click();
 
@@ -169,7 +174,8 @@ test.describe("filters", () => {
   });
 
   test.describe("Filters do not error", () => {
-    const comboboxCount = 11;
+    // const comboboxCount = 11;
+    const comboboxCount = 10; //temp: we removed flow type fow now
     const FILTERS_TAB = "Filters";
     const xAxisValue = "2025";
 

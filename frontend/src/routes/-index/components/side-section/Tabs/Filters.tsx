@@ -43,7 +43,7 @@ const SelectOptionArraySchema = z
   .array();
 
 const formSchema = z.object({
-  "flow type": SelectOptionArraySchema,
+  // "flow type": SelectOptionArraySchema,
   "Element Class": SelectOptionArraySchema,
   "Building subtype": SelectOptionArraySchema,
   "Building type": SelectOptionArraySchema,
@@ -161,7 +161,7 @@ export const Filters = () => {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      "flow type": [] satisfies SelectOption[],
+      // "flow type": [] satisfies SelectOption[],
       "Element Class": [] satisfies SelectOption[],
       "Building subtype": [] satisfies SelectOption[],
       "Building type": [] satisfies SelectOption[],
