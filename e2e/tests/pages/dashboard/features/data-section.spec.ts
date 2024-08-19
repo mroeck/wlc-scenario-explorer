@@ -12,7 +12,6 @@ import {
   INDICATOR_TO_UNIT,
   INDICATORS_UNITS,
 } from "@/lib/constants";
-import { UNITS } from "@/lib/shared_with_backend/constants";
 import { test, expect } from "@playwright/test";
 import { waitLoadingEnds } from "@tests/functions";
 
