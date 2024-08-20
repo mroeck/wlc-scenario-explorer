@@ -5,7 +5,7 @@ type ContentProps = React.ComponentPropsWithoutRef<"div"> & {
 };
 export const TypographyContent = ({ children, className }: ContentProps) => {
   return (
-    <div className={cn("flex flex-col gap-2 p-primary", className)}>
+    <div className={cn("flex flex-col gap-2 p-2 md:p-primary", className)}>
       {children}
     </div>
   );
