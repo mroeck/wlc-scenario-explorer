@@ -21,4 +21,7 @@ export default defineConfig(() => ({
     host: true,
     origin: "http://localhost:3000",
   },
+  define: {
+    "import.meta.env.VITE_CI": JSON.stringify(process.env.CI),
+  },
 }));

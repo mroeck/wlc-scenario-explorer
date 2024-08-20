@@ -12,16 +12,12 @@ import {
 import { CustomTooltip } from "../CustomTooltip";
 import { cn, getColor, tickFormatter } from "@/lib/utils";
 import { type z } from "zod";
-import {
-  GRAPH_FONT_SIZE,
-  STACKED_BAR_CHART_TESTID,
-  TEST,
-} from "@/lib/constants";
-import { env } from "@/env";
+import { GRAPH_FONT_SIZE, STACKED_BAR_CHART_TESTID } from "@/lib/constants";
 import { YEAR_KEY } from "@/lib/shared_with_backend/constants";
 import type { ScenarioRowsAggregatedArraySchema } from "@/lib/schemas";
 import { CustomLegend } from "../Legend/CustomLegend";
 import type { Attribute, IndicatorUnit } from "@/lib/types";
+import { SHOULD_ANIMATE } from "@/lib/constants2";
 
 type LineGraphProps = {
   data: z.infer<typeof ScenarioRowsAggregatedArraySchema>;
@@ -77,7 +73,7 @@ export const LineGraph = ({
                     fill={color}
                     strokeWidth={3}
                     fillOpacity="0.7"
-                    isAnimationActive={env.PUBLIC_NODE_ENV !== TEST}
+                    isAnimationActive={SHOULD_ANIMATE}
                   />
                 );
               })

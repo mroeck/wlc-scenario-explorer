@@ -14,6 +14,7 @@ import stackedBarChartForEmbodiedCarbonUrl from "@/assets/stacked_bar_chart_show
 import { TypographyFigure } from "@/components/TypographyFigure";
 import { HELP_TITLE } from "@/lib/constants";
 import { TypographyContent } from "@/components/TypographyContent";
+import { SectionForDoc } from "@/components/SectionForDoc";
 
 export const Route = createFileRoute("/help")({
   component: () => <Help />,
@@ -33,11 +34,11 @@ function Help() {
         )}
       >
         <TypographyH1> {HELP_TITLE} </TypographyH1>
-        <Section className={cn("border-none shadow-none")}>
-          <Section className={cn("border-none shadow-none")}>
+        <SectionForDoc>
+          <SectionForDoc>
             <TypographyH2>Scenario settings</TypographyH2>
 
-            <Section className={cn("border-none shadow-none")}>
+            <SectionForDoc>
               <TypographyH3>Selection of predefined scenarios</TypographyH3>
               <TypographyContent>
                 <TypographyMuted>
@@ -157,9 +158,9 @@ function Help() {
                   (Task 4).
                 </TypographyP>
               </TypographyContent>
-            </Section>
+            </SectionForDoc>
 
-            <Section className={cn("border-none shadow-none")}>
+            <SectionForDoc>
               <TypographyH3>Modification of scenario parameters</TypographyH3>
               <TypographyContent>
                 <TypographyMuted>
@@ -181,7 +182,7 @@ function Help() {
                   reduction and removal can be modified:
                 </TypographyP>
 
-                <Section className={cn("border-none shadow-none")}>
+                <SectionForDoc>
                   <TypographyH3>Improve</TypographyH3>
                   <TypographyContent>
                     <TypographyList>
@@ -229,9 +230,9 @@ function Help() {
                       </li>
                     </TypographyList>
                   </TypographyContent>
-                </Section>
+                </SectionForDoc>
 
-                <Section className={cn("border-none shadow-none")}>
+                <SectionForDoc>
                   <TypographyH3>Shift</TypographyH3>
                   <TypographyContent>
                     <TypographyList>
@@ -271,9 +272,9 @@ function Help() {
                       </li>
                     </TypographyList>
                   </TypographyContent>
-                </Section>
+                </SectionForDoc>
 
-                <Section className={cn("border-none shadow-none")}>
+                <SectionForDoc>
                   <TypographyH3>Avoid</TypographyH3>
                   <TypographyContent>
                     <TypographyList>
@@ -316,8 +317,8 @@ function Help() {
                       </li>
                     </TypographyList>
                   </TypographyContent>
-                </Section>
-                <Section className={cn("border-none shadow-none")}>
+                </SectionForDoc>
+                <SectionForDoc>
                   <TypographyP>
                     Five distinct ambition levels can be selected for adjusting
                     the implementation of the CRR strategies – as illustrated in
@@ -382,7 +383,7 @@ function Help() {
                       </li>
                     </TypographyList>
                   </TypographyContent>
-                </Section>
+                </SectionForDoc>
                 <TypographyP>
                   Users can specify the ambition level for an individual
                   strategy by selecting an available option from via the number
@@ -391,13 +392,13 @@ function Help() {
                   the desired number right next to the section heading.
                 </TypographyP>
               </TypographyContent>
-            </Section>
-          </Section>
-        </Section>
-        <Section className={cn("border-none shadow-none")}>
+            </SectionForDoc>
+          </SectionForDoc>
+        </SectionForDoc>
+        <SectionForDoc>
           <TypographyH2>Filter settings</TypographyH2>
 
-          <Section className={cn("border-none shadow-none")}>
+          <SectionForDoc>
             <TypographyH3>Year</TypographyH3>
             <TypographyP>
               Users can select the time range to be shown in the visualizations
@@ -406,9 +407,9 @@ function Help() {
               The values shown are a snapshot of the results in that respective
               year.
             </TypographyP>
-          </Section>
+          </SectionForDoc>
 
-          <Section className={cn("border-none shadow-none")}>
+          <SectionForDoc>
             <TypographyH3>Region</TypographyH3>
             <TypographyP>
               All results are grouped according to four different climatic
@@ -416,9 +417,9 @@ function Help() {
               Buildings Directive (EPBD): Continental, Mediterranean, Nordic,
               and Oceanic.
             </TypographyP>
-          </Section>
+          </SectionForDoc>
 
-          <Section className={cn("border-none shadow-none")}>
+          <SectionForDoc>
             <TypographyH3>Country</TypographyH3>
             <TypographyP>
               Detailed results are available at the resolution of individual
@@ -447,6 +448,7 @@ function Help() {
                 Netherlands (NL)
               </li>
             </TypographyList>
+            <div className={cn("py-2")}></div>
             <div className={cn("flex justify-center")}>
               <TypographyFigure
                 url={stackedBarChartForEmbodiedCarbonUrl}
@@ -460,9 +462,9 @@ function Help() {
               only include Spain (‘SP) and Portugal (‘PT’), no data will be
               shown until the filter by region is reset.
             </TypographyP>
-          </Section>
+          </SectionForDoc>
 
-          <Section className={cn("border-none shadow-none")}>
+          <SectionForDoc>
             <TypographyH3>Building Type</TypographyH3>
             <TypographyP>
               As a main distinction of building types, users can select to show
@@ -473,9 +475,9 @@ function Help() {
               runs for illustration purposes. It instead shows ‘Residential’ and
               ‘Non-residential’.]
             </TypographyMuted>
-          </Section>
+          </SectionForDoc>
 
-          <Section className={cn("border-none shadow-none")}>
+          <SectionForDoc>
             <TypographyH3>Building Subtype</TypographyH3>
             <TypographyP>
               Within the two main building types (residential, commercial),
@@ -492,9 +494,9 @@ function Help() {
               runs for illustration purposes. It instead only shows three
               building subtypes: SFH, MFH, OFF.]
             </TypographyMuted>
-          </Section>
+          </SectionForDoc>
 
-          <Section className={cn("border-none shadow-none")}>
+          <SectionForDoc>
             <TypographyH3>Element Class</TypographyH3>
             <TypographyP>
               Users can select to filter results by building element class. The
@@ -503,9 +505,9 @@ function Help() {
               openings (e.g., windows), Internal openings (e.g., doors),
               Staircases, Electrical services, Technical services.
             </TypographyP>
-          </Section>
+          </SectionForDoc>
 
-          <Section className={cn("border-none shadow-none")}>
+          <SectionForDoc>
             <TypographyH3>Material Class</TypographyH3>
             <TypographyP>
               Various materials have been included in the modelling underlying
@@ -526,9 +528,9 @@ function Help() {
               after use, respectively. The category can be deselected, if
               desired.
             </TypographyP>
-          </Section>
+          </SectionForDoc>
 
-          <Section className={cn("border-none shadow-none")}>
+          <SectionForDoc>
             <TypographyH3>Building Stock Activity</TypographyH3>
             <TypographyP>
               Users can select to filter results by building stock activities,
@@ -536,9 +538,9 @@ function Help() {
               Selection is available for: Existing buildings, New buildings,
               Refurbishment.
             </TypographyP>
-          </Section>
+          </SectionForDoc>
 
-          <Section className={cn("border-none shadow-none")}>
+          <SectionForDoc>
             <TypographyH3>Whole Life Cycle Stages</TypographyH3>
             <TypographyP>
               Users can further distinguish results by the corresponding whole
@@ -547,11 +549,11 @@ function Help() {
               carbon, and Use phase operational carbon. See an embodied carbon
               filtered example in Figure 2.
             </TypographyP>
-          </Section>
-        </Section>
-        <Section className={cn("border-none shadow-none")}>
+          </SectionForDoc>
+        </SectionForDoc>
+        <SectionForDoc>
           <TypographyH2>Visualization types</TypographyH2>
-          <Section className={cn("border-none shadow-none")}>
+          <SectionForDoc>
             <TypographyP>
               At the very top of the visualization settings, users can select
               the type of chart or table through which the results should be
@@ -559,8 +561,8 @@ function Help() {
               Chart, Stacked Bar Chart, or Table – see examples in Figure 1,
               Figure 2, Figure 3, and Figure 4.
             </TypographyP>
-          </Section>
-          <Section className={cn("border-none shadow-none")}>
+          </SectionForDoc>
+          <SectionForDoc>
             <TypographyH3>Stacked Area Chart</TypographyH3>
             <TypographyP>
               Best for visualizing how selected categories evolve over time.
@@ -571,8 +573,8 @@ function Help() {
               to seamlessly connect the different data points (i.e. 5-year
               steps) and provide a smooth appearance.
             </TypographyP>
-          </Section>
-          <Section className={cn("border-none shadow-none")}>
+          </SectionForDoc>
+          <SectionForDoc>
             <TypographyH3>Line Chart</TypographyH3>
             <TypographyP>
               Best for investigating the evolution of absolute results across
@@ -581,8 +583,8 @@ function Help() {
               values only indicate the results for that subcategory, not
               cumulative totals.
             </TypographyP>
-          </Section>
-          <Section className={cn("border-none shadow-none")}>
+          </SectionForDoc>
+          <SectionForDoc>
             <TypographyH3>Stacked Bar Chart</TypographyH3>
             <TypographyP>
               Best for comparing categories at a specific point in time.
@@ -593,8 +595,8 @@ function Help() {
               that it enables a clear distinction of the situation in a selected
               year.
             </TypographyP>
-          </Section>
-          <Section className={cn("border-none shadow-none")}>
+          </SectionForDoc>
+          <SectionForDoc>
             <TypographyH3>Table</TypographyH3>
             <TypographyP>
               Best for an exact and comprehensive view of the data, optional
@@ -608,18 +610,19 @@ function Help() {
               select to sort data in ascending or descending order for each of
               the columns – see Figure 3.
             </TypographyP>
+            <div className={cn("py-2")}></div>
             <div className={cn("flex justify-center")}>
               <TypographyFigure
                 url={tableWithFilteredEmbodiedCaronUrl}
-                caption="Figure 3: Table with filtered embodied carbon data of new buildings per country, ready for download. "
+                caption="Figure 3: Table with filtered embodied carbon data of new buildings per country, ready for download."
               />
             </div>
-          </Section>
-        </Section>
+          </SectionForDoc>
+        </SectionForDoc>
 
-        <Section className={cn("border-none shadow-none")}>
+        <SectionForDoc>
           <TypographyH2>Visualization settings</TypographyH2>
-          <Section className={cn("border-none shadow-none")}>
+          <SectionForDoc>
             <TypographyH3>
               Indicator (GHG emissions and carbon removals)
             </TypographyH3>
@@ -631,8 +634,8 @@ function Help() {
               sub-indicators GWP fossil, GWP bio, and GWP luluc (acc. EN
               15804+A2).
             </TypographyP>
-          </Section>
-          <Section className={cn("border-none shadow-none")}>
+          </SectionForDoc>
+          <SectionForDoc>
             <TypographyH3>Per (reference unit)</TypographyH3>
             <TypographyMuted>
               [This functionality becomes active once the newly generated
@@ -645,8 +648,8 @@ function Help() {
               totals (‘none’) or visualize results per square meter or per
               capita.
             </TypographyP>
-          </Section>
-          <Section className={cn("border-none shadow-none")}>
+          </SectionForDoc>
+          <SectionForDoc>
             <TypographyH3>Breakdown by (contribution analysis)</TypographyH3>
             <TypographyP>
               Users can select how results should be broken down, meaning they
@@ -664,8 +667,8 @@ function Help() {
               stages, respectively. If users wish to exclude or include certain
               values, they can do so via the filter settings.
             </TypographyP>
-          </Section>
-          <Section className={cn("border-none shadow-none")}>
+          </SectionForDoc>
+          <SectionForDoc>
             <TypographyH3>Display (optional scenario comparison)</TypographyH3>
             <TypographyMuted>
               [This functionality becomes active once the newly generated
@@ -676,20 +679,20 @@ function Help() {
               either scenario A, scenario B, or to compare both scenarios
               side-by-side for intuitive visual investigation and analysis.
             </TypographyP>
-          </Section>
-        </Section>
+          </SectionForDoc>
+        </SectionForDoc>
 
-        <Section className={cn("border-none shadow-none")}>
+        <SectionForDoc>
           <TypographyH2>Output section</TypographyH2>
-          <Section className={cn("border-none shadow-none")}>
+          <SectionForDoc>
             <TypographyH3>Chart title</TypographyH3>
             <TypographyP>
               The chart title is automatically generated based on the current
               selections in scenario, filters, and visualization settings,
               respectively.
             </TypographyP>
-          </Section>
-          <Section className={cn("border-none shadow-none")}>
+          </SectionForDoc>
+          <SectionForDoc>
             <TypographyH3>Chart area</TypographyH3>
             <TypographyP>
               The chart area is automatically generated based on the selected
@@ -701,8 +704,8 @@ function Help() {
               adjust automatically to changes in the filter or visualization
               settings.
             </TypographyP>
-          </Section>
-          <Section className={cn("border-none shadow-none")}>
+          </SectionForDoc>
+          <SectionForDoc>
             <TypographyH3>Color legend and tool-tip menu</TypographyH3>
             <TypographyP>
               The color legend at the bottom of the charts reflects the values
@@ -727,8 +730,8 @@ function Help() {
                 url={lineChartShowingColorAndTooltipUrl}
               />
             </div>
-          </Section>
-          <Section className={cn("border-none shadow-none")}>
+          </SectionForDoc>
+          <SectionForDoc>
             <TypographyH3>Export (Download as)</TypographyH3>
             <TypographyMuted>
               [This functionality becomes active once the newly generated
@@ -744,8 +747,8 @@ function Help() {
               charts or tables, the export takes into consideration the settings
               defined for scenarios, filters, and visualization, respectively.
             </TypographyP>
-          </Section>
-        </Section>
+          </SectionForDoc>
+        </SectionForDoc>
       </Section>
     </main>
   );

@@ -10,7 +10,7 @@ export function TypographyList({
   className,
 }: TypographyListProps) {
   return (
-    <ul className={cn("ml-6 list-disc [&>li]:mt-2", className)}>
+    <ul className={cn("list-disc md:ml-6 [&>li]:mt-2", className)}>
       {children}
       {items?.map((item, index) => <li key={index}>{item}</li>)}
     </ul>
