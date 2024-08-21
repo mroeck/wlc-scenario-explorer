@@ -1,7 +1,7 @@
 import type { Props } from "recharts/types/component/Legend";
 import { ColorCube } from "./ColorCube";
 import { cn, getColor } from "@/lib/utils";
-import { colors } from "../temp_data";
+import { colors } from "../colors";
 import {
   COLOR_LEGEND_TESTID,
   GRAPH_FONT_SIZE,
