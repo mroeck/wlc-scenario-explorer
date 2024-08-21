@@ -1,4 +1,4 @@
-import { ATTRIBUTE_OPTIONS_COLOR } from "@/routes/-index/components/data-section/temp_data";
+import { ATTRIBUTE_OPTIONS_COLOR } from "@/routes/-index/components/data-section/colors";
 import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
 import { z } from "zod";

@@ -4,12 +4,12 @@
   /!\
  */
 export const BREAKDOWN_BY_OBJ = {
-  region: "region",
+  region: "Region",
   country: "country",
   buildingUseType: "Building type",
   buildingUseSubtype: "Building subtype",
-  elementClass: "element class",
-  material: "material class",
+  elementClass: "Element Class",
+  material: "Material Class",
   // activityInOut: "flow type", temp: hidden for now
   activityType: "building stock activity",
   carbonCategory: "Whole life cycle stages",

@@ -27,13 +27,13 @@ class ColumnsEnumSchema(Enum):
 
 
 class AttributeEnumSchema(str, Enum):
-    STOCK_REGION_NAME = "region"
+    STOCK_REGION_NAME = "Region"
     COUNTRY_NAME = "country"
     STOCK_PROJECTION_YEAR = "stock projection year"
     BUILDING_USE_TYPE_NAME = "Building type"
     BUILDING_USE_SUBTYPE_NAME = "Building subtype"
-    ELEMENT_CLASS_GENERIC_NAME = "element class"
-    MATERIAL_NAME_JRC_CDW = "material class"
+    ELEMENT_CLASS_GENERIC_NAME = "Element Class"
+    MATERIAL_NAME_JRC_CDW = "Material Class"
     ACTIVITY_IN_OUT = "flow type"
     STOCK_ACTIVITY_TYPE_NAME = "building stock activity"
     CARBON_CATEGORY = "Whole life cycle stages"

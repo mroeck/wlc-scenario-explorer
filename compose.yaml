@@ -9,6 +9,8 @@ services:
         - VITE_API_URL=http://backend:8081
     ports:
       - "8080:8080"
+    environment:
+      - CI='true'
     healthcheck:
       test:
         [

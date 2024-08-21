@@ -6,6 +6,7 @@ import {
 } from "./shared_with_backend/schemas";
 import { z } from "zod";
 import { YEAR_KEY } from "./shared_with_backend/constants";
+import { ATTRIBUTE_OPTIONS_COLOR } from "@/routes/-index/components/data-section/colors";
 
 type FetchScenarioRowsArgs = {
   attribute: Attribute;
@@ -38,12 +39,7 @@ export async function fetchScenarioRowsAggregated({
   return data;
 }
 
-export async function fetchFilters() {
-  const url = `${env.PUBLIC_API_URL}/filters`;
-  const response = await fetch(url, {
-    method: "POST",
-  });
-  const dataRaw = (await response.json()) as unknown;
+export function fetchFilters() {
   const YearAllSchema = z.number().int().array();
   const FiltersOptionsSchema = FiltersSchema.omit({
     From: true,
@@ -51,6 +47,19 @@ export async function fetchFilters() {
   }).extend({
     [YEAR_KEY]: YearAllSchema,
   });
-  const data = FiltersOptionsSchema.required().parse(dataRaw);
-  return data;
+
+  const resultRaw: Record<string, string[] | number[]> = {};
+  for (const keyUnTyped in ATTRIBUTE_OPTIONS_COLOR) {
+    const key = keyUnTyped as keyof typeof ATTRIBUTE_OPTIONS_COLOR;
+
+    resultRaw[key] = Object.keys(ATTRIBUTE_OPTIONS_COLOR[key]);
+  }
+
+  resultRaw["stock_projection_year"] = [
+    2020, 2025, 2030, 2035, 2040, 2045, 2050,
+  ];
+
+  const result = FiltersOptionsSchema.required().parse(resultRaw);
+
+  return result;
 }
