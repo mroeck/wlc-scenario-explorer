@@ -18,7 +18,7 @@ import { waitLoadingEnds } from "@tests/functions";
 test.describe("data viz", () => {
   test.skip(({ isMobile }) => isMobile, "Desktop only!");
   test.beforeEach(async ({ page }) => {
-    await page.goto(ROUTES.DASHBOARD);
+     await page.goto(ROUTES.DASHBOARD + "?animation=false");
     await waitLoadingEnds({ page });
   });
 

@@ -16,7 +16,7 @@ test.describe("search params", () => {
   test.skip(({ isMobile }) => isMobile, "Desktop only!");
 
   test.beforeEach(async ({ page }) => {
-    await page.goto(ROUTES.DASHBOARD);
+    await page.goto(ROUTES.DASHBOARD + "?animation=false");
   });
 
   test("url search params on first render", async ({ page }) => {
@@ -28,6 +28,7 @@ test.describe("search params", () => {
     const searchParams = new URL(page.url()).searchParams;
 
     for (const [param, value] of searchParams.entries()) {
+      if (param === "animation") continue;
       expect(Object.keys(DEFAULT_SEARCH_PARAMS)).toContain(param);
       const ref =
         DEFAULT_SEARCH_PARAMS[param as keyof typeof DEFAULT_SEARCH_PARAMS];

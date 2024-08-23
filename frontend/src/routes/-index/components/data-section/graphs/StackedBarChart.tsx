@@ -12,12 +12,18 @@ import {
 import { CustomTooltip } from "../CustomTooltip";
 import { cn, getColor, tickFormatter } from "@/lib/utils";
 import { type z } from "zod";
-import { GRAPH_FONT_SIZE, STACKED_BAR_CHART_TESTID } from "@/lib/constants";
+import {
+  GRAPH_FONT_SIZE,
+  ROUTES,
+  STACKED_BAR_CHART_TESTID,
+} from "@/lib/constants";
 import { YEAR_KEY } from "@/lib/shared_with_backend/constants";
 import type { ScenarioRowsAggregatedArraySchema } from "@/lib/schemas";
 import { CustomLegend } from "../Legend/CustomLegend";
 import type { Attribute, IndicatorUnit } from "@/lib/types";
-import { SHOULD_ANIMATE } from "@/lib/constants2";
+import { getRouteApi } from "@tanstack/react-router";
+
+const route = getRouteApi(ROUTES.DASHBOARD);
 
 type StackedBarChartProps = {
   data: z.infer<typeof ScenarioRowsAggregatedArraySchema>;
@@ -29,6 +35,8 @@ export const StackedBarChart = ({
   indicatorUnit: indicatorUnit,
   breakdownBy,
 }: StackedBarChartProps) => {
+  const { animation } = route.useSearch();
+
   const attributeOptions =
     data.length > 0
       ? Object.keys(data[0]).filter((key) => key !== YEAR_KEY)
@@ -73,7 +81,7 @@ export const StackedBarChart = ({
                     stroke={color}
                     fill={color}
                     fillOpacity="0.7"
-                    isAnimationActive={SHOULD_ANIMATE}
+                    isAnimationActive={animation}
                     barSize={45}
                   />
                 );

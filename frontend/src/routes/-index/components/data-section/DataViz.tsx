@@ -31,6 +31,7 @@ import { DataTable } from "./DataTable";
 import { SettingsDrawer } from "./SettingsDrawer";
 import type { Attribute, Indicator } from "@/lib/types";
 import { LineGraph } from "./graphs/LineChart";
+import { useRef } from "react";
 
 const route = getRouteApi(ROUTES.DASHBOARD);
 
@@ -118,6 +119,7 @@ function createTitle({
 }
 
 export const DataViz = () => {
+  const visualizationRef = useRef<HTMLDivElement>(null);
   const {
     attribute,
     display,
@@ -206,33 +208,41 @@ export const DataViz = () => {
             <DataVizForm />
           </div>
           <div className={cn("mt-auto")}>
-            <DownloadMenu />
+            {dataA && visualizationRef.current && (
+              <DownloadMenu data={dataA} domTarget={visualizationRef.current} />
+            )}
           </div>
         </div>
-        <div className={cn("pb-5 pt-12 text-center text-base font-semibold")}>
-          {createTitle({
-            attribute,
-            scenarioA: scenarioAForTitle,
-            scenarioB: scenarioBForTitle,
-            unit: indicator,
-          })}
-        </div>
+        <div className={cn("pt-12")}></div>
+        <div
+          ref={visualizationRef}
+          className={cn("flex flex-1 flex-col bg-white")}
+        >
+          <div className={cn("pb-5 text-center text-base font-semibold")}>
+            {createTitle({
+              attribute,
+              scenarioA: scenarioAForTitle,
+              scenarioB: scenarioBForTitle,
+              unit: indicator,
+            })}
+          </div>
 
-        {tabs.map((tab) => (
-          <TabsContent
-            key={tab.name}
-            value={tab.name}
-            className={cn("relative min-h-0 flex-1")}
-          >
-            {!isLoadingA && errorA && <ErrorOccurred />}
-            {errorA == null && dataA?.length === 0 && <NoDataFound />}
-            {errorA == null &&
-              dataA &&
-              dataA.length > 0 &&
-              tab.content({ data: dataA, indicator, breakdownBy: attribute })}
-            {isLoadingA && <LoadingSpinner />}
-          </TabsContent>
-        ))}
+          {tabs.map((tab) => (
+            <TabsContent
+              key={tab.name}
+              value={tab.name}
+              className={cn("relative min-h-0 flex-1")}
+            >
+              {!isLoadingA && errorA && <ErrorOccurred />}
+              {errorA == null && dataA?.length === 0 && <NoDataFound />}
+              {errorA == null &&
+                dataA &&
+                dataA.length > 0 &&
+                tab.content({ data: dataA, indicator, breakdownBy: attribute })}
+              {isLoadingA && <LoadingSpinner />}
+            </TabsContent>
+          ))}
+        </div>
       </Tabs>
     </Section>
   );

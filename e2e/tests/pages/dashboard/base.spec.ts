@@ -10,7 +10,7 @@ import { testPageScreenshot } from "@tests/functions";
 
 test.describe("dashboard", () => {
   test.beforeEach(async ({ page }) => {
-    await page.goto(ROUTES.DASHBOARD);
+    await page.goto(ROUTES.DASHBOARD + "?animation=false");
   });
 
   test("has tab title and data header", async ({ page }) => {
