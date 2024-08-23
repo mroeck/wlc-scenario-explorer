@@ -21,7 +21,7 @@ import type { z } from "zod";
 test.describe("filters", () => {
   test.skip(({ isMobile }) => isMobile, "Desktop only!");
   test.beforeEach(async ({ page }) => {
-    await page.goto(ROUTES.DASHBOARD);
+    await page.goto(ROUTES.DASHBOARD + "?animation=false");
   });
 
   test("warning message when no data retrieved", async ({ page }) => {
@@ -182,7 +182,7 @@ test.describe("filters", () => {
     for (let i = 0; i < comboboxCount; i++) {
       const id = i + 1;
       test(`Filter ${id.toString()} does not error`, async ({ page }) => {
-        await page.goto(ROUTES.DASHBOARD);
+        await page.goto(ROUTES.DASHBOARD + "?animation=false");
         const filtersTab = page.getByRole("tab", { name: FILTERS_TAB });
         await filtersTab.click();
         await waitLoadingEnds({ page });

@@ -8,7 +8,7 @@ import { test, expect } from "@playwright/test";
 
 test.describe("header navigation", () => {
   test.beforeEach(async ({ page }) => {
-    await page.goto(ROUTES.DASHBOARD);
+    await page.goto(ROUTES.DASHBOARD + "?animation=false");
   });
 
   test("has project name", async ({ page }) => {

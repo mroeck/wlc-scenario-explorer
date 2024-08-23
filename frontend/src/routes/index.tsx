@@ -34,6 +34,7 @@ const SearchParamsSchema = z.object({
   display: DisplaySchema.catch(DEFAULT_DISPLAY),
   scenarioA: ScenarioSchema.catch(DEFAULT_SCENARIO),
   scenarioB: ScenarioSchema.optional().catch(undefined),
+  animation: z.boolean().optional().catch(undefined),
 });
 
 export const Route = createFileRoute(ROUTES.DASHBOARD)({

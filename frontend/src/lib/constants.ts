@@ -97,3 +97,6 @@ export const WEB_APP_URL = "https://ae-scenario-explorer.cloud.set.kuleuven.be";
 export const DOI_URL = "https://doi.org/10.5281/zenodo.13315281";
 export const MOSELEY_EMAIL = "philippe.moseley@ec.europa.eu";
 export const ROECK_EMAIL = "martin.roeck@kuleuven.be";
+export const imageFormats = ["png", "jpeg", "pdf", "svg"] as const;
+export const spreadsheetFormats = ["csv", "xlsx"] as const;
+export const DOWNLOAD_AS_TESTID = "DOWNLOAD_AS_TESTID";

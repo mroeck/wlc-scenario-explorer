@@ -9,7 +9,7 @@ import { test, expect } from "@playwright/test";
 
 test.describe("scenario selection", () => {
   test.beforeEach(async ({ page }) => {
-    await page.goto(ROUTES.DASHBOARD);
+     await page.goto(ROUTES.DASHBOARD + "?animation=false");
   });
 
   test("selecting a scenario update the display menu", async ({
