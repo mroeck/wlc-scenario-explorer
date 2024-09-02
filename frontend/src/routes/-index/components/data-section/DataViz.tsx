@@ -12,6 +12,7 @@ import {
   ROUTES,
   SCENARIO_A_ONLY,
   SCENARIO_B_ONLY,
+  TAB_CONTENT_TESTID,
   UNIT_TESTID,
 } from "@/lib/constants";
 import { useQuery } from "@tanstack/react-query";
@@ -32,6 +33,7 @@ import { SettingsDrawer } from "./SettingsDrawer";
 import type { Attribute, Indicator } from "@/lib/types";
 import { LineGraph } from "./graphs/LineChart";
 import { useRef } from "react";
+import { ComparisonSlider } from "./ComparisonSlider";
 
 const route = getRouteApi(ROUTES.DASHBOARD);
 
@@ -69,12 +71,6 @@ const tabs = [
         indicatorUnit={INDICATOR_TO_UNIT[indicator]}
         breakdownBy={breakdownBy}
       />
-    ),
-  },
-  {
-    name: "Table",
-    content: ({ data, indicator }: ContentProps) => (
-      <DataTable data={data} indicator={INDICATOR_TO_UNIT[indicator]} />
     ),
   },
 ] as const;
@@ -120,14 +116,17 @@ function createTitle({
 
 export const DataViz = () => {
   const visualizationRef = useRef<HTMLDivElement>(null);
-  const {
-    attribute,
-    display,
-    indicator: indicator,
-    filters,
-    scenarioA,
-    scenarioB,
-  } = route.useSearch();
+  const { attribute, display, indicator, filters, scenarioA, scenarioB } =
+    route.useSearch({
+      select: (search) => ({
+        attribute: search.attribute,
+        display: search.display,
+        indicator: search.indicator,
+        filters: search.filters,
+        scenarioA: search.scenarioA,
+        scenarioB: search.scenarioB,
+      }),
+    });
   const scenarioAForTitle = display !== SCENARIO_B_ONLY ? scenarioA : undefined;
   const scenarioBForTitle = display !== SCENARIO_A_ONLY ? scenarioB : undefined;
 
@@ -195,6 +194,13 @@ export const DataViz = () => {
                   {tab.name}
                 </TabsTrigger>
               ))}
+              <TabsTrigger
+                key="Table"
+                value="Table"
+                className={cn("w-full md:w-auto")}
+              >
+                Table
+              </TabsTrigger>
             </TabsList>
           </div>
           <div className={cn("lg:hidden")}>
@@ -218,7 +224,7 @@ export const DataViz = () => {
           ref={visualizationRef}
           className={cn("flex flex-1 flex-col bg-white")}
         >
-          <div className={cn("pb-5 text-center text-base font-semibold")}>
+          <div className={cn("text-center text-base font-semibold")}>
             {createTitle({
               attribute,
               scenarioA: scenarioAForTitle,
@@ -226,22 +232,57 @@ export const DataViz = () => {
               unit: indicator,
             })}
           </div>
+          <div className="pb-10"></div>
 
           {tabs.map((tab) => (
             <TabsContent
               key={tab.name}
               value={tab.name}
               className={cn("relative min-h-0 flex-1")}
+              data-testid={TAB_CONTENT_TESTID}
             >
               {!isLoadingA && errorA && <ErrorOccurred />}
               {errorA == null && dataA?.length === 0 && <NoDataFound />}
-              {errorA == null &&
-                dataA &&
-                dataA.length > 0 &&
-                tab.content({ data: dataA, indicator, breakdownBy: attribute })}
+              {errorA == null && dataA && dataA.length > 0 && (
+                <ComparisonSlider
+                  items={[
+                    {
+                      label: "Scenario A",
+                      component: tab.content({
+                        data: dataA,
+                        indicator,
+                        breakdownBy: attribute,
+                      }),
+                    },
+                    {
+                      label: "Scenario B",
+                      component: tab.content({
+                        data: dataA,
+                        indicator,
+                        breakdownBy: attribute,
+                      }),
+                    },
+                  ]}
+                />
+              )}
               {isLoadingA && <LoadingSpinner />}
             </TabsContent>
           ))}
+          <TabsContent
+            key="Table"
+            value="Table"
+            className={cn("relative min-h-0 flex-1")}
+          >
+            {!isLoadingA && errorA && <ErrorOccurred />}
+            {errorA == null && dataA?.length === 0 && <NoDataFound />}
+            {errorA == null && dataA && dataA.length > 0 && (
+              <DataTable
+                data={dataA}
+                indicator={INDICATOR_TO_UNIT[indicator]}
+              />
+            )}
+            {isLoadingA && <LoadingSpinner />}
+          </TabsContent>
         </div>
       </Tabs>
     </Section>

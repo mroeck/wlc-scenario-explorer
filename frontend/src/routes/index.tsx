@@ -24,7 +24,7 @@ import { DisplaySchema } from "@/lib/schemas";
 import { Settings } from "./-index/components/side-section/Settings";
 import { useQuery } from "@tanstack/react-query";
 import { fetchFilters } from "@/lib/queries";
-import { useEffect, useState } from "react";
+import { memo, useEffect, useState } from "react";
 
 const SearchParamsSchema = z.object({
   filters: FiltersSchema.optional(),
@@ -37,12 +37,7 @@ const SearchParamsSchema = z.object({
   animation: z.boolean().optional().catch(undefined),
 });
 
-export const Route = createFileRoute(ROUTES.DASHBOARD)({
-  component: () => <Dashboard />,
-  validateSearch: SearchParamsSchema,
-});
-
-function Dashboard() {
+const Dashboard = memo(function Dashboard() {
   const [enabled, setEnabled] = useState(true);
   // this prevent the user from seeing a loading spinner when opening the filters tab
   useQuery({
@@ -73,4 +68,9 @@ function Dashboard() {
       <DataViz />
     </main>
   );
-}
+});
+
+export const Route = createFileRoute(ROUTES.DASHBOARD)({
+  component: () => <Dashboard />,
+  validateSearch: SearchParamsSchema,
+});

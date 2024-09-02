@@ -27,7 +27,12 @@ export type CustomLegendProps = Pick<Props, "payload"> & {
   className: string;
 };
 export const CustomLegend = ({ payload, className }: CustomLegendProps) => {
-  const { display, attribute } = route.useSearch();
+  const { display, attribute } = route.useSearch({
+    select: (search) => ({
+      display: search.display,
+      attribute: search.attribute,
+    }),
+  });
   if (payload == null) return null;
 
   const data = removeDuplicates(payload);

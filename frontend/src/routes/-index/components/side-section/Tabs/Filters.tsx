@@ -131,7 +131,9 @@ function formatForBackend({ filters }: FormatForBackendArgs) {
 }
 
 export const Filters = () => {
-  const { filters } = route.useSearch();
+  const filters = route.useSearch({
+    select: (search) => search.filters,
+  });
   const { isLoading, error, data } = useQuery({
     queryKey: ["filters"],
     queryFn: () => fetchFilters(),

@@ -35,7 +35,11 @@ export const LineGraph = ({
   indicatorUnit: unit,
   breakdownBy,
 }: LineGraphProps) => {
-  const { animation } = route.useSearch();
+  const { animation } = route.useSearch({
+    select: (search) => ({
+      animation: search.animation,
+    }),
+  });
   const attributeOptions =
     data.length > 0
       ? Object.keys(data[0]).filter((key) => key !== YEAR_KEY)
