@@ -100,3 +100,4 @@ export const ROECK_EMAIL = "martin.roeck@kuleuven.be";
 export const imageFormats = ["png", "jpeg", "pdf", "svg"] as const;
 export const spreadsheetFormats = ["csv", "xlsx"] as const;
 export const DOWNLOAD_AS_TESTID = "DOWNLOAD_AS_TESTID";
+export const TAB_CONTENT_TESTID = "TAB_CONTENT_TESTID";

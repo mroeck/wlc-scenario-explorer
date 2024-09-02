@@ -61,7 +61,16 @@ const DataVizFormSchema = z.object<{
 export const DataVizForm = () => {
   const navigate = route.useNavigate();
   const { attribute, indicator, unit, display, scenarioA, scenarioB } =
-    route.useSearch();
+    route.useSearch({
+      select: (search) => ({
+        attribute: search.attribute,
+        indicator: search.indicator,
+        unit: search.unit,
+        display: search.display,
+        scenarioA: search.scenarioA,
+        scenarioB: search.scenarioB,
+      }),
+    });
   const form = useForm<z.infer<typeof DataVizFormSchema>>({
     resolver: zodResolver(DataVizFormSchema),
     defaultValues: {
@@ -262,7 +271,10 @@ export const DataVizForm = () => {
                   <SelectItem value={SCENARIO_B_ONLY}>
                     {`${scenarioB ?? "Scenario B"} only`}
                   </SelectItem>
-                  <SelectItem value={SCENARIO_A_AND_B}>
+                  <SelectItem
+                    value={SCENARIO_A_AND_B}
+                    className="hidden sm:block"
+                  >
                     {`${scenarioA} VS ${scenarioB ?? "scenario B"}`}
                   </SelectItem>
                 </SelectContent>

@@ -4,6 +4,7 @@ import { lazy, Suspense } from "react";
 import { Header } from "@/components/Header";
 import { cn } from "@/lib/utils";
 import { Toaster } from "@/components/ui/toaster";
+import { useRouterState } from "@tanstack/react-router";
 
 const TanStackRouterDevtools = env.PUBLIC_DEBUG
   ? lazy(() =>
@@ -14,14 +15,22 @@ const TanStackRouterDevtools = env.PUBLIC_DEBUG
   : () => null;
 
 export const Route = createRootRoute({
-  component: () => (
+  component: () => <UserInterface />,
+});
+
+function UserInterface() {
+  const currentRoute = useRouterState({
+    select: (state) => state.location.pathname,
+  });
+
+  return (
     <div className={cn("mx-auto h-max max-w-screen-2xl bg-accent")}>
-      <Header />
+      <Header currentRoute={currentRoute} />
       <Outlet />
       <Suspense>
         <TanStackRouterDevtools initialIsOpen={false} />
       </Suspense>
       <Toaster />
     </div>
-  ),
-});
+  );
+}

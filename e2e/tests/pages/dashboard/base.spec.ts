@@ -23,6 +23,7 @@ test.describe("dashboard", () => {
     await expect(
       page
         .getByTestId(STACKED_AREA_CHART_TESTID)
+        .first()
         .getByText(DEFAULT_UNIT_MINIMIZED),
     ).toBeVisible({
       timeout: 10_000,

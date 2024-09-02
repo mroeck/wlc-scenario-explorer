@@ -35,7 +35,11 @@ export const StackedBarChart = ({
   indicatorUnit: indicatorUnit,
   breakdownBy,
 }: StackedBarChartProps) => {
-  const { animation } = route.useSearch();
+  const { animation } = route.useSearch({
+    select: (search) => ({
+      animation: search.animation,
+    }),
+  });
 
   const attributeOptions =
     data.length > 0

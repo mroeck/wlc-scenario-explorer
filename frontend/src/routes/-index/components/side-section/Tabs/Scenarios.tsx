@@ -41,7 +41,13 @@ const formSchema = z.object({
 });
 
 export const Scenarios = () => {
-  const { scenarioA, scenarioB, display } = route.useSearch();
+  const { scenarioA, scenarioB, display } = route.useSearch({
+    select: (search) => ({
+      scenarioA: search.scenarioA,
+      scenarioB: search.scenarioB,
+      display: search.display,
+    }),
+  });
   const navigate = route.useNavigate();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),

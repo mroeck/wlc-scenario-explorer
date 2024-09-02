@@ -1,7 +1,6 @@
 import {
   ROUTES,
   BREAKDOWN_BY_TESTID,
-  STACKED_AREA_CHART_TESTID,
   NO_DATA_FOUND,
   STACKED_BAR_CHART_TESTID,
   DATA_TABLE_TESTID,
@@ -15,6 +14,7 @@ import {
 } from "@/lib/shared_with_backend/constants";
 import type { FiltersSchema } from "@/lib/shared_with_backend/schemas";
 import { test, expect } from "@playwright/test";
+import { GRAPH_LOCATOR } from "@tests/constants";
 import { waitLoadingEnds } from "@tests/functions";
 import type { z } from "zod";
 
@@ -62,9 +62,7 @@ test.describe("filters", () => {
     await page.getByRole("option", { name: "Concrete" }).click();
 
     await page.bringToFront();
-    await expect(
-      page.getByTestId(STACKED_AREA_CHART_TESTID),
-    ).toHaveScreenshot();
+    await expect(page.locator(GRAPH_LOCATOR)).toHaveScreenshot();
 
     await page.getByRole("tab", { name: "Stacked Bar Chart" }).click();
     await expect(page.getByTestId(STACKED_BAR_CHART_TESTID)).toHaveScreenshot();
@@ -86,12 +84,10 @@ test.describe("filters", () => {
     await page.getByRole("option", { name: "IT" }).click();
 
     await page.bringToFront();
-    await expect(
-      page.getByTestId(STACKED_AREA_CHART_TESTID),
-    ).toHaveScreenshot();
+    await expect(page.locator(GRAPH_LOCATOR)).toHaveScreenshot();
 
     await page.getByRole("tab", { name: "Stacked Bar Chart" }).click();
-    await expect(page.getByTestId(STACKED_BAR_CHART_TESTID)).toHaveScreenshot();
+    await expect(page.locator(GRAPH_LOCATOR)).toHaveScreenshot();
 
     await page.getByRole("tab", { name: "Table" }).click();
     await expect(page.getByTestId(DATA_TABLE_TESTID)).toHaveScreenshot();
@@ -199,7 +195,7 @@ test.describe("filters", () => {
         await waitLoadingEnds({ page });
 
         const errorMessage = page.getByText(ERROR_OCCURED);
-        const graph = page.getByTestId(STACKED_AREA_CHART_TESTID);
+        const graph = page.locator(GRAPH_LOCATOR);
         await expect(errorMessage).not.toBeVisible();
         await expect(
           graph.getByText(xAxisValue, { exact: true }),
