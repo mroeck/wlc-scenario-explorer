@@ -21,7 +21,7 @@ type AttributesEnum = [
 ];
 export const ATTRIBUTES = Object.values(BREAKDOWN_BY_OBJ) as AttributesEnum;
 
-export const SCENARIOS_OPTIONS = [
+export const PREDEFINED_SCNEARIOS = [
   "Example scenario (for illustration purpose only)",
   "Current policy optimistic scenario",
   "Current policy conservative scenario",
@@ -30,6 +30,10 @@ export const SCENARIOS_OPTIONS = [
   "APOL + Shift",
   "APOL + Avoid",
   "APOL + A+S+I",
+] as const;
+
+export const SCENARIOS_OPTIONS = [
+  ...PREDEFINED_SCNEARIOS,
   "Custom scenario results",
 ] as const;
 

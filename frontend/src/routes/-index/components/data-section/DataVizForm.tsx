@@ -158,7 +158,7 @@ export const DataVizForm = () => {
           name="unit"
           render={({ field }) => (
             <FormItem data-testid={SELECT_UNIT_TESTID}>
-              <FormLabel className={cn("font-medium")}>Per:</FormLabel>
+              <FormLabel className="font-medium">Divided by:</FormLabel>
               <Select
                 onValueChange={(value) => {
                   onSelectChange({

@@ -131,7 +131,10 @@ export const ComparisonSlider: React.FC<ComparisonSliderProps> = ({
           style={{ width: sliderValues[0].toString() + "%" }}
         >
           <div className="absolute right-0 top-0 w-fit text-nowrap rounded-l-lg border-2 border-r-0 border-solid bg-white px-2 py-1 text-sm">
-            <div className="absolute right-0 top-[-2px] h-[calc(100%+4px)]  border-r-2 border-solid border-black"></div>
+            <div
+              className="absolute right-0 top-[-2px] h-[calc(100%+4px)]  border-r-2 border-solid"
+              style={{ borderColor: "hsl(223 0% 40%)" }}
+            ></div>
             {leftSideItem.label}
           </div>
           <div className="absolute right-0 top-0 w-fit translate-x-full text-nowrap rounded-r-lg border-2 border-l-0 bg-white px-2 py-1 text-sm">
@@ -168,7 +171,10 @@ export const ComparisonSlider: React.FC<ComparisonSliderProps> = ({
           >
             {leftSideItem.component}
           </div>
-          <div className="absolute right-0 top-0 hidden h-full border-r-2 border-solid border-black sm:block"></div>
+          <div
+            className="absolute right-0 top-0 hidden h-full border-r-2 border-solid sm:block"
+            style={{ borderColor: "hsl(223 0% 40%)" }}
+          ></div>
         </div>
         <Slider
           className="absolute left-[-15px] top-1/2 z-10 hidden w-[calc(100%+28px)] origin-center sm:block"
