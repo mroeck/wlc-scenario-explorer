@@ -28,7 +28,10 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { SelectMenuStyle } from "../../data-section/SelectMenuStyle";
 import { ResetButton } from "../components/ResetButton";
-import { SCENARIOS_OPTIONS } from "@/lib/shared_with_backend/constants";
+import {
+  PREDEFINED_SCNEARIOS,
+  SCENARIOS_OPTIONS,
+} from "@/lib/shared_with_backend/constants";
 import { ScenarioSchema } from "@/lib/shared_with_backend/schemas";
 import { ScenarioParameters } from "../components/ScenarioParameters";
 import { useEffect } from "react";
@@ -120,7 +123,7 @@ export const Scenarios = () => {
               render={({ field }) => (
                 <FormItem>
                   <FormLabel className={cn("font-medium")}>
-                    Scenario A:
+                    Primary scenario:
                   </FormLabel>
                   <Select
                     onValueChange={(value) => {
@@ -156,7 +159,6 @@ export const Scenarios = () => {
                     <SelectContent>
                       {SCENARIOS_OPTIONS.map((scenario) => (
                         <SelectItem key={scenario} value={scenario}>
-                          {/* temp: default scenario should be "example" to not confuse the user */}
                           {scenario}
                         </SelectItem>
                       ))}
@@ -168,7 +170,7 @@ export const Scenarios = () => {
             <div className={cn("px-2")}>
               <div className={cn("flex justify-between")}>
                 <span className={cn("text-sm font-medium underline")}>
-                  Modify Parameters:
+                  Customize Parameters:
                 </span>
               </div>
               <ScenarioParameters />
@@ -179,7 +181,9 @@ export const Scenarios = () => {
             name="scenarioB"
             render={({ field }) => (
               <FormItem>
-                <FormLabel className={cn("font-medium")}>Scenario B:</FormLabel>
+                <FormLabel className={cn("font-medium")}>
+                  Compare with scenario:
+                </FormLabel>
                 <Select
                   onValueChange={(value) => {
                     onSelectChange({
@@ -212,7 +216,7 @@ export const Scenarios = () => {
                     </SelectMenuStyle>
                   </FormControl>
                   <SelectContent>
-                    {SCENARIOS_OPTIONS.map((scenario) => (
+                    {PREDEFINED_SCNEARIOS.map((scenario) => (
                       <SelectItem key={scenario} value={scenario}>
                         {scenario}
                       </SelectItem>
