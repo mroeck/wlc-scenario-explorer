@@ -26,6 +26,9 @@ type ComparisonSliderProps = {
 export const ComparisonSlider: React.FC<ComparisonSliderProps> = ({
   items,
 }) => {
+  const leftSideItem = items[0];
+  const rightSideItem = items[1];
+
   const navigate = route.useNavigate();
   const display = route.useSearch({
     select: (search) => search.display,
@@ -124,50 +127,47 @@ export const ComparisonSlider: React.FC<ComparisonSliderProps> = ({
     <div className="flex flex-col items-center space-y-4 md:h-full">
       <div className="relative size-full">
         <div
-          className="absolute left-0 top-0 flex h-8 w-full -translate-y-full"
+          className="absolute left-0 top-0 hidden h-8 w-full -translate-y-full sm:flex"
           style={{ width: sliderValues[0].toString() + "%" }}
         >
           <div className="absolute right-0 top-0 w-fit text-nowrap rounded-l-lg border-2 border-r-0 border-solid bg-white px-2 py-1 text-sm">
             <div className="absolute right-0 top-[-2px] h-[calc(100%+4px)]  border-r-2 border-solid border-black"></div>
-            {items[0].label}
+            {leftSideItem.label}
           </div>
           <div className="absolute right-0 top-0 w-fit translate-x-full text-nowrap rounded-r-lg border-2 border-l-0 bg-white px-2 py-1 text-sm">
-            {items[1].label}
+            {rightSideItem.label}
           </div>
         </div>
         <div className="size-full bg-white" ref={firstGraphRef}>
           <div
             className={cn(
               "relative size-full bg-white sm:visible",
-              display === SCENARIO_A_ONLY ? "visible" : "invisible",
+              display === SCENARIO_B_ONLY ? "visible" : "invisible",
             )}
           >
-            {items[0].component}
+            {rightSideItem.component}
           </div>
         </div>
         <div
           className={cn(
             "absolute inset-0 size-full overflow-x-hidden sm:visible",
-            display === SCENARIO_B_ONLY ? "visible" : "invisible",
           )}
           style={{ width: sliderValues[0].toString() + "%" }}
         >
-          {display !== SCENARIO_A_ONLY && (
-            <div
-              className="relative size-full bg-white"
-              ref={secondGraphRef}
-              style={
-                graphDimensions
-                  ? {
-                      width: graphDimensions.width,
-                      height: graphDimensions.height,
-                    }
-                  : {}
-              }
-            >
-              {items[1].component}
-            </div>
-          )}
+          <div
+            className={cn("relative size-full bg-white sm:block")}
+            ref={secondGraphRef}
+            style={
+              graphDimensions
+                ? {
+                    width: graphDimensions.width,
+                    height: graphDimensions.height,
+                  }
+                : {}
+            }
+          >
+            {leftSideItem.component}
+          </div>
           <div className="absolute right-0 top-0 hidden h-full border-r-2 border-solid border-black sm:block"></div>
         </div>
         <Slider

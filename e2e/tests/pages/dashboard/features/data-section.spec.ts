@@ -12,7 +12,7 @@ import {
   INDICATORS_UNITS,
 } from "@/lib/constants";
 import { test, expect } from "@playwright/test";
-import { GRAPH_LOCATOR } from "@tests/constants";
+import { ACTIVE_DATA_TAB_LOCATOR } from "@tests/constants";
 import { waitLoadingEnds } from "@tests/functions";
 
 test.describe("data viz", () => {
@@ -46,10 +46,10 @@ test.describe("data viz", () => {
     await expect(colorLegend.getByText("Single-family house")).toBeVisible();
 
     await page.bringToFront();
-    await expect(page.locator(GRAPH_LOCATOR)).toHaveScreenshot();
+    await expect(page.locator(ACTIVE_DATA_TAB_LOCATOR)).toHaveScreenshot();
 
     await page.getByRole("tab", { name: "Stacked Bar Chart" }).click();
-    await expect(page.locator(GRAPH_LOCATOR)).toHaveScreenshot();
+    await expect(page.locator(ACTIVE_DATA_TAB_LOCATOR)).toHaveScreenshot();
 
     await page.getByRole("tab", { name: "Table" }).click();
     await expect(page.getByTestId(DATA_TABLE_TESTID)).toHaveScreenshot();
@@ -67,7 +67,7 @@ test.describe("data viz", () => {
       .getByText("Material mass");
     const indicator1 = INDICATORS_UNITS[0];
     const indicator2 = INDICATORS_UNITS[1];
-    const graph = page.locator(GRAPH_LOCATOR);
+    const graph = page.locator(ACTIVE_DATA_TAB_LOCATOR);
 
     await expect(graph.getByText(indicator1)).toBeVisible();
 
@@ -81,13 +81,13 @@ test.describe("data viz", () => {
     await expect(graph.getByText(indicator1, { exact: true })).toBeVisible();
 
     await page.bringToFront();
-    await expect(page.locator(GRAPH_LOCATOR)).toHaveScreenshot();
+    await expect(page.locator(ACTIVE_DATA_TAB_LOCATOR)).toHaveScreenshot();
 
     await page.getByRole("tab", { name: "Stacked Bar Chart" }).click();
-    await expect(page.getByTestId(STACKED_BAR_CHART_TESTID)).toHaveScreenshot();
+    await expect(page.locator(ACTIVE_DATA_TAB_LOCATOR)).toHaveScreenshot();
 
     await page.getByRole("tab", { name: "Table" }).click();
-    await expect(page.getByTestId(DATA_TABLE_TESTID)).toHaveScreenshot();
+    await expect(page.locator(ACTIVE_DATA_TAB_LOCATOR)).toHaveScreenshot();
 
     await page.getByRole("tab", { name: "Stacked Bar Chart" }).click();
     await indicatorSelect.click();

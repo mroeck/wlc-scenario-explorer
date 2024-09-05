@@ -56,8 +56,7 @@ const Dashboard = memo(function Dashboard() {
       className={cn(
         "flex flex-col justify-stretch gap-5 py-primary-y sm:px-primary-x",
         "lg:flex-row",
-        "h-[calc(100dvh-72px)]", // = screen height - HEADER_HEIGHT
-        "max-h-[900px]",
+        "lg:h-[calc(100dvh-72px)]", // = screen height - HEADER_HEIGHT
         "min-h-[700px]",
       )}
     >
