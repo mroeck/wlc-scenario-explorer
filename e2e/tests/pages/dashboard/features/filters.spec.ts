@@ -14,7 +14,7 @@ import {
 } from "@/lib/shared_with_backend/constants";
 import type { FiltersSchema } from "@/lib/shared_with_backend/schemas";
 import { test, expect } from "@playwright/test";
-import { GRAPH_LOCATOR } from "@tests/constants";
+import { ACTIVE_DATA_TAB_LOCATOR } from "@tests/constants";
 import { waitLoadingEnds } from "@tests/functions";
 import type { z } from "zod";
 
@@ -62,13 +62,13 @@ test.describe("filters", () => {
     await page.getByRole("option", { name: "Concrete" }).click();
 
     await page.bringToFront();
-    await expect(page.locator(GRAPH_LOCATOR)).toHaveScreenshot();
+    await expect(page.locator(ACTIVE_DATA_TAB_LOCATOR)).toHaveScreenshot();
 
     await page.getByRole("tab", { name: "Stacked Bar Chart" }).click();
-    await expect(page.getByTestId(STACKED_BAR_CHART_TESTID)).toHaveScreenshot();
+    await expect(page.locator(ACTIVE_DATA_TAB_LOCATOR)).toHaveScreenshot();
 
     await page.getByRole("tab", { name: "Table" }).click();
-    await expect(page.getByTestId(DATA_TABLE_TESTID)).toHaveScreenshot();
+    await expect(page.locator(ACTIVE_DATA_TAB_LOCATOR)).toHaveScreenshot();
   });
 
   test("snapshot when multiple filter options are on", async ({ page }) => {
@@ -84,13 +84,13 @@ test.describe("filters", () => {
     await page.getByRole("option", { name: "IT" }).click();
 
     await page.bringToFront();
-    await expect(page.locator(GRAPH_LOCATOR)).toHaveScreenshot();
+    await expect(page.locator(ACTIVE_DATA_TAB_LOCATOR)).toHaveScreenshot();
 
     await page.getByRole("tab", { name: "Stacked Bar Chart" }).click();
-    await expect(page.locator(GRAPH_LOCATOR)).toHaveScreenshot();
+    await expect(page.locator(ACTIVE_DATA_TAB_LOCATOR)).toHaveScreenshot();
 
     await page.getByRole("tab", { name: "Table" }).click();
-    await expect(page.getByTestId(DATA_TABLE_TESTID)).toHaveScreenshot();
+    await expect(page.locator(ACTIVE_DATA_TAB_LOCATOR)).toHaveScreenshot();
   });
 
   test("reset all filters", async ({ page }) => {
@@ -195,7 +195,7 @@ test.describe("filters", () => {
         await waitLoadingEnds({ page });
 
         const errorMessage = page.getByText(ERROR_OCCURED);
-        const graph = page.locator(GRAPH_LOCATOR);
+        const graph = page.locator(ACTIVE_DATA_TAB_LOCATOR);
         await expect(errorMessage).not.toBeVisible();
         await expect(
           graph.getByText(xAxisValue, { exact: true }),

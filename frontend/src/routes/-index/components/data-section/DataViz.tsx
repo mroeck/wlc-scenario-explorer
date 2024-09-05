@@ -30,7 +30,7 @@ import { NoDataFound } from "@/components/NoDataFound";
 import { StackedBarChart } from "./graphs/StackedBarChart";
 import { DataTable } from "./DataTable";
 import { SettingsDrawer } from "./SettingsDrawer";
-import type { Attribute, Indicator } from "@/lib/types";
+import type { Attribute, Indicator, Scenario } from "@/lib/types";
 import { LineGraph } from "./graphs/LineChart";
 import { useRef } from "react";
 import { ComparisonSlider } from "./ComparisonSlider";
@@ -130,6 +130,14 @@ export const DataViz = () => {
   const scenarioAForTitle = display !== SCENARIO_B_ONLY ? scenarioA : undefined;
   const scenarioBForTitle = display !== SCENARIO_A_ONLY ? scenarioB : undefined;
 
+  const fetchScenarioData = (scenario: Scenario | undefined) =>
+    fetchScenarioRowsAggregated({
+      attribute,
+      filters,
+      scenario,
+      unit: indicator,
+    });
+
   const {
     isLoading: isLoadingA,
     error: errorA,
@@ -139,18 +147,10 @@ export const DataViz = () => {
       "scenarioRowsAggregated",
       { attribute, filters, scenario: scenarioA, unit: indicator },
     ],
-    queryFn: () =>
-      fetchScenarioRowsAggregated({
-        attribute,
-        filters,
-        scenario: scenarioA,
-        unit: indicator,
-      }),
+    queryFn: () => fetchScenarioData(scenarioA),
     staleTime: Infinity,
   });
 
-  /*
-  WILL BE USED WHEN TWO SCENARIOS FEATURES WILL BE REQUIRED
   const {
     isLoading: isLoadingB,
     error: errorB,
@@ -158,20 +158,28 @@ export const DataViz = () => {
   } = useQuery({
     queryKey: [
       "scenarioRowsAggregated",
-      { attribute, filters, scenario: scenarioB, unit },
+      { attribute, filters, scenario: scenarioB, unit: indicator },
     ],
-    queryFn: () =>
-      fetchScenarioRowsAggregated({
-        attribute,
-        filters,
-        scenario: scenarioB ?? DEFAULT_SCENARIO,
-        unit,
-      }),
+    queryFn: () => fetchScenarioData(scenarioB),
     staleTime: Infinity,
-    enabled: scenarioB !== undefined,
   });
 
-  */
+  const hasError = !!errorA || !!errorB;
+  const isLoading = isLoadingA || isLoadingB;
+  const hasSomeData =
+    !!dataA && !!dataB && (dataA.length > 0 || dataB.length > 0);
+  const canRenderContent = !isLoading && !hasError && hasSomeData;
+  const hasNoData = dataA?.length === 0 && dataB?.length === 0;
+
+  console.log("data", dataA, dataB);
+
+  const DataStatus = () => (
+    <>
+      {isLoading && <LoadingSpinner />}
+      {!isLoading && hasError && <ErrorOccurred />}
+      {!isLoading && !hasError && hasNoData && <NoDataFound />}
+    </>
+  );
 
   return (
     <Section className={cn("min-w-0 flex-1")}>
@@ -241,9 +249,8 @@ export const DataViz = () => {
               className={cn("relative min-h-0 flex-1")}
               data-testid={TAB_CONTENT_TESTID}
             >
-              {!isLoadingA && errorA && <ErrorOccurred />}
-              {errorA == null && dataA?.length === 0 && <NoDataFound />}
-              {errorA == null && dataA && dataA.length > 0 && (
+              <DataStatus />
+              {canRenderContent && (
                 <ComparisonSlider
                   items={[
                     {
@@ -257,7 +264,7 @@ export const DataViz = () => {
                     {
                       label: "Scenario B",
                       component: tab.content({
-                        data: dataA,
+                        data: dataB,
                         indicator,
                         breakdownBy: attribute,
                       }),
@@ -265,23 +272,21 @@ export const DataViz = () => {
                   ]}
                 />
               )}
-              {isLoadingA && <LoadingSpinner />}
             </TabsContent>
           ))}
           <TabsContent
             key="Table"
             value="Table"
             className={cn("relative min-h-0 flex-1")}
+            data-testid={TAB_CONTENT_TESTID}
           >
-            {!isLoadingA && errorA && <ErrorOccurred />}
-            {errorA == null && dataA?.length === 0 && <NoDataFound />}
-            {errorA == null && dataA && dataA.length > 0 && (
+            <DataStatus />
+            {canRenderContent && (
               <DataTable
                 data={dataA}
                 indicator={INDICATOR_TO_UNIT[indicator]}
               />
             )}
-            {isLoadingA && <LoadingSpinner />}
           </TabsContent>
         </div>
       </Tabs>

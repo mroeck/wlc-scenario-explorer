@@ -10,7 +10,7 @@ import { ATTRIBUTE_OPTIONS_COLOR } from "@/routes/-index/components/data-section
 
 type FetchScenarioRowsArgs = {
   attribute: Attribute;
-  scenario: Scenario;
+  scenario: Scenario | undefined;
   unit: Indicator;
   filters: Filters | undefined;
 };
@@ -21,6 +21,8 @@ export async function fetchScenarioRowsAggregated({
   scenario,
   unit,
 }: FetchScenarioRowsArgs) {
+  if (scenario === undefined) return [];
+
   const url = `${env.PUBLIC_API_URL}/scenario`;
   const response = await fetch(url, {
     method: "POST",

@@ -1,7 +1,12 @@
 @import url("./global.css");
 
+html {
+  overflow-x: hidden;
+}
+
 body {
   background-color: hsl(var(--background));
+  overflow-x: hidden;
 }
 
 :root {
