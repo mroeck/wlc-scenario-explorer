@@ -11,7 +11,7 @@ import React, { useEffect, useRef, useState, type ReactNode } from "react";
 
 const route = getRouteApi(ROUTES.DASHBOARD);
 
-const MIN_SLIDER = 1;
+const MIN_SLIDER = 0.5;
 const MAX_SLIDER = 100;
 
 type Item = {
@@ -40,40 +40,9 @@ export const ComparisonSlider: React.FC<ComparisonSliderProps> = ({
   >(undefined);
   const [sliderValues, setSliderValues] = useState<number[]>([50]);
 
-  const debounceTimeoutRef = useRef<number | undefined>();
-
   const handleSliderChange = (values: number[]) => {
     const newValues = values[0] < MIN_SLIDER ? [MIN_SLIDER] : values;
     setSliderValues(newValues);
-
-    if (debounceTimeoutRef.current) {
-      clearTimeout(debounceTimeoutRef.current);
-    }
-
-    debounceTimeoutRef.current = window.setTimeout(() => {
-      if (newValues[0] === MIN_SLIDER) {
-        void navigate({
-          search: (prev) => ({
-            ...prev,
-            display: SCENARIO_B_ONLY,
-          }),
-        });
-      } else if (newValues[0] === MAX_SLIDER) {
-        void navigate({
-          search: (prev) => ({
-            ...prev,
-            display: SCENARIO_A_ONLY,
-          }),
-        });
-      } else if (display !== SCENARIO_A_AND_B) {
-        void navigate({
-          search: (prev) => ({
-            ...prev,
-            display: SCENARIO_A_AND_B,
-          }),
-        });
-      }
-    }, 1000);
   };
 
   useEffect(() => {
@@ -127,7 +96,10 @@ export const ComparisonSlider: React.FC<ComparisonSliderProps> = ({
     <div className="flex flex-col items-center space-y-4 md:h-full">
       <div className="relative size-full">
         <div
-          className="absolute left-0 top-0 hidden h-8 w-full -translate-y-full sm:flex"
+          className={cn(
+            "absolute left-0 top-0 hidden h-8 w-full -translate-y-full sm:flex",
+            display !== SCENARIO_A_AND_B && "sm:hidden",
+          )}
           style={{ width: sliderValues[0].toString() + "%" }}
         >
           <div className="absolute right-0 top-0 w-fit text-nowrap rounded-l-lg border-2 border-r-0 border-solid bg-white px-2 py-1 text-sm">
@@ -172,12 +144,18 @@ export const ComparisonSlider: React.FC<ComparisonSliderProps> = ({
             {leftSideItem.component}
           </div>
           <div
-            className="absolute right-0 top-0 hidden h-full border-r-2 border-solid sm:block"
+            className={cn(
+              "absolute right-0 top-0 hidden h-full border-r-2 border-solid sm:block",
+              display !== SCENARIO_A_AND_B && "sm:hidden",
+            )}
             style={{ borderColor: "hsl(223 0% 40%)" }}
           ></div>
         </div>
         <Slider
-          className="absolute left-[-15px] top-1/2 z-10 hidden w-[calc(100%+28px)] origin-center sm:block"
+          className={cn(
+            "absolute left-[-15px] top-1/2 z-10 hidden w-[calc(100%+28px)] origin-center sm:block",
+            display !== SCENARIO_A_AND_B && "sm:hidden",
+          )}
           value={sliderValues}
           onValueChange={handleSliderChange}
           min={0}

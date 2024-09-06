@@ -24,7 +24,7 @@ const removeDuplicates = (
 };
 
 export type CustomLegendProps = Pick<Props, "payload"> & {
-  className: string;
+  className?: string;
 };
 export const CustomLegend = ({ payload, className }: CustomLegendProps) => {
   const { display, attribute } = route.useSearch({
@@ -40,7 +40,7 @@ export const CustomLegend = ({ payload, className }: CustomLegendProps) => {
   return (
     <div
       className={cn(
-        "flex flex-col justify-between gap-5 lg:flex-row",
+        "flex flex-col justify-between gap-5 pl-[60px] pt-4 lg:flex-row",
         className,
       )}
     >

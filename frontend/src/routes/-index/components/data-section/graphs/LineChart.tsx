@@ -9,19 +9,22 @@ import {
   LineChart,
   Line,
 } from "recharts";
-import { CustomTooltip } from "../CustomTooltip";
-import { cn, getColor, tickFormatter } from "@/lib/utils";
+import { CustomTooltip } from "../Tooltip/CustomTooltip";
+import { cn, getColor } from "@/lib/utils";
 import { type z } from "zod";
-import {
-  GRAPH_FONT_SIZE,
-  ROUTES,
-  STACKED_BAR_CHART_TESTID,
-} from "@/lib/constants";
+import { ROUTES, STACKED_BAR_CHART_TESTID } from "@/lib/constants";
 import { YEAR_KEY } from "@/lib/shared_with_backend/constants";
 import type { ScenarioRowsAggregatedArraySchema } from "@/lib/schemas";
 import { CustomLegend } from "../Legend/CustomLegend";
 import type { Attribute, IndicatorUnit } from "@/lib/types";
 import { getRouteApi } from "@tanstack/react-router";
+import {
+  commonChartProps,
+  commonTooltipProps,
+  commonXaxisProps,
+  commonYaxisLabelProps,
+  commonYaxisProps,
+} from "../constants";
 
 const route = getRouteApi(ROUTES.DASHBOARD);
 
@@ -54,14 +57,10 @@ export const LineGraph = ({
         data-testid={STACKED_BAR_CHART_TESTID}
       >
         <ResponsiveContainer width="100%" height="100%">
-          <LineChart
-            width={500}
-            height={400}
-            data={data}
-            margin={{ top: 0, left: 0, right: 0, bottom: 0 }}
-          >
+          <LineChart {...commonChartProps} data={data}>
             <CartesianGrid strokeDasharray="3 3" />
             <Tooltip
+              {...commonTooltipProps}
               content={(props) => (
                 <CustomTooltip
                   {...props}
@@ -69,7 +68,6 @@ export const LineGraph = ({
                   breakdownBy={breakdownBy}
                 />
               )}
-              cursor={false}
             />
             {attributeOptions
               .map((option) => {
@@ -90,33 +88,12 @@ export const LineGraph = ({
               })
               .reverse()}
             <Legend
-              content={(props) => (
-                <CustomLegend
-                  payload={props.payload}
-                  className={cn("pl-[60px] pt-4")}
-                />
-              )}
+              content={(props) => <CustomLegend payload={props.payload} />}
             />
-            <XAxis
-              dataKey={YEAR_KEY}
-              stroke="hsl(223 0% 20%)"
-              tick={{ fontSize: GRAPH_FONT_SIZE }}
-            />
+            <XAxis {...commonXaxisProps} />
 
-            <YAxis
-              tickFormatter={tickFormatter}
-              tickCount={4}
-              stroke="hsl(223 0% 20%)"
-              tick={{ fontSize: GRAPH_FONT_SIZE }}
-            >
-              <Label
-                value={unit}
-                angle={-90}
-                position="insideLeft"
-                dx={10}
-                fontSize={GRAPH_FONT_SIZE}
-                fill="hsl(223 0% 20%)"
-              />
+            <YAxis {...commonYaxisProps}>
+              <Label value={unit} {...commonYaxisLabelProps} />
             </YAxis>
           </LineChart>
         </ResponsiveContainer>

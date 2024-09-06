@@ -9,12 +9,12 @@ import {
   Legend,
   Label,
 } from "recharts";
-import { CustomTooltip } from "../CustomTooltip";
-import { cn, getColor, tickFormatter } from "@/lib/utils";
+import { CustomTooltip } from "../Tooltip/CustomTooltip";
+import { cn, getColor } from "@/lib/utils";
 import { type z } from "zod";
 import {
-  GRAPH_FONT_SIZE,
   ROUTES,
+  SCENARIO_A_AND_B,
   STACKED_AREA_CHART_TESTID,
 } from "@/lib/constants";
 import { YEAR_KEY } from "@/lib/shared_with_backend/constants";
@@ -22,6 +22,16 @@ import type { ScenarioRowsAggregatedArraySchema } from "@/lib/schemas";
 import { CustomLegend } from "../Legend/CustomLegend";
 import type { Attribute, IndicatorUnit } from "@/lib/types";
 import { getRouteApi } from "@tanstack/react-router";
+import {
+  commonCartisianGridProps,
+  commonChartProps,
+  commonTooltipProps,
+  commonXaxisProps,
+  commonYaxisLabelProps,
+  commonYaxisProps,
+} from "../constants";
+import { useRef } from "react";
+import { PortalTooltip } from "../Tooltip/PortalTooltip";
 
 const route = getRouteApi(ROUTES.DASHBOARD);
 
@@ -35,9 +45,11 @@ export const StackedAreaChart = ({
   indicatorUnit: unit,
   breakdownBy,
 }: StackedAreaChartProps) => {
-  const { animation } = route.useSearch({
+  const chartRef = useRef<HTMLDivElement>(null);
+  const { animation, display } = route.useSearch({
     select: (search) => ({
       animation: search.animation,
+      display: search.display,
     }),
   });
   const attributeOptions =
@@ -68,18 +80,9 @@ export const StackedAreaChart = ({
         )}
         data-testid={STACKED_AREA_CHART_TESTID}
       >
-        <ResponsiveContainer width="100%" height="100%">
-          <AreaChart
-            width={500}
-            height={400}
-            data={data}
-            margin={{ top: 0, left: 0, right: 0, bottom: 0 }}
-          >
-            <CartesianGrid
-              strokeDasharray="3 3"
-              stroke="lightgrey"
-              strokeWidth={0.5}
-            />
+        <ResponsiveContainer width="100%" height="100%" ref={chartRef}>
+          <AreaChart {...commonChartProps} data={data}>
+            <CartesianGrid {...commonCartisianGridProps} />
             {attributeOptions
               .map((option) => {
                 const areaColor = getColor({ breakdownBy, option });
@@ -100,14 +103,23 @@ export const StackedAreaChart = ({
               })
               .reverse()}
             <Tooltip
-              content={(props) => (
-                <CustomTooltip
-                  {...props}
-                  indicatorUnit={unit}
-                  breakdownBy={breakdownBy}
-                />
-              )}
-              cursor={false}
+              {...commonTooltipProps}
+              content={(props) =>
+                display === SCENARIO_A_AND_B ? (
+                  <PortalTooltip
+                    {...props}
+                    indicatorUnit={unit}
+                    breakdownBy={breakdownBy}
+                    chartRef={chartRef}
+                  />
+                ) : (
+                  <CustomTooltip
+                    {...props}
+                    indicatorUnit={unit}
+                    breakdownBy={breakdownBy}
+                  />
+                )
+              }
             />
             {attributeOptions
               .map((option) => {
@@ -135,32 +147,11 @@ export const StackedAreaChart = ({
               })
               .reverse()}
             <Legend
-              content={(props) => (
-                <CustomLegend
-                  payload={props.payload}
-                  className={cn("pl-[60px] pt-4")}
-                />
-              )}
+              content={(props) => <CustomLegend payload={props.payload} />}
             />
-            <XAxis
-              dataKey={YEAR_KEY}
-              stroke="hsl(223 0% 20%)"
-              tick={{ fontSize: GRAPH_FONT_SIZE }}
-            />
-            <YAxis
-              tickFormatter={tickFormatter}
-              tickCount={4}
-              stroke="hsl(223 0% 20%)"
-              tick={{ fontSize: GRAPH_FONT_SIZE }}
-            >
-              <Label
-                value={unit}
-                angle={-90}
-                position="insideLeft"
-                dx={10}
-                fontSize={GRAPH_FONT_SIZE}
-                fill="hsl(223 0% 20%)"
-              />
+            <XAxis {...commonXaxisProps} />
+            <YAxis {...commonYaxisProps}>
+              <Label value={unit} {...commonYaxisLabelProps} />
             </YAxis>
           </AreaChart>
         </ResponsiveContainer>
