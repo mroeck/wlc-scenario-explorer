@@ -20,6 +20,11 @@ export const Content = ({
   data,
   breakdownBy,
 }: ContentProps) => {
+  const totalValue = data.reduce(
+    (acc, item) => acc + (item.value as number),
+    0,
+  );
+
   return (
     <>
       <div className="mx-auto flex w-max flex-col text-center">
@@ -28,29 +33,43 @@ export const Content = ({
           From top to bottom on graph in {indicatorUnit}
         </span>
       </div>
+      <div style={{ fontSize: GRAPH_FONT_SIZE }}>
+        Total:{" "}
+        <span className="font-bold">
+          {totalValue.toLocaleString("en-US", { maximumFractionDigits: 2 })}{" "}
+        </span>
+        (100%)
+      </div>
       <ul className="grid grid-flow-col grid-rows-[repeat(15,auto)] gap-x-5">
-        {data.reverse().map((item) => (
-          <li
-            key={item.name}
-            className="flex items-center gap-1"
-            style={{ fontSize: GRAPH_FONT_SIZE }}
-          >
-            <div>
-              <ColorCube
-                color={getColor({
-                  breakdownBy,
-                  option: typeof item.dataKey === "string" ? item.dataKey : "",
-                })}
-              />
-            </div>
-            <span>{item.name}:</span>
-            <span className="font-bold">
-              {item.value?.toLocaleString("en-US", {
-                maximumFractionDigits: 2,
-              })}
-            </span>
-          </li>
-        ))}
+        {data.reverse().map((item) => {
+          const value = item.value as number;
+          const percentage = totalValue ? (value / totalValue) * 100 : 0;
+
+          return (
+            <li
+              key={item.name}
+              className="flex items-center gap-1"
+              style={{ fontSize: GRAPH_FONT_SIZE }}
+            >
+              <div>
+                <ColorCube
+                  color={getColor({
+                    breakdownBy,
+                    option:
+                      typeof item.dataKey === "string" ? item.dataKey : "",
+                  })}
+                />
+              </div>
+              <span>{item.name}:</span>
+              <span className="font-bold">
+                {value.toLocaleString("en-US", {
+                  maximumFractionDigits: 2,
+                })}{" "}
+              </span>
+              ({percentage.toFixed(2)}%)
+            </li>
+          );
+        })}
       </ul>
     </>
   );
