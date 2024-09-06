@@ -1,0 +1,57 @@
+import { GRAPH_FONT_SIZE } from "@/lib/constants";
+import { ColorCube } from "../Legend/ColorCube";
+import { getColor } from "@/lib/utils";
+import type {
+  NameType,
+  Payload,
+  ValueType,
+} from "recharts/types/component/DefaultTooltipContent";
+import type { Attribute, IndicatorUnit } from "@/lib/types";
+
+type ContentProps = {
+  label: string;
+  indicatorUnit: IndicatorUnit;
+  data: Payload<ValueType, NameType>[];
+  breakdownBy: Attribute;
+};
+export const Content = ({
+  label,
+  indicatorUnit,
+  data,
+  breakdownBy,
+}: ContentProps) => {
+  return (
+    <>
+      <div className="mx-auto flex w-max flex-col text-center">
+        <span style={{ fontSize: GRAPH_FONT_SIZE }}>{label}</span>
+        <span className="pb-2 text-left" style={{ fontSize: GRAPH_FONT_SIZE }}>
+          From top to bottom on graph in {indicatorUnit}
+        </span>
+      </div>
+      <ul className="grid grid-flow-col grid-rows-[repeat(15,auto)] gap-x-5">
+        {data.reverse().map((item) => (
+          <li
+            key={item.name}
+            className="flex items-center gap-1"
+            style={{ fontSize: GRAPH_FONT_SIZE }}
+          >
+            <div>
+              <ColorCube
+                color={getColor({
+                  breakdownBy,
+                  option: typeof item.dataKey === "string" ? item.dataKey : "",
+                })}
+              />
+            </div>
+            <span>{item.name}:</span>
+            <span className="font-bold">
+              {item.value?.toLocaleString("en-US", {
+                maximumFractionDigits: 2,
+              })}
+            </span>
+          </li>
+        ))}
+      </ul>
+    </>
+  );
+};

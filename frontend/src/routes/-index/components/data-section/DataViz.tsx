@@ -171,8 +171,6 @@ export const DataViz = () => {
   const canRenderContent = !isLoading && !hasError && hasSomeData;
   const hasNoData = dataA?.length === 0 && dataB?.length === 0;
 
-  console.log("data", dataA, dataB);
-
   const DataStatus = () => (
     <>
       {isLoading && <LoadingSpinner />}
