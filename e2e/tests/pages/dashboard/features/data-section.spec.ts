@@ -27,6 +27,11 @@ test.describe("data viz", () => {
     await expect(page.getByText("2035", { exact: true })).toBeVisible();
   });
 
+  test("table tab has no display select", async ({ page }) => {
+    await page.getByRole("tab", { name: "Table" }).click();
+    await expect(page.getByTestId("DISPLAY_SELECT_TESTID")).not.toBeVisible();
+  });
+
   test("select breakdown by", async ({ page }) => {
     const breakdownByDropdown = page.getByTestId(BREAKDOWN_BY_TESTID);
     const attributeInGraphTitle = page

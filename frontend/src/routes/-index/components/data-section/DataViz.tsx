@@ -6,11 +6,12 @@ import { DataVizForm } from "./DataVizForm";
 import { DownloadMenu } from "./DownloadMenu";
 import {
   ATTRIBUTE_TESTID,
+  DATA_TABS_NAMES,
   FOR_SCENARIOS_TESTID,
   GRAPH_TITLE_TESTID,
   INDICATOR_TO_UNIT,
   ROUTES,
-  SCENARIO_A_ONLY,
+  SCENARIO_A_AND_B,
   SCENARIO_B_ONLY,
   TAB_CONTENT_TESTID,
   UNIT_TESTID,
@@ -44,7 +45,7 @@ type ContentProps = {
 };
 const tabs = [
   {
-    name: "Stacked Area Chart",
+    name: DATA_TABS_NAMES.stackedAreaChart,
     content: ({ data, indicator, breakdownBy }: ContentProps) => (
       <StackedAreaChart
         data={data}
@@ -54,7 +55,7 @@ const tabs = [
     ),
   },
   {
-    name: "Line Chart",
+    name: DATA_TABS_NAMES.lineChart,
     content: ({ data, indicator, breakdownBy }: ContentProps) => (
       <LineGraph
         data={data}
@@ -64,7 +65,7 @@ const tabs = [
     ),
   },
   {
-    name: "Stacked Bar Chart",
+    name: DATA_TABS_NAMES.stackedBarChart,
     content: ({ data, indicator, breakdownBy }: ContentProps) => (
       <StackedBarChart
         data={data}
@@ -81,21 +82,31 @@ const defaultTab: TabName = "Stacked Area Chart";
 type CreateTitleArgs = {
   unit: (typeof INDICATORS)[number];
   attribute: (typeof ATTRIBUTES)[number];
-  scenarioA?: string;
+  scenarioA: string;
   scenarioB?: string;
+  activeTab: string;
+  display: string;
 };
+
 function createTitle({
   unit,
   attribute,
   scenarioA,
-  scenarioB,
+  scenarioB = "scenario B",
+  activeTab,
+  display,
 }: CreateTitleArgs) {
-  const forScenarios =
-    scenarioA && scenarioB
-      ? `${scenarioA} VS ${scenarioB}`
-      : scenarioA
-        ? scenarioA
-        : scenarioB ?? "scenario B";
+  const isTable = activeTab === DATA_TABS_NAMES.table;
+
+  let forScenarios = scenarioA;
+
+  if (isTable) {
+    forScenarios = scenarioA;
+  } else if (display === SCENARIO_A_AND_B) {
+    forScenarios = `${scenarioA} VS ${scenarioB}`;
+  } else if (display === SCENARIO_B_ONLY) {
+    forScenarios = scenarioB;
+  }
 
   return (
     <h2 data-testid={GRAPH_TITLE_TESTID} className={cn("text-primary")}>
@@ -115,20 +126,27 @@ function createTitle({
 }
 
 export const DataViz = () => {
+  const navigate = route.useNavigate();
   const visualizationRef = useRef<HTMLDivElement>(null);
-  const { attribute, display, indicator, filters, scenarioA, scenarioB } =
-    route.useSearch({
-      select: (search) => ({
-        attribute: search.attribute,
-        display: search.display,
-        indicator: search.indicator,
-        filters: search.filters,
-        scenarioA: search.scenarioA,
-        scenarioB: search.scenarioB,
-      }),
-    });
-  const scenarioAForTitle = display !== SCENARIO_B_ONLY ? scenarioA : undefined;
-  const scenarioBForTitle = display !== SCENARIO_A_ONLY ? scenarioB : undefined;
+  const {
+    attribute,
+    display,
+    indicator,
+    filters,
+    scenarioA,
+    scenarioB,
+    dataTab,
+  } = route.useSearch({
+    select: (search) => ({
+      attribute: search.attribute,
+      display: search.display,
+      indicator: search.indicator,
+      filters: search.filters,
+      scenarioA: search.scenarioA,
+      scenarioB: search.scenarioB,
+      dataTab: search.dataTab,
+    }),
+  });
 
   const fetchScenarioData = (scenario: Scenario | undefined) =>
     fetchScenarioRowsAggregated({
@@ -179,9 +197,23 @@ export const DataViz = () => {
     </>
   );
 
+  const onTabChange = (newDataTab: string) => {
+    void navigate({
+      search: (prev) => ({
+        ...prev,
+        dataTab: newDataTab,
+      }),
+    });
+  };
+
   return (
     <Section className={cn("min-w-0 flex-1")}>
-      <Tabs defaultValue={defaultTab} className={cn("flex h-full flex-col")}>
+      <Tabs
+        defaultValue={defaultTab}
+        className={cn("flex h-full flex-col")}
+        value={dataTab}
+        onValueChange={onTabChange}
+      >
         <div
           className={cn(
             "flex flex-col items-start justify-between gap-2 md:flex-row",
@@ -233,9 +265,11 @@ export const DataViz = () => {
           <div className={cn("text-center text-base font-semibold")}>
             {createTitle({
               attribute,
-              scenarioA: scenarioAForTitle,
-              scenarioB: scenarioBForTitle,
+              scenarioA,
+              scenarioB,
               unit: indicator,
+              activeTab: dataTab,
+              display,
             })}
           </div>
           <div className="pb-10"></div>
@@ -273,8 +307,8 @@ export const DataViz = () => {
             </TabsContent>
           ))}
           <TabsContent
-            key="Table"
-            value="Table"
+            key={DATA_TABS_NAMES.table}
+            value={DATA_TABS_NAMES.table}
             className={cn("relative min-h-0 flex-1")}
             data-testid={TAB_CONTENT_TESTID}
           >

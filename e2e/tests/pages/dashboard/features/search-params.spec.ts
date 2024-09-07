@@ -8,6 +8,8 @@ import {
   SCENARIO_A_TESTID,
   SCENARIO_B_TESTID,
   SCENARIO_B_ONLY,
+  DEFAULT_SCENARIO,
+  SELECT_UNIT_TESTID,
 } from "@/lib/constants";
 import { UNITS } from "@/lib/shared_with_backend/constants";
 import { test, expect } from "@playwright/test";
@@ -36,36 +38,81 @@ test.describe("search params", () => {
     }
   });
 
-  test("search params are used on mount", async ({ page }) => {
-    const attributeSelect = page
-      .getByTestId(BREAKDOWN_BY_TESTID)
+  test("uses unit search param on mount", async ({ page }) => {
+    const unitSelect = page
+      .getByTestId(SELECT_UNIT_TESTID)
       .getByRole("combobox");
-    const scenarioBSelect = page
-      .getByRole("tabpanel", { name: "Scenarios" })
-      .getByTestId(SCENARIO_B_TESTID);
+    const unit = UNITS[1];
+
+    const url = `${ROUTES.DASHBOARD}?unit=${unit}`;
+
+    await page.goto(url);
+    await expect(unitSelect).toHaveText(unit);
+  });
+
+  test("uses scenarioA search param on mount", async ({ page }) => {
     const scenarioASelect = page
       .getByRole("tabpanel", { name: "Scenarios" })
       .getByTestId(SCENARIO_A_TESTID);
 
-    const displaySelect = page.getByTestId(DISPLAY_SELECT_TESTID);
-
-    const attribute = "Building subtype";
-    const unit = UNITS[1];
     const scenario = "Example scenario (for illustration purpose only)";
-    // temp: Example label instead of "Current policy optimistic scenario";
-    const display = SCENARIO_B_ONLY;
-    const filters = { From: DEFAULT_FROM, To: DEFAULT_TO, country: ["FR"] };
-    const filtersEncoded = encodeURIComponent(JSON.stringify(filters));
-    const url = `${ROUTES.DASHBOARD}?attribute=${attribute}&unit=${unit}&display=${display}&scenarioA=${scenario}&filters=${filtersEncoded}`;
+    const url = `${ROUTES.DASHBOARD}?scenarioA=${scenario}`;
+
+    await page.goto(url);
+    await expect(scenarioASelect).toHaveText(scenario);
+  });
+
+  test("uses scenarioB search param on mount", async ({ page }) => {
+    const scenarioBSelect = page
+      .getByRole("tabpanel", { name: "Scenarios" })
+      .getByTestId(SCENARIO_B_TESTID);
+
+    const scenario = "Example scenario (for illustration purpose only)";
+    const url = `${ROUTES.DASHBOARD}?scenarioB=${scenario}`;
+
+    await page.goto(url);
+    await expect(scenarioBSelect).toHaveText(scenario);
+  });
+
+  test("tabs search params are used on mount", async ({ page }) => {
+    const url = `${ROUTES.DASHBOARD}?settingsTab=Filters&dataTab=Table`;
 
     await page.goto(url);
 
-    await expect(attributeSelect).toHaveText(attribute);
-    await expect(scenarioBSelect).toHaveText("Select a scenario");
-    await expect(scenarioASelect).toHaveText(scenario);
-    await expect(displaySelect).toHaveText(display);
+    await expect(page.getByText(DEFAULT_SCENARIO)).toBeVisible();
+    await expect(page.getByText("Year:")).toBeVisible();
+  });
 
+  test("uses attribute search param on mount", async ({ page }) => {
+    const attributeSelect = page
+      .getByTestId(BREAKDOWN_BY_TESTID)
+      .getByRole("combobox");
+
+    const attribute = "Building subtype";
+    const url = `${ROUTES.DASHBOARD}?attribute=${attribute}`;
+
+    await page.goto(url);
+    await expect(attributeSelect).toHaveText(attribute);
+  });
+
+  test("uses display search param on mount", async ({ page }) => {
+    const displaySelect = page.getByTestId(DISPLAY_SELECT_TESTID);
+
+    const display = SCENARIO_B_ONLY;
+    const url = `${ROUTES.DASHBOARD}?display=${display}`;
+
+    await page.goto(url);
+    await expect(displaySelect).toHaveText(display);
+  });
+
+  test("uses filters search param on mount", async ({ page }) => {
+    const filters = { From: DEFAULT_FROM, To: DEFAULT_TO, country: ["FR"] };
+    const filtersEncoded = encodeURIComponent(JSON.stringify(filters));
+    const url = `${ROUTES.DASHBOARD}?filters=${filtersEncoded}`;
+
+    await page.goto(url);
     await page.getByRole("tab", { name: "Filters" }).click();
+
     const filterElements = {
       From: page.getByLabel("From"),
       To: page.getByLabel("To"),
@@ -73,17 +120,6 @@ test.describe("search params", () => {
         .getByRole("combobox")
         .filter({ hasText: filters.country[0] }),
     };
-    await expect(filterElements.From).toHaveText(filters.From.toString());
-    await expect(filterElements.To).toHaveText(filters.To.toString());
-    await expect(filterElements.country).toBeVisible();
-
-    await page.getByRole("tab", { name: "Scenarios" }).click();
-    await scenarioASelect.click();
-    await page
-      .getByLabel("Additional policy scenario (APOL)")
-      .getByText("Additional policy scenario (APOL)")
-      .click();
-    await page.getByRole("tab", { name: "Filters" }).click();
 
     await expect(filterElements.From).toHaveText(filters.From.toString());
     await expect(filterElements.To).toHaveText(filters.To.toString());

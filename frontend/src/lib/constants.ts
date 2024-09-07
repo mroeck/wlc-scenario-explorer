@@ -42,17 +42,6 @@ export const ROUTES = {
   HELP: "/help",
   ABOUT: "/about",
 } as const;
-export const DEFAULT_SEARCH_PARAMS = {
-  attribute: DEFAULT_ATTRIBUTE,
-  indicator: DEFAULT_INDICATOR,
-  unit: DEFAULT_UNIT,
-  display: DEFAULT_DISPLAY,
-  scenarioA: DEFAULT_SCENARIO,
-  filters: {
-    From: DEFAULT_FROM,
-    To: DEFAULT_TO,
-  },
-};
 export const LOADING_SPINNER_ID = "LoadingSpinner";
 export const GRAPH_TITLE_TESTID = "graphTitle";
 export const UNIT_TESTID = "unit";
@@ -101,3 +90,32 @@ export const imageFormats = ["png", "jpeg", "pdf", "svg"] as const;
 export const spreadsheetFormats = ["csv", "xlsx"] as const;
 export const DOWNLOAD_AS_TESTID = "DOWNLOAD_AS_TESTID";
 export const TAB_CONTENT_TESTID = "TAB_CONTENT_TESTID";
+export const SETTINGS_TABS_NAMES = {
+  scenarios: "Scenarios",
+  filters: "Filters",
+} as const;
+type SETTINGS_TAB =
+  (typeof SETTINGS_TABS_NAMES)[keyof typeof SETTINGS_TABS_NAMES];
+export const DEFAULT_SETTINGS_TAB: SETTINGS_TAB = "Scenarios";
+
+export const DATA_TABS_NAMES = {
+  stackedAreaChart: "Stacked Area Chart",
+  lineChart: "Line Chart",
+  stackedBarChart: "Stacked Bar Chart",
+  table: "Table",
+} as const;
+type DATA_TAB = (typeof DATA_TABS_NAMES)[keyof typeof DATA_TABS_NAMES];
+export const DEFAULT_DATA_TAB: DATA_TAB = "Stacked Area Chart";
+export const DEFAULT_SEARCH_PARAMS = {
+  attribute: DEFAULT_ATTRIBUTE,
+  indicator: DEFAULT_INDICATOR,
+  unit: DEFAULT_UNIT,
+  display: DEFAULT_DISPLAY,
+  scenarioA: DEFAULT_SCENARIO,
+  filters: {
+    From: DEFAULT_FROM,
+    To: DEFAULT_TO,
+  },
+  settingsTab: DEFAULT_SETTINGS_TAB,
+  dataTab: DEFAULT_DATA_TAB,
+};

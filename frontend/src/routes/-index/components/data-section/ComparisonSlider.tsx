@@ -93,7 +93,7 @@ export const ComparisonSlider: React.FC<ComparisonSliderProps> = ({
   }, [display, navigate]);
 
   return (
-    <div className="flex flex-col items-center space-y-4 md:h-full">
+    <div className="flex flex-col items-center space-y-4 md:h-full md:max-h-[600px]">
       <div className="relative size-full">
         <div
           className={cn(

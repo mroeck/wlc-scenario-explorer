@@ -10,6 +10,8 @@ import {
   DEFAULT_INDICATOR,
   ROUTES,
   DEFAULT_UNIT,
+  DEFAULT_SETTINGS_TAB,
+  DEFAULT_DATA_TAB,
 } from "@/lib/constants";
 import { z } from "zod";
 
@@ -20,11 +22,9 @@ import {
   IndicatorSchema,
   UnitSchema,
 } from "@/lib/shared_with_backend/schemas";
-import { DisplaySchema } from "@/lib/schemas";
+import { DataTabSchema, DisplaySchema, SettingsTabSchema } from "@/lib/schemas";
 import { Settings } from "./-index/components/side-section/Settings";
-import { useQuery } from "@tanstack/react-query";
-import { fetchFilters } from "@/lib/queries";
-import { memo, useEffect, useState } from "react";
+import { memo } from "react";
 
 const SearchParamsSchema = z.object({
   filters: FiltersSchema.optional(),
@@ -35,29 +35,18 @@ const SearchParamsSchema = z.object({
   scenarioA: ScenarioSchema.catch(DEFAULT_SCENARIO),
   scenarioB: ScenarioSchema.optional().catch(undefined),
   animation: z.boolean().optional().catch(undefined),
+  settingsTab: SettingsTabSchema.catch(DEFAULT_SETTINGS_TAB),
+  dataTab: DataTabSchema.catch(DEFAULT_DATA_TAB),
 });
 
 const Dashboard = memo(function Dashboard() {
-  const [enabled, setEnabled] = useState(true);
-  // this prevent the user from seeing a loading spinner when opening the filters tab
-  useQuery({
-    queryKey: ["filters"],
-    queryFn: () => fetchFilters(),
-    staleTime: Infinity,
-    enabled,
-  });
-
-  useEffect(() => {
-    setEnabled(false);
-  }, []);
-
   return (
     <main
       className={cn(
         "flex flex-col justify-stretch gap-5 py-primary-y sm:px-primary-x",
         "lg:flex-row",
         "lg:h-[calc(100dvh-72px)]", // = screen height - HEADER_HEIGHT
-        "min-h-[700px]",
+        "min-h-[700px] lg:max-h-[900px]",
       )}
     >
       <h1 className={cn("sr-only")}>{DASHBOARD_HEADING}</h1>

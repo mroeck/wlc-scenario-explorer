@@ -2,7 +2,6 @@ import { createRootRoute, Outlet } from "@tanstack/react-router";
 import { env } from "../env";
 import { lazy, Suspense } from "react";
 import { Header } from "@/components/Header";
-import { cn } from "@/lib/utils";
 import { Toaster } from "@/components/ui/toaster";
 import { useRouterState } from "@tanstack/react-router";
 
@@ -24,7 +23,7 @@ function UserInterface() {
   });
 
   return (
-    <div className={cn("mx-auto h-max max-w-screen-2xl bg-accent")}>
+    <div className="mx-auto h-max max-w-screen-2xl bg-accent">
       <Header currentRoute={currentRoute} />
       <Outlet />
       <Suspense>

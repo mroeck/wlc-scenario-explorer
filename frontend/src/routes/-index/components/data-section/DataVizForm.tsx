@@ -19,6 +19,7 @@ import {
   SELECT_INDICATOR_TESTID,
   FILTERS_ORDER,
   SELECT_UNIT_TESTID,
+  DATA_TABS_NAMES,
 } from "@/lib/constants";
 import {
   Select,
@@ -60,7 +61,7 @@ const DataVizFormSchema = z.object<{
 
 export const DataVizForm = () => {
   const navigate = route.useNavigate();
-  const { attribute, indicator, unit, display, scenarioA, scenarioB } =
+  const { attribute, indicator, unit, display, scenarioA, scenarioB, dataTab } =
     route.useSearch({
       select: (search) => ({
         attribute: search.attribute,
@@ -69,6 +70,7 @@ export const DataVizForm = () => {
         display: search.display,
         scenarioA: search.scenarioA,
         scenarioB: search.scenarioB,
+        dataTab: search.dataTab,
       }),
     });
   const form = useForm<z.infer<typeof DataVizFormSchema>>({
@@ -238,50 +240,52 @@ export const DataVizForm = () => {
             </FormItem>
           )}
         />
-        <FormField
-          control={form.control}
-          name="display"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel className={cn("font-medium")}>Display:</FormLabel>
-              <Select
-                onValueChange={(value) => {
-                  onSelectChange({
-                    fieldOnChange: field.onChange,
-                    form,
-                    value,
-                  });
-                }}
-                value={field.value}
-              >
-                <FormControl>
-                  <SelectMenuStyle>
-                    <SelectTrigger
-                      className={cn("text-left capitalize")}
-                      data-testid={DISPLAY_SELECT_TESTID}
+        {dataTab !== DATA_TABS_NAMES.table && (
+          <FormField
+            control={form.control}
+            name="display"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel className={cn("font-medium")}>Display:</FormLabel>
+                <Select
+                  onValueChange={(value) => {
+                    onSelectChange({
+                      fieldOnChange: field.onChange,
+                      form,
+                      value,
+                    });
+                  }}
+                  value={field.value}
+                >
+                  <FormControl>
+                    <SelectMenuStyle>
+                      <SelectTrigger
+                        className={cn("text-left capitalize")}
+                        data-testid={DISPLAY_SELECT_TESTID}
+                      >
+                        <SelectValue placeholder="Select what to breakdown" />
+                      </SelectTrigger>
+                    </SelectMenuStyle>
+                  </FormControl>
+                  <SelectContent>
+                    <SelectItem value={SCENARIO_A_ONLY}>
+                      {`${scenarioA} only`}
+                    </SelectItem>
+                    <SelectItem value={SCENARIO_B_ONLY}>
+                      {`${scenarioB ?? "Scenario B"} only`}
+                    </SelectItem>
+                    <SelectItem
+                      value={SCENARIO_A_AND_B}
+                      className="hidden sm:block"
                     >
-                      <SelectValue placeholder="Select what to breakdown" />
-                    </SelectTrigger>
-                  </SelectMenuStyle>
-                </FormControl>
-                <SelectContent>
-                  <SelectItem value={SCENARIO_A_ONLY}>
-                    {`${scenarioA} only`}
-                  </SelectItem>
-                  <SelectItem value={SCENARIO_B_ONLY}>
-                    {`${scenarioB ?? "Scenario B"} only`}
-                  </SelectItem>
-                  <SelectItem
-                    value={SCENARIO_A_AND_B}
-                    className="hidden sm:block"
-                  >
-                    {`${scenarioA} VS ${scenarioB ?? "scenario B"}`}
-                  </SelectItem>
-                </SelectContent>
-              </Select>
-            </FormItem>
-          )}
-        />
+                      {`${scenarioA} VS ${scenarioB ?? "scenario B"}`}
+                    </SelectItem>
+                  </SelectContent>
+                </Select>
+              </FormItem>
+            )}
+          />
+        )}
       </form>
     </Form>
   );
