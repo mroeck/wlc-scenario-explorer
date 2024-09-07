@@ -6,7 +6,7 @@ import {
 } from "@/lib/constants";
 import { test, expect } from "@playwright/test";
 import { DEFAULT_DATA_HEADER } from "@tests/constants";
-import { testPageScreenshot } from "@tests/functions";
+import { testPageScreenshot, waitLoadingEnds } from "@tests/functions";
 
 test.describe("dashboard", () => {
   test.beforeEach(async ({ page }) => {
@@ -27,6 +27,16 @@ test.describe("dashboard", () => {
     ).toBeVisible({
       timeout: 10_000,
     });
+    await testPageScreenshot({ page });
+  });
+
+  test("snapshot on a very big screen", async ({ page, isMobile }) => {
+    test.skip(isMobile, "Desktop only!");
+
+    await page.setViewportSize({ width: 3840, height: 2160 });
+
+    await waitLoadingEnds({ page });
+
     await testPageScreenshot({ page });
   });
 });

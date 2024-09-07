@@ -12,9 +12,7 @@ test.describe("comparison slider", () => {
     await page.goto(ROUTES.DASHBOARD + "?animation=false");
   });
 
-  test("selecting a display slides automatically to the right position", async ({
-    page,
-  }) => {
+  test("selecting a display show expected graph", async ({ page }) => {
     const graph = page.locator(
       `[data-testid="${TAB_CONTENT_TESTID}"][data-state="active"]`,
     );
@@ -34,11 +32,11 @@ test.describe("comparison slider", () => {
       .getByLabel(DEFAULT_SCENARIO + " only")
       .getByText(DEFAULT_SCENARIO)
       .click();
-    await expect(graph).toHaveScreenshot("slider-should-be-right-side.png");
+    await expect(graph).toHaveScreenshot();
 
     await selectDisplay.click();
     await page.getByLabel("Scenario B only").click();
     await selectDisplay.click();
-    await expect(graph).toHaveScreenshot("slider-should-be-left-side.png");
+    await expect(graph).toHaveScreenshot();
   });
 });

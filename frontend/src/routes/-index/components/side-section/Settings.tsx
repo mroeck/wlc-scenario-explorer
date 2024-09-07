@@ -3,22 +3,38 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { cn } from "@/lib/utils";
 import { Scenarios } from "./Tabs/Scenarios";
 import { Filters } from "./Tabs/Filters";
+import { ROUTES, SETTINGS_TABS_NAMES } from "@/lib/constants";
+import { getRouteApi } from "@tanstack/react-router";
 
-const tabs = [
+const SETTINGS_TABS = [
   {
-    name: "Scenarios",
+    name: SETTINGS_TABS_NAMES.scenarios,
     content: <Scenarios />,
   },
   {
-    name: "Filters",
+    name: SETTINGS_TABS_NAMES.filters,
     content: <Filters />,
   },
 ] as const;
 
-type TabName = (typeof tabs)[number]["name"];
-const defaultTab: TabName = "Scenarios";
+const route = getRouteApi(ROUTES.DASHBOARD);
 
 export const Settings = () => {
+  const navigate = route.useNavigate();
+  const { settingsTab } = route.useSearch({
+    select: (search) => ({
+      settingsTab: search.settingsTab,
+    }),
+  });
+
+  const onTabChange = (newSettingsTab: string) => {
+    void navigate({
+      search: (prev) => ({
+        ...prev,
+        settingsTab: newSettingsTab,
+      }),
+    });
+  };
   return (
     <Section
       className={cn(
@@ -27,12 +43,13 @@ export const Settings = () => {
     >
       <h2 className={cn("sr-only")}>Settings</h2>
       <Tabs
-        defaultValue={defaultTab}
         className={cn("flex min-h-0 flex-1 flex-col lg:h-full")}
+        onValueChange={onTabChange}
+        value={settingsTab}
       >
         <div className={cn("px-primary-x")}>
           <TabsList className={cn("flex")}>
-            {tabs.map((tab) => (
+            {SETTINGS_TABS.map((tab) => (
               <TabsTrigger
                 key={tab.name}
                 value={tab.name}
@@ -44,7 +61,7 @@ export const Settings = () => {
           </TabsList>
         </div>
 
-        {tabs.map((tab) => (
+        {SETTINGS_TABS.map((tab) => (
           <TabsContent
             key={tab.name}
             value={tab.name}

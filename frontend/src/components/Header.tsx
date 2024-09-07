@@ -6,11 +6,23 @@ import {
   PROJECT_NAME,
   ROUTES,
   DEFAULT_UNIT,
+  DEFAULT_DATA_TAB,
+  DEFAULT_SETTINGS_TAB,
 } from "@/lib/constants";
 import { cn } from "@/lib/utils";
 import { Link } from "@tanstack/react-router";
 import { Drawer, DrawerClose, DrawerContent, DrawerTrigger } from "./ui/drawer";
 import { Menu } from "lucide-react";
+
+const dashboardSearch = {
+  attribute: DEFAULT_ATTRIBUTE,
+  display: DEFAULT_DISPLAY,
+  scenarioA: DEFAULT_SCENARIO,
+  indicator: DEFAULT_INDICATOR,
+  unit: DEFAULT_UNIT,
+  dataTab: DEFAULT_DATA_TAB,
+  settingsTab: DEFAULT_SETTINGS_TAB,
+};
 
 type NavLinksProps = {
   className: string;
@@ -25,16 +37,7 @@ const NavLinks = ({ className, currentRoute }: NavLinksProps) => {
           "opacity-80": ROUTES.DASHBOARD !== currentRoute,
         })}
       >
-        <Link
-          to={ROUTES.DASHBOARD}
-          search={{
-            attribute: DEFAULT_ATTRIBUTE,
-            display: DEFAULT_DISPLAY,
-            scenarioA: DEFAULT_SCENARIO,
-            indicator: DEFAULT_INDICATOR,
-            unit: DEFAULT_UNIT,
-          }}
-        >
+        <Link to={ROUTES.DASHBOARD} search={dashboardSearch}>
           Dashboard
         </Link>
       </li>
@@ -76,16 +79,7 @@ const BurgerNavigation = ({ currentRoute }: BurgerNavigationProps) => {
               "opacity-80": ROUTES.DASHBOARD !== currentRoute,
             })}
           >
-            <Link
-              to={ROUTES.DASHBOARD}
-              search={{
-                attribute: DEFAULT_ATTRIBUTE,
-                display: DEFAULT_DISPLAY,
-                scenarioA: DEFAULT_SCENARIO,
-                indicator: DEFAULT_INDICATOR,
-                unit: DEFAULT_UNIT,
-              }}
-            >
+            <Link to={ROUTES.DASHBOARD} search={dashboardSearch}>
               <DrawerClose>Dashboard</DrawerClose>
             </Link>
           </li>
