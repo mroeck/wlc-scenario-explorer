@@ -82,8 +82,6 @@ export const FILTERS_ORDER = [
 export const ERROR_OCCURED = "Oops, an error occurred";
 export const HELP_TITLE = "Functionalities";
 export const ABOUT_TITLE = "Introduction";
-export const WEB_APP_URL = "https://ae-scenario-explorer.cloud.set.kuleuven.be";
-export const DOI_URL = "https://doi.org/10.5281/zenodo.13315281";
 export const MOSELEY_EMAIL = "philippe.moseley@ec.europa.eu";
 export const ROECK_EMAIL = "martin.roeck@kuleuven.be";
 export const imageFormats = ["png", "jpeg", "pdf", "svg"] as const;
@@ -119,3 +117,12 @@ export const DEFAULT_SEARCH_PARAMS = {
   settingsTab: DEFAULT_SETTINGS_TAB,
   dataTab: DEFAULT_DATA_TAB,
 };
+export const LINKS = {
+  doi: "https://doi.org/10.5281/zenodo.13315281",
+  explorerWebsite: "https://ae-scenario-explorer.cloud.set.kuleuven.be",
+  study: {
+    wholeLifeCarbon: "https://c.ramboll.com/whole-life-carbon-reduction",
+    lifeCycleGreenhouse:
+      "https://c.ramboll.com/life-cycle-emissions-of-eu-building-and-construction",
+  },
+} as const;

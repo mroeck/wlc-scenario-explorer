@@ -9,10 +9,9 @@ import { TypographyMuted } from "@/components/TypographyMuted";
 import { TypographyP } from "@/components/TypographyP";
 import {
   ABOUT_TITLE,
-  DOI_URL,
+  LINKS,
   MOSELEY_EMAIL,
   ROECK_EMAIL,
-  WEB_APP_URL,
 } from "@/lib/constants";
 import { cn } from "@/lib/utils";
 import { createFileRoute } from "@tanstack/react-router";
@@ -49,11 +48,11 @@ function About() {
               <TypographyP>
                 The tool itself is available online via:{" "}
                 <a
-                  href={WEB_APP_URL}
+                  href={LINKS.explorerWebsite}
                   rel="noopener noreferrer"
-                  className={cn("link")}
+                  className="link"
                 >
-                  {WEB_APP_URL}
+                  {LINKS.explorerWebsite}
                 </a>
               </TypographyP>
             </TypographyContent>
@@ -98,10 +97,7 @@ function About() {
               <TypographyP>
                 The work in this project builds upon efforts and findings from
                 the study ‘
-                <a
-                  href="https://c.ramboll.com/whole-life-carbon-reduction?hsLang=en"
-                  className={cn("link")}
-                >
+                <a href={LINKS.study.wholeLifeCarbon} className="link">
                   Supporting the development of a roadmap for the reduction of
                   whole life carbon of buildings
                 </a>
@@ -149,10 +145,7 @@ function About() {
                 <TypographyP>
                   This tool is part of a study contracted by the European
                   Commission, DG GROW, on the ‘
-                  <a
-                    href="https://c.ramboll.com/life-cycle-emissions-of-eu-building-and-construction"
-                    className={cn("link")}
-                  >
+                  <a href={LINKS.study.lifeCycleGreenhouse} className="link">
                     Analysis of Life-cycle Greenhouse Gas Emissions and Removals
                     of EU Buildings and Construction
                   </a>
@@ -200,8 +193,8 @@ function About() {
                   Engineering, Environmental Hotspot Analysis and Dynamic Impact
                   Assessment.” Sustainable Production and Consumption, 2024.
                   <br />
-                  <a href={DOI_URL} className={cn("link")}>
-                    {DOI_URL}
+                  <a href={LINKS.doi} className="link">
+                    {LINKS.doi}
                   </a>
                 </TypographyP>
 
@@ -222,14 +215,14 @@ function About() {
                 <TypographyList>
                   <li>
                     Tool Development Lead, KU Leuven: Martin Röck (
-                    <a href={`mailto:${ROECK_EMAIL}`} className={cn("link")}>
+                    <a href={`mailto:${ROECK_EMAIL}`} className="link">
                       {ROECK_EMAIL}
                     </a>
                     )
                   </li>
                   <li>
                     European Commission, DG GROW: Philippe Moseley (
-                    <a href={`mailto:${MOSELEY_EMAIL}`} className={cn("link")}>
+                    <a href={`mailto:${MOSELEY_EMAIL}`} className="link">
                       {MOSELEY_EMAIL}
                     </a>
                     )
@@ -238,10 +231,7 @@ function About() {
                 <TypographyP>
                   An extended list of consortium members and contact details is
                   available via the{" "}
-                  <a
-                    href="https://c.ramboll.com/life-cycle-emissions-of-eu-building-and-construction"
-                    className={cn("link")}
-                  >
+                  <a href={LINKS.study.lifeCycleGreenhouse} className="link">
                     project website
                   </a>{" "}
                   .
@@ -253,7 +243,7 @@ function About() {
                   This tool has been developed as part of{" "}
                   <a
                     href="https://etendering.ted.europa.eu/cft/cft-display.html?cftId=10989"
-                    className={cn("link")}
+                    className="link"
                   >
                     GROW/2022/OP/0005
                   </a>
@@ -266,7 +256,7 @@ function About() {
                   Licensed under a Creative Commons Attribution-ShareAlike 4.0 (
                   <a
                     href="https://creativecommons.org/licenses/by-sa/4.0/"
-                    className={cn("link")}
+                    className="link"
                   >
                     CC BY-SA 4.0
                   </a>
@@ -279,12 +269,12 @@ function About() {
                   Tool - Analysis of Life-cycle Greenhouse Gas Emissions and
                   Removals of EU Buildings and Construction” European Commission
                   DG GROW, 2024. DOI:{" "}
-                  <a href={DOI_URL} className={cn("link")}>
-                    {DOI_URL}
+                  <a href={LINKS.doi} className="link">
+                    {LINKS.doi}
                   </a>
                   . Web-app available online via:{" "}
-                  <a href={WEB_APP_URL} className={cn("link")}>
-                    {WEB_APP_URL}
+                  <a href={LINKS.explorerWebsite} className="link">
+                    {LINKS.explorerWebsite}
                   </a>
                 </TypographyP>
               </TypographyContent>

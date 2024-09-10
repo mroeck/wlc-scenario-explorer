@@ -1,4 +1,4 @@
-﻿stock_projection_year,Non-residential,Residential
+stock_projection_year,Non-residential,Residential
 2020,119.687,319.473
 2025,119.163,315.329
 2030,119.65,307.084
@@ -6,3 +6,6 @@
 2040,110.565,281.564
 2045,106.062,267.935
 2050,101.861,253.811
+
+
+source: https://ae-scenario-explorer.cloud.set.kuleuven.be
