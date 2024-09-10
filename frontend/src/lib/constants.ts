@@ -126,3 +126,15 @@ export const LINKS = {
       "https://c.ramboll.com/life-cycle-emissions-of-eu-building-and-construction",
   },
 } as const;
+
+export const HELP_PAGE_IDS = {
+  predefinedScenarioSelection: "predefinedScenarioSelection",
+  scenarioParametersCustomization: "scenarioParametersCustomization",
+  filterSetting: "filterSetting",
+  indicator: "indicatorDoc",
+  dividedBy: "dividedBy",
+  breakdownBy: "breakdownBy",
+  display: "display",
+} as const;
+export const SCENARIO_A_LABEL = "primary scenario";
+export const SCENARIO_B_LABEL = "scenario B";

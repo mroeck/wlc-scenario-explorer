@@ -20,6 +20,9 @@ import {
   FILTERS_ORDER,
   SELECT_UNIT_TESTID,
   DATA_TABS_NAMES,
+  HELP_PAGE_IDS,
+  SCENARIO_A_LABEL,
+  SCENARIO_B_LABEL,
 } from "@/lib/constants";
 import {
   Select,
@@ -28,7 +31,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { cn } from "@/lib/utils";
 import { SelectMenuStyle } from "./SelectMenuStyle";
 import { getRouteApi } from "@tanstack/react-router";
 import { type Writable } from "type-fest";
@@ -44,6 +46,9 @@ import {
   UNITS,
 } from "@/lib/shared_with_backend/constants";
 import { useEffect } from "react";
+import { InfoButton } from "@/components/InfoButton";
+import { Link } from "@tanstack/react-router";
+import { LinkIcon } from "lucide-react";
 
 const route = getRouteApi(ROUTES.DASHBOARD);
 
@@ -119,14 +124,31 @@ export const DataVizForm = () => {
     <Form {...form}>
       <form
         onSubmit={void form.handleSubmit(onSubmit)}
-        className={cn("flex flex-wrap gap-5")}
+        className="flex flex-wrap gap-5"
       >
         <FormField
           control={form.control}
           name="indicator"
           render={({ field }) => (
             <FormItem data-testid={SELECT_INDICATOR_TESTID}>
-              <FormLabel className={cn("font-medium")}>Indicator:</FormLabel>
+              <FormLabel className="flex items-center gap-2">
+                <span className="font-medium">Indicator:</span>
+                <InfoButton variant="dark">
+                  <p>
+                    Select an indicator to visualize GHG emissions and carbon
+                    removals, such as total global warming potential (GWP) or
+                    specific sub-indicators like GWP fossil, GWP bio, and GWP
+                    luluc.
+                  </p>
+                  <Link
+                    to={ROUTES.HELP}
+                    hash={HELP_PAGE_IDS.indicator}
+                    className="flex items-center gap-1 underline"
+                  >
+                    <LinkIcon className="size-3" /> Read more here.
+                  </Link>
+                </InfoButton>
+              </FormLabel>
               <Select
                 onValueChange={(value) => {
                   onSelectChange({
@@ -139,7 +161,7 @@ export const DataVizForm = () => {
               >
                 <FormControl>
                   <SelectMenuStyle>
-                    <SelectTrigger className={cn("text-left capitalize")}>
+                    <SelectTrigger className="text-left capitalize">
                       <SelectValue placeholder="Select a indicator" />
                     </SelectTrigger>
                   </SelectMenuStyle>
@@ -160,7 +182,23 @@ export const DataVizForm = () => {
           name="unit"
           render={({ field }) => (
             <FormItem data-testid={SELECT_UNIT_TESTID}>
-              <FormLabel className="font-medium">Divided by:</FormLabel>
+              <FormLabel className="flex items-center gap-2">
+                <span className="font-medium">Divided by:</span>
+                <InfoButton variant="dark">
+                  <p>
+                    Select a reference unit to divide the indicator results by,
+                    such as per square meter, per capita, or show total sums
+                    with no division.
+                  </p>
+                  <Link
+                    to={ROUTES.HELP}
+                    hash={HELP_PAGE_IDS.dividedBy}
+                    className="flex items-center gap-1 underline"
+                  >
+                    <LinkIcon className="size-3" /> Read more here.
+                  </Link>
+                </InfoButton>
+              </FormLabel>
               <Select
                 onValueChange={(value) => {
                   onSelectChange({
@@ -173,7 +211,7 @@ export const DataVizForm = () => {
               >
                 <FormControl>
                   <SelectMenuStyle>
-                    <SelectTrigger className={cn("text-left capitalize")}>
+                    <SelectTrigger className="text-left capitalize">
                       <SelectValue placeholder="Select a unit" />
                     </SelectTrigger>
                   </SelectMenuStyle>
@@ -194,7 +232,25 @@ export const DataVizForm = () => {
           name="attribute"
           render={({ field }) => (
             <FormItem data-testid={BREAKDOWN_BY_TESTID}>
-              <FormLabel className={cn("font-medium")}>Breakdown by:</FormLabel>
+              <FormLabel className="flex items-center gap-2">
+                <span className="font-medium">Breakdown by:</span>
+                <InfoButton variant="dark">
+                  <p>
+                    Select an attribute to break down the results for detailed
+                    contribution analysis. Choose attributes like building
+                    types, elements, or life cycle stages to see how each
+                    contributes to the overall indicator. Customize which values
+                    to include or exclude via the filter settings.
+                  </p>
+                  <Link
+                    to={ROUTES.HELP}
+                    hash={HELP_PAGE_IDS.breakdownBy}
+                    className="flex items-center gap-1 underline"
+                  >
+                    <LinkIcon className="size-3" /> Read more here.
+                  </Link>
+                </InfoButton>
+              </FormLabel>
               <Select
                 onValueChange={(value) => {
                   onSelectChange({
@@ -207,7 +263,7 @@ export const DataVizForm = () => {
               >
                 <FormControl>
                   <SelectMenuStyle>
-                    <SelectTrigger className={cn("text-left capitalize")}>
+                    <SelectTrigger className="text-left capitalize">
                       <SelectValue placeholder="Select what to breakdown" />
                     </SelectTrigger>
                   </SelectMenuStyle>
@@ -230,7 +286,7 @@ export const DataVizForm = () => {
                     <SelectItem
                       key={attribute}
                       value={attribute}
-                      className={cn("capitalize")}
+                      className="capitalize"
                     >
                       {attribute}
                     </SelectItem>
@@ -246,7 +302,23 @@ export const DataVizForm = () => {
             name="display"
             render={({ field }) => (
               <FormItem>
-                <FormLabel className={cn("font-medium")}>Display:</FormLabel>
+                <FormLabel className="flex items-center gap-2 font-medium">
+                  <span>Display:</span>
+                  <InfoButton variant="dark">
+                    <p>
+                      Choose how to display scenarios in the chart: show{" "}
+                      {SCENARIO_A_LABEL}, {SCENARIO_B_LABEL}, or compare both
+                      side-by-side for a detailed visual analysis.
+                    </p>
+                    <Link
+                      to={ROUTES.HELP}
+                      hash={HELP_PAGE_IDS.display}
+                      className="flex items-center gap-1 underline"
+                    >
+                      <LinkIcon className="size-3" /> Read more here.
+                    </Link>
+                  </InfoButton>
+                </FormLabel>
                 <Select
                   onValueChange={(value) => {
                     onSelectChange({
@@ -260,7 +332,7 @@ export const DataVizForm = () => {
                   <FormControl>
                     <SelectMenuStyle>
                       <SelectTrigger
-                        className={cn("text-left capitalize")}
+                        className="text-left capitalize"
                         data-testid={DISPLAY_SELECT_TESTID}
                       >
                         <SelectValue placeholder="Select what to breakdown" />
