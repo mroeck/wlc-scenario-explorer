@@ -12,7 +12,7 @@ import tableWithFilteredEmbodiedCaronUrl from "@/assets/table_with_filtered_embo
 
 import stackedBarChartForEmbodiedCarbonUrl from "@/assets/stacked_bar_chart_showing_filtered_results_for_embodied_carbon_by_building_element_class.png";
 import { TypographyFigure } from "@/components/TypographyFigure";
-import { HELP_TITLE } from "@/lib/constants";
+import { HELP_PAGE_IDS, HELP_TITLE } from "@/lib/constants";
 import { TypographyContent } from "@/components/TypographyContent";
 import { SectionForDoc } from "@/components/SectionForDoc";
 
@@ -28,17 +28,13 @@ function Help() {
         "lg:flex-row",
       )}
     >
-      <Section
-        className={cn(
-          "flex flex-col border-none shadow-none lg:border-gray-200 lg:shadow-md",
-        )}
-      >
+      <Section className="flex flex-col border-none shadow-none lg:border-gray-200 lg:shadow-md">
         <TypographyH1> {HELP_TITLE} </TypographyH1>
         <SectionForDoc>
           <SectionForDoc>
             <TypographyH2>Scenario settings</TypographyH2>
 
-            <SectionForDoc>
+            <SectionForDoc id={HELP_PAGE_IDS.predefinedScenarioSelection}>
               <TypographyH3>Selection of predefined scenarios</TypographyH3>
               <TypographyContent>
                 <TypographyMuted>
@@ -160,8 +156,8 @@ function Help() {
               </TypographyContent>
             </SectionForDoc>
 
-            <SectionForDoc>
-              <TypographyH3>Modification of scenario parameters</TypographyH3>
+            <SectionForDoc id={HELP_PAGE_IDS.scenarioParametersCustomization}>
+              <TypographyH3>Scenario parameters customization</TypographyH3>
               <TypographyContent>
                 <TypographyMuted>
                   [This functionality becomes active once the newly generated
@@ -395,7 +391,7 @@ function Help() {
             </SectionForDoc>
           </SectionForDoc>
         </SectionForDoc>
-        <SectionForDoc>
+        <SectionForDoc id={HELP_PAGE_IDS.filterSetting}>
           <TypographyH2>Filter settings</TypographyH2>
 
           <SectionForDoc>
@@ -622,7 +618,7 @@ function Help() {
 
         <SectionForDoc>
           <TypographyH2>Visualization settings</TypographyH2>
-          <SectionForDoc>
+          <SectionForDoc id={HELP_PAGE_IDS.indicator}>
             <TypographyH3>
               Indicator (GHG emissions and carbon removals)
             </TypographyH3>
@@ -635,8 +631,8 @@ function Help() {
               15804+A2).
             </TypographyP>
           </SectionForDoc>
-          <SectionForDoc>
-            <TypographyH3>Per (reference unit)</TypographyH3>
+          <SectionForDoc id={HELP_PAGE_IDS.dividedBy}>
+            <TypographyH3>Divided by (reference unit)</TypographyH3>
             <TypographyMuted>
               [This functionality becomes active once the newly generated
               scenario results are loaded to the tool.]
@@ -649,7 +645,7 @@ function Help() {
               capita.
             </TypographyP>
           </SectionForDoc>
-          <SectionForDoc>
+          <SectionForDoc id={HELP_PAGE_IDS.breakdownBy}>
             <TypographyH3>Breakdown by (contribution analysis)</TypographyH3>
             <TypographyP>
               Users can select how results should be broken down, meaning they
@@ -668,7 +664,7 @@ function Help() {
               values, they can do so via the filter settings.
             </TypographyP>
           </SectionForDoc>
-          <SectionForDoc>
+          <SectionForDoc id={HELP_PAGE_IDS.display}>
             <TypographyH3>Display (optional scenario comparison)</TypographyH3>
             <TypographyMuted>
               [This functionality becomes active once the newly generated

@@ -14,6 +14,7 @@ import {
 } from "@/components/ui/select";
 import {
   DEFAULT_DISPLAY,
+  HELP_PAGE_IDS,
   ROUTES,
   SCENARIO_A_AND_B,
   SCENARIO_A_ONLY,
@@ -21,9 +22,8 @@ import {
   SCENARIO_B_ONLY,
   SCENARIO_B_TESTID,
 } from "@/lib/constants";
-import { cn } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { getRouteApi } from "@tanstack/react-router";
+import { getRouteApi, Link } from "@tanstack/react-router";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { SelectMenuStyle } from "../../data-section/SelectMenuStyle";
@@ -35,6 +35,8 @@ import {
 import { ScenarioSchema } from "@/lib/shared_with_backend/schemas";
 import { ScenarioParameters } from "../components/ScenarioParameters";
 import { useEffect } from "react";
+import { InfoButton } from "@/components/InfoButton";
+import { LinkIcon } from "lucide-react";
 
 const route = getRouteApi(ROUTES.DASHBOARD);
 
@@ -106,24 +108,40 @@ export const Scenarios = () => {
   }, []);
 
   return (
-    <section className={cn(" px-primary-x")}>
-      <h2 className={cn("sr-only")}>Scenarios</h2>
-      <div className={cn("flex justify-end pb-px pt-3")}>
+    <section className=" px-primary-x">
+      <h2 className="sr-only">Scenarios</h2>
+      <div className="flex justify-end pb-px pt-3">
         <ResetButton reset={reset} text="Reset all" />
       </div>
       <Form {...form}>
         <form
           onSubmit={void form.handleSubmit(onSubmit)}
-          className={cn("flex flex-col gap-8")}
+          className="flex flex-col gap-8"
         >
-          <div className={cn("flex flex-col gap-4")}>
+          <div className="flex flex-col gap-4">
             <FormField
               control={form.control}
               name="scenarioA"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className={cn("font-medium")}>
-                    Primary scenario:
+                  <FormLabel className="flex items-center gap-2 font-medium">
+                    <span>Primary scenario:</span>
+                    <InfoButton variant="dark">
+                      <p>
+                        Choose from predefined scenarios. They represent
+                        aspirational policy ambitions such as current policies
+                        (CPOL) and additional policies (APOL). These scenarios
+                        explore the potential of various carbon reduction and
+                        removal (CRR) strategies.
+                      </p>
+                      <Link
+                        to={ROUTES.HELP}
+                        hash={HELP_PAGE_IDS.predefinedScenarioSelection}
+                        className="flex items-center gap-1 underline"
+                      >
+                        <LinkIcon className="size-3" /> Read more here.
+                      </Link>
+                    </InfoButton>
                   </FormLabel>
                   <Select
                     onValueChange={(value) => {
@@ -149,7 +167,7 @@ export const Scenarios = () => {
                     <FormControl>
                       <SelectMenuStyle>
                         <SelectTrigger
-                          className={cn("w-full max-w-full capitalize")}
+                          className="w-full max-w-full capitalize"
                           data-testid={SCENARIO_A_TESTID}
                         >
                           <SelectValue placeholder="Select a scenario" />
@@ -167,11 +185,28 @@ export const Scenarios = () => {
                 </FormItem>
               )}
             />
-            <div className={cn("px-2")}>
-              <div className={cn("flex justify-between")}>
-                <span className={cn("text-sm font-medium underline")}>
+            <div className="px-2">
+              <div className="flex items-center gap-2">
+                <span className="text-sm font-medium underline">
                   Customize Parameters:
                 </span>
+                <InfoButton variant="dark">
+                  <p>
+                    Customize scenario parameters by adjusting the ambition
+                    levels for different carbon reduction and removal (CRR)
+                    strategies. Explore strategies such as improving supply
+                    chains, shifting to bio-based solutions, and avoiding
+                    unnecessary demand. Set ambition levels to simulate
+                    different adoption rates across Member States
+                  </p>
+                  <Link
+                    to={ROUTES.HELP}
+                    hash={HELP_PAGE_IDS.scenarioParametersCustomization}
+                    className="flex items-center gap-1 underline"
+                  >
+                    <LinkIcon className="size-3" /> Read more here.
+                  </Link>
+                </InfoButton>
               </div>
               <ScenarioParameters />
             </div>
@@ -181,8 +216,24 @@ export const Scenarios = () => {
             name="scenarioB"
             render={({ field }) => (
               <FormItem>
-                <FormLabel className={cn("font-medium")}>
-                  Compare with scenario:
+                <FormLabel className="flex items-center gap-2 font-medium">
+                  <span>Compare with scenario:</span>
+                  <InfoButton variant="dark">
+                    <p>
+                      Select a second predefined scenario to compare with your
+                      primary scenario. Explore policy ambitions like current
+                      policies (CPOL), additional policies (APOL), and combined
+                      CRR strategies (Improve, Shift, Avoid) to analyze their
+                      impact side by side.
+                    </p>
+                    <Link
+                      to={ROUTES.HELP}
+                      hash={HELP_PAGE_IDS.predefinedScenarioSelection}
+                      className="flex items-center gap-1 underline"
+                    >
+                      <LinkIcon className="size-3" /> Read more here.
+                    </Link>
+                  </InfoButton>
                 </FormLabel>
                 <Select
                   onValueChange={(value) => {
@@ -208,7 +259,7 @@ export const Scenarios = () => {
                   <FormControl>
                     <SelectMenuStyle>
                       <SelectTrigger
-                        className={cn("w-full max-w-full")}
+                        className="w-full max-w-full"
                         data-testid={SCENARIO_B_TESTID}
                       >
                         <SelectValue placeholder="Select a scenario" />
