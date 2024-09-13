@@ -3,11 +3,14 @@ import {
   DATA_TABS_NAMES,
   DISPLAY_OPTIONS,
   SETTINGS_TABS_NAMES,
+  SORT_OPTIONS_VALUES,
 } from "./constants";
 import { ScenarioRowsAggregatedSchema } from "./shared_with_backend/schemas";
 import type { UnionToTuple } from "type-fest";
 
 export const DisplaySchema = z.enum(DISPLAY_OPTIONS);
+
+export const SortSchema = z.enum(SORT_OPTIONS_VALUES);
 
 export const ScenarioRowsAggregatedArraySchema =
   ScenarioRowsAggregatedSchema.array();

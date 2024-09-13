@@ -1,3 +1,4 @@
+import type { UnionToTuple } from "type-fest";
 import type { SCENARIOS_OPTIONS } from "./shared_with_backend/constants";
 import type { Attribute, Indicator, Unit } from "./types";
 
@@ -30,8 +31,17 @@ export const DISPLAY_OPTIONS = [
   SCENARIO_B_ONLY,
   SCENARIO_A_AND_B,
 ] as const;
+export const SORT_OPTIONS = {
+  desc: "biggest to smallest",
+  regionsAlphabetically: "regions alphabetically",
+} as const;
+export const SORT_OPTIONS_VALUES = Object.values(SORT_OPTIONS) as UnionToTuple<
+  (typeof SORT_OPTIONS)[keyof typeof SORT_OPTIONS]
+>;
 export const DEFAULT_DISPLAY: (typeof DISPLAY_OPTIONS)[number] =
   SCENARIO_A_ONLY;
+export const DEFAULT_SORT: (typeof SORT_OPTIONS)[keyof typeof SORT_OPTIONS] =
+  "regions alphabetically";
 export const DEFAULT_SCENARIO: (typeof SCENARIOS_OPTIONS)[number] =
   "Example scenario (for illustration purpose only)";
 export const DEFAULT_FROM = 2020;
@@ -47,6 +57,7 @@ export const GRAPH_TITLE_TESTID = "graphTitle";
 export const UNIT_TESTID = "unit";
 export const ATTRIBUTE_TESTID = "attribute";
 export const DISPLAY_SELECT_TESTID = "DISPLAY_SELECT_TESTID";
+export const SORT_SELECT_TESTID = "SORT_SELECT_TESTID";
 export const FOR_SCENARIOS_TESTID = "forScenarios";
 export const SCENARIO_A_TESTID = "scenarioASelect";
 export const SCENARIO_B_TESTID = "scenarioBSelect";
@@ -116,6 +127,7 @@ export const DEFAULT_SEARCH_PARAMS = {
   },
   settingsTab: DEFAULT_SETTINGS_TAB,
   dataTab: DEFAULT_DATA_TAB,
+  sort: DEFAULT_SORT,
 };
 export const LINKS = {
   doi: "https://doi.org/10.5281/zenodo.13315281",
@@ -135,6 +147,7 @@ export const HELP_PAGE_IDS = {
   dividedBy: "dividedBy",
   breakdownBy: "breakdownBy",
   display: "display",
+  sort: "sort",
 } as const;
 export const SCENARIO_A_LABEL = "primary scenario";
 export const SCENARIO_B_LABEL = "scenario B";

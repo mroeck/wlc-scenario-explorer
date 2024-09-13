@@ -4,6 +4,7 @@ from .db import Session
 from .shared_with_frontend.schemas import (
     ScenarioEnumSchema,
     IndicatorEnumSchema,
+    SortEnumSchema,
     FiltersSchema,
     ColumnsEnumSchema,
     FILTER_TO_DB_COLUMN,
@@ -21,6 +22,7 @@ def get_scenario_rows(
     attribute: ColumnsEnumSchema,
     indicator: IndicatorEnumSchema,
     filters: Optional[FiltersSchema],
+    sort: SortEnumSchema,
 ) -> Dict[str, int]:
     statementWithWrongTable = select(  # type: ignore[var-annotated]
         Scenario.stock_projection_year,

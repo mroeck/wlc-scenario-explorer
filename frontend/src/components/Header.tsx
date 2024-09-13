@@ -8,6 +8,7 @@ import {
   DEFAULT_UNIT,
   DEFAULT_DATA_TAB,
   DEFAULT_SETTINGS_TAB,
+  DEFAULT_SORT,
 } from "@/lib/constants";
 import { cn } from "@/lib/utils";
 import { Link } from "@tanstack/react-router";
@@ -22,6 +23,7 @@ const dashboardSearch = {
   unit: DEFAULT_UNIT,
   dataTab: DEFAULT_DATA_TAB,
   settingsTab: DEFAULT_SETTINGS_TAB,
+  sort: DEFAULT_SORT,
 };
 
 type NavLinksProps = {

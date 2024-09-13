@@ -70,25 +70,23 @@ export const StackedBarChart = ({
                 />
               )}
             />
-            {attributeOptions
-              .map((option) => {
-                const color = getColor({ breakdownBy, option });
+            {attributeOptions.map((option) => {
+              const color = getColor({ breakdownBy, option });
 
-                return (
-                  <Bar
-                    key={option}
-                    type="monotone"
-                    stackId="1"
-                    dataKey={option}
-                    stroke={color}
-                    fill={color}
-                    fillOpacity="0.7"
-                    isAnimationActive={animation}
-                    barSize={45}
-                  />
-                );
-              })
-              .reverse()}
+              return (
+                <Bar
+                  key={option}
+                  type="monotone"
+                  stackId="1"
+                  dataKey={option}
+                  stroke={color}
+                  fill={color}
+                  fillOpacity="0.7"
+                  isAnimationActive={animation}
+                  barSize={45}
+                />
+              );
+            })}
             <Legend
               content={(props) => <CustomLegend payload={props.payload} />}
             />
