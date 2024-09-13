@@ -53,6 +53,11 @@ ATTRIBUTE_TO_DB_COLUMNS: Mapping[str, str] = {
 }
 
 
+class SortEnumSchema(str, Enum):
+    BIG_TO_SMALL = "biggest to smallest"
+    REGIONS_ALPHABETICALLY = "regions alphabetically"
+
+
 class IndicatorEnumSchema(str, Enum):
     TOTAL_GWP = "GWP total"
     FOSSIL_GWP = "GWP fossil"

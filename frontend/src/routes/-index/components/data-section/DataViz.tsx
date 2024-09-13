@@ -1,7 +1,6 @@
 import { Section } from "@/components/Section";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { StackedAreaChart } from "./graphs/StackedAreaChart";
-import { cn } from "@/lib/utils";
 import { DataVizForm } from "./DataVizForm";
 import { DownloadMenu } from "./DownloadMenu";
 import {
@@ -35,6 +34,7 @@ import type { Attribute, Indicator, Scenario } from "@/lib/types";
 import { LineGraph } from "./graphs/LineChart";
 import { useRef } from "react";
 import { ComparisonSlider } from "./ComparisonSlider";
+import { SettingsButton } from "@/components/settings-button";
 
 const route = getRouteApi(ROUTES.DASHBOARD);
 
@@ -109,16 +109,16 @@ function createTitle({
   }
 
   return (
-    <h2 data-testid={GRAPH_TITLE_TESTID} className={cn("text-primary")}>
-      <span className={cn("capitalize")} data-testid={UNIT_TESTID}>
+    <h2 data-testid={GRAPH_TITLE_TESTID} className="text-primary">
+      <span className="capitalize" data-testid={UNIT_TESTID}>
         {unit}
       </span>{" "}
       by{" "}
-      <span className={cn("capitalize")} data-testid={ATTRIBUTE_TESTID}>
+      <span className="capitalize" data-testid={ATTRIBUTE_TESTID}>
         {attribute}
       </span>{" "}
       for{" "}
-      <span className={cn("capitalize")} data-testid={FOR_SCENARIOS_TESTID}>
+      <span className="capitalize" data-testid={FOR_SCENARIOS_TESTID}>
         {forScenarios}
       </span>
     </h2>
@@ -136,6 +136,7 @@ export const DataViz = () => {
     scenarioA,
     scenarioB,
     dataTab,
+    sort,
   } = route.useSearch({
     select: (search) => ({
       attribute: search.attribute,
@@ -145,6 +146,7 @@ export const DataViz = () => {
       scenarioA: search.scenarioA,
       scenarioB: search.scenarioB,
       dataTab: search.dataTab,
+      sort: search.sort,
     }),
   });
 
@@ -154,6 +156,7 @@ export const DataViz = () => {
       filters,
       scenario,
       unit: indicator,
+      sort,
     });
 
   const {
@@ -163,7 +166,7 @@ export const DataViz = () => {
   } = useQuery({
     queryKey: [
       "scenarioRowsAggregated",
-      { attribute, filters, scenario: scenarioA, unit: indicator },
+      { attribute, filters, scenario: scenarioA, unit: indicator, sort },
     ],
     queryFn: () => fetchScenarioData(scenarioA),
     staleTime: Infinity,
@@ -176,7 +179,7 @@ export const DataViz = () => {
   } = useQuery({
     queryKey: [
       "scenarioRowsAggregated",
-      { attribute, filters, scenario: scenarioB, unit: indicator },
+      { attribute, filters, scenario: scenarioB, unit: indicator, sort },
     ],
     queryFn: () => fetchScenarioData(scenarioB),
     staleTime: Infinity,
@@ -207,27 +210,21 @@ export const DataViz = () => {
   };
 
   return (
-    <Section className={cn("min-w-0 flex-1")}>
+    <Section className="min-w-0 flex-1">
       <Tabs
         defaultValue={defaultTab}
-        className={cn("flex h-full flex-col")}
+        className="flex h-full flex-col"
         value={dataTab}
         onValueChange={onTabChange}
       >
-        <div
-          className={cn(
-            "flex flex-col items-start justify-between gap-2 md:flex-row",
-          )}
-        >
-          <div className={cn("w-full md:w-auto")}>
-            <TabsList
-              className={cn("mx-auto flex flex-col md:flex-row lg:flex-row")}
-            >
+        <div className="flex flex-col items-start justify-between gap-2 md:flex-row">
+          <div className="w-full md:w-auto">
+            <TabsList className="mx-auto flex flex-col md:flex-row lg:flex-row">
               {tabs.map((tab) => (
                 <TabsTrigger
                   key={tab.name}
                   value={tab.name}
-                  className={cn("w-full md:w-auto")}
+                  className="w-full md:w-auto"
                 >
                   {tab.name}
                 </TabsTrigger>
@@ -235,34 +232,31 @@ export const DataViz = () => {
               <TabsTrigger
                 key="Table"
                 value="Table"
-                className={cn("w-full md:w-auto")}
+                className="w-full md:w-auto"
               >
                 Table
               </TabsTrigger>
             </TabsList>
           </div>
-          <div className={cn("lg:hidden")}>
+          <div className="lg:hidden">
             <SettingsDrawer />
           </div>
         </div>
-        <div
-          className={cn("flex flex-col justify-between gap-5 pt-8 md:flex-row")}
-        >
-          <div className={cn("flex flex-1 gap-5")}>
+        <div className="flex flex-col justify-between gap-5 pt-8 md:flex-row">
+          <div className="flex flex-1 gap-5">
             <DataVizForm />
           </div>
-          <div className={cn("mt-auto")}>
-            {dataA && visualizationRef.current && (
+
+          {dataA && visualizationRef.current && (
+            <div className="mt-auto flex gap-1">
               <DownloadMenu data={dataA} domTarget={visualizationRef.current} />
-            )}
-          </div>
+              <SettingsButton />
+            </div>
+          )}
         </div>
-        <div className={cn("pt-12")}></div>
-        <div
-          ref={visualizationRef}
-          className={cn("flex flex-1 flex-col bg-white")}
-        >
-          <div className={cn("text-center text-base font-semibold")}>
+        <div className="pt-12"></div>
+        <div ref={visualizationRef} className="flex flex-1 flex-col bg-white">
+          <div className="text-center text-base font-semibold">
             {createTitle({
               attribute,
               scenarioA,
@@ -278,7 +272,7 @@ export const DataViz = () => {
             <TabsContent
               key={tab.name}
               value={tab.name}
-              className={cn("relative min-h-0 flex-1")}
+              className="relative min-h-0 flex-1"
               data-testid={TAB_CONTENT_TESTID}
             >
               <DataStatus />
@@ -309,7 +303,7 @@ export const DataViz = () => {
           <TabsContent
             key={DATA_TABS_NAMES.table}
             value={DATA_TABS_NAMES.table}
-            className={cn("relative min-h-0 flex-1")}
+            className="relative min-h-0 flex-1"
             data-testid={TAB_CONTENT_TESTID}
           >
             <DataStatus />

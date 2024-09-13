@@ -57,21 +57,6 @@ export const StackedAreaChart = ({
       ? Object.keys(data[0]).filter((key) => key !== YEAR_KEY)
       : [];
 
-  // const totals: Record<string, number> = {};
-  // data.forEach((item) => {
-  //   for (const key in item) {
-  //     if (key !== "stock_projection_year") {
-  //       if (!totals[key]) {
-  //         totals[key] = 0;
-  //       }
-  //       totals[key] += item[key];
-  //     }
-  //   }
-  // });
-  // const attributeOptions = Object.keys(totals).sort(
-  //   (a, b) => totals[b] - totals[a],
-  // );
-
   return (
     <div className={cn("h-full overflow-x-scroll lg:overflow-x-visible")}>
       <div
@@ -83,8 +68,8 @@ export const StackedAreaChart = ({
         <ResponsiveContainer width="100%" height="100%" ref={chartRef}>
           <AreaChart {...commonChartProps} data={data}>
             <CartesianGrid {...commonCartisianGridProps} />
-            {attributeOptions
-              .map((option) => {
+            {
+              attributeOptions.map((option) => {
                 const areaColor = getColor({ breakdownBy, option });
 
                 return (
@@ -101,7 +86,8 @@ export const StackedAreaChart = ({
                   />
                 );
               })
-              .reverse()}
+              // }
+            }
             <Tooltip
               {...commonTooltipProps}
               content={(props) =>
@@ -121,31 +107,29 @@ export const StackedAreaChart = ({
                 )
               }
             />
-            {attributeOptions
-              .map((option) => {
-                const areaColor = getColor({ breakdownBy, option });
+            {attributeOptions.map((option) => {
+              const areaColor = getColor({ breakdownBy, option });
 
-                return (
-                  <Area
-                    key={option + "B"}
-                    type="monotone"
-                    stackId="0"
-                    dataKey={option}
-                    stroke={areaColor}
-                    strokeWidth={0.5}
-                    fill={areaColor}
-                    fillOpacity="0"
-                    activeDot={{
-                      r: 4,
-                      stroke: "white",
-                      fill: areaColor,
-                      strokeWidth: 1,
-                    }}
-                    isAnimationActive={animation}
-                  />
-                );
-              })
-              .reverse()}
+              return (
+                <Area
+                  key={option + "B"}
+                  type="monotone"
+                  stackId="0"
+                  dataKey={option}
+                  stroke={areaColor}
+                  strokeWidth={0.5}
+                  fill={areaColor}
+                  fillOpacity="0"
+                  activeDot={{
+                    r: 4,
+                    stroke: "white",
+                    fill: areaColor,
+                    strokeWidth: 1,
+                  }}
+                  isAnimationActive={animation}
+                />
+              );
+            })}
             <Legend
               content={(props) => <CustomLegend payload={props.payload} />}
             />

@@ -11,6 +11,7 @@ from src.shared_with_frontend.schemas import (
     ATTRIBUTE_TO_DB_COLUMNS,
     ColumnsEnumSchema,
     FilterFrontEnumSchema,
+    SortEnumSchema,
 )
 
 from src.utils import convert_keys_to_columns
@@ -35,6 +36,7 @@ def scenario() -> Dict[str, int]:
     attribute = ATTRIBUTE_TO_DB_COLUMNS[AttributeEnumSchema(requestdata["attribute"])]  # type:ignore[index]
     scenario = SCENARIO_TO_FILE_NAME[ScenarioEnumSchema(requestdata["scenario"])]  # type:ignore[index]
     unit = UNIT_TO_DB_COLUMNS[IndicatorEnumSchema(requestdata["unit"])]  # type:ignore[index]
+    sort = SortEnumSchema(requestdata["sort"])  # type:ignore[index]
     filters = None
 
     if (
@@ -51,6 +53,7 @@ def scenario() -> Dict[str, int]:
         cast(ColumnsEnumSchema, attribute),
         cast(IndicatorEnumSchema, unit),
         cast(FiltersSchema | None, filters),
+        sort,
     )
 
     return data

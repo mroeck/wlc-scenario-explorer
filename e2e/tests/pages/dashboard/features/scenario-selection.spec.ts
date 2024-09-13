@@ -16,7 +16,9 @@ test.describe("scenario selection", () => {
     page,
     isMobile,
   }) => {
-    const mobileSettings = page.getByRole("button", { name: "Settings" });
+    const mobileSettings = page
+      .locator("button")
+      .filter({ hasText: "Settings" });
     const scenarioA = SCENARIOS_OPTIONS[0];
     const scenarioB = SCENARIOS_OPTIONS[1];
 
@@ -35,8 +37,12 @@ test.describe("scenario selection", () => {
     }
 
     const vsText = `${scenarioA} VS ${scenarioB}`;
-    await expect(page.getByTestId(DISPLAY_SELECT_TESTID)).toHaveText(vsText);
     await expect(page.getByTestId(FOR_SCENARIOS_TESTID)).toHaveText(vsText);
+
+    await page.getByLabel("Settings").click();
+    await expect(page.getByTestId(DISPLAY_SELECT_TESTID)).toHaveText(vsText);
+
+    await page.getByRole("button", { name: "Close" }).click();
 
     if (isMobile) {
       await mobileSettings.click();
@@ -49,6 +55,8 @@ test.describe("scenario selection", () => {
     }
 
     await expect(page.getByTestId(FOR_SCENARIOS_TESTID)).toHaveText(scenarioA);
+
+    await page.getByLabel("Settings").click();
     await expect(page.getByTestId(DISPLAY_SELECT_TESTID)).toHaveText(
       `${scenarioA} only`,
     );

@@ -12,6 +12,7 @@ import {
   DEFAULT_UNIT,
   DEFAULT_SETTINGS_TAB,
   DEFAULT_DATA_TAB,
+  DEFAULT_SORT,
 } from "@/lib/constants";
 import { z } from "zod";
 
@@ -22,7 +23,12 @@ import {
   IndicatorSchema,
   UnitSchema,
 } from "@/lib/shared_with_backend/schemas";
-import { DataTabSchema, DisplaySchema, SettingsTabSchema } from "@/lib/schemas";
+import {
+  DataTabSchema,
+  DisplaySchema,
+  SettingsTabSchema,
+  SortSchema,
+} from "@/lib/schemas";
 import { Settings } from "./-index/components/side-section/Settings";
 import { memo } from "react";
 
@@ -32,6 +38,7 @@ const SearchParamsSchema = z.object({
   indicator: IndicatorSchema.catch(DEFAULT_INDICATOR),
   unit: UnitSchema.catch(DEFAULT_UNIT),
   display: DisplaySchema.catch(DEFAULT_DISPLAY),
+  sort: SortSchema.catch(DEFAULT_SORT),
   scenarioA: ScenarioSchema.catch(DEFAULT_SCENARIO),
   scenarioB: ScenarioSchema.optional().catch(undefined),
   animation: z.boolean().optional().catch(undefined),

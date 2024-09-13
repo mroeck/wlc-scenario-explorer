@@ -41,7 +41,7 @@ export const Content = ({
         (100%)
       </div>
       <ul className="grid grid-flow-col grid-rows-[repeat(15,auto)] gap-x-5">
-        {data.reverse().map((item) => {
+        {data.map((item) => {
           const value = item.value as number;
           const percentage = totalValue ? (value / totalValue) * 100 : 0;
 

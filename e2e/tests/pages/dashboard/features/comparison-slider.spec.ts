@@ -5,6 +5,7 @@ import {
   TAB_CONTENT_TESTID,
 } from "@/lib/constants";
 import { expect, test } from "@playwright/test";
+import { testScreenshot } from "@tests/functions";
 
 test.describe("comparison slider", () => {
   test.skip(({ isMobile }) => isMobile, "Desktop only!");
@@ -19,24 +20,44 @@ test.describe("comparison slider", () => {
 
     const selectDisplay = page.getByTestId(DISPLAY_SELECT_TESTID);
 
+    const closeSettingsDialog = async () => {
+      await page.getByRole("button", { name: "Close" }).click();
+      await expect(
+        page.getByRole("dialog", { name: "Settings" }),
+      ).not.toBeVisible();
+    };
+
+    await page.getByLabel("Settings").click();
+
     await selectDisplay.click();
     await page
       .getByLabel(DEFAULT_SCENARIO + " VS scenario B")
       .getByText(DEFAULT_SCENARIO)
       .click();
 
-    await expect(graph).toHaveScreenshot();
+    await closeSettingsDialog();
+
+    await testScreenshot({ page, target: graph });
+
+    await page.getByLabel("Settings").click();
 
     await selectDisplay.click();
     await page
       .getByLabel(DEFAULT_SCENARIO + " only")
       .getByText(DEFAULT_SCENARIO)
       .click();
-    await expect(graph).toHaveScreenshot();
+
+    await closeSettingsDialog();
+
+    await testScreenshot({ page, target: graph });
+
+    await page.getByLabel("Settings").click();
 
     await selectDisplay.click();
     await page.getByLabel("Scenario B only").click();
-    await selectDisplay.click();
-    await expect(graph).toHaveScreenshot();
+
+    await closeSettingsDialog();
+
+    await testScreenshot({ page, target: graph });
   });
 });

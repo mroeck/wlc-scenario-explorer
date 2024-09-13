@@ -69,24 +69,22 @@ export const LineGraph = ({
                 />
               )}
             />
-            {attributeOptions
-              .map((option) => {
-                const color = getColor({ breakdownBy, option });
+            {attributeOptions.map((option) => {
+              const color = getColor({ breakdownBy, option });
 
-                return (
-                  <Line
-                    key={option}
-                    type="monotone"
-                    dataKey={option}
-                    stroke={color}
-                    fill={color}
-                    strokeWidth={3}
-                    fillOpacity="0.7"
-                    isAnimationActive={animation}
-                  />
-                );
-              })
-              .reverse()}
+              return (
+                <Line
+                  key={option}
+                  type="monotone"
+                  dataKey={option}
+                  stroke={color}
+                  fill={color}
+                  strokeWidth={3}
+                  fillOpacity="0.7"
+                  isAnimationActive={animation}
+                />
+              );
+            })}
             <Legend
               content={(props) => <CustomLegend payload={props.payload} />}
             />

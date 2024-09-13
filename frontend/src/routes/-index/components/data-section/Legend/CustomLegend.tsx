@@ -50,7 +50,7 @@ export const CustomLegend = ({ payload, className }: CustomLegendProps) => {
       >
         <h3 style={{ fontSize: GRAPH_FONT_SIZE }}>Color legend:</h3>
         <ul className={cn("flex max-w-[50ch] flex-wrap gap-x-6")}>
-          {data.reverse().map((item, index) => (
+          {data.map((item, index) => (
             <li key={index} className={cn("flex flex-1 items-center gap-1")}>
               <ColorCube
                 color={getColor({
