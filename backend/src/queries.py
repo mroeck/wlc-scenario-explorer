@@ -53,7 +53,8 @@ def get_scenario_rows(
 
     if attribute == AttributeEnumSchema.NONE:
         statement = select(
-            Scenario.stock_projection_year, func.sum(column(indicator)).label("Total")
+            Scenario.stock_projection_year,
+            (func.sum(column(indicator)) / 1000).label("Total"),
         ).group_by(Scenario.stock_projection_year)
 
     else:
