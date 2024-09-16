@@ -12,10 +12,9 @@ test.describe("breakdown by", () => {
 
   test(`select ${NONE} display expected graph`, async ({ page }) => {
     const breakdownByDropdown = page.getByTestId(BREAKDOWN_BY_TESTID);
-    const buildingUseSubtypeOption = page.getByLabel(NONE).getByText(NONE);
-
+    const NoneOption = page.getByLabel(NONE).getByText(NONE);
     await breakdownByDropdown.click();
-    await buildingUseSubtypeOption.click();
+    await NoneOption.click();
 
     await testScreenshot({
       page,
