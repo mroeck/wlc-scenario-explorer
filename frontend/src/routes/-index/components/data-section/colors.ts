@@ -30,7 +30,7 @@ export const colors = [
 ];
 
 export const ATTRIBUTE_OPTIONS_COLOR: Record<
-  Exclude<Attribute, "stock building stock activity name">,
+  Exclude<Attribute, "stock building stock activity name" | "None">,
   Record<string, `#${string}`>
 > = {
   // "flow type": {

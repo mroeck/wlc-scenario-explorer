@@ -12,7 +12,7 @@ import {
   BREAKDOWN_BY_TESTID,
   ROUTES,
   SELECT_INDICATOR_TESTID,
-  FILTERS_ORDER,
+  BREAKDOWN_BY_ORDER,
   SELECT_UNIT_TESTID,
   HELP_PAGE_IDS,
 } from "@/lib/constants";
@@ -247,14 +247,14 @@ export const DataVizForm = () => {
                 </FormControl>
                 <SelectContent>
                   {ATTRIBUTES.sort((keyA, keyB) => {
-                    return FILTERS_ORDER.indexOf(
+                    return BREAKDOWN_BY_ORDER.indexOf(
                       keyA.toLowerCase() as Writable<
-                        typeof FILTERS_ORDER
+                        typeof BREAKDOWN_BY_ORDER
                       >[number],
                     ) <
-                      FILTERS_ORDER.indexOf(
+                      BREAKDOWN_BY_ORDER.indexOf(
                         keyB.toLowerCase() as Writable<
-                          typeof FILTERS_ORDER
+                          typeof BREAKDOWN_BY_ORDER
                         >[number],
                       )
                       ? -1

@@ -1,3 +1,5 @@
+import { NONE } from "../constants";
+
 /*
   /!\
   Any variable in this file have a twin variable in the backend. Modifying anything here means modifying also the backend the variable with the same name in the share-with-frontend file
@@ -13,6 +15,7 @@ export const BREAKDOWN_BY_OBJ = {
   // activityInOut: "flow type", temp: hidden for now
   activityType: "building stock activity",
   carbonCategory: "Whole life cycle stages",
+  none: NONE,
 } as const;
 
 type AttributesEnum = [

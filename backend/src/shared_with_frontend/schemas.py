@@ -37,6 +37,7 @@ class AttributeEnumSchema(str, Enum):
     ACTIVITY_IN_OUT = "flow type"
     STOCK_ACTIVITY_TYPE_NAME = "building stock activity"
     CARBON_CATEGORY = "Whole life cycle stages"
+    NONE = "None"
 
 
 ATTRIBUTE_TO_DB_COLUMNS: Mapping[str, str] = {
@@ -50,6 +51,7 @@ ATTRIBUTE_TO_DB_COLUMNS: Mapping[str, str] = {
     AttributeEnumSchema.ACTIVITY_IN_OUT.value: ColumnsEnumSchema.ACTIVITY_IN_OUT.value,
     AttributeEnumSchema.STOCK_ACTIVITY_TYPE_NAME.value: ColumnsEnumSchema.STOCK_ACTIVITY_TYPE_NAME.value,
     AttributeEnumSchema.CARBON_CATEGORY.value: ColumnsEnumSchema.CARBON_CATEGORY.value,
+    AttributeEnumSchema.NONE.value: AttributeEnumSchema.NONE.value,
 }
 
 

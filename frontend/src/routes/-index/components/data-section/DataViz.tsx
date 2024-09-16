@@ -9,6 +9,7 @@ import {
   FOR_SCENARIOS_TESTID,
   GRAPH_TITLE_TESTID,
   INDICATOR_TO_UNIT,
+  NONE,
   ROUTES,
   SCENARIO_A_AND_B,
   SCENARIO_B_ONLY,
@@ -113,10 +114,14 @@ function createTitle({
       <span className="capitalize" data-testid={UNIT_TESTID}>
         {unit}
       </span>{" "}
-      by{" "}
-      <span className="capitalize" data-testid={ATTRIBUTE_TESTID}>
-        {attribute}
-      </span>{" "}
+      {attribute !== NONE && (
+        <>
+          <span>by</span>{" "}
+          <span className="capitalize" data-testid={ATTRIBUTE_TESTID}>
+            {attribute}
+          </span>{" "}
+        </>
+      )}
       for{" "}
       <span className="capitalize" data-testid={FOR_SCENARIOS_TESTID}>
         {forScenarios}

@@ -6,7 +6,7 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { FILTERS_ORDER, PROD, ROUTES } from "@/lib/constants";
+import { BREAKDOWN_BY_ORDER, PROD, ROUTES } from "@/lib/constants";
 import { cn } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { getRouteApi } from "@tanstack/react-router";
@@ -330,10 +330,10 @@ export const Filters = () => {
               </div>
               {Object.entries(filtersWithoutTimeFilters)
                 .sort(([keyA], [keyB]) => {
-                  return FILTERS_ORDER.indexOf(
+                  return BREAKDOWN_BY_ORDER.indexOf(
                     keyA.toLowerCase() as keyof typeof filtersWithoutTimeFilters,
                   ) <
-                    FILTERS_ORDER.indexOf(
+                    BREAKDOWN_BY_ORDER.indexOf(
                       keyB.toLowerCase() as keyof typeof filtersWithoutTimeFilters,
                     )
                     ? -1
