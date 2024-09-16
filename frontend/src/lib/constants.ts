@@ -78,7 +78,7 @@ export const ALL_LABEL = "All";
 export const GRAPH_FONT_SIZE = 14;
 export const SELECT_INDICATOR_TESTID = "SELECT_INDICATOR_TESTID";
 export const SELECT_UNIT_TESTID = "SELECT_UNIT_TESTID";
-export const FILTERS_ORDER = [
+export const BREAKDOWN_BY_ORDER = [
   "region",
   "country",
   "building type",
@@ -88,6 +88,7 @@ export const FILTERS_ORDER = [
   "flow type",
   "building stock activity",
   "whole life cycle stages",
+  "none",
 ] as const satisfies readonly Lowercase<string>[];
 
 export const ERROR_OCCURED = "Oops, an error occurred";
@@ -151,3 +152,4 @@ export const HELP_PAGE_IDS = {
 } as const;
 export const SCENARIO_A_LABEL = "primary scenario";
 export const SCENARIO_B_LABEL = "scenario B";
+export const NONE = "None";

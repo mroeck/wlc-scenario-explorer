@@ -13,7 +13,7 @@ import {
 } from "@/lib/constants";
 import { test, expect } from "@playwright/test";
 import { ACTIVE_DATA_TAB_LOCATOR } from "@tests/constants";
-import { waitLoadingEnds } from "@tests/functions";
+import { testScreenshot, waitLoadingEnds } from "@tests/functions";
 
 test.describe("data viz", () => {
   test.skip(({ isMobile }) => isMobile, "Desktop only!");
@@ -50,14 +50,22 @@ test.describe("data viz", () => {
     await expect(colorLegend.getByText("Office")).toBeVisible();
     await expect(colorLegend.getByText("Single-family house")).toBeVisible();
 
-    await page.bringToFront();
-    await expect(page.locator(ACTIVE_DATA_TAB_LOCATOR)).toHaveScreenshot();
+    await testScreenshot({
+      page,
+      target: page.locator(ACTIVE_DATA_TAB_LOCATOR),
+    });
 
     await page.getByRole("tab", { name: "Stacked Bar Chart" }).click();
-    await expect(page.locator(ACTIVE_DATA_TAB_LOCATOR)).toHaveScreenshot();
+    await testScreenshot({
+      page,
+      target: page.locator(ACTIVE_DATA_TAB_LOCATOR),
+    });
 
     await page.getByRole("tab", { name: "Table" }).click();
-    await expect(page.getByTestId(DATA_TABLE_TESTID)).toHaveScreenshot();
+    await testScreenshot({
+      page,
+      target: page.getByTestId(DATA_TABLE_TESTID),
+    });
   });
 
   test("select indicator", async ({ page }) => {

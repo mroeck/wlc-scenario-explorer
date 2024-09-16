@@ -36,7 +36,9 @@ type GetColorArgs = {
 };
 export const getColor = ({ breakdownBy, option }: GetColorArgs) => {
   if (Object.keys(ATTRIBUTE_OPTIONS_COLOR).includes(breakdownBy)) {
-    return ATTRIBUTE_OPTIONS_COLOR[breakdownBy][option];
+    const breakdownByTyped =
+      breakdownBy as keyof typeof ATTRIBUTE_OPTIONS_COLOR;
+    return ATTRIBUTE_OPTIONS_COLOR[breakdownByTyped][option];
   }
   return DEFAULT_COLOR;
 };
