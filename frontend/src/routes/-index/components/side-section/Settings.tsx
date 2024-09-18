@@ -36,11 +36,7 @@ export const Settings = () => {
     });
   };
   return (
-    <Section
-      className={cn(
-        "flex w-80 flex-col border-none px-0 shadow-none lg:border-gray-200 lg:shadow-md",
-      )}
-    >
+    <Section className="flex w-80 flex-col px-0">
       <h2 className={cn("sr-only")}>Settings</h2>
       <Tabs
         className={cn("flex min-h-0 flex-1 flex-col lg:h-full")}

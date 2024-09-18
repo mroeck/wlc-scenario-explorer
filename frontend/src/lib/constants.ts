@@ -141,14 +141,19 @@ export const LINKS = {
 } as const;
 
 export const HELP_PAGE_IDS = {
-  predefinedScenarioSelection: "predefinedScenarioSelection",
-  scenarioParametersCustomization: "scenarioParametersCustomization",
-  filterSetting: "filterSetting",
-  indicator: "indicatorDoc",
-  dividedBy: "dividedBy",
-  breakdownBy: "breakdownBy",
+  predefinedScenarioSelection: "predefined-scenarios",
+  scenarioParametersCustomization: "parameters-customization",
+  filterSetting: "filters",
+  indicator: "scenario-indicator",
+  dividedBy: "scenario-divided-by",
+  breakdownBy: "scenario-breakdown-by",
   display: "display",
   sort: "sort",
+  scenario: "scenario",
+  visualizationTypes: "visualization-types",
+  visualizationSettings: "visualization-settings",
+  output: "output",
+  visualization: "visualization",
 } as const;
 export const SCENARIO_A_LABEL = "primary scenario";
 export const SCENARIO_B_LABEL = "scenario B";

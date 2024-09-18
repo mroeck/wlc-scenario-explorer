@@ -13,30 +13,59 @@ import {
   MOSELEY_EMAIL,
   ROECK_EMAIL,
 } from "@/lib/constants";
-import { cn } from "@/lib/utils";
 import { createFileRoute } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/about")({
   component: () => <About />,
 });
 
+const HEADERS = {
+  generalRemarks: {
+    title: "General remarks",
+    id: "general-remarks",
+  },
+  studyBackgrounds: {
+    title: "Study background",
+    id: "study-background",
+  },
+  studyObjectives: {
+    title: "Study objectives",
+    id: "study-objectives",
+  },
+  scenarioModellingTool: {
+    title: "Scenario modelling tool",
+    id: "scenario-modelling-tool",
+  },
+  disclaimer: {
+    title: "Disclaimer",
+    id: "disclaimer",
+  },
+  purposeAndObjectives: {
+    title: "Purpose and objectives",
+    id: "purpose-and-objectives",
+  },
+  modelResourcesAndData: {
+    title: "Model resources and data",
+    id: "model-resources-and-data",
+  },
+  contactDetails: {
+    title: "Contact details",
+    id: "contact-details",
+  },
+  licenseAndCitation: {
+    title: "License and citation",
+    id: "license-and-citation",
+  },
+};
+
 function About() {
   return (
-    <main
-      className={cn(
-        "flex flex-col justify-stretch gap-5 py-primary-y sm:px-primary-x",
-        "lg:flex-row",
-      )}
-    >
-      <Section
-        className={cn(
-          "flex flex-col border-none shadow-none lg:border-gray-200 lg:shadow-md",
-        )}
-      >
+    <main className="flex flex-col justify-stretch gap-5 py-primary-y sm:px-primary-x lg:flex-row">
+      <Section className="flex flex-col">
         <TypographyH1>{ABOUT_TITLE}</TypographyH1>
         <SectionForDoc>
-          <SectionForDoc>
-            <TypographyH2>General remarks</TypographyH2>
+          <SectionForDoc id={HEADERS.generalRemarks.id}>
+            <TypographyH2>{HEADERS.generalRemarks.title}</TypographyH2>
             <TypographyContent>
               <TypographyP>
                 This report is documentation accompanying deliverable D4.2:
@@ -57,8 +86,8 @@ function About() {
               </TypographyP>
             </TypographyContent>
           </SectionForDoc>
-          <SectionForDoc>
-            <TypographyH2>Study background</TypographyH2>
+          <SectionForDoc id={HEADERS.studyBackgrounds.id}>
+            <TypographyH2>{HEADERS.studyBackgrounds.title}</TypographyH2>
             <TypographyContent>
               <TypographyP>
                 Over their whole life cycle, buildings account for around 40% of
@@ -206,7 +235,7 @@ function About() {
                   (Forthcoming), 2024.
                 </TypographyP>
               </TypographyMuted>
-              <TypographyH3> Contact details</TypographyH3>
+              <TypographyH2> Contact details</TypographyH2>
               <TypographyContent>
                 <TypographyP>
                   We encourage users to get in touch with feedback and/or
@@ -237,7 +266,7 @@ function About() {
                   .
                 </TypographyP>
               </TypographyContent>
-              <TypographyH3> License and citation</TypographyH3>
+              <TypographyH2> License and citation</TypographyH2>
               <TypographyContent>
                 <TypographyP>
                   This tool has been developed as part of{" "}

@@ -10,7 +10,7 @@ export function TypographyFigure({
   className,
 }: TypographyFigureProps) {
   return (
-    <figure className={cn("w-[900px] max-w-full", className)}>
+    <figure className={cn("max-w-[900px]", className)}>
       <img src={url} alt={caption} />
       <div className={cn("py-4")}></div>
       <figcaption className={cn("text-center text-muted-foreground")}>

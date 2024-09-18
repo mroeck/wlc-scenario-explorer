@@ -56,10 +56,10 @@ const Dashboard = memo(function Dashboard() {
         "min-h-[700px] lg:max-h-[900px]",
       )}
     >
-      <h1 className={cn("sr-only")}>{DASHBOARD_HEADING}</h1>
-      <div className={cn("hidden lg:flex")}>
+      <h1 className="sr-only">{DASHBOARD_HEADING}</h1>
+      <aside className="hidden lg:flex">
         <Settings />
-      </div>
+      </aside>
       <DataViz />
     </main>
   );
