@@ -2,9 +2,5 @@
   "scripts": {
     "compose:prod": "docker-compose up frontend backend --build",
     "e2e:update:snapshots": "docker compose up e2e --build --exit-code-from=e2e"
-  },
-  "dependencies": {
-    "@types/papaparse": "^5.3.14",
-    "papaparse": "^5.4.1"
   }
 }

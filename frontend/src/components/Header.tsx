@@ -14,6 +14,7 @@ import { cn } from "@/lib/utils";
 import { Link } from "@tanstack/react-router";
 import { Drawer, DrawerClose, DrawerContent, DrawerTrigger } from "./ui/drawer";
 import { Menu } from "lucide-react";
+import euFlagUrl from "@/assets/eu-flag.jpg";
 
 const dashboardSearch = {
   attribute: DEFAULT_ATTRIBUTE,
@@ -73,8 +74,8 @@ const BurgerNavigation = ({ currentRoute }: BurgerNavigationProps) => {
       <DrawerTrigger>
         <Menu />
       </DrawerTrigger>
-      <DrawerContent className={cn("bg-primary text-white")}>
-        <ul className={cn("flex flex-col items-center gap-8 py-20")}>
+      <DrawerContent className="bg-primary text-white">
+        <ul className="flex flex-col items-center gap-8 py-20">
           <li
             className={cn({
               "font-semibold": ROUTES.DASHBOARD === currentRoute,
@@ -118,17 +119,15 @@ type HeaderProps = {
 export const Header = ({ currentRoute }: HeaderProps) => {
   return (
     <header>
-      <nav
-        className={cn(
-          "flex justify-between gap-5 bg-primary p-primary text-primary-foreground",
-        )}
-      >
-        <div className={cn("font-semibold")}>{PROJECT_NAME}</div>
-        <NavLinks
-          className={cn("hidden sm:flex")}
-          currentRoute={currentRoute}
-        />
-        <div className={cn("sm:hidden")}>
+      <nav className="flex justify-between gap-5 bg-primary p-primary text-primary-foreground">
+        <div className="flex items-center gap-2 font-semibold">
+          <div className="flex aspect-[1.161px] h-1 w-[48px] items-center">
+            <img src={euFlagUrl} className="border border-white" />
+          </div>
+          <span>{PROJECT_NAME}</span>
+        </div>
+        <NavLinks className="hidden sm:flex" currentRoute={currentRoute} />
+        <div className="sm:hidden">
           <BurgerNavigation currentRoute={currentRoute} />
         </div>
       </nav>

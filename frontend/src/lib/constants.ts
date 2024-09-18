@@ -33,7 +33,7 @@ export const DISPLAY_OPTIONS = [
 ] as const;
 export const SORT_OPTIONS = {
   desc: "biggest to smallest",
-  regionsAlphabetically: "regions alphabetically",
+  regionsAlphabetically: "default",
 } as const;
 export const SORT_OPTIONS_VALUES = Object.values(SORT_OPTIONS) as UnionToTuple<
   (typeof SORT_OPTIONS)[keyof typeof SORT_OPTIONS]
@@ -41,7 +41,7 @@ export const SORT_OPTIONS_VALUES = Object.values(SORT_OPTIONS) as UnionToTuple<
 export const DEFAULT_DISPLAY: (typeof DISPLAY_OPTIONS)[number] =
   SCENARIO_A_ONLY;
 export const DEFAULT_SORT: (typeof SORT_OPTIONS)[keyof typeof SORT_OPTIONS] =
-  "regions alphabetically";
+  "default";
 export const DEFAULT_SCENARIO: (typeof SCENARIOS_OPTIONS)[number] =
   "Example scenario (for illustration purpose only)";
 export const DEFAULT_FROM = 2020;

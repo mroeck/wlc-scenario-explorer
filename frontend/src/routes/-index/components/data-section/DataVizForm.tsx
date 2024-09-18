@@ -110,7 +110,7 @@ export const DataVizForm = () => {
             <FormItem data-testid={SELECT_INDICATOR_TESTID}>
               <FormLabel className="flex items-center gap-2">
                 <span className="font-medium">Indicator:</span>
-                <InfoButton variant="dark">
+                <InfoButton>
                   <p>
                     Select an indicator to visualize GHG emissions and carbon
                     removals, such as total global warming potential (GWP) or
@@ -122,7 +122,7 @@ export const DataVizForm = () => {
                     hash={HELP_PAGE_IDS.indicator}
                     className="flex items-center gap-1 underline"
                   >
-                    <LinkIcon className="size-3" /> Read more here.
+                    <LinkIcon className="size-3" /> Read more here
                   </Link>
                 </InfoButton>
               </FormLabel>
@@ -161,7 +161,7 @@ export const DataVizForm = () => {
             <FormItem data-testid={SELECT_UNIT_TESTID}>
               <FormLabel className="flex items-center gap-2">
                 <span className="font-medium">Divided by:</span>
-                <InfoButton variant="dark">
+                <InfoButton>
                   <p>
                     Select a reference unit to divide the indicator results by,
                     such as per square meter, per capita, or show total sums
@@ -172,7 +172,7 @@ export const DataVizForm = () => {
                     hash={HELP_PAGE_IDS.dividedBy}
                     className="flex items-center gap-1 underline"
                   >
-                    <LinkIcon className="size-3" /> Read more here.
+                    <LinkIcon className="size-3" /> Read more here
                   </Link>
                 </InfoButton>
               </FormLabel>
@@ -211,7 +211,7 @@ export const DataVizForm = () => {
             <FormItem data-testid={BREAKDOWN_BY_TESTID}>
               <FormLabel className="flex items-center gap-2">
                 <span className="font-medium">Breakdown by:</span>
-                <InfoButton variant="dark">
+                <InfoButton>
                   <p>
                     Select an attribute to break down the results for detailed
                     contribution analysis. Choose attributes like building
@@ -224,7 +224,7 @@ export const DataVizForm = () => {
                     hash={HELP_PAGE_IDS.breakdownBy}
                     className="flex items-center gap-1 underline"
                   >
-                    <LinkIcon className="size-3" /> Read more here.
+                    <LinkIcon className="size-3" /> Read more here
                   </Link>
                 </InfoButton>
               </FormLabel>
