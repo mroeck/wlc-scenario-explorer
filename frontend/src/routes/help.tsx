@@ -5,7 +5,6 @@ import { TypographyH3 } from "@/components/TypographyH3";
 import { TypographyList } from "@/components/TypographyList";
 import { TypographyMuted } from "@/components/TypographyMuted";
 import { TypographyP } from "@/components/TypographyP";
-import { cn } from "@/lib/utils";
 import { createFileRoute } from "@tanstack/react-router";
 import lineChartShowingColorAndTooltipUrl from "@/assets/line_chart_evolution_gwp_total_new_residential_buildings_by_country.png";
 import tableWithFilteredEmbodiedCaronUrl from "@/assets/table_with_filtered_embodied_carbon_data_of_new_buildings_per_country_ready_for_download.png";
@@ -15,23 +14,60 @@ import { TypographyFigure } from "@/components/TypographyFigure";
 import { HELP_PAGE_IDS, HELP_TITLE } from "@/lib/constants";
 import { TypographyContent } from "@/components/TypographyContent";
 import { SectionForDoc } from "@/components/SectionForDoc";
+import { TableOfContents, type ToCSection } from "@/components/TableOfContents";
+import { TypographyH4 } from "@/components/TypographyH4";
 
 export const Route = createFileRoute("/help")({
   component: () => <Help />,
 });
 
+type Ids = (typeof HELP_PAGE_IDS)[keyof typeof HELP_PAGE_IDS];
+
+const sections = [
+  {
+    id: "scenario",
+    title: "Scenario",
+    subsections: [
+      { id: "predefined-scenarios", title: "Predefined scenarios" },
+      {
+        id: "parameters-customization",
+        title: "Parameters customization",
+      },
+    ],
+  },
+  {
+    id: "filters",
+    title: "Filters",
+  },
+  {
+    id: "visualization",
+    title: "Visualization",
+    subsections: [
+      { id: "visualization-types", title: "Types" },
+      { id: "visualization-settings", title: "Settings" },
+    ],
+  },
+  {
+    id: "output",
+    title: "Output",
+  },
+] satisfies ToCSection<Ids>[];
+
 function Help() {
   return (
-    <main
-      className={cn(
-        "flex flex-col justify-stretch gap-5 py-primary-y sm:px-primary-x",
-        "lg:flex-row",
-      )}
-    >
-      <Section className="flex flex-col border-none shadow-none lg:border-gray-200 lg:shadow-md">
+    <main className="flex flex-col justify-stretch gap-5 py-primary-y sm:px-primary-x lg:flex-row">
+      <aside className="">
+        <Section className="relative flex flex-col px-0 lg:fixed lg:w-80">
+          <TableOfContents sections={sections} />
+        </Section>
+        <Section className="invisible hidden w-80 flex-col px-0 lg:flex">
+          <TableOfContents sections={sections} />
+        </Section>
+      </aside>
+      <Section className="flex flex-col">
         <TypographyH1> {HELP_TITLE} </TypographyH1>
         <SectionForDoc>
-          <SectionForDoc>
+          <SectionForDoc id={HELP_PAGE_IDS.scenario}>
             <TypographyH2>Scenario settings</TypographyH2>
 
             <SectionForDoc id={HELP_PAGE_IDS.predefinedScenarioSelection}>
@@ -179,7 +215,7 @@ function Help() {
                 </TypographyP>
 
                 <SectionForDoc>
-                  <TypographyH3>Improve</TypographyH3>
+                  <TypographyH4>Improve</TypographyH4>
                   <TypographyContent>
                     <TypographyList>
                       <li>
@@ -229,7 +265,7 @@ function Help() {
                 </SectionForDoc>
 
                 <SectionForDoc>
-                  <TypographyH3>Shift</TypographyH3>
+                  <TypographyH4>Shift</TypographyH4>
                   <TypographyContent>
                     <TypographyList>
                       <li>
@@ -271,7 +307,7 @@ function Help() {
                 </SectionForDoc>
 
                 <SectionForDoc>
-                  <TypographyH3>Avoid</TypographyH3>
+                  <TypographyH4>Avoid</TypographyH4>
                   <TypographyContent>
                     <TypographyList>
                       <li>
@@ -323,12 +359,12 @@ function Help() {
                     of a strategies future market diffusion, respectively.
                   </TypographyP>
 
-                  <div className={cn("py-5")}></div>
+                  <div className="py-5"></div>
 
-                  <TypographyH3>
+                  <TypographyH4>
                     Ambition level setpoints (numbers 1-5) for CRR strategy
                     implementation are modelled as follows:
-                  </TypographyH3>
+                  </TypographyH4>
                   <TypographyContent>
                     <TypographyList>
                       <li>
@@ -396,353 +432,405 @@ function Help() {
 
           <SectionForDoc>
             <TypographyH3>Year</TypographyH3>
-            <TypographyP>
-              Users can select the time range to be shown in the visualizations
-              by specifying both the start and end point of the timeseries
-              (From-To). Scenario results are always presented in 5-year steps.
-              The values shown are a snapshot of the results in that respective
-              year.
-            </TypographyP>
+            <TypographyContent>
+              <TypographyP>
+                Users can select the time range to be shown in the
+                visualizations by specifying both the start and end point of the
+                timeseries (From-To). Scenario results are always presented in
+                5-year steps. The values shown are a snapshot of the results in
+                that respective year.
+              </TypographyP>
+            </TypographyContent>
           </SectionForDoc>
 
           <SectionForDoc>
             <TypographyH3>Region</TypographyH3>
-            <TypographyP>
-              All results are grouped according to four different climatic
-              regions as defined in the recast of the EU’s Energy Performance of
-              Buildings Directive (EPBD): Continental, Mediterranean, Nordic,
-              and Oceanic.
-            </TypographyP>
+            <TypographyContent>
+              <TypographyP>
+                All results are grouped according to four different climatic
+                regions as defined in the recast of the EU’s Energy Performance
+                of Buildings Directive (EPBD): Continental, Mediterranean,
+                Nordic, and Oceanic.
+              </TypographyP>
+            </TypographyContent>
           </SectionForDoc>
 
           <SectionForDoc>
             <TypographyH3>Country</TypographyH3>
-            <TypographyP>
-              Detailed results are available at the resolution of individual
-              countries for the EU27 Member States. Users can select to include
-              one or more of the EU27 countries, listed below, illustrated in
-              Figure 2.
-            </TypographyP>
-            <TypographyList>
-              <li>
-                <strong>Continental region:</strong> Austria (AT), Bulgaria
-                (BG), Czechia (CZ), Hungary (HU), Poland (PL), Romania (RO),
-                Slovenia (SI), and Slovakia (SK)
-              </li>
-              <li>
-                <strong>Mediterranean region:</strong> Cyprus (CY), Croatia
-                (HR), Italy (IT), Greece (GR), Malta (MT), Spain (SP), and
-                Portugal (PT)
-              </li>
-              <li>
-                <strong>Nordic region:</strong> Estonia (EW), Finland (FI),
-                Latvia (LV), Lithuania (LT), and Sweden (SE)
-              </li>
-              <li>
-                <strong>Oceanic region:</strong> Belgium (BE), Denmark (DK),
-                Ireland (IE), Germany (DE), France (FR), Luxembourg (LU), and
-                Netherlands (NL)
-              </li>
-            </TypographyList>
-            <div className={cn("py-2")}></div>
-            <div className={cn("flex justify-center")}>
-              <TypographyFigure
-                url={stackedBarChartForEmbodiedCarbonUrl}
-                caption="Figure 2: Stacked Bar Chart showing filtered results for embodied carbon by building element class."
-              />
-            </div>
-            <TypographyP>
-              Note: Users should pay attention that the filter settings chosen
-              for region and country are not mutually exclusive. For example, if
-              selecting a filter by region ‘Continental’ and then filtering to
-              only include Spain (‘SP) and Portugal (‘PT’), no data will be
-              shown until the filter by region is reset.
-            </TypographyP>
+            <TypographyContent>
+              <TypographyP>
+                Detailed results are available at the resolution of individual
+                countries for the EU27 Member States. Users can select to
+                include one or more of the EU27 countries, listed below,
+                illustrated in Figure 2.
+              </TypographyP>
+              <TypographyList>
+                <li>
+                  <strong>Continental region:</strong> Austria (AT), Bulgaria
+                  (BG), Czechia (CZ), Hungary (HU), Poland (PL), Romania (RO),
+                  Slovenia (SI), and Slovakia (SK)
+                </li>
+                <li>
+                  <strong>Mediterranean region:</strong> Cyprus (CY), Croatia
+                  (HR), Italy (IT), Greece (GR), Malta (MT), Spain (SP), and
+                  Portugal (PT)
+                </li>
+                <li>
+                  <strong>Nordic region:</strong> Estonia (EW), Finland (FI),
+                  Latvia (LV), Lithuania (LT), and Sweden (SE)
+                </li>
+                <li>
+                  <strong>Oceanic region:</strong> Belgium (BE), Denmark (DK),
+                  Ireland (IE), Germany (DE), France (FR), Luxembourg (LU), and
+                  Netherlands (NL)
+                </li>
+              </TypographyList>
+              <div className="py-2"></div>
+              <div className="flex justify-center">
+                <TypographyFigure
+                  url={stackedBarChartForEmbodiedCarbonUrl}
+                  caption="Figure 2: Stacked Bar Chart showing filtered results for embodied carbon by building element class."
+                />
+              </div>
+              <TypographyP>
+                Note: Users should pay attention that the filter settings chosen
+                for region and country are not mutually exclusive. For example,
+                if selecting a filter by region ‘Continental’ and then filtering
+                to only include Spain (‘SP) and Portugal (‘PT’), no data will be
+                shown until the filter by region is reset.
+              </TypographyP>
+            </TypographyContent>
           </SectionForDoc>
 
           <SectionForDoc>
             <TypographyH3>Building Type</TypographyH3>
-            <TypographyP>
-              As a main distinction of building types, users can select to show
-              one or both of ‘Residential’ and ‘Commercial’ buildings.
-            </TypographyP>
-            <TypographyMuted>
-              [The ‘Example Scenario’ uses different data from preliminary model
-              runs for illustration purposes. It instead shows ‘Residential’ and
-              ‘Non-residential’.]
-            </TypographyMuted>
+            <TypographyContent>
+              <TypographyP>
+                As a main distinction of building types, users can select to
+                show one or both of ‘Residential’ and ‘Commercial’ buildings.
+              </TypographyP>
+              <TypographyMuted>
+                [The ‘Example Scenario’ uses different data from preliminary
+                model runs for illustration purposes. It instead shows
+                ‘Residential’ and ‘Non-residential’.]
+              </TypographyMuted>
+            </TypographyContent>
           </SectionForDoc>
 
           <SectionForDoc>
             <TypographyH3>Building Subtype</TypographyH3>
-            <TypographyP>
-              Within the two main building types (residential, commercial),
-              scenario results are available for a total of nine building
-              subtypes. Within residential buildings, three subtypes available
-              for user selection: Single family houses (SFH), Multifamily houses
-              (MFH), Apartment blocks (APP). Within commercial buildings, six
-              more subtypes are included: Offices (OFF), Trade (TRA), Education
-              (EDU), Health (HEA), Hotels and Restaurants (HOR), Other service
-              buildings (OSB).
-            </TypographyP>
-            <TypographyMuted>
-              [The ‘Example Scenario’ uses different data from preliminary model
-              runs for illustration purposes. It instead only shows three
-              building subtypes: SFH, MFH, OFF.]
-            </TypographyMuted>
+            <TypographyContent>
+              <TypographyP>
+                Within the two main building types (residential, commercial),
+                scenario results are available for a total of nine building
+                subtypes. Within residential buildings, three subtypes available
+                for user selection: Single family houses (SFH), Multifamily
+                houses (MFH), Apartment blocks (APP). Within commercial
+                buildings, six more subtypes are included: Offices (OFF), Trade
+                (TRA), Education (EDU), Health (HEA), Hotels and Restaurants
+                (HOR), Other service buildings (OSB).
+              </TypographyP>
+              <TypographyMuted>
+                [The ‘Example Scenario’ uses different data from preliminary
+                model runs for illustration purposes. It instead only shows
+                three building subtypes: SFH, MFH, OFF.]
+              </TypographyMuted>
+            </TypographyContent>
           </SectionForDoc>
 
           <SectionForDoc>
             <TypographyH3>Element Class</TypographyH3>
-            <TypographyP>
-              Users can select to filter results by building element class. The
-              classes available for selection are: External walls, Internal
-              walls, Common walls, Storey floors, Roofs, Substructure, External
-              openings (e.g., windows), Internal openings (e.g., doors),
-              Staircases, Electrical services, Technical services.
-            </TypographyP>
+            <TypographyContent>
+              <TypographyP>
+                Users can select to filter results by building element class.
+                The classes available for selection are: External walls,
+                Internal walls, Common walls, Storey floors, Roofs,
+                Substructure, External openings (e.g., windows), Internal
+                openings (e.g., doors), Staircases, Electrical services,
+                Technical services.
+              </TypographyP>
+            </TypographyContent>
           </SectionForDoc>
 
           <SectionForDoc>
             <TypographyH3>Material Class</TypographyH3>
-            <TypographyP>
-              Various materials have been included in the modelling underlying
-              this scenario tool. Users can select to adjust the results along
-              the following material classes: Aluminium, Brick, Ceramics,
-              Cleaning, Concrete, Copper, Electronics, Energy, Glass, Gypsum,
-              Insulation, Other Construction Materials, Other Metals, Paint and
-              Glue, Plastic, Process, Sand, Steel, Wood.
-            </TypographyP>
-            <TypographyP>
-              To present complete results when selecting this attribute for
-              contribution analysis (‘breakdown by’), the material class
-              includes ‘Energy’. This value can be excluded via the filter
-              settings to only show the material-related results. Furthermore,
-              material classes are included for ‘Cleaning’ and ‘Process’, which
-              represent embodied impacts related to the cleaning of surfaces
-              during the use phase and the processing of materials before or
-              after use, respectively. The category can be deselected, if
-              desired.
-            </TypographyP>
+            <TypographyContent>
+              <TypographyP>
+                Various materials have been included in the modelling underlying
+                this scenario tool. Users can select to adjust the results along
+                the following material classes: Aluminium, Brick, Ceramics,
+                Cleaning, Concrete, Copper, Electronics, Energy, Glass, Gypsum,
+                Insulation, Other Construction Materials, Other Metals, Paint
+                and Glue, Plastic, Process, Sand, Steel, Wood.
+              </TypographyP>
+              <TypographyP>
+                To present complete results when selecting this attribute for
+                contribution analysis (‘breakdown by’), the material class
+                includes ‘Energy’. This value can be excluded via the filter
+                settings to only show the material-related results. Furthermore,
+                material classes are included for ‘Cleaning’ and ‘Process’,
+                which represent embodied impacts related to the cleaning of
+                surfaces during the use phase and the processing of materials
+                before or after use, respectively. The category can be
+                deselected, if desired.
+              </TypographyP>
+            </TypographyContent>
           </SectionForDoc>
 
           <SectionForDoc>
             <TypographyH3>Building Stock Activity</TypographyH3>
-            <TypographyP>
-              Users can select to filter results by building stock activities,
-              corresponding to the type of building archetypes modelled.
-              Selection is available for: Existing buildings, New buildings,
-              Refurbishment.
-            </TypographyP>
+            <TypographyContent>
+              <TypographyP>
+                Users can select to filter results by building stock activities,
+                corresponding to the type of building archetypes modelled.
+                Selection is available for: Existing buildings, New buildings,
+                Refurbishment.
+              </TypographyP>
+            </TypographyContent>
           </SectionForDoc>
 
           <SectionForDoc>
             <TypographyH3>Whole Life Cycle Stages</TypographyH3>
-            <TypographyP>
-              Users can further distinguish results by the corresponding whole
-              life cycle stages: Construction embodied carbon, Demolition
-              embodied carbon, Renovation embodied carbon, Use phase embodied
-              carbon, and Use phase operational carbon. See an embodied carbon
-              filtered example in Figure 2.
-            </TypographyP>
+            <TypographyContent>
+              <TypographyP>
+                Users can further distinguish results by the corresponding whole
+                life cycle stages: Construction embodied carbon, Demolition
+                embodied carbon, Renovation embodied carbon, Use phase embodied
+                carbon, and Use phase operational carbon. See an embodied carbon
+                filtered example in Figure 2.
+              </TypographyP>
+            </TypographyContent>
           </SectionForDoc>
         </SectionForDoc>
-        <SectionForDoc>
-          <TypographyH2>Visualization types</TypographyH2>
-          <SectionForDoc>
-            <TypographyP>
-              At the very top of the visualization settings, users can select
-              the type of chart or table through which the results should be
-              presented. Users can show results via Stacked Area Chart, Line
-              Chart, Stacked Bar Chart, or Table – see examples in Figure 1,
-              Figure 2, Figure 3, and Figure 4.
-            </TypographyP>
-          </SectionForDoc>
-          <SectionForDoc>
-            <TypographyH3>Stacked Area Chart</TypographyH3>
-            <TypographyP>
-              Best for visualizing how selected categories evolve over time.
-              Presents the results as colored bands stacked on top of each
-              other. Each band indicates the results for the respective
-              subcategories. While the top boundary shows the cumulative results
-              of all subcategories combined. Automatic interpolation is applied
-              to seamlessly connect the different data points (i.e. 5-year
-              steps) and provide a smooth appearance.
-            </TypographyP>
-          </SectionForDoc>
-          <SectionForDoc>
-            <TypographyH3>Line Chart</TypographyH3>
-            <TypographyP>
-              Best for investigating the evolution of absolute results across
-              categories. Presents the results of each subcategory as an
-              individual line. Intersections are possible, and the highest
-              values only indicate the results for that subcategory, not
-              cumulative totals.
-            </TypographyP>
-          </SectionForDoc>
-          <SectionForDoc>
-            <TypographyH3>Stacked Bar Chart</TypographyH3>
-            <TypographyP>
-              Best for comparing categories at a specific point in time.
-              Presents the results as distinct bars for each of the points in
-              time scenario results are available in the underlying dataset,
-              i.e., in steps of 5 years. The Stacked Bar Chart is similar to the
-              Stacked Area Chart, with the main difference and benefit being
-              that it enables a clear distinction of the situation in a selected
-              year.
-            </TypographyP>
-          </SectionForDoc>
-          <SectionForDoc>
-            <TypographyH3>Table</TypographyH3>
-            <TypographyP>
-              Best for an exact and comprehensive view of the data, optional
-              data export. Presents the results as a data table based on the
-              filter and visualization settings. It gives stock projection years
-              in the first column, and in all subsequent columns, the
-              corresponding results for the respective subcategories as per the
-              selected breakdown attribute. If the ‘breakdown by’ attribute has
-              a larger number of subcategories, the columns may extend further
-              to the right, requiring users to scroll sideways. The user can
-              select to sort data in ascending or descending order for each of
-              the columns – see Figure 3.
-            </TypographyP>
-            <div className={cn("py-2")}></div>
-            <div className={cn("flex justify-center")}>
-              <TypographyFigure
-                url={tableWithFilteredEmbodiedCaronUrl}
-                caption="Figure 3: Table with filtered embodied carbon data of new buildings per country, ready for download."
-              />
-            </div>
-          </SectionForDoc>
-        </SectionForDoc>
+        <SectionForDoc id={HELP_PAGE_IDS.visualization}>
+          <TypographyH2>Visualization</TypographyH2>
 
-        <SectionForDoc>
-          <TypographyH2>Visualization settings</TypographyH2>
-          <SectionForDoc id={HELP_PAGE_IDS.indicator}>
-            <TypographyH3>
-              Indicator (GHG emissions and carbon removals)
-            </TypographyH3>
-            <TypographyP>
-              Users can define the indicator results should be visualized for by
-              selecting one of the options from the dropdown menu. Users can
-              select, for example, to show global warming potential (GWP)
-              results for the combined GWP total indicator, as well as for the
-              sub-indicators GWP fossil, GWP bio, and GWP luluc (acc. EN
-              15804+A2).
-            </TypographyP>
+          <SectionForDoc id={HELP_PAGE_IDS.visualizationTypes}>
+            <TypographyH3>Types</TypographyH3>
+            <TypographyContent>
+              <TypographyP>
+                At the very top of the visualization settings, users can select
+                the type of chart or table through which the results should be
+                presented. Users can show results via Stacked Area Chart, Line
+                Chart, Stacked Bar Chart, or Table – see examples in Figure 1,
+                Figure 2, Figure 3, and Figure 4.
+              </TypographyP>
+            </TypographyContent>
+            <SectionForDoc>
+              <TypographyH4>Stacked Area Chart</TypographyH4>
+              <TypographyContent>
+                <TypographyP>
+                  Best for visualizing how selected categories evolve over time.
+                  Presents the results as colored bands stacked on top of each
+                  other. Each band indicates the results for the respective
+                  subcategories. While the top boundary shows the cumulative
+                  results of all subcategories combined. Automatic interpolation
+                  is applied to seamlessly connect the different data points
+                  (i.e. 5-year steps) and provide a smooth appearance.
+                </TypographyP>
+              </TypographyContent>
+            </SectionForDoc>
+            <SectionForDoc>
+              <TypographyH4>Line Chart</TypographyH4>
+              <TypographyContent>
+                <TypographyP>
+                  Best for investigating the evolution of absolute results
+                  across categories. Presents the results of each subcategory as
+                  an individual line. Intersections are possible, and the
+                  highest values only indicate the results for that subcategory,
+                  not cumulative totals.
+                </TypographyP>
+              </TypographyContent>
+            </SectionForDoc>
+            <SectionForDoc>
+              <TypographyH4>Stacked Bar Chart</TypographyH4>
+              <TypographyContent>
+                <TypographyP>
+                  Best for comparing categories at a specific point in time.
+                  Presents the results as distinct bars for each of the points
+                  in time scenario results are available in the underlying
+                  dataset, i.e., in steps of 5 years. The Stacked Bar Chart is
+                  similar to the Stacked Area Chart, with the main difference
+                  and benefit being that it enables a clear distinction of the
+                  situation in a selected year.
+                </TypographyP>
+              </TypographyContent>
+            </SectionForDoc>
+            <SectionForDoc>
+              <TypographyH4>Table</TypographyH4>
+              <TypographyContent>
+                <TypographyP>
+                  Best for an exact and comprehensive view of the data, optional
+                  data export. Presents the results as a data table based on the
+                  filter and visualization settings. It gives stock projection
+                  years in the first column, and in all subsequent columns, the
+                  corresponding results for the respective subcategories as per
+                  the selected breakdown attribute. If the ‘breakdown by’
+                  attribute has a larger number of subcategories, the columns
+                  may extend further to the right, requiring users to scroll
+                  sideways. The user can select to sort data in ascending or
+                  descending order for each of the columns – see Figure 3.
+                </TypographyP>
+                <div className="py-2"></div>
+                <div className="flex justify-center">
+                  <TypographyFigure
+                    url={tableWithFilteredEmbodiedCaronUrl}
+                    caption="Figure 3: Table with filtered embodied carbon data of new buildings per country, ready for download."
+                  />
+                </div>
+              </TypographyContent>
+            </SectionForDoc>
           </SectionForDoc>
-          <SectionForDoc id={HELP_PAGE_IDS.dividedBy}>
-            <TypographyH3>Divided by (reference unit)</TypographyH3>
-            <TypographyMuted>
-              [This functionality becomes active once the newly generated
-              scenario results are loaded to the tool.]
-            </TypographyMuted>
-            <TypographyP>
-              In addition to selecting the indicator, users can define the
-              reference unit ‘per’ which the indicator should be presented. By
-              selecting from the dropdown menu, users can define to show sum
-              totals (‘none’) or visualize results per square meter or per
-              capita.
-            </TypographyP>
-          </SectionForDoc>
-          <SectionForDoc id={HELP_PAGE_IDS.breakdownBy}>
-            <TypographyH3>Breakdown by (contribution analysis)</TypographyH3>
-            <TypographyP>
-              Users can select how results should be broken down, meaning they
-              can choose an attribute for contribution analysis. The attributes
-              available for contribution analysis correspond to those available
-              in the filter settings – see that section for a detailed
-              description of the subcategories available under each attribute.
-            </TypographyP>
-            <TypographyP>
-              By choosing from the dropdown menu, the results for the selected
-              indicator and reference unit are shown broken down by the
-              different values of that attribute. For example, that way, users
-              can select to visualize the contribution of different building
-              types, different building elements, or different whole life cycle
-              stages, respectively. If users wish to exclude or include certain
-              values, they can do so via the filter settings.
-            </TypographyP>
-          </SectionForDoc>
-          <SectionForDoc id={HELP_PAGE_IDS.display}>
-            <TypographyH3>Display (optional scenario comparison)</TypographyH3>
-            <TypographyMuted>
-              [This functionality becomes active once the newly generated
-              scenario results are loaded to the tool.]
-            </TypographyMuted>
-            <TypographyP>
-              Via this selection, users can choose to display in the chart area
-              either scenario A, scenario B, or to compare both scenarios
-              side-by-side for intuitive visual investigation and analysis.
-            </TypographyP>
+
+          <SectionForDoc id={HELP_PAGE_IDS.visualizationSettings}>
+            <TypographyH3>Settings</TypographyH3>
+            <SectionForDoc id={HELP_PAGE_IDS.indicator}>
+              <TypographyH3>
+                Indicator (GHG emissions and carbon removals)
+              </TypographyH3>
+              <TypographyContent>
+                <TypographyP>
+                  Users can define the indicator results should be visualized
+                  for by selecting one of the options from the dropdown menu.
+                  Users can select, for example, to show global warming
+                  potential (GWP) results for the combined GWP total indicator,
+                  as well as for the sub-indicators GWP fossil, GWP bio, and GWP
+                  luluc (acc. EN 15804+A2).
+                </TypographyP>
+              </TypographyContent>
+            </SectionForDoc>
+            <SectionForDoc id={HELP_PAGE_IDS.dividedBy}>
+              <TypographyH3>Divided by (reference unit)</TypographyH3>
+              <TypographyContent>
+                <TypographyMuted>
+                  [This functionality becomes active once the newly generated
+                  scenario results are loaded to the tool.]
+                </TypographyMuted>
+                <TypographyP>
+                  In addition to selecting the indicator, users can define the
+                  reference unit ‘per’ which the indicator should be presented.
+                  By selecting from the dropdown menu, users can define to show
+                  sum totals (‘none’) or visualize results per square meter or
+                  per capita.
+                </TypographyP>
+              </TypographyContent>
+            </SectionForDoc>
+            <SectionForDoc id={HELP_PAGE_IDS.breakdownBy}>
+              <TypographyH3>Breakdown by (contribution analysis)</TypographyH3>
+              <TypographyContent>
+                <TypographyP>
+                  Users can select how results should be broken down, meaning
+                  they can choose an attribute for contribution analysis. The
+                  attributes available for contribution analysis correspond to
+                  those available in the filter settings – see that section for
+                  a detailed description of the subcategories available under
+                  each attribute.
+                </TypographyP>
+                <TypographyP>
+                  By choosing from the dropdown menu, the results for the
+                  selected indicator and reference unit are shown broken down by
+                  the different values of that attribute. For example, that way,
+                  users can select to visualize the contribution of different
+                  building types, different building elements, or different
+                  whole life cycle stages, respectively. If users wish to
+                  exclude or include certain values, they can do so via the
+                  filter settings.
+                </TypographyP>
+              </TypographyContent>
+            </SectionForDoc>
+            <SectionForDoc id={HELP_PAGE_IDS.display}>
+              <TypographyH3>
+                Display (optional scenario comparison)
+              </TypographyH3>
+              <TypographyContent>
+                <TypographyMuted>
+                  [This functionality becomes active once the newly generated
+                  scenario results are loaded to the tool.]
+                </TypographyMuted>
+                <TypographyP>
+                  Via this selection, users can choose to display in the chart
+                  area either scenario A, scenario B, or to compare both
+                  scenarios side-by-side for intuitive visual investigation and
+                  analysis.
+                </TypographyP>
+              </TypographyContent>
+            </SectionForDoc>
           </SectionForDoc>
         </SectionForDoc>
-
-        <SectionForDoc>
+        <SectionForDoc id={HELP_PAGE_IDS.output}>
           <TypographyH2>Output section</TypographyH2>
           <SectionForDoc>
             <TypographyH3>Chart title</TypographyH3>
-            <TypographyP>
-              The chart title is automatically generated based on the current
-              selections in scenario, filters, and visualization settings,
-              respectively.
-            </TypographyP>
+            <TypographyContent>
+              <TypographyP>
+                The chart title is automatically generated based on the current
+                selections in scenario, filters, and visualization settings,
+                respectively.
+              </TypographyP>
+            </TypographyContent>
           </SectionForDoc>
           <SectionForDoc>
             <TypographyH3>Chart area</TypographyH3>
-            <TypographyP>
-              The chart area is automatically generated based on the selected
-              type of chart and the specified visualization settings. By
-              default, the horizontal x-axis shows the years (2020-2050) for
-              which the scenario offers projections. The vertical y-axis shows
-              the results of the respective indicator selected in the
-              visualization settings. Both the horizontal and the vertical axes
-              adjust automatically to changes in the filter or visualization
-              settings.
-            </TypographyP>
+            <TypographyContent>
+              <TypographyP>
+                The chart area is automatically generated based on the selected
+                type of chart and the specified visualization settings. By
+                default, the horizontal x-axis shows the years (2020-2050) for
+                which the scenario offers projections. The vertical y-axis shows
+                the results of the respective indicator selected in the
+                visualization settings. Both the horizontal and the vertical
+                axes adjust automatically to changes in the filter or
+                visualization settings.
+              </TypographyP>
+            </TypographyContent>
           </SectionForDoc>
           <SectionForDoc>
             <TypographyH3>Color legend and tool-tip menu</TypographyH3>
-            <TypographyP>
-              The color legend at the bottom of the charts reflects the values
-              currently visualized based on the selected attribute (breakdown
-              by) and indicates their corresponding colors in the chart.
-            </TypographyP>
-            <TypographyP>
-              When hovering over the chart area, a tool-tip info box appears
-              showing specific quantitative results for the respective year and
-              values of the selected breakdown attribute.
-            </TypographyP>
-            <TypographyP>
-              Figure 4 illustrates these elements in a line chart showing the
-              evolution of emissions related to new residential buildings by
-              country over time.
-            </TypographyP>
-            <div className={cn("py-2")}></div>
-            <div className={cn("flex justify-center")}>
-              <TypographyFigure
-                caption="Figure 4: Line chart showing evolution of GWP total of new
+            <TypographyContent>
+              <TypographyP>
+                The color legend at the bottom of the charts reflects the values
+                currently visualized based on the selected attribute (breakdown
+                by) and indicates their corresponding colors in the chart.
+              </TypographyP>
+              <TypographyP>
+                When hovering over the chart area, a tool-tip info box appears
+                showing specific quantitative results for the respective year
+                and values of the selected breakdown attribute.
+              </TypographyP>
+              <TypographyP>
+                Figure 4 illustrates these elements in a line chart showing the
+                evolution of emissions related to new residential buildings by
+                country over time.
+              </TypographyP>
+              <div className="py-2"></div>
+              <div className="flex justify-center">
+                <TypographyFigure
+                  caption="Figure 4: Line chart showing evolution of GWP total of new
                   residential building by country."
-                url={lineChartShowingColorAndTooltipUrl}
-              />
-            </div>
+                  url={lineChartShowingColorAndTooltipUrl}
+                />
+              </div>
+            </TypographyContent>
           </SectionForDoc>
           <SectionForDoc>
             <TypographyH3>Export (Download as)</TypographyH3>
-            <TypographyMuted>
-              [This functionality becomes active once the newly generated
-              scenario results are loaded to the tool.]
-            </TypographyMuted>
-            <TypographyP>
-              The tool enables the user to download visualizations and data in
-              different formats using the download button at the very top right,
-              just above the chart area. Here, charts can be downloaded as
-              raster images (.PNG or .JPEG) and as high-quality vector files
-              (.PDF or .SVG). Table data can furthermore be downloaded as
-              original text files (.CSV) or spreadsheets (.XLS). When exporting
-              charts or tables, the export takes into consideration the settings
-              defined for scenarios, filters, and visualization, respectively.
-            </TypographyP>
+            <TypographyContent>
+              <TypographyMuted>
+                [This functionality becomes active once the newly generated
+                scenario results are loaded to the tool.]
+              </TypographyMuted>
+              <TypographyP>
+                The tool enables the user to download visualizations and data in
+                different formats using the download button at the very top
+                right, just above the chart area. Here, charts can be downloaded
+                as raster images (.PNG or .JPEG) and as high-quality vector
+                files (.PDF or .SVG). Table data can furthermore be downloaded
+                as original text files (.CSV) or spreadsheets (.XLS). When
+                exporting charts or tables, the export takes into consideration
+                the settings defined for scenarios, filters, and visualization,
+                respectively.
+              </TypographyP>
+            </TypographyContent>
           </SectionForDoc>
         </SectionForDoc>
       </Section>
