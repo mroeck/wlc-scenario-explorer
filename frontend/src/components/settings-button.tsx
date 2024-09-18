@@ -95,7 +95,7 @@ export function SettingsButton() {
                 htmlFor={SELECT_IDS.display}
                 className="flex items-center gap-2 font-medium"
               >
-                <InfoButton variant="dark">
+                <InfoButton>
                   <p>
                     Choose how to display scenarios in the chart: show{" "}
                     {SCENARIO_A_LABEL}, {SCENARIO_B_LABEL}, or compare both
@@ -109,7 +109,7 @@ export function SettingsButton() {
                     hash={HELP_PAGE_IDS.display}
                     className="flex items-center gap-1 underline"
                   >
-                    <LinkIcon className="size-3" /> Read more here.
+                    <LinkIcon className="size-3" /> Read more here
                   </Link>
                 </InfoButton>
                 <span>Display:</span>
@@ -144,7 +144,7 @@ export function SettingsButton() {
             htmlFor={SELECT_IDS.sort}
             className="flex items-center gap-2 font-medium"
           >
-            <InfoButton variant="dark">
+            <InfoButton>
               <p>
                 {SORT_OPTIONS.desc} (Bottom to Top): Sorts the stacked areas in
                 the chart by value, with the largest values at the bottom and
@@ -160,7 +160,7 @@ export function SettingsButton() {
                 hash={HELP_PAGE_IDS.sort}
                 className="flex items-center gap-1 underline"
               >
-                <LinkIcon className="size-3" /> Read more here.
+                <LinkIcon className="size-3" /> Read more here
               </Link>
             </InfoButton>
             <span>Sort:</span>

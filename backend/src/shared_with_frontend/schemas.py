@@ -57,7 +57,7 @@ ATTRIBUTE_TO_DB_COLUMNS: Mapping[str, str] = {
 
 class SortEnumSchema(str, Enum):
     BIG_TO_SMALL = "biggest to smallest"
-    REGIONS_ALPHABETICALLY = "regions alphabetically"
+    REGIONS_ALPHABETICALLY = "default"
 
 
 class IndicatorEnumSchema(str, Enum):

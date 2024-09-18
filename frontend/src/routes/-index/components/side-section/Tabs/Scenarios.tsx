@@ -126,7 +126,7 @@ export const Scenarios = () => {
                 <FormItem>
                   <FormLabel className="flex items-center gap-2 font-medium">
                     <span>Primary scenario:</span>
-                    <InfoButton variant="dark">
+                    <InfoButton>
                       <p>
                         Choose from predefined scenarios. They represent
                         aspirational policy ambitions such as current policies
@@ -139,7 +139,7 @@ export const Scenarios = () => {
                         hash={HELP_PAGE_IDS.predefinedScenarioSelection}
                         className="flex items-center gap-1 underline"
                       >
-                        <LinkIcon className="size-3" /> Read more here.
+                        <LinkIcon className="size-3" /> Read more here
                       </Link>
                     </InfoButton>
                   </FormLabel>
@@ -190,7 +190,7 @@ export const Scenarios = () => {
                 <span className="text-sm font-medium underline">
                   Customize Parameters:
                 </span>
-                <InfoButton variant="dark">
+                <InfoButton>
                   <p>
                     Customize scenario parameters by adjusting the ambition
                     levels for different carbon reduction and removal (CRR)
@@ -204,7 +204,7 @@ export const Scenarios = () => {
                     hash={HELP_PAGE_IDS.scenarioParametersCustomization}
                     className="flex items-center gap-1 underline"
                   >
-                    <LinkIcon className="size-3" /> Read more here.
+                    <LinkIcon className="size-3" /> Read more here
                   </Link>
                 </InfoButton>
               </div>
@@ -218,7 +218,7 @@ export const Scenarios = () => {
               <FormItem>
                 <FormLabel className="flex items-center gap-2 font-medium">
                   <span>Compare with scenario:</span>
-                  <InfoButton variant="dark">
+                  <InfoButton>
                     <p>
                       Select a second predefined scenario to compare with your
                       primary scenario. Explore policy ambitions like current
@@ -231,7 +231,7 @@ export const Scenarios = () => {
                       hash={HELP_PAGE_IDS.predefinedScenarioSelection}
                       className="flex items-center gap-1 underline"
                     >
-                      <LinkIcon className="size-3" /> Read more here.
+                      <LinkIcon className="size-3" /> Read more here
                     </Link>
                   </InfoButton>
                 </FormLabel>

@@ -20,7 +20,27 @@ import {
 } from "@/lib/constants";
 import { unparse } from "papaparse";
 
-const sourceText = `source: ${LINKS.explorerWebsite}`;
+const sourceText = `Source: ${LINKS.explorerWebsite}`;
+const spreadSheetText = `
+${sourceText}
+
+Disclaimer:
+This tool is part of a study contracted by the European Commission, DG GROW, on the ‘Analysis of Life-cycle Greenhouse Gas Emissions and Removals of EU Buildings and Construction.’ The views expressed in this document and on the scenario modelling tool web app are the sole responsibility of the authors and do not necessarily reflect the views of the European Commission.
+
+License and citation:
+This tool has been developed as part of GROW/2022/OP/0005. Courtesy of the European Union, DG GROW. Development authored by Martin Röck, Shadwa Eissa, Benjamin Lesné, and Karen Allacker.
+
+Licensed under a Creative Commons Attribution-ShareAlike 4.0 (CC BY-SA 4.0) International License. When using or improving this tool or parts of it, consider giving appropriate credit. Cite as:
+
+Röck M, Eissa S, Lesné B, and Allacker K. “Scenario Modelling Tool - Analysis of Life-cycle Greenhouse Gas Emissions and Removals of EU Buildings and Construction” European Commission DG GROW, 2024. DOI: https://doi.org/10.5281/zenodo.13315281. Web-app available online via: https://ae-scenario-explorer.cloud.set.kuleuven.be
+
+Contact details:
+We encourage users to get in touch with feedback and/or questions on both the study and the tool:
+
+    Tool Development Lead, KU Leuven: Martin Röck (martin.roeck@kuleuven.be)
+    European Commission, DG GROW: Philippe Moseley (philippe.moseley@ec.europa.eu)
+
+An extended list of consortium members and contact details is available via the project website.`;
 
 type ImageFormat = (typeof imageFormats)[number];
 type SpreadsheetFormat = (typeof spreadsheetFormats)[number];
@@ -70,7 +90,7 @@ function addSourceToSvg(dataUrl: string) {
 
   const sourceAsSvg = `
     <rect x="0" y="0" width="100%" height="100%" fill="white" />
-    <text xmlns="http://www.w3.org/2000/svg" x="50%" y="${textYvalue.toString()}" text-anchor="middle" font-size="16" fill="black">source: ${LINKS.explorerWebsite}</text>
+    <text xmlns="http://www.w3.org/2000/svg" x="50%" y="${textYvalue.toString()}" text-anchor="middle" font-size="16" fill="black">${sourceText}</text>
   `;
 
   return updatedHeightSvg.replace(
@@ -150,7 +170,7 @@ const exportAsSpreadsheet = ({ format, data }: ExportAsSpreadsheetArgs) => {
     const workbook = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(workbook, worksheet, "scenario");
 
-    const infoData = [[sourceText]];
+    const infoData = [[spreadSheetText]];
 
     const infoWorksheet = XLSX.utils.aoa_to_sheet(infoData);
 
@@ -167,7 +187,7 @@ type ExportAsCsvArgs = {
 };
 function exportAsCsv({ data }: ExportAsCsvArgs) {
   const dataCSV = unparse(data);
-  const documentationText = [[], [sourceText]];
+  const documentationText = [[], [spreadSheetText]];
   const documentationCSV = unparse(documentationText);
   const combinedCSV = `${dataCSV}\n\n${documentationCSV}`;
 
