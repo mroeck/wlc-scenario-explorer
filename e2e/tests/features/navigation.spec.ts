@@ -12,7 +12,7 @@ test.describe("header navigation", () => {
   });
 
   test("has project name", async ({ page }) => {
-    await expect(page.getByText(PROJECT_NAME)).toBeVisible();
+    await expect(page.getByText(PROJECT_NAME).first()).toBeVisible();
   });
 
   test.describe("desktop only", () => {

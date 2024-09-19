@@ -16,6 +16,7 @@ import { TypographyContent } from "@/components/TypographyContent";
 import { SectionForDoc } from "@/components/SectionForDoc";
 import { TableOfContents, type ToCSection } from "@/components/TableOfContents";
 import { TypographyH4 } from "@/components/TypographyH4";
+import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/help")({
   component: () => <Help />,
@@ -57,12 +58,17 @@ function Help() {
   return (
     <main className="flex flex-col justify-stretch gap-5 py-primary-y sm:px-primary-x lg:flex-row">
       <aside className="">
-        <Section className="relative flex flex-col px-0 lg:fixed lg:w-80">
-          <TableOfContents sections={sections} />
-        </Section>
-        <Section className="invisible hidden w-80 flex-col px-0 lg:flex">
-          <TableOfContents sections={sections} />
-        </Section>
+        {Array.from({ length: 2 }, (_, index) => (
+          <Section
+            key={index}
+            className={cn(
+              "static flex flex-col px-0 lg:fixed lg:h-[calc(100dvh-72px-24px-24px)] lg:w-80",
+              index === 1 && "invisible hidden lg:static lg:flex",
+            )}
+          >
+            <TableOfContents sections={sections} />
+          </Section>
+        ))}
       </aside>
       <Section className="flex flex-col">
         <TypographyH1> {HELP_TITLE} </TypographyH1>

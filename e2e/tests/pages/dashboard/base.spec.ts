@@ -19,7 +19,9 @@ test.describe("dashboard", () => {
   });
 
   test("page snapshot", async ({ page }) => {
-    await expect(page.getByText(PROJECT_NAME)).toBeVisible({ timeout: 5_000 });
+    await expect(page.getByText(PROJECT_NAME).first()).toBeVisible({
+      timeout: 5_000,
+    });
     await expect(
       page
         .getByTestId(STACKED_AREA_CHART_TESTID)
