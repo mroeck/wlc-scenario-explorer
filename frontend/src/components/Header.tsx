@@ -118,19 +118,27 @@ type HeaderProps = {
 };
 export const Header = ({ currentRoute }: HeaderProps) => {
   return (
-    <header>
-      <nav className="flex justify-between gap-5 bg-primary p-primary text-primary-foreground">
-        <div className="flex items-center gap-2 font-semibold">
-          <div className="flex aspect-[1.161px] h-1 w-[48px] items-center">
-            <img src={euFlagUrl} className="border border-white" />
+    <header className="relative">
+      {Array.from({ length: 2 }, (_, index) => (
+        <nav
+          key={index}
+          className={cn(
+            "fixed top-0 z-10 flex w-full max-w-screen-2xl justify-between gap-5 bg-primary p-primary text-primary-foreground",
+            index === 1 && "invisible static",
+          )}
+        >
+          <div className="flex items-center gap-2 font-semibold">
+            <div className="flex aspect-[1.161px] h-1 w-[48px] items-center">
+              <img src={euFlagUrl} className="border border-white" />
+            </div>
+            <span>{PROJECT_NAME}</span>
           </div>
-          <span>{PROJECT_NAME}</span>
-        </div>
-        <NavLinks className="hidden sm:flex" currentRoute={currentRoute} />
-        <div className="sm:hidden">
-          <BurgerNavigation currentRoute={currentRoute} />
-        </div>
-      </nav>
+          <NavLinks className="hidden sm:flex" currentRoute={currentRoute} />
+          <div className="sm:hidden">
+            <BurgerNavigation currentRoute={currentRoute} />
+          </div>
+        </nav>
+      ))}
     </header>
   );
 };

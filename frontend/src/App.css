@@ -5,6 +5,11 @@ html {
   scroll-behavior: smooth;
 }
 
+[id] {
+  /* scroll-margin-top: HEADER_HEIGHT */
+  scroll-margin-top: 72px;
+}
+
 body {
   background-color: hsl(var(--background));
   overflow-x: hidden;
