@@ -42,35 +42,37 @@ export const Content = ({
       </div>
       <ul className="grid grid-flow-col grid-rows-[repeat(15,auto)] gap-x-5">
         {data.length > 1 &&
-          data.map((item) => {
-            const value = item.value as number;
-            const percentage = totalValue ? (value / totalValue) * 100 : 0;
+          data
+            .map((item) => {
+              const value = item.value as number;
+              const percentage = totalValue ? (value / totalValue) * 100 : 0;
 
-            return (
-              <li
-                key={item.name}
-                className="flex items-center gap-1"
-                style={{ fontSize: GRAPH_FONT_SIZE }}
-              >
-                <div>
-                  <ColorCube
-                    color={getColor({
-                      breakdownBy,
-                      option:
-                        typeof item.dataKey === "string" ? item.dataKey : "",
-                    })}
-                  />
-                </div>
-                <span>{item.name}:</span>
-                <span className="font-bold">
-                  {value.toLocaleString("en-US", {
-                    maximumFractionDigits: 2,
-                  })}{" "}
-                </span>
-                ({percentage.toFixed(2)}%)
-              </li>
-            );
-          })}
+              return (
+                <li
+                  key={item.name}
+                  className="flex items-center gap-1"
+                  style={{ fontSize: GRAPH_FONT_SIZE }}
+                >
+                  <div>
+                    <ColorCube
+                      color={getColor({
+                        breakdownBy,
+                        option:
+                          typeof item.dataKey === "string" ? item.dataKey : "",
+                      })}
+                    />
+                  </div>
+                  <span>{item.name}:</span>
+                  <span className="font-bold">
+                    {value.toLocaleString("en-US", {
+                      maximumFractionDigits: 2,
+                    })}{" "}
+                  </span>
+                  ({percentage.toFixed(2)}%)
+                </li>
+              );
+            })
+            .reverse()}
       </ul>
     </>
   );

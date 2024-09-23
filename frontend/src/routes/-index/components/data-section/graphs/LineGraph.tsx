@@ -6,8 +6,8 @@ import {
   ResponsiveContainer,
   Legend,
   Label,
-  BarChart,
-  Bar,
+  LineChart,
+  Line,
 } from "recharts";
 import { CustomTooltip } from "../Tooltip/CustomTooltip";
 import { getColor } from "@/lib/utils";
@@ -31,7 +31,7 @@ import {
 } from "../constants";
 import { PortalTooltip } from "../Tooltip/PortalTooltip";
 
-type StackedBarChartProps = {
+type LineChartProps = {
   data: z.infer<typeof ScenarioRowsAggregatedArraySchema>;
   animation: z.infer<typeof AnimationTabSchema> | undefined;
   breakdownBy: Attribute;
@@ -40,7 +40,7 @@ type StackedBarChartProps = {
   display: z.infer<typeof DisplaySchema>;
   unit: IndicatorUnit;
 };
-export const StackedBarChart = ({
+export const LineGraph = ({
   animation,
   attributeOptions,
   breakdownBy,
@@ -48,24 +48,24 @@ export const StackedBarChart = ({
   data,
   display,
   unit,
-}: StackedBarChartProps) => {
+}: LineChartProps) => {
   return (
     <ResponsiveContainer width="100%" height="100%" ref={chartRef}>
-      <BarChart {...commonChartProps} data={data}>
+      <LineChart {...commonChartProps} data={data}>
         <CartesianGrid {...commonCartisianGridProps} />
         {attributeOptions.map((option) => {
           const areaColor = getColor({ breakdownBy, option });
 
           return (
-            <Bar
+            <Line
               {...commonGraphElementProps}
+              strokeWidth={3}
               key={option}
               type="monotone"
               dataKey={option}
               stroke={areaColor}
               fill={areaColor}
               isAnimationActive={animation}
-              barSize={45}
             />
           );
         })}
@@ -93,7 +93,7 @@ export const StackedBarChart = ({
         <YAxis {...commonYaxisProps}>
           <Label value={unit} {...commonYaxisLabelProps} />
         </YAxis>
-      </BarChart>
+      </LineChart>
     </ResponsiveContainer>
   );
 };

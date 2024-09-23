@@ -47,6 +47,7 @@ services:
     build:
       context: ./
       dockerfile: Dockerfile
+    command: npx playwright test --update-snapshots --grep @snapshot
     ports:
       - "9323:9323"
     environment:

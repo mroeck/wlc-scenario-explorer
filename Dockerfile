@@ -16,4 +16,4 @@ WORKDIR /app/e2e
 COPY ./e2e .
 
 
-CMD ["npx", "playwright", "test", "--update-snapshots"]
+CMD ["npx", "playwright", "test"]

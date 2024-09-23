@@ -2,7 +2,7 @@ import {
   ROUTES,
   PROJECT_NAME,
   DEFAULT_UNIT_MINIMIZED,
-  STACKED_AREA_CHART_TESTID,
+  GRAPH_TESTID,
 } from "@/lib/constants";
 import { test, expect } from "@playwright/test";
 import { DEFAULT_DATA_HEADER } from "@tests/constants";
@@ -23,9 +23,7 @@ test.describe("dashboard", () => {
       timeout: 5_000,
     });
     await expect(
-      page
-        .getByTestId(STACKED_AREA_CHART_TESTID)
-        .getByText(DEFAULT_UNIT_MINIMIZED),
+      page.getByTestId(GRAPH_TESTID).getByText(DEFAULT_UNIT_MINIMIZED),
     ).toBeVisible({
       timeout: 10_000,
     });

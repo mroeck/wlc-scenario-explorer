@@ -32,10 +32,11 @@ import { StackedBarChart } from "./graphs/StackedBarChart";
 import { DataTable } from "./DataTable";
 import { SettingsDrawer } from "./SettingsDrawer";
 import type { Attribute, Indicator, Scenario } from "@/lib/types";
-import { LineGraph } from "./graphs/LineChart";
+import { LineGraph } from "./graphs/LineGraph";
 import { useRef } from "react";
 import { ComparisonSlider } from "./ComparisonSlider";
 import { SettingsButton } from "@/components/settings-button";
+import { GraphWrapper } from "./graphs/GraphWrapper";
 
 const route = getRouteApi(ROUTES.DASHBOARD);
 
@@ -48,30 +49,33 @@ const tabs = [
   {
     name: DATA_TABS_NAMES.stackedAreaChart,
     content: ({ data, indicator, breakdownBy }: ContentProps) => (
-      <StackedAreaChart
+      <GraphWrapper
         data={data}
-        indicatorUnit={INDICATOR_TO_UNIT[indicator]}
+        unit={INDICATOR_TO_UNIT[indicator]}
         breakdownBy={breakdownBy}
+        Graph={StackedAreaChart}
       />
     ),
   },
   {
     name: DATA_TABS_NAMES.lineChart,
     content: ({ data, indicator, breakdownBy }: ContentProps) => (
-      <LineGraph
+      <GraphWrapper
         data={data}
-        indicatorUnit={INDICATOR_TO_UNIT[indicator]}
+        unit={INDICATOR_TO_UNIT[indicator]}
         breakdownBy={breakdownBy}
+        Graph={LineGraph}
       />
     ),
   },
   {
     name: DATA_TABS_NAMES.stackedBarChart,
     content: ({ data, indicator, breakdownBy }: ContentProps) => (
-      <StackedBarChart
+      <GraphWrapper
         data={data}
-        indicatorUnit={INDICATOR_TO_UNIT[indicator]}
+        unit={INDICATOR_TO_UNIT[indicator]}
         breakdownBy={breakdownBy}
+        Graph={StackedBarChart}
       />
     ),
   },
