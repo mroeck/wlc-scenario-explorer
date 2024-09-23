@@ -17,6 +17,7 @@ import {
   HELP_PAGE_IDS,
   ROUTES,
   SCENARIO_A_AND_B,
+  SCENARIO_A_LABEL,
   SCENARIO_A_ONLY,
   SCENARIO_A_TESTID,
   SCENARIO_B_ONLY,
@@ -125,7 +126,7 @@ export const Scenarios = () => {
               render={({ field }) => (
                 <FormItem>
                   <FormLabel className="flex items-center gap-2 font-medium">
-                    <span>Primary scenario:</span>
+                    <span>{SCENARIO_A_LABEL}:</span>
                     <InfoButton>
                       <p>
                         Choose from predefined scenarios. They represent

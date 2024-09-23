@@ -1,6 +1,6 @@
 import { ROUTES, BREAKDOWN_BY_TESTID, NONE } from "@/lib/constants";
 import { test } from "@playwright/test";
-import { ACTIVE_DATA_TAB_LOCATOR } from "@tests/constants";
+import { ACTIVE_DATA_TAB_LOCATOR, TAGS } from "@tests/constants";
 import { testScreenshot, waitLoadingEnds } from "@tests/functions";
 
 test.describe("breakdown by", () => {
@@ -10,15 +10,19 @@ test.describe("breakdown by", () => {
     await waitLoadingEnds({ page });
   });
 
-  test(`select ${NONE} display expected graph`, async ({ page }) => {
-    const breakdownByDropdown = page.getByTestId(BREAKDOWN_BY_TESTID);
-    const NoneOption = page.getByLabel(NONE).getByText(NONE);
-    await breakdownByDropdown.click();
-    await NoneOption.click();
+  test(
+    `select ${NONE} display expected graph`,
+    { tag: TAGS.snapshot },
+    async ({ page }) => {
+      const breakdownByDropdown = page.getByTestId(BREAKDOWN_BY_TESTID);
+      const NoneOption = page.getByLabel(NONE).getByText(NONE);
+      await breakdownByDropdown.click();
+      await NoneOption.click();
 
-    await testScreenshot({
-      page,
-      target: page.locator(ACTIVE_DATA_TAB_LOCATOR),
-    });
-  });
+      await testScreenshot({
+        page,
+        target: page.locator(ACTIVE_DATA_TAB_LOCATOR),
+      });
+    },
+  );
 });

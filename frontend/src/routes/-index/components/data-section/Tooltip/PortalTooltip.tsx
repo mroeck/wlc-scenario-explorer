@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, type Ref } from "react";
+import { useEffect, useRef, useState } from "react";
 import ReactDOM from "react-dom";
 import { cn } from "@/lib/utils";
 import type { TooltipProps } from "recharts";
@@ -25,7 +25,7 @@ type PortalTooltipProps = Pick<
 > & {
   indicatorUnit: IndicatorUnit;
   breakdownBy: Attribute;
-  chartRef: Ref<HTMLDivElement>;
+  chartRef: React.RefObject<HTMLDivElement>;
 };
 
 export const PortalTooltip = ({
@@ -63,14 +63,12 @@ export const PortalTooltip = ({
 
   const areCoordinatesDefined =
     !!coordinate && !!coordinate.x && !!coordinate.y;
-  if (!areCoordinatesDefined) return null;
+  if (!areCoordinatesDefined || chartRef.current == null) return null;
 
   const data = removeDuplicates(payload);
   const { x = 0, y = 0 } = coordinate;
 
-  const chartRect = (
-    chartRef as React.MutableRefObject<HTMLDivElement>
-  ).current.getBoundingClientRect();
+  const chartRect = chartRef.current.getBoundingClientRect();
   const chartX = chartRect.x || 0;
   const chartWidth = chartRect.width || 0;
 

@@ -2,7 +2,7 @@ import {
   ROUTES,
   BREAKDOWN_BY_TESTID,
   NO_DATA_FOUND,
-  STACKED_BAR_CHART_TESTID,
+  GRAPH_TESTID,
   DATA_TABLE_TESTID,
   SELECT_ALL_LABEL,
   ALL_LABEL,
@@ -14,7 +14,7 @@ import {
 } from "@/lib/shared_with_backend/constants";
 import type { FiltersSchema } from "@/lib/shared_with_backend/schemas";
 import { test, expect } from "@playwright/test";
-import { ACTIVE_DATA_TAB_LOCATOR } from "@tests/constants";
+import { ACTIVE_DATA_TAB_LOCATOR, TAGS } from "@tests/constants";
 import { waitLoadingEnds } from "@tests/functions";
 import type { z } from "zod";
 
@@ -71,27 +71,32 @@ test.describe("filters", () => {
     await expect(page.locator(ACTIVE_DATA_TAB_LOCATOR)).toHaveScreenshot();
   });
 
-  test("snapshot when multiple filter options are on", async ({ page }) => {
-    await page.getByTestId(BREAKDOWN_BY_TESTID).getByRole("combobox").click();
-    await page
-      .getByLabel(BREAKDOWN_BY_OBJ.country)
-      .getByText(BREAKDOWN_BY_OBJ.country)
-      .click();
-    await page.getByRole("tab", { name: "Filters" }).click();
-    const countryFilterTestId: keyof z.infer<typeof FiltersSchema> = "country";
-    await page.getByTestId(countryFilterTestId).click();
-    await page.getByRole("option", { name: "FR" }).click();
-    await page.getByRole("option", { name: "IT" }).click();
+  test(
+    "snapshot when multiple filter options are on",
+    { tag: TAGS.snapshot },
+    async ({ page }) => {
+      await page.getByTestId(BREAKDOWN_BY_TESTID).getByRole("combobox").click();
+      await page
+        .getByLabel(BREAKDOWN_BY_OBJ.country)
+        .getByText(BREAKDOWN_BY_OBJ.country)
+        .click();
+      await page.getByRole("tab", { name: "Filters" }).click();
+      const countryFilterTestId: keyof z.infer<typeof FiltersSchema> =
+        "country";
+      await page.getByTestId(countryFilterTestId).click();
+      await page.getByRole("option", { name: "FR" }).click();
+      await page.getByRole("option", { name: "IT" }).click();
 
-    await page.bringToFront();
-    await expect(page.locator(ACTIVE_DATA_TAB_LOCATOR)).toHaveScreenshot();
+      await page.bringToFront();
+      await expect(page.locator(ACTIVE_DATA_TAB_LOCATOR)).toHaveScreenshot();
 
-    await page.getByRole("tab", { name: "Stacked Bar Chart" }).click();
-    await expect(page.locator(ACTIVE_DATA_TAB_LOCATOR)).toHaveScreenshot();
+      await page.getByRole("tab", { name: "Stacked Bar Chart" }).click();
+      await expect(page.locator(ACTIVE_DATA_TAB_LOCATOR)).toHaveScreenshot();
 
-    await page.getByRole("tab", { name: "Table" }).click();
-    await expect(page.locator(ACTIVE_DATA_TAB_LOCATOR)).toHaveScreenshot();
-  });
+      await page.getByRole("tab", { name: "Table" }).click();
+      await expect(page.locator(ACTIVE_DATA_TAB_LOCATOR)).toHaveScreenshot();
+    },
+  );
 
   test("reset all filters", async ({ page }) => {
     await page.getByRole("tab", { name: "Filters" }).click();

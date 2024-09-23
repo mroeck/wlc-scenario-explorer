@@ -4,6 +4,7 @@ import { twMerge } from "tailwind-merge";
 import { z } from "zod";
 import type { Attribute } from "./types";
 import { DEFAULT_COLOR } from "./constants";
+import type { Payload } from "recharts/types/component/DefaultLegendContent";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -42,3 +43,116 @@ export const getColor = ({ breakdownBy, option }: GetColorArgs) => {
   }
   return DEFAULT_COLOR;
 };
+
+const CATEGORIES = {
+  "Non-residential": ["Office"],
+  Residential: ["Single-family house", "Multi-family house"],
+  Walls: ["Internal walls", "External walls", "Common walls"],
+  Openings: ["Internal openings", "External openings"],
+  Services: ["Technical services", "Electrical services"],
+  Others: ["Substructure", "Storey floors", "Staircases", "Roofs"],
+  Continental: [
+    "SK", // Slovakia
+    "SI", // Slovenia
+    "RO", // Romania
+    "PL", // Poland
+    "HU", // Hungary
+    "CZ", // Czech Republic
+    "BG", // Bulgaria
+    "AT", // Austria
+  ],
+  Mediterranean: [
+    "PT", // Portugal
+    "MT", // Malta
+    "IT", // Italy
+    "HR", // Croatia
+    "ES", // Spain
+    "EL", // Greece
+    "CY", // Cyprus
+  ],
+  Nordic: [
+    "SE", // Sweden
+    "LV", // Latvia
+    "LT", // Lithuania
+    "FI", // Finland
+    "EE", // Estonia
+  ],
+  Oceanic: [
+    "NL", // Netherlands
+    "LU", // Luxembourg
+    "IE", // Ireland
+    "FR", // France
+    "DK", // Denmark
+    "DE", // Germany
+    "BE", // Belgium
+  ],
+} as const;
+
+const ATTRIBUTE_OPTIONS_ORDER = {
+  "Building subtype": [
+    ...CATEGORIES.Residential,
+    ...CATEGORIES["Non-residential"],
+  ],
+  "Element Class": [
+    ...CATEGORIES.Others,
+    ...CATEGORIES.Walls,
+    ...CATEGORIES.Services,
+    ...CATEGORIES.Openings,
+  ],
+  country: [
+    ...CATEGORIES.Oceanic,
+    ...CATEGORIES.Nordic,
+    ...CATEGORIES.Mediterranean,
+    ...CATEGORIES.Continental,
+  ],
+} satisfies Partial<Record<Attribute, string[]>>;
+
+const ORDERED_ATTRIBUTES = [
+  "country",
+  "Building subtype",
+  "Element Class",
+] as const satisfies Attribute[];
+
+type GetAttributeOptionsOrderArgs = {
+  breakdownBy: Attribute;
+  defaultOptions: string[];
+};
+export const getAttributeOptionsOrdered = ({
+  breakdownBy,
+  defaultOptions,
+}: GetAttributeOptionsOrderArgs) => {
+  // @ts-expect-error: some breakdownBy need to be ordered some not, no reason to error here
+  if (ORDERED_ATTRIBUTES.includes(breakdownBy)) {
+    const breakdownByTyped = breakdownBy as (typeof ORDERED_ATTRIBUTES)[number];
+    const optionsOrdered = ATTRIBUTE_OPTIONS_ORDER[breakdownByTyped];
+
+    return optionsOrdered.filter((option) => defaultOptions.includes(option));
+  } else {
+    return defaultOptions;
+  }
+};
+
+function findCategory(item: Payload) {
+  for (const [category, values] of Object.entries(CATEGORIES)) {
+    // @ts-expect-error: Argument of type 'string' is not assignable to parameter of type 'never'.
+    if (!!item.value && values.includes(item.value as string)) {
+      return category;
+    }
+  }
+  return null;
+}
+
+export function groupByCategory({ values }: { values: Payload[] }) {
+  const grouped: Record<string, Payload[]> = {};
+
+  values.forEach((value) => {
+    const category = findCategory(value);
+    if (category) {
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+      grouped[category] = grouped[category] || [];
+      grouped[category].push(value);
+    }
+  });
+
+  return grouped;
+}

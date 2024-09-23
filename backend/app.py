@@ -1,6 +1,6 @@
 from flask import Flask, request
 from flask_cors import CORS, cross_origin
-from src.queries import get_scenario_rows, get_filters
+from src.queries import get_scenario_rows
 from src.shared_with_frontend.schemas import (
     AttributeEnumSchema,
     ScenarioEnumSchema,
@@ -15,7 +15,7 @@ from src.shared_with_frontend.schemas import (
 )
 
 from src.utils import convert_keys_to_columns
-from typing import Dict, cast, List, Any
+from typing import cast, Any
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -31,11 +31,13 @@ def hello_world() -> str:
 
 @app.route("/scenario", methods=["POST"])
 @cross_origin()  # type:ignore[misc]
-def scenario() -> Dict[str, int]:
+def scenario() -> list[dict[str, int]]:
     requestdata = request.json
-    attribute = ATTRIBUTE_TO_DB_COLUMNS[AttributeEnumSchema(requestdata["attribute"])]  # type:ignore[index]
+    breakdown_by = ATTRIBUTE_TO_DB_COLUMNS[
+        AttributeEnumSchema(requestdata["attribute"])  # type:ignore[index]
+    ]
     scenario = SCENARIO_TO_FILE_NAME[ScenarioEnumSchema(requestdata["scenario"])]  # type:ignore[index]
-    unit = UNIT_TO_DB_COLUMNS[IndicatorEnumSchema(requestdata["unit"])]  # type:ignore[index]
+    indicator = UNIT_TO_DB_COLUMNS[IndicatorEnumSchema(requestdata["unit"])]  # type:ignore[index]
     sort = SortEnumSchema(requestdata["sort"])  # type:ignore[index]
     filters = None
 
@@ -50,18 +52,10 @@ def scenario() -> Dict[str, int]:
 
     data = get_scenario_rows(
         cast(ScenarioEnumSchema, scenario),
-        cast(ColumnsEnumSchema, attribute),
-        cast(IndicatorEnumSchema, unit),
+        cast(ColumnsEnumSchema, breakdown_by),
+        cast(IndicatorEnumSchema, indicator),
         cast(FiltersSchema | None, filters),
         sort,
     )
-
-    return data
-
-
-@app.route("/filters", methods=["POST"])
-@cross_origin()  # type: ignore[misc]
-def filters() -> Dict[str, List[str]]:
-    data = get_filters()
 
     return data

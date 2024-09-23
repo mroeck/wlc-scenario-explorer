@@ -5,14 +5,14 @@ import {
   COLOR_LEGEND_TESTID,
   BREAKDOWN_BY_TESTID,
   DATA_TABLE_TESTID,
-  STACKED_BAR_CHART_TESTID,
+  GRAPH_TESTID,
   UNIT_TESTID,
   SELECT_INDICATOR_TESTID,
   INDICATOR_TO_UNIT,
   INDICATORS_UNITS,
 } from "@/lib/constants";
 import { test, expect } from "@playwright/test";
-import { ACTIVE_DATA_TAB_LOCATOR } from "@tests/constants";
+import { ACTIVE_DATA_TAB_LOCATOR, TAGS } from "@tests/constants";
 import { testScreenshot, waitLoadingEnds } from "@tests/functions";
 
 test.describe("data viz", () => {
@@ -32,7 +32,7 @@ test.describe("data viz", () => {
     await expect(page.getByTestId("DISPLAY_SELECT_TESTID")).not.toBeVisible();
   });
 
-  test("select breakdown by", async ({ page }) => {
+  test("select breakdown by", { tag: TAGS.snapshot }, async ({ page }) => {
     const breakdownByDropdown = page.getByTestId(BREAKDOWN_BY_TESTID);
     const attributeInGraphTitle = page
       .getByTestId(GRAPH_TITLE_TESTID)
@@ -68,7 +68,7 @@ test.describe("data viz", () => {
     });
   });
 
-  test("select indicator", async ({ page }) => {
+  test("select indicator", { tag: TAGS.snapshot }, async ({ page }) => {
     const indicatorSelect = page.getByTestId(SELECT_INDICATOR_TESTID);
     const indicatorInGraphTitle = page
       .getByTestId(GRAPH_TITLE_TESTID)
@@ -93,22 +93,28 @@ test.describe("data viz", () => {
     ).toBeVisible();
     await expect(graph.getByText(indicator1, { exact: true })).toBeVisible();
 
-    await page.bringToFront();
-    await expect(page.locator(ACTIVE_DATA_TAB_LOCATOR)).toHaveScreenshot();
+    await testScreenshot({
+      page,
+      target: page.locator(ACTIVE_DATA_TAB_LOCATOR),
+    });
 
     await page.getByRole("tab", { name: "Stacked Bar Chart" }).click();
-    await expect(page.locator(ACTIVE_DATA_TAB_LOCATOR)).toHaveScreenshot();
+    await testScreenshot({
+      page,
+      target: page.locator(ACTIVE_DATA_TAB_LOCATOR),
+    });
 
     await page.getByRole("tab", { name: "Table" }).click();
-    await expect(page.locator(ACTIVE_DATA_TAB_LOCATOR)).toHaveScreenshot();
+    await testScreenshot({
+      page,
+      target: page.locator(ACTIVE_DATA_TAB_LOCATOR),
+    });
 
     await page.getByRole("tab", { name: "Stacked Bar Chart" }).click();
     await indicatorSelect.click();
     await indicatorOption2.click();
     await expect(
-      page
-        .getByTestId(STACKED_BAR_CHART_TESTID)
-        .getByText(indicator2, { exact: true }),
+      page.getByTestId(GRAPH_TESTID).getByText(indicator2, { exact: true }),
     ).toBeVisible();
   });
 });

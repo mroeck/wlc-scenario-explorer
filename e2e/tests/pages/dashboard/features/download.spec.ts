@@ -5,6 +5,7 @@ import {
   spreadsheetFormats,
 } from "@/lib/constants";
 import { test, expect } from "@playwright/test";
+import { TAGS } from "@tests/constants";
 
 test.describe("dashboard download", () => {
   test.skip(({ isMobile }) => isMobile, "Desktop only!");
@@ -19,7 +20,7 @@ test.describe("dashboard download", () => {
 
     if (format === "pdf") continue;
 
-    test(`as ${format}`, async ({ page }) => {
+    test(`as ${format}`, { tag: TAGS.snapshot }, async ({ page }) => {
       await page.getByTestId(DOWNLOAD_AS_TESTID).click();
 
       const downloadPromise = page.waitForEvent("download");

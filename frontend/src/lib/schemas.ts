@@ -24,3 +24,4 @@ const DATA_TABS = Object.values(DATA_TABS_NAMES) as UnionToTuple<
   (typeof DATA_TABS_NAMES)[keyof typeof DATA_TABS_NAMES]
 >;
 export const DataTabSchema = z.enum(DATA_TABS);
+export const AnimationTabSchema = z.boolean();

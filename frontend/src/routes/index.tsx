@@ -24,6 +24,7 @@ import {
   UnitSchema,
 } from "@/lib/shared_with_backend/schemas";
 import {
+  AnimationTabSchema,
   DataTabSchema,
   DisplaySchema,
   SettingsTabSchema,
@@ -41,7 +42,7 @@ const SearchParamsSchema = z.object({
   sort: SortSchema.catch(DEFAULT_SORT),
   scenarioA: ScenarioSchema.catch(DEFAULT_SCENARIO),
   scenarioB: ScenarioSchema.optional().catch(undefined),
-  animation: z.boolean().optional().catch(undefined),
+  animation: AnimationTabSchema.optional().catch(undefined),
   settingsTab: SettingsTabSchema.catch(DEFAULT_SETTINGS_TAB),
   dataTab: DataTabSchema.catch(DEFAULT_DATA_TAB),
 });

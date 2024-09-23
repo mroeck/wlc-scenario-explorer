@@ -9,3 +9,6 @@ export const DEFAULT_DATA_HEADER = `${DEFAULT_INDICATOR} by ${DEFAULT_ATTRIBUTE}
 export const APP_PORT = "3002";
 export const APP_URL = `http://localhost:${APP_PORT}`;
 export const ACTIVE_DATA_TAB_LOCATOR = `[data-testid="${TAB_CONTENT_TESTID}"][data-state="active"]`;
+export const TAGS = {
+  snapshot: "@snapshot",
+};

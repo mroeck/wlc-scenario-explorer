@@ -24,7 +24,6 @@ export const commonChartProps: CategoricalChartProps = {
 export const commonTooltipProps = {
   cursor: false,
   allowEscapeViewBox: { x: true, y: true },
-  // coordinate: (stuff) => stuff,
 };
 
 export const commonXaxisProps: XAxisProps = {
@@ -46,4 +45,11 @@ export const commonYaxisLabelProps: LabelProps = {
   dx: 10,
   fontSize: GRAPH_FONT_SIZE,
   fill: "hsl(223 0% 20%)",
+};
+
+export const commonGraphElementProps = {
+  strokeWidth: 0.5,
+  strokeOpacity: 0.75,
+  fillOpacity: 0.75,
+  stackId: "1",
 };

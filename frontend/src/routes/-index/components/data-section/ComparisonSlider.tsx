@@ -124,13 +124,11 @@ export const ComparisonSlider: React.FC<ComparisonSliderProps> = ({
           </div>
         </div>
         <div
-          className={cn(
-            "absolute inset-0 size-full overflow-x-hidden sm:visible",
-          )}
+          className="absolute inset-0 size-full overflow-x-hidden sm:visible"
           style={{ width: sliderValues[0].toString() + "%" }}
         >
           <div
-            className={cn("relative size-full bg-white sm:block")}
+            className="relative size-full bg-white sm:block"
             ref={secondGraphRef}
             style={
               graphDimensions
