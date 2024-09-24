@@ -1,6 +1,6 @@
 import { getAttributeOptionsOrdered } from "@/lib/utils";
 import { type z } from "zod";
-import { ROUTES, GRAPH_TESTID } from "@/lib/constants";
+import { ROUTES, GRAPH_TESTID, SORT_OPTIONS } from "@/lib/constants";
 import { YEAR_KEY } from "@/lib/shared_with_backend/constants";
 import type { ScenarioRowsAggregatedArraySchema } from "@/lib/schemas";
 import type { Attribute, IndicatorUnit } from "@/lib/types";
@@ -18,27 +18,32 @@ type GraphWrapperProps = {
 };
 export const GraphWrapper = ({
   data,
-  unit: unit,
+  unit,
   breakdownBy,
   Graph,
 }: GraphWrapperProps) => {
   const chartRef = useRef<HTMLDivElement>(null);
-  const { animation, display } = route.useSearch({
+  const { animation, display, sort } = route.useSearch({
     select: (search) => ({
       animation: search.animation,
       display: search.display,
+      sort: search.sort,
     }),
   });
 
+  const firstItemRaw = data[0] ?? {};
+  const firstItem = Object.fromEntries(
+    Object.entries(firstItemRaw).filter(([key]) => key !== YEAR_KEY),
+  );
+  const firstItemKeys = Object.keys(firstItem);
+
   const attributeOptions =
-    data.length > 0
+    sort === SORT_OPTIONS.categoriesAlphabetically
       ? getAttributeOptionsOrdered({
-          defaultOptions: Object.keys(data[0]).filter(
-            (key) => key !== YEAR_KEY,
-          ),
+          defaultOptions: firstItemKeys,
           breakdownBy,
         })
-      : [];
+      : firstItemKeys.sort((keyA, keyB) => firstItem[keyB] - firstItem[keyA]);
 
   return (
     <div className="h-full overflow-x-scroll lg:overflow-x-visible">

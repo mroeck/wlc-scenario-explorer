@@ -151,9 +151,9 @@ export function SettingsButton() {
                 the smallest values at the top.
               </p>
               <p>
-                {SORT_OPTIONS.regionsAlphabetically}: Groups the stacked areas
-                by region, and within each region, the items are arranged in
-                alphabetical order from top to bottom.
+                {SORT_OPTIONS.categoriesAlphabetically}: Groups the stacked
+                areas by region, and within each region, the items are arranged
+                in alphabetical order from top to bottom.
               </p>
               <Link
                 to={ROUTES.HELP}

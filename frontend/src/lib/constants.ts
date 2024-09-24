@@ -32,8 +32,8 @@ export const DISPLAY_OPTIONS = [
   SCENARIO_A_AND_B,
 ] as const;
 export const SORT_OPTIONS = {
-  desc: "biggest to smallest",
-  regionsAlphabetically: "default",
+  desc: "Descending value",
+  categoriesAlphabetically: "default",
 } as const;
 export const SORT_OPTIONS_VALUES = Object.values(SORT_OPTIONS) as UnionToTuple<
   (typeof SORT_OPTIONS)[keyof typeof SORT_OPTIONS]
