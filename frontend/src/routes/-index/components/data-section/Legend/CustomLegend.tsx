@@ -41,6 +41,7 @@ export const CustomLegend = ({ payload, className }: CustomLegendProps) => {
   if (payload == null) return null;
 
   const data = removeDuplicates(payload);
+
   const groupedData = groupByCategory({ values: data });
   const hasCategory = Object.keys(groupedData).length > 0;
 
@@ -80,7 +81,7 @@ export const CustomLegend = ({ payload, className }: CustomLegendProps) => {
       </section>
       <section
         className={cn(
-          "flex flex-col gap-1",
+          "flex min-w-36 flex-col gap-1",
           display !== SCENARIO_A_AND_B && "hidden",
         )}
       >
@@ -112,7 +113,7 @@ type ColorLegendItemAllProps = {
 };
 function ColorLegendItemAll({ data, breakdownBy }: ColorLegendItemAllProps) {
   return (
-    <ol className="flex max-w-[50ch] justify-items-start gap-x-6">
+    <ol className="flex flex-wrap justify-items-start gap-x-6">
       {data.map((item, index) => (
         <li key={index} className="flex items-center gap-1">
           <ColorCube
