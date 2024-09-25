@@ -6,8 +6,9 @@ import type {
   Payload,
   ValueType,
 } from "recharts/types/component/DefaultTooltipContent";
-import type { Attribute, IndicatorUnit } from "@/lib/types";
+import type { Attribute } from "@/lib/types";
 import { Content } from "./Content";
+import type { UnitMinified } from "../types";
 
 const removeDuplicates = (arr: Payload<ValueType, NameType>[]) => {
   const seen = new Set();
@@ -22,7 +23,7 @@ type PortalTooltipProps = Pick<
   TooltipProps<ValueType, NameType>,
   "active" | "payload" | "label" | "coordinate" | "offset"
 > & {
-  indicatorUnit: IndicatorUnit;
+  unit: UnitMinified;
   breakdownBy: Attribute;
   chartRef: React.RefObject<HTMLDivElement>;
 };
@@ -31,7 +32,7 @@ export const PortalTooltip = ({
   active,
   payload,
   label,
-  indicatorUnit,
+  unit,
   breakdownBy,
   coordinate,
   offset = 10,
@@ -86,7 +87,7 @@ export const PortalTooltip = ({
       <Content
         breakdownBy={breakdownBy}
         data={data}
-        indicatorUnit={indicatorUnit}
+        unit={unit}
         label={label as string}
       />
     </div>

@@ -6,20 +6,16 @@ import type {
   Payload,
   ValueType,
 } from "recharts/types/component/DefaultTooltipContent";
-import type { Attribute, IndicatorUnit } from "@/lib/types";
+import type { Attribute } from "@/lib/types";
+import type { UnitMinified } from "../types";
 
 type ContentProps = {
   label: string;
-  indicatorUnit: IndicatorUnit;
+  unit: UnitMinified;
   data: Payload<ValueType, NameType>[];
   breakdownBy: Attribute;
 };
-export const Content = ({
-  label,
-  indicatorUnit,
-  data,
-  breakdownBy,
-}: ContentProps) => {
+export const Content = ({ label, unit, data, breakdownBy }: ContentProps) => {
   const totalValue = data.reduce(
     (acc, item) => acc + (item.value as number),
     0,
@@ -30,7 +26,7 @@ export const Content = ({
       <div className="mx-auto flex w-max flex-col text-center">
         <span style={{ fontSize: GRAPH_FONT_SIZE }}>{label}</span>
         <span className="pb-2 text-left" style={{ fontSize: GRAPH_FONT_SIZE }}>
-          From top to bottom on graph in {indicatorUnit}
+          From top to bottom on graph in {unit}
         </span>
       </div>
       <div style={{ fontSize: GRAPH_FONT_SIZE }}>

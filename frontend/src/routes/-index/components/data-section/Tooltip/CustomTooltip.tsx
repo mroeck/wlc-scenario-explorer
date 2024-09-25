@@ -4,8 +4,9 @@ import type {
   Payload,
   ValueType,
 } from "recharts/types/component/DefaultTooltipContent";
-import type { Attribute, IndicatorUnit } from "@/lib/types";
+import type { Attribute } from "@/lib/types";
 import { Content } from "./Content";
+import type { UnitMinified } from "../types";
 
 const removeDuplicates = (arr: Payload<ValueType, NameType>[]) => {
   const seen = new Set();
@@ -19,12 +20,12 @@ const removeDuplicates = (arr: Payload<ValueType, NameType>[]) => {
 type CustomTooltipProps = Pick<
   TooltipProps<ValueType, NameType>,
   "active" | "payload" | "label"
-> & { indicatorUnit: IndicatorUnit; breakdownBy: Attribute };
+> & { unit: UnitMinified; breakdownBy: Attribute };
 export const CustomTooltip = ({
   active,
   payload,
   label,
-  indicatorUnit,
+  unit,
   breakdownBy,
 }: CustomTooltipProps) => {
   if (!active || payload == null || payload.length < 1) return null;
@@ -36,7 +37,7 @@ export const CustomTooltip = ({
       <Content
         breakdownBy={breakdownBy}
         data={data}
-        indicatorUnit={indicatorUnit}
+        unit={unit}
         label={label as string}
       />
     </div>

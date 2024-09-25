@@ -3,18 +3,19 @@ import { type z } from "zod";
 import { ROUTES, GRAPH_TESTID, SORT_OPTIONS } from "@/lib/constants";
 import { YEAR_KEY } from "@/lib/shared_with_backend/constants";
 import type { ScenarioRowsAggregatedArraySchema } from "@/lib/schemas";
-import type { Attribute, IndicatorUnit } from "@/lib/types";
+import type { Attribute } from "@/lib/types";
 import { getRouteApi } from "@tanstack/react-router";
 import { useRef } from "react";
 import type { StackedAreaChart } from "./StackedAreaChart";
 import type { StackedBarChart } from "./StackedBarChart";
 import type { LineGraph } from "./LineGraph";
+import type { UnitMinified } from "../types";
 
 const route = getRouteApi(ROUTES.DASHBOARD);
 
 type GraphWrapperProps = {
   data: z.infer<typeof ScenarioRowsAggregatedArraySchema>;
-  unit: IndicatorUnit;
+  unit: UnitMinified;
   breakdownBy: Attribute;
   Graph: typeof StackedAreaChart | typeof StackedBarChart | typeof LineGraph;
 };
