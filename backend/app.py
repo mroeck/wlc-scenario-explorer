@@ -5,6 +5,7 @@ from src.shared_with_frontend.schemas import (
     AttributeEnumSchema,
     ScenarioEnumSchema,
     IndicatorEnumSchema,
+    DividedByEnumSchema,
     FiltersSchema,
     SCENARIO_TO_FILE_NAME,
     UNIT_TO_DB_COLUMNS,
@@ -36,7 +37,8 @@ def scenario() -> list[dict[str, int]]:
         AttributeEnumSchema(requestdata["attribute"])  # type:ignore[index]
     ]
     scenario = SCENARIO_TO_FILE_NAME[ScenarioEnumSchema(requestdata["scenario"])]  # type:ignore[index]
-    indicator = UNIT_TO_DB_COLUMNS[IndicatorEnumSchema(requestdata["unit"])]  # type:ignore[index]
+    indicator = UNIT_TO_DB_COLUMNS[IndicatorEnumSchema(requestdata["indicator"])]  # type:ignore[index]
+    dividedBy = UNIT_TO_DB_COLUMNS[DividedByEnumSchema(requestdata["dividedBy"])]  # type:ignore[index]
     filters = None
 
     if (
@@ -53,6 +55,7 @@ def scenario() -> list[dict[str, int]]:
         cast(ColumnsEnumSchema, breakdown_by),
         cast(IndicatorEnumSchema, indicator),
         cast(FiltersSchema | None, filters),
+        cast(DividedByEnumSchema, dividedBy),
     )
 
     return data

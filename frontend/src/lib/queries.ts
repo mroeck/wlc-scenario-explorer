@@ -1,5 +1,11 @@
 import { env } from "@/env";
-import type { Attribute, Filters, Scenario, Indicator } from "./types";
+import type {
+  Attribute,
+  Filters,
+  Scenario,
+  Indicator,
+  DividedBy,
+} from "./types";
 import {
   FiltersSchema,
   ScenarioRowsAggregatedSchema,
@@ -11,7 +17,8 @@ import { ATTRIBUTE_OPTIONS_COLOR } from "@/routes/-index/components/data-section
 type FetchScenarioRowsArgs = {
   attribute: Attribute;
   scenario: Scenario | undefined;
-  unit: Indicator;
+  indicator: Indicator;
+  dividedBy: DividedBy;
   filters: Filters | undefined;
 };
 
@@ -19,7 +26,8 @@ export async function fetchScenarioRowsAggregated({
   attribute,
   filters,
   scenario,
-  unit,
+  indicator,
+  dividedBy,
 }: FetchScenarioRowsArgs) {
   if (scenario === undefined) return [];
 
@@ -32,7 +40,8 @@ export async function fetchScenarioRowsAggregated({
     body: JSON.stringify({
       attribute,
       scenario,
-      unit,
+      indicator,
+      dividedBy,
       filters,
     }),
   });

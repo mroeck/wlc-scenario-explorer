@@ -7,11 +7,11 @@ import {
   SCENARIOS_OPTIONS,
   INDICATORS,
   YEAR_KEY,
-  UNITS,
+  DIVIDED_BY_OPTIONS,
 } from "./constants";
 
 export const IndicatorSchema = z.enum(INDICATORS);
-export const UnitSchema = z.enum(UNITS);
+export const DividedBySchema = z.enum(DIVIDED_BY_OPTIONS);
 export const AttributeSchema = z.enum(ATTRIBUTES);
 
 export const ScenarioRowsAggregatedSchema = z

@@ -4,6 +4,7 @@ from .db import Session
 from .shared_with_frontend.schemas import (
     ScenarioEnumSchema,
     IndicatorEnumSchema,
+    DividedByEnumSchema,
     AttributeEnumSchema,
     FiltersSchema,
     ColumnsEnumSchema,
@@ -11,6 +12,7 @@ from .shared_with_frontend.schemas import (
 )
 from sqlalchemy import text, column, select, func, Select
 from .models import Scenario
+from .constants import DIVIDED_BY_NONE
 
 DATA_PATH = os.getenv("DATA_PATH", "/app/data")
 
@@ -44,6 +46,7 @@ def get_scenario_rows(
     attribute: ColumnsEnumSchema | Literal[AttributeEnumSchema.NONE],
     indicator: IndicatorEnumSchema,
     filters: Optional[FiltersSchema],
+    dividedBy: DividedByEnumSchema,
 ) -> list[dict[str, int]]:
     statement: Select[Any]
 
@@ -54,11 +57,16 @@ def get_scenario_rows(
         ).group_by(Scenario.stock_projection_year)
 
     else:
-        statement = select(
+        select_columns = [
             Scenario.stock_projection_year,
             column(cast(str, attribute)),
             column(indicator),
-        )
+        ]
+
+        if dividedBy != DIVIDED_BY_NONE:
+            select_columns.append(column(dividedBy))
+
+        statement = select(*select_columns)
 
     statement = apply_filters(statement, filters)
 
@@ -67,7 +75,12 @@ def get_scenario_rows(
     if attribute == AttributeEnumSchema.NONE:
         query = compiled_statement
     else:
-        indicator_as_sql_using = f"sum({indicator})"
+        indicator_as_sql_using = (
+            f"sum({indicator})"
+            if dividedBy == DIVIDED_BY_NONE
+            else f"sum({indicator} / {dividedBy})"
+        )
+
         query = f"""
             WITH filtered_data AS (
                 {compiled_statement}

@@ -9,7 +9,7 @@ import {
   DEFAULT_SCENARIO,
   DEFAULT_INDICATOR,
   ROUTES,
-  DEFAULT_UNIT,
+  DEFAULT_DIVIDED_BY,
   DEFAULT_SETTINGS_TAB,
   DEFAULT_DATA_TAB,
   DEFAULT_SORT,
@@ -21,7 +21,7 @@ import {
   FiltersSchema,
   ScenarioSchema,
   IndicatorSchema,
-  UnitSchema,
+  DividedBySchema,
 } from "@/lib/shared_with_backend/schemas";
 import {
   AnimationTabSchema,
@@ -37,7 +37,7 @@ const SearchParamsSchema = z.object({
   filters: FiltersSchema.optional(),
   attribute: AttributeSchema.catch(DEFAULT_ATTRIBUTE),
   indicator: IndicatorSchema.catch(DEFAULT_INDICATOR),
-  unit: UnitSchema.catch(DEFAULT_UNIT),
+  dividedBy: DividedBySchema.catch(DEFAULT_DIVIDED_BY),
   display: DisplaySchema.catch(DEFAULT_DISPLAY),
   sort: SortSchema.catch(DEFAULT_SORT),
   scenarioA: ScenarioSchema.catch(DEFAULT_SCENARIO),

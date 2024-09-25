@@ -1,4 +1,4 @@
-import { NONE } from "../constants";
+import { DIVIDED_BY_NONE, NONE } from "../constants";
 
 /*
   /!\
@@ -64,8 +64,8 @@ export const INDICATORS = [
   "GWP luluc",
 ] as const;
 
-export const UNITS = [
-  "none (total)",
+export const DIVIDED_BY_OPTIONS = [
+  DIVIDED_BY_NONE,
   "m² (country)",
   "m² (archetype)",
   "capita (country)",

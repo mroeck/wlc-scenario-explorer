@@ -10,8 +10,20 @@ export const PROJECT_NAME = "GHG Emissions of EU Building Stock Scenarios";
 export const DEFAULT_FILTERS = undefined;
 export const DEFAULT_ATTRIBUTE: Attribute = "Building type";
 export const DEFAULT_INDICATOR: Indicator = "GWP total";
-export const DEFAULT_UNIT: Unit = "none (total)";
-export const DEFAULT_UNIT_MINIMIZED = "MtCO2e";
+export const DEFAULT_DIVIDED_BY: Unit = "none (total)";
+export const DEFAULT_UNIT_MINIMIZED: (typeof INDICATORS_UNITS)[number] =
+  "MtCO2e";
+export const DIVIDED_BY_UNITS = ["m²", "capita"] as const;
+export const DIVIDED_BY_NONE = "none (total)";
+export const DIVIDED_BY_TO_MINIFIED_UNIT: Record<
+  Exclude<Unit, typeof DIVIDED_BY_NONE>,
+  (typeof DIVIDED_BY_UNITS)[number]
+> = {
+  "capita (archetype)": "capita",
+  "capita (country)": "capita",
+  "m² (archetype)": "m²",
+  "m² (country)": "m²",
+} as const;
 export const INDICATORS_UNITS = ["MtCO2e", "Mt"] as const;
 export const INDICATOR_TO_UNIT: Record<
   Indicator,
@@ -55,7 +67,7 @@ export const ROUTES = {
 } as const;
 export const LOADING_SPINNER_ID = "LoadingSpinner";
 export const GRAPH_TITLE_TESTID = "graphTitle";
-export const UNIT_TESTID = "unit";
+export const DIVIDED_BY_TESTID = "DIVIDED_BY_TESTID";
 export const ATTRIBUTE_TESTID = "attribute";
 export const DISPLAY_SELECT_TESTID = "DISPLAY_SELECT_TESTID";
 export const SORT_SELECT_TESTID = "SORT_SELECT_TESTID";
@@ -77,7 +89,7 @@ export const SELECT_ALL_LABEL = "Select All";
 export const ALL_LABEL = "All";
 export const GRAPH_FONT_SIZE = 14;
 export const SELECT_INDICATOR_TESTID = "SELECT_INDICATOR_TESTID";
-export const SELECT_UNIT_TESTID = "SELECT_UNIT_TESTID";
+export const SELECT_DIVIDED_BY_TESTID = "SELECT_DIVIDED_BY_TESTID";
 export const BREAKDOWN_BY_ORDER = [
   "region",
   "country",
@@ -119,7 +131,7 @@ export const DEFAULT_DATA_TAB: DATA_TAB = "Stacked Area Chart";
 export const DEFAULT_SEARCH_PARAMS = {
   attribute: DEFAULT_ATTRIBUTE,
   indicator: DEFAULT_INDICATOR,
-  unit: DEFAULT_UNIT,
+  dividedBy: DEFAULT_DIVIDED_BY,
   display: DEFAULT_DISPLAY,
   scenarioA: DEFAULT_SCENARIO,
   filters: {

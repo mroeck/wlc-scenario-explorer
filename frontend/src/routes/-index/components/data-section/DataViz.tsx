@@ -14,7 +14,9 @@ import {
   SCENARIO_A_AND_B,
   SCENARIO_B_ONLY,
   TAB_CONTENT_TESTID,
-  UNIT_TESTID,
+  DIVIDED_BY_TESTID,
+  DIVIDED_BY_NONE,
+  DIVIDED_BY_TO_MINIFIED_UNIT,
 } from "@/lib/constants";
 import { useQuery } from "@tanstack/react-query";
 import { fetchScenarioRowsAggregated } from "@/lib/queries";
@@ -22,70 +24,56 @@ import { getRouteApi } from "@tanstack/react-router";
 import type { z } from "zod";
 import { LoadingSpinner } from "@/components/LoadingSpinner";
 import { ErrorOccurred } from "@/components/ErrorOccurred";
-import type {
-  ATTRIBUTES,
-  INDICATORS,
-} from "@/lib/shared_with_backend/constants";
+import { type ATTRIBUTES } from "@/lib/shared_with_backend/constants";
 import type { ScenarioRowsAggregatedArraySchema } from "@/lib/schemas";
 import { NoDataFound } from "@/components/NoDataFound";
 import { StackedBarChart } from "./graphs/StackedBarChart";
 import { DataTable } from "./DataTable";
 import { SettingsDrawer } from "./SettingsDrawer";
-import type { Attribute, Indicator, Scenario } from "@/lib/types";
+import type { Attribute, Scenario } from "@/lib/types";
 import { LineGraph } from "./graphs/LineGraph";
 import { useRef } from "react";
 import { ComparisonSlider } from "./ComparisonSlider";
 import { SettingsButton } from "@/components/settings-button";
 import { GraphWrapper } from "./graphs/GraphWrapper";
+import type { Unit, UnitMinified } from "./types";
 
 const route = getRouteApi(ROUTES.DASHBOARD);
 
+type Graph =
+  | typeof StackedAreaChart
+  | typeof LineGraph
+  | typeof StackedBarChart;
+
 type ContentProps = {
   data: z.infer<typeof ScenarioRowsAggregatedArraySchema>;
-  indicator: Indicator;
+  unit: UnitMinified;
   breakdownBy: Attribute;
 };
+
+const createTab = (name: string, Graph: Graph) => ({
+  name,
+  content: ({ data, unit, breakdownBy }: ContentProps) => (
+    <GraphWrapper
+      data={data}
+      unit={unit}
+      breakdownBy={breakdownBy}
+      Graph={Graph}
+    />
+  ),
+});
+
 const tabs = [
-  {
-    name: DATA_TABS_NAMES.stackedAreaChart,
-    content: ({ data, indicator, breakdownBy }: ContentProps) => (
-      <GraphWrapper
-        data={data}
-        unit={INDICATOR_TO_UNIT[indicator]}
-        breakdownBy={breakdownBy}
-        Graph={StackedAreaChart}
-      />
-    ),
-  },
-  {
-    name: DATA_TABS_NAMES.lineChart,
-    content: ({ data, indicator, breakdownBy }: ContentProps) => (
-      <GraphWrapper
-        data={data}
-        unit={INDICATOR_TO_UNIT[indicator]}
-        breakdownBy={breakdownBy}
-        Graph={LineGraph}
-      />
-    ),
-  },
-  {
-    name: DATA_TABS_NAMES.stackedBarChart,
-    content: ({ data, indicator, breakdownBy }: ContentProps) => (
-      <GraphWrapper
-        data={data}
-        unit={INDICATOR_TO_UNIT[indicator]}
-        breakdownBy={breakdownBy}
-        Graph={StackedBarChart}
-      />
-    ),
-  },
+  createTab(DATA_TABS_NAMES.stackedAreaChart, StackedAreaChart),
+  createTab(DATA_TABS_NAMES.lineChart, LineGraph),
+  createTab(DATA_TABS_NAMES.stackedBarChart, StackedBarChart),
 ] as const;
 
 type TabName = (typeof tabs)[number]["name"];
 const defaultTab: TabName = "Stacked Area Chart";
 
 type CreateTitleArgs = {
-  unit: (typeof INDICATORS)[number];
+  unit: Unit;
   attribute: (typeof ATTRIBUTES)[number];
   scenarioA: string;
   scenarioB?: string;
@@ -115,7 +103,7 @@ function createTitle({
 
   return (
     <h2 data-testid={GRAPH_TITLE_TESTID} className="text-primary">
-      <span className="capitalize" data-testid={UNIT_TESTID}>
+      <span className="transform-none" data-testid={DIVIDED_BY_TESTID}>
         {unit}
       </span>{" "}
       {attribute !== NONE && (
@@ -141,6 +129,7 @@ export const DataViz = () => {
     attribute,
     display,
     indicator,
+    dividedBy,
     filters,
     scenarioA,
     scenarioB,
@@ -150,21 +139,35 @@ export const DataViz = () => {
       attribute: search.attribute,
       display: search.display,
       indicator: search.indicator,
+      dividedBy: search.dividedBy,
       filters: search.filters,
       scenarioA: search.scenarioA,
       scenarioB: search.scenarioB,
       dataTab: search.dataTab,
     }),
   });
+  const unit =
+    dividedBy === DIVIDED_BY_NONE
+      ? indicator
+      : (`${indicator} per ${dividedBy}` as const);
+
+  const indicatorMinified = INDICATOR_TO_UNIT[indicator];
+
+  const unitMinified =
+    dividedBy === DIVIDED_BY_NONE
+      ? indicatorMinified
+      : (`${indicatorMinified}/${DIVIDED_BY_TO_MINIFIED_UNIT[dividedBy]}` as const);
 
   const fetchScenarioData = (scenario: Scenario | undefined) =>
     fetchScenarioRowsAggregated({
       attribute,
       filters,
       scenario,
-      unit: indicator,
+      indicator,
+      dividedBy,
     });
 
+  const commonKeys = { attribute, filters, indicator, dividedBy };
   const {
     isLoading: isLoadingA,
     error: errorA,
@@ -172,7 +175,7 @@ export const DataViz = () => {
   } = useQuery({
     queryKey: [
       "scenarioRowsAggregated",
-      { attribute, filters, scenario: scenarioA, unit: indicator },
+      { ...commonKeys, scenario: scenarioA },
     ],
     queryFn: () => fetchScenarioData(scenarioA),
     staleTime: Infinity,
@@ -185,7 +188,7 @@ export const DataViz = () => {
   } = useQuery({
     queryKey: [
       "scenarioRowsAggregated",
-      { attribute, filters, scenario: scenarioB, unit: indicator },
+      { ...commonKeys, scenario: scenarioB },
     ],
     queryFn: () => fetchScenarioData(scenarioB),
     staleTime: Infinity,
@@ -267,7 +270,7 @@ export const DataViz = () => {
               attribute,
               scenarioA,
               scenarioB,
-              unit: indicator,
+              unit,
               activeTab: dataTab,
               display,
             })}
@@ -289,7 +292,7 @@ export const DataViz = () => {
                       label: "Scenario A",
                       component: tab.content({
                         data: dataA,
-                        indicator,
+                        unit: unitMinified,
                         breakdownBy: attribute,
                       }),
                     },
@@ -297,7 +300,7 @@ export const DataViz = () => {
                       label: "Scenario B",
                       component: tab.content({
                         data: dataB,
-                        indicator,
+                        unit: unitMinified,
                         breakdownBy: attribute,
                       }),
                     },
@@ -313,12 +316,7 @@ export const DataViz = () => {
             data-testid={TAB_CONTENT_TESTID}
           >
             <DataStatus />
-            {canRenderContent && (
-              <DataTable
-                data={dataA}
-                indicator={INDICATOR_TO_UNIT[indicator]}
-              />
-            )}
+            {canRenderContent && <DataTable data={dataA} unit={unitMinified} />}
           </TabsContent>
         </div>
       </Tabs>

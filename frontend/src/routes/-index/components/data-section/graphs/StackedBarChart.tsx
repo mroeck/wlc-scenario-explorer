@@ -56,7 +56,7 @@ export const StackedBarChart = ({
           content={(props) => (
             <PortalTooltip
               {...props}
-              indicatorUnit={unit}
+              unit={unit}
               breakdownBy={breakdownBy}
               chartRef={chartRef}
               offset={20}

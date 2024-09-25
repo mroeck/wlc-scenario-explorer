@@ -9,9 +9,9 @@ import {
   SCENARIO_B_TESTID,
   SCENARIO_B_ONLY,
   DEFAULT_SCENARIO,
-  SELECT_UNIT_TESTID,
+  SELECT_DIVIDED_BY_TESTID,
 } from "@/lib/constants";
-import { UNITS } from "@/lib/shared_with_backend/constants";
+import { DIVIDED_BY_OPTIONS } from "@/lib/shared_with_backend/constants";
 import { test, expect } from "@playwright/test";
 
 test.describe("search params", () => {
@@ -38,16 +38,16 @@ test.describe("search params", () => {
     }
   });
 
-  test("uses unit search param on mount", async ({ page }) => {
-    const unitSelect = page
-      .getByTestId(SELECT_UNIT_TESTID)
+  test("uses dividedBy search param on mount", async ({ page }) => {
+    const dividedBySelect = page
+      .getByTestId(SELECT_DIVIDED_BY_TESTID)
       .getByRole("combobox");
-    const unit = UNITS[1];
+    const dividedBy = DIVIDED_BY_OPTIONS[1];
 
-    const url = `${ROUTES.DASHBOARD}?unit=${unit}`;
+    const url = `${ROUTES.DASHBOARD}?dividedBy=${dividedBy}`;
 
     await page.goto(url);
-    await expect(unitSelect).toHaveText(unit);
+    await expect(dividedBySelect).toHaveText(dividedBy);
   });
 
   test("uses scenarioA search param on mount", async ({ page }) => {

@@ -13,7 +13,7 @@ import {
   ROUTES,
   SELECT_INDICATOR_TESTID,
   BREAKDOWN_BY_ORDER,
-  SELECT_UNIT_TESTID,
+  SELECT_DIVIDED_BY_TESTID,
   HELP_PAGE_IDS,
 } from "@/lib/constants";
 import {
@@ -29,12 +29,12 @@ import { type Writable } from "type-fest";
 import {
   AttributeSchema,
   IndicatorSchema,
-  UnitSchema,
+  DividedBySchema,
 } from "@/lib/shared_with_backend/schemas";
 import {
   ATTRIBUTES,
   INDICATORS,
-  UNITS,
+  DIVIDED_BY_OPTIONS,
 } from "@/lib/shared_with_backend/constants";
 import { InfoButton } from "@/components/InfoButton";
 import { Link } from "@tanstack/react-router";
@@ -45,20 +45,20 @@ const route = getRouteApi(ROUTES.DASHBOARD);
 const DataVizFormSchema = z.object<{
   indicator: z.ZodEnum<Writable<typeof INDICATORS>>;
   attribute: z.ZodEnum<Writable<typeof ATTRIBUTES>>;
-  unit: z.ZodEnum<Writable<typeof UNITS>>;
+  dividedBy: z.ZodEnum<Writable<typeof DIVIDED_BY_OPTIONS>>;
 }>({
   indicator: IndicatorSchema,
   attribute: AttributeSchema,
-  unit: UnitSchema,
+  dividedBy: DividedBySchema,
 });
 
 export const DataVizForm = () => {
   const navigate = route.useNavigate();
-  const { attribute, indicator, unit } = route.useSearch({
+  const { attribute, indicator, dividedBy } = route.useSearch({
     select: (search) => ({
       attribute: search.attribute,
       indicator: search.indicator,
-      unit: search.unit,
+      dividedBy: search.dividedBy,
       scenarioA: search.scenarioA,
       scenarioB: search.scenarioB,
     }),
@@ -68,21 +68,21 @@ export const DataVizForm = () => {
     defaultValues: {
       indicator,
       attribute,
-      unit,
+      dividedBy,
     },
   });
 
   async function onSubmit({
     attribute,
     indicator,
-    unit,
+    dividedBy,
   }: z.infer<typeof DataVizFormSchema>) {
     await navigate({
       search: (prev) => ({
         ...prev,
         attribute,
         indicator,
-        unit,
+        dividedBy,
       }),
     });
   }
@@ -145,7 +145,11 @@ export const DataVizForm = () => {
                 </FormControl>
                 <SelectContent>
                   {INDICATORS.map((indicator) => (
-                    <SelectItem key={indicator} value={indicator}>
+                    <SelectItem
+                      key={indicator}
+                      value={indicator}
+                      className="normal-case"
+                    >
                       {indicator}
                     </SelectItem>
                   ))}
@@ -156,9 +160,9 @@ export const DataVizForm = () => {
         />
         <FormField
           control={form.control}
-          name="unit"
+          name="dividedBy"
           render={({ field }) => (
-            <FormItem data-testid={SELECT_UNIT_TESTID}>
+            <FormItem data-testid={SELECT_DIVIDED_BY_TESTID}>
               <FormLabel className="flex items-center gap-2">
                 <span className="font-medium">Divided by:</span>
                 <InfoButton>
@@ -188,15 +192,19 @@ export const DataVizForm = () => {
               >
                 <FormControl>
                   <SelectMenuStyle>
-                    <SelectTrigger className="text-left capitalize">
-                      <SelectValue placeholder="Select a unit" />
+                    <SelectTrigger className="text-left">
+                      <SelectValue placeholder="Select an option.." />
                     </SelectTrigger>
                   </SelectMenuStyle>
                 </FormControl>
                 <SelectContent>
-                  {UNITS.map((unit) => (
-                    <SelectItem key={unit} value={unit}>
-                      {unit}
+                  {DIVIDED_BY_OPTIONS.map((option) => (
+                    <SelectItem
+                      key={option}
+                      value={option}
+                      className="normal-case"
+                    >
+                      {option}
                     </SelectItem>
                   ))}
                 </SelectContent>

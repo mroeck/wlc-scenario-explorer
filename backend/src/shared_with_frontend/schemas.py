@@ -1,6 +1,7 @@
 from typing import List, Dict, Optional, Mapping
 from pydantic import BaseModel, Field, field_validator, Extra
 from enum import Enum
+from ..constants import DIVIDED_BY_NONE
 
 MAX_YEAR = 2500
 MIN_YEAR = 1900
@@ -68,12 +69,25 @@ class IndicatorEnumSchema(str, Enum):
     MATERIAL_AMOUNT_PER_BUILDING = "Material mass"
 
 
+class DividedByEnumSchema(str, Enum):
+    NONE = "none (total)"
+    M2_COUNTRY = "m² (country)"
+    M2_ARCHETYPE = "m² (archetype)"
+    CAPITA_COUNTRY = "capita (country)"
+    CAPITA_ARCHETYPE = "capita (archetype)"
+
+
 UNIT_TO_DB_COLUMNS: Dict[str, str] = {
     IndicatorEnumSchema.TOTAL_GWP.value: ColumnsEnumSchema.IND_GWP_TOT.value,
     IndicatorEnumSchema.FOSSIL_GWP.value: ColumnsEnumSchema.IND_GWP_FOS.value,
     IndicatorEnumSchema.BIO_GWP.value: ColumnsEnumSchema.IND_GWP_BIO.value,
     IndicatorEnumSchema.LULUC_GWP.value: ColumnsEnumSchema.IND_GWP_LULUC.value,
     IndicatorEnumSchema.MATERIAL_AMOUNT_PER_BUILDING.value: ColumnsEnumSchema.AMOUNT_MATERIAL_KG_PER_BUILDING.value,
+    DividedByEnumSchema.NONE.value: DIVIDED_BY_NONE,
+    DividedByEnumSchema.M2_COUNTRY.value: DIVIDED_BY_NONE,
+    DividedByEnumSchema.M2_ARCHETYPE.value: DIVIDED_BY_NONE,
+    DividedByEnumSchema.CAPITA_COUNTRY.value: DIVIDED_BY_NONE,
+    DividedByEnumSchema.CAPITA_ARCHETYPE.value: ColumnsEnumSchema.IND_GWP_FOS.value,
 }
 
 

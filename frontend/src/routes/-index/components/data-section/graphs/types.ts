@@ -2,8 +2,9 @@ import type {
   AnimationTabSchema,
   ScenarioRowsAggregatedArraySchema,
 } from "@/lib/schemas";
-import type { Attribute, IndicatorUnit } from "@/lib/types";
+import type { Attribute } from "@/lib/types";
 import type { z } from "zod";
+import type { UnitMinified } from "../types";
 
 export type GraphProps = {
   data: z.infer<typeof ScenarioRowsAggregatedArraySchema>;
@@ -11,5 +12,5 @@ export type GraphProps = {
   breakdownBy: Attribute;
   attributeOptions: string[];
   chartRef: React.RefObject<HTMLDivElement>;
-  unit: IndicatorUnit;
+  unit: UnitMinified;
 };
