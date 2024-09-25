@@ -60,7 +60,7 @@ export const CustomLegend = ({ payload, className }: CustomLegendProps) => {
           Color legend:
         </h3>
         {hasCategory ? (
-          <div className="grid max-w-[50ch] grid-cols-[max-content,1fr] gap-x-2 px-2">
+          <div className="grid max-w-prose grid-cols-[max-content,1fr] gap-x-2 px-2">
             {Object.entries(groupedData)
               .reverse()
               .map(([category, values]) => (

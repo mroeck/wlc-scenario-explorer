@@ -7,6 +7,8 @@ import type { Attribute, IndicatorUnit } from "@/lib/types";
 import { getRouteApi } from "@tanstack/react-router";
 import { useRef } from "react";
 import type { StackedAreaChart } from "./StackedAreaChart";
+import type { StackedBarChart } from "./StackedBarChart";
+import type { LineGraph } from "./LineGraph";
 
 const route = getRouteApi(ROUTES.DASHBOARD);
 
@@ -14,7 +16,7 @@ type GraphWrapperProps = {
   data: z.infer<typeof ScenarioRowsAggregatedArraySchema>;
   unit: IndicatorUnit;
   breakdownBy: Attribute;
-  Graph: typeof StackedAreaChart;
+  Graph: typeof StackedAreaChart | typeof StackedBarChart | typeof LineGraph;
 };
 export const GraphWrapper = ({
   data,
@@ -23,10 +25,9 @@ export const GraphWrapper = ({
   Graph,
 }: GraphWrapperProps) => {
   const chartRef = useRef<HTMLDivElement>(null);
-  const { animation, display, sort } = route.useSearch({
+  const { animation, sort } = route.useSearch({
     select: (search) => ({
       animation: search.animation,
-      display: search.display,
       sort: search.sort,
     }),
   });
@@ -46,9 +47,9 @@ export const GraphWrapper = ({
       : firstItemKeys.sort((keyA, keyB) => firstItem[keyB] - firstItem[keyA]);
 
   return (
-    <div className="h-full overflow-x-scroll lg:overflow-x-visible">
+    <div className="h-full overflow-x-visible">
       <div
-        className="h-0 min-h-[500px] min-w-[600px] lg:min-h-full lg:min-w-[unset] lg:flex-1 [&_svg]:overflow-visible"
+        className="h-0 min-h-[500px] w-full sm:min-w-[600px] lg:min-h-full lg:min-w-[unset] lg:flex-1 [&_svg]:overflow-visible"
         data-testid={GRAPH_TESTID}
       >
         <Graph
@@ -57,7 +58,6 @@ export const GraphWrapper = ({
           breakdownBy={breakdownBy}
           chartRef={chartRef}
           data={data}
-          display={display}
           unit={unit}
         />
       </div>

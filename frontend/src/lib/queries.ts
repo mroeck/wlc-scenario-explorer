@@ -1,5 +1,5 @@
 import { env } from "@/env";
-import type { Attribute, Filters, Scenario, Indicator, Sort } from "./types";
+import type { Attribute, Filters, Scenario, Indicator } from "./types";
 import {
   FiltersSchema,
   ScenarioRowsAggregatedSchema,
@@ -13,7 +13,6 @@ type FetchScenarioRowsArgs = {
   scenario: Scenario | undefined;
   unit: Indicator;
   filters: Filters | undefined;
-  sort: Sort;
 };
 
 export async function fetchScenarioRowsAggregated({
@@ -21,7 +20,6 @@ export async function fetchScenarioRowsAggregated({
   filters,
   scenario,
   unit,
-  sort,
 }: FetchScenarioRowsArgs) {
   if (scenario === undefined) return [];
 
@@ -36,7 +34,6 @@ export async function fetchScenarioRowsAggregated({
       scenario,
       unit,
       filters,
-      sort,
     }),
   });
   const dataRaw = (await response.json()) as unknown;

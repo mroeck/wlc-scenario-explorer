@@ -145,7 +145,6 @@ export const DataViz = () => {
     scenarioA,
     scenarioB,
     dataTab,
-    sort,
   } = route.useSearch({
     select: (search) => ({
       attribute: search.attribute,
@@ -155,7 +154,6 @@ export const DataViz = () => {
       scenarioA: search.scenarioA,
       scenarioB: search.scenarioB,
       dataTab: search.dataTab,
-      sort: search.sort,
     }),
   });
 
@@ -165,7 +163,6 @@ export const DataViz = () => {
       filters,
       scenario,
       unit: indicator,
-      sort,
     });
 
   const {
@@ -175,7 +172,7 @@ export const DataViz = () => {
   } = useQuery({
     queryKey: [
       "scenarioRowsAggregated",
-      { attribute, filters, scenario: scenarioA, unit: indicator, sort },
+      { attribute, filters, scenario: scenarioA, unit: indicator },
     ],
     queryFn: () => fetchScenarioData(scenarioA),
     staleTime: Infinity,
@@ -188,7 +185,7 @@ export const DataViz = () => {
   } = useQuery({
     queryKey: [
       "scenarioRowsAggregated",
-      { attribute, filters, scenario: scenarioB, unit: indicator, sort },
+      { attribute, filters, scenario: scenarioB, unit: indicator },
     ],
     queryFn: () => fetchScenarioData(scenarioB),
     staleTime: Infinity,

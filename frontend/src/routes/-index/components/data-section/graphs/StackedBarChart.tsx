@@ -9,17 +9,8 @@ import {
   BarChart,
   Bar,
 } from "recharts";
-import { CustomTooltip } from "../Tooltip/CustomTooltip";
 import { getColor } from "@/lib/utils";
-import { type z } from "zod";
-import { SCENARIO_A_AND_B } from "@/lib/constants";
-import type {
-  AnimationTabSchema,
-  DisplaySchema,
-  ScenarioRowsAggregatedArraySchema,
-} from "@/lib/schemas";
 import { CustomLegend } from "../Legend/CustomLegend";
-import type { Attribute, IndicatorUnit } from "@/lib/types";
 import {
   commonCartisianGridProps,
   commonChartProps,
@@ -30,25 +21,16 @@ import {
   commonYaxisProps,
 } from "../constants";
 import { PortalTooltip } from "../Tooltip/PortalTooltip";
+import type { GraphProps } from "./types";
 
-type StackedBarChartProps = {
-  data: z.infer<typeof ScenarioRowsAggregatedArraySchema>;
-  animation: z.infer<typeof AnimationTabSchema> | undefined;
-  breakdownBy: Attribute;
-  attributeOptions: string[];
-  chartRef: React.RefObject<HTMLDivElement>;
-  display: z.infer<typeof DisplaySchema>;
-  unit: IndicatorUnit;
-};
 export const StackedBarChart = ({
   animation,
   attributeOptions,
   breakdownBy,
   chartRef,
   data,
-  display,
   unit,
-}: StackedBarChartProps) => {
+}: GraphProps) => {
   return (
     <ResponsiveContainer width="100%" height="100%" ref={chartRef}>
       <BarChart {...commonChartProps} data={data}>
@@ -71,22 +53,15 @@ export const StackedBarChart = ({
         })}
         <Tooltip
           {...commonTooltipProps}
-          content={(props) =>
-            display === SCENARIO_A_AND_B ? (
-              <PortalTooltip
-                {...props}
-                indicatorUnit={unit}
-                breakdownBy={breakdownBy}
-                chartRef={chartRef}
-              />
-            ) : (
-              <CustomTooltip
-                {...props}
-                indicatorUnit={unit}
-                breakdownBy={breakdownBy}
-              />
-            )
-          }
+          content={(props) => (
+            <PortalTooltip
+              {...props}
+              indicatorUnit={unit}
+              breakdownBy={breakdownBy}
+              chartRef={chartRef}
+              offset={20}
+            />
+          )}
         />
         <Legend content={(props) => <CustomLegend payload={props.payload} />} />
         <XAxis {...commonXaxisProps} />

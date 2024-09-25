@@ -123,7 +123,7 @@ export const Header = ({ currentRoute }: HeaderProps) => {
         <nav
           key={index}
           className={cn(
-            "fixed top-0 z-10 flex w-full max-w-screen-2xl justify-between gap-5 bg-primary p-primary text-primary-foreground",
+            "fixed top-0 z-10 flex w-dvw max-w-screen-2xl justify-between gap-5 bg-primary p-primary text-primary-foreground",
             index === 1 && "invisible static",
           )}
         >

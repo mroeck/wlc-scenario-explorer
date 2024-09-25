@@ -129,10 +129,7 @@ export function SettingsButton() {
                   <SelectItem
                     value={SCENARIO_B_ONLY}
                   >{`${scenarioB ?? "Scenario B"} only`}</SelectItem>
-                  <SelectItem
-                    value={SCENARIO_A_AND_B}
-                    className="hidden sm:block"
-                  >
+                  <SelectItem value={SCENARIO_A_AND_B}>
                     {`${scenarioA} VS ${scenarioB ?? "Scenario B"}`}
                   </SelectItem>
                 </SelectContent>

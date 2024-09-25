@@ -133,7 +133,8 @@ export const Scenarios = () => {
                         aspirational policy ambitions such as current policies
                         (CPOL) and additional policies (APOL). These scenarios
                         explore the potential of various carbon reduction and
-                        removal (CRR) strategies.
+                        removal (CRR) strategies. Careful, customized scenarios
+                        are not based on EU policies like CPOL and APOL.
                       </p>
                       <Link
                         to={ROUTES.HELP}

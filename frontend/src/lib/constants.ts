@@ -51,6 +51,7 @@ export const ROUTES = {
   DASHBOARD: "/",
   HELP: "/help",
   ABOUT: "/about",
+  HEALTH: "/health",
 } as const;
 export const LOADING_SPINNER_ID = "LoadingSpinner";
 export const GRAPH_TITLE_TESTID = "graphTitle";
@@ -157,3 +158,7 @@ export const HELP_PAGE_IDS = {
 export const SCENARIO_A_LABEL = "primary scenario";
 export const SCENARIO_B_LABEL = "scenario B";
 export const NONE = "None";
+export const STORAGE_KEYS = {
+  isDisclaimerAccepted: "scenarioExplorerIsDisclaimerAccepted",
+};
+export const DISCLAIMER_MODAL_TITLE = "Website Disclaimer";
