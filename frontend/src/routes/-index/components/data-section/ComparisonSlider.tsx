@@ -97,8 +97,8 @@ export const ComparisonSlider: React.FC<ComparisonSliderProps> = ({
       <div className="relative size-full">
         <div
           className={cn(
-            "absolute left-0 top-0 hidden h-8 w-full -translate-y-full sm:flex",
-            display !== SCENARIO_A_AND_B && "sm:hidden",
+            "absolute left-0 top-0 flex h-8 w-full -translate-y-full",
+            display !== SCENARIO_A_AND_B && "hidden",
           )}
           style={{ width: sliderValues[0].toString() + "%" }}
         >
@@ -128,7 +128,7 @@ export const ComparisonSlider: React.FC<ComparisonSliderProps> = ({
           style={{ width: sliderValues[0].toString() + "%" }}
         >
           <div
-            className="relative size-full bg-white sm:block"
+            className="relative size-full bg-white"
             ref={secondGraphRef}
             style={
               graphDimensions
@@ -143,16 +143,16 @@ export const ComparisonSlider: React.FC<ComparisonSliderProps> = ({
           </div>
           <div
             className={cn(
-              "absolute right-0 top-0 hidden h-full border-r-2 border-solid sm:block",
-              display !== SCENARIO_A_AND_B && "sm:hidden",
+              "absolute right-0 top-0 h-full border-r-2 border-solid",
+              display !== SCENARIO_A_AND_B && "hidden",
             )}
             style={{ borderColor: "hsl(223 0% 40%)" }}
           ></div>
         </div>
         <Slider
           className={cn(
-            "absolute left-[-15px] top-1/2 z-10 hidden w-[calc(100%+28px)] origin-center sm:block",
-            display !== SCENARIO_A_AND_B && "sm:hidden",
+            "absolute left-[-15px] top-1/2 z-10 w-[calc(100%+28px)] origin-center",
+            display !== SCENARIO_A_AND_B && "hidden",
           )}
           value={sliderValues}
           onValueChange={handleSliderChange}

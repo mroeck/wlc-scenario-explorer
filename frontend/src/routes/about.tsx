@@ -1,3 +1,4 @@
+import { DisclaimerText } from "@/components/DisclaimerText";
 import { Section } from "@/components/Section";
 import { SectionForDoc } from "@/components/SectionForDoc";
 import { TypographyContent } from "@/components/TypographyContent";
@@ -172,16 +173,7 @@ function About() {
               <TypographyH3>Disclaimer</TypographyH3>
               <TypographyContent>
                 <TypographyP>
-                  This tool is part of a study contracted by the European
-                  Commission, DG GROW, on the ‘
-                  <a href={LINKS.study.lifeCycleGreenhouse} className="link">
-                    Analysis of Life-cycle Greenhouse Gas Emissions and Removals
-                    of EU Buildings and Construction
-                  </a>
-                  .’ The views expressed in this document and on the scenario
-                  modelling tool web app are the sole responsibility of the
-                  authors and do not necessarily reflect the views of the
-                  European Commission.
+                  <DisclaimerText />
                 </TypographyP>
               </TypographyContent>
               <TypographyH3>Purpose and objectives</TypographyH3>

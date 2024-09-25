@@ -5,7 +5,7 @@ import {
   GRAPH_TESTID,
 } from "@/lib/constants";
 import { test, expect } from "@playwright/test";
-import { DEFAULT_DATA_HEADER } from "@tests/constants";
+import { DEFAULT_DATA_HEADER, TAGS } from "@tests/constants";
 import { testPageScreenshot, waitLoadingEnds } from "@tests/functions";
 
 test.describe("dashboard", () => {
@@ -18,25 +18,37 @@ test.describe("dashboard", () => {
     await expect(page.getByText(DEFAULT_DATA_HEADER)).toBeVisible();
   });
 
-  test("page snapshot", async ({ page }) => {
-    await expect(page.getByText(PROJECT_NAME).first()).toBeVisible({
-      timeout: 5_000,
-    });
-    await expect(
-      page.getByTestId(GRAPH_TESTID).getByText(DEFAULT_UNIT_MINIMIZED),
-    ).toBeVisible({
-      timeout: 10_000,
-    });
-    await testPageScreenshot({ page });
-  });
+  test(
+    "page snapshot",
+    {
+      tag: TAGS.snapshot,
+    },
+    async ({ page }) => {
+      await expect(page.getByText(PROJECT_NAME).first()).toBeVisible({
+        timeout: 5_000,
+      });
+      await expect(
+        page.getByTestId(GRAPH_TESTID).getByText(DEFAULT_UNIT_MINIMIZED),
+      ).toBeVisible({
+        timeout: 10_000,
+      });
+      await testPageScreenshot({ page });
+    },
+  );
 
-  test("snapshot on a very big screen", async ({ page, isMobile }) => {
-    test.skip(isMobile, "Desktop only!");
+  test(
+    "snapshot on a very big screen",
+    {
+      tag: TAGS.snapshot,
+    },
+    async ({ page, isMobile }) => {
+      test.skip(isMobile, "Desktop only!");
 
-    await page.setViewportSize({ width: 3840, height: 2160 });
+      await page.setViewportSize({ width: 3840, height: 2160 });
 
-    await waitLoadingEnds({ page });
+      await waitLoadingEnds({ page });
 
-    await testPageScreenshot({ page });
-  });
+      await testPageScreenshot({ page });
+    },
+  );
 });

@@ -1,6 +1,5 @@
-import { useEffect, useRef, useState } from "react";
+import { useRef } from "react";
 import ReactDOM from "react-dom";
-import { cn } from "@/lib/utils";
 import type { TooltipProps } from "recharts";
 import type {
   NameType,
@@ -35,29 +34,10 @@ export const PortalTooltip = ({
   indicatorUnit,
   breakdownBy,
   coordinate,
-  offset = 0,
+  offset = 10,
   chartRef,
 }: PortalTooltipProps) => {
-  const wrapperRef = useRef<HTMLDivElement | null>(null);
-  const contentRef = useRef<HTMLDivElement | null>(null);
-  const [boundingRect, setBoundingRect] = useState<{ x: number; y: number }>({
-    x: 0,
-    y: 0,
-  });
-  const isDefaultCoordinate = boundingRect.x === 0 && boundingRect.y === 0;
-  const [tooltipWidth, setTooltipWidth] = useState(0);
-
-  useEffect(() => {
-    if (wrapperRef.current) {
-      const rect = wrapperRef.current.getBoundingClientRect();
-      setBoundingRect({ x: rect.x, y: rect.y });
-      setTooltipWidth(rect.width);
-    }
-    if (contentRef.current) {
-      const rect = contentRef.current.getBoundingClientRect();
-      setTooltipWidth(rect.width);
-    }
-  }, [active]);
+  const tooltipRef = useRef<HTMLDivElement | null>(null);
 
   if (!active || payload == null || payload.length < 1) return null;
 
@@ -65,23 +45,41 @@ export const PortalTooltip = ({
     !!coordinate && !!coordinate.x && !!coordinate.y;
   if (!areCoordinatesDefined || chartRef.current == null) return null;
 
+  const tooltipDimensions = tooltipRef.current?.getBoundingClientRect() ?? {
+    width: 0,
+    height: 0,
+  };
+
   const data = removeDuplicates(payload);
+
   const { x = 0, y = 0 } = coordinate;
-
   const chartRect = chartRef.current.getBoundingClientRect();
-  const chartX = chartRect.x || 0;
-  const chartWidth = chartRect.width || 0;
 
-  const maxTranslateX = chartX + chartWidth - tooltipWidth - offset;
+  const chartX = chartRect.x + window.scrollX || 0;
+  const chartWidth = chartRect.width || 0;
+  const halfChart = (chartX + chartWidth) / 2;
+
+  const chartY = chartRect.y + window.scrollY || 0;
+  const chartHeight = chartRect.height || 0;
+
+  const maxTranslateX = chartX + chartWidth - tooltipDimensions.width - offset;
   const translateX = Math.min(
-    x + offset + boundingRect.x,
+    x < halfChart
+      ? chartRect.x + window.scrollX + x + offset
+      : chartRect.x + window.scrollX + x - offset - tooltipDimensions.width,
     maxTranslateX,
   ).toString();
-  const translateY = (y + offset + boundingRect.y).toString();
+
+  const maxTranslateY =
+    chartY + chartHeight - tooltipDimensions.height - offset;
+  const translateY = Math.min(
+    y + offset + chartRect.y + window.scrollY,
+    maxTranslateY,
+  ).toString();
 
   const tooltipContent = (
     <div
-      ref={contentRef}
+      ref={tooltipRef}
       className="pointer-events-none visible absolute left-0 top-0 z-10 text-wrap rounded bg-white/95 px-3 py-2 outline outline-1 outline-primary transition-transform duration-700"
       style={{ transform: `translate(${translateX}px, ${translateY}px)` }}
     >
@@ -95,9 +93,8 @@ export const PortalTooltip = ({
   );
 
   return (
-    <div ref={wrapperRef} className={cn("absolute left-0 top-0")}>
-      {!isDefaultCoordinate &&
-        ReactDOM.createPortal(tooltipContent, document.body)}
+    <div className="absolute left-0 top-0">
+      {ReactDOM.createPortal(tooltipContent, document.body)}
     </div>
   );
 };

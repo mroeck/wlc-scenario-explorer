@@ -4,6 +4,7 @@ import { lazy, Suspense } from "react";
 import { Header } from "@/components/Header";
 import { Toaster } from "@/components/ui/toaster";
 import { useRouterState } from "@tanstack/react-router";
+import { DisclaimerModal } from "@/components/DisclaimerModal";
 
 const TanStackRouterDevtools = env.PUBLIC_DEBUG
   ? lazy(() =>
@@ -30,6 +31,7 @@ function UserInterface() {
         <TanStackRouterDevtools initialIsOpen={false} />
       </Suspense>
       <Toaster />
+      <DisclaimerModal />
     </div>
   );
 }

@@ -4,7 +4,6 @@ from .db import Session
 from .shared_with_frontend.schemas import (
     ScenarioEnumSchema,
     IndicatorEnumSchema,
-    SortEnumSchema,
     AttributeEnumSchema,
     FiltersSchema,
     ColumnsEnumSchema,
@@ -45,7 +44,6 @@ def get_scenario_rows(
     attribute: ColumnsEnumSchema | Literal[AttributeEnumSchema.NONE],
     indicator: IndicatorEnumSchema,
     filters: Optional[FiltersSchema],
-    sort: SortEnumSchema,
 ) -> list[dict[str, int]]:
     statement: Select[Any]
 

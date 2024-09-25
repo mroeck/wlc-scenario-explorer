@@ -1,3 +1,4 @@
+import { STORAGE_KEYS } from "@/lib/constants";
 import { defineConfig, devices } from "@playwright/test";
 import { env } from "@tests/env";
 
@@ -11,6 +12,17 @@ export default defineConfig({
   use: {
     baseURL: env.BASE_URL,
     trace: "on-first-retry",
+    storageState: {
+      origins: [
+        {
+          localStorage: [
+            { name: STORAGE_KEYS.isDisclaimerAccepted, value: "true" },
+          ],
+          origin: env.BASE_URL,
+        },
+      ],
+      cookies: [],
+    },
   },
   expect: {
     toHaveScreenshot: {

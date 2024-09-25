@@ -15,7 +15,7 @@ export const Section = ({
       {...props}
       className={cn(
         "rounded-lg border border-gray-200 bg-white shadow-md",
-        noPadding ? "" : "p-primary",
+        noPadding ? "" : "p-3 sm:p-primary",
         className,
       )}
     >
