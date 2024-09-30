@@ -21,7 +21,12 @@ import {
   commonYaxisProps,
 } from "../constants";
 import { PortalTooltip } from "../Tooltip/PortalTooltip";
-import type { GraphProps } from "./types";
+import type { BreakdownByOptions, GraphProps } from "./types";
+import { getRouteApi } from "@tanstack/react-router";
+import { ROUTES } from "@/lib/constants";
+import { HIGHLIGHT_OPACITY } from "./constants";
+
+const route = getRouteApi(ROUTES.DASHBOARD);
 
 export const LineGraph = ({
   animation,
@@ -30,13 +35,35 @@ export const LineGraph = ({
   chartRef,
   data,
   unit,
+  highlight,
 }: GraphProps) => {
+  const navigate = route.useNavigate();
+  const isSomethingHighlighted = !!highlight;
+
+  type OnLineClickArgs = {
+    highlight: BreakdownByOptions;
+  };
+  const onLineClick = ({ highlight }: OnLineClickArgs) => {
+    void navigate({
+      search: (prev) => ({
+        ...prev,
+        highlight,
+      }),
+    });
+  };
+
   return (
     <ResponsiveContainer width="100%" height="100%" ref={chartRef}>
       <LineChart {...commonChartProps} data={data}>
         <CartesianGrid {...commonCartisianGridProps} />
         {attributeOptions.map((option) => {
           const areaColor = getColor({ breakdownBy, option });
+
+          const isHighlight = option === highlight;
+          const opacity =
+            isSomethingHighlighted && !isHighlight
+              ? HIGHLIGHT_OPACITY
+              : undefined;
 
           return (
             <Line
@@ -46,8 +73,13 @@ export const LineGraph = ({
               type="monotone"
               dataKey={option}
               stroke={areaColor}
-              fill={areaColor}
               isAnimationActive={animation}
+              onClick={() => {
+                onLineClick({ highlight: option });
+              }}
+              fill={areaColor}
+              fillOpacity={opacity}
+              opacity={opacity}
             />
           );
         })}
@@ -60,6 +92,7 @@ export const LineGraph = ({
               breakdownBy={breakdownBy}
               chartRef={chartRef}
               offset={20}
+              highlight={highlight}
             />
           )}
         />

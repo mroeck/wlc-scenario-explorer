@@ -1,6 +1,6 @@
 import type { z } from "zod";
 import type {
-  AttributeSchema,
+  BreakdownBySchema,
   FiltersSchema,
   ScenarioSchema,
   IndicatorSchema,
@@ -9,7 +9,7 @@ import type {
 import type { DIVIDED_BY_UNITS, INDICATORS_UNITS } from "./constants";
 import type { SortSchema } from "./schemas";
 
-export type Attribute = z.infer<typeof AttributeSchema>;
+export type Attribute = z.infer<typeof BreakdownBySchema>;
 export type Scenario = z.infer<typeof ScenarioSchema>;
 export type Indicator = z.infer<typeof IndicatorSchema>;
 export type IndicatorUnit = (typeof INDICATORS_UNITS)[number];

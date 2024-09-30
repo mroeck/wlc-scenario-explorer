@@ -2,13 +2,14 @@ import type { UnionToTuple } from "type-fest";
 import type { SCENARIOS_OPTIONS } from "./shared_with_backend/constants";
 import type { Attribute, Indicator, Unit } from "./types";
 
+export const RESET_LABEL = "Reset";
 export const PROD = "production";
 export const DEV = "development";
 export const TEST = "test";
 export const PROJECT_NAME = "GHG Emissions of EU Building Stock Scenarios";
 
 export const DEFAULT_FILTERS = undefined;
-export const DEFAULT_ATTRIBUTE: Attribute = "Building type";
+export const DEFAULT_BREAKDOWN_BY: Attribute = "Building type";
 export const DEFAULT_INDICATOR: Indicator = "GWP total";
 export const DEFAULT_DIVIDED_BY: Unit = "none (total)";
 export const DEFAULT_UNIT_MINIMIZED: (typeof INDICATORS_UNITS)[number] =
@@ -44,8 +45,8 @@ export const DISPLAY_OPTIONS = [
   SCENARIO_A_AND_B,
 ] as const;
 export const SORT_OPTIONS = {
+  categoriesAlphabetically: "group / alphabetical",
   desc: "Descending value",
-  categoriesAlphabetically: "default",
 } as const;
 export const SORT_OPTIONS_VALUES = Object.values(SORT_OPTIONS) as UnionToTuple<
   (typeof SORT_OPTIONS)[keyof typeof SORT_OPTIONS]
@@ -53,7 +54,7 @@ export const SORT_OPTIONS_VALUES = Object.values(SORT_OPTIONS) as UnionToTuple<
 export const DEFAULT_DISPLAY: (typeof DISPLAY_OPTIONS)[number] =
   SCENARIO_A_ONLY;
 export const DEFAULT_SORT: (typeof SORT_OPTIONS)[keyof typeof SORT_OPTIONS] =
-  "default";
+  "group / alphabetical";
 export const DEFAULT_SCENARIO: (typeof SCENARIOS_OPTIONS)[number] =
   "Example scenario (for illustration purpose only)";
 export const DEFAULT_FROM = 2020;
@@ -83,7 +84,7 @@ export const PARAMETER_STATUS = {
   active: "active",
   disable: "disable",
 } as const;
-export const DEFAULT_COLOR = "lightgrey";
+export const DEFAULT_COLOR = "#499ACC";
 export const DASHBOARD_HEADING = "Dashboard";
 export const SELECT_ALL_LABEL = "Select All";
 export const ALL_LABEL = "All";
@@ -129,7 +130,7 @@ export const DATA_TABS_NAMES = {
 type DATA_TAB = (typeof DATA_TABS_NAMES)[keyof typeof DATA_TABS_NAMES];
 export const DEFAULT_DATA_TAB: DATA_TAB = "Stacked Area Chart";
 export const DEFAULT_SEARCH_PARAMS = {
-  attribute: DEFAULT_ATTRIBUTE,
+  breakdownBy: DEFAULT_BREAKDOWN_BY,
   indicator: DEFAULT_INDICATOR,
   dividedBy: DEFAULT_DIVIDED_BY,
   display: DEFAULT_DISPLAY,
@@ -174,3 +175,4 @@ export const STORAGE_KEYS = {
   isDisclaimerAccepted: "scenarioExplorerIsDisclaimerAccepted",
 };
 export const DISCLAIMER_MODAL_TITLE = "Website Disclaimer";
+export const GRAPH_AXIS_COLOR = "hsl(223 0% 20%)";

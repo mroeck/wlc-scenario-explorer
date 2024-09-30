@@ -27,12 +27,12 @@ type Ids = (typeof HELP_PAGE_IDS)[keyof typeof HELP_PAGE_IDS];
 const sections = [
   {
     id: "scenario",
-    title: "Scenario",
+    title: "Scenarios",
     subsections: [
       { id: "predefined-scenarios", title: "Predefined scenarios" },
       {
         id: "parameters-customization",
-        title: "Parameters customization",
+        title: "Customise scenario parameters",
       },
     ],
   },
@@ -71,19 +71,14 @@ function Help() {
         ))}
       </aside>
       <Section className="flex flex-col">
-        <TypographyH1> {HELP_TITLE} </TypographyH1>
+        <TypographyH1 className="sr-only"> {HELP_TITLE} </TypographyH1>
         <SectionForDoc>
           <SectionForDoc id={HELP_PAGE_IDS.scenario}>
-            <TypographyH2>Scenario settings</TypographyH2>
+            <TypographyH2>Scenarios</TypographyH2>
 
             <SectionForDoc id={HELP_PAGE_IDS.predefinedScenarioSelection}>
-              <TypographyH3>Selection of predefined scenarios</TypographyH3>
+              <TypographyH3>Predefined scenarios</TypographyH3>
               <TypographyContent>
-                <TypographyMuted>
-                  [This functionality becomes active once the newly generated
-                  scenario results are loaded to the tool.]
-                </TypographyMuted>
-
                 <TypographyP>
                   Users can select predefined scenarios from the dropdown menu
                   to investigate the results of one scenario (scenario A) or
@@ -199,13 +194,8 @@ function Help() {
             </SectionForDoc>
 
             <SectionForDoc id={HELP_PAGE_IDS.scenarioParametersCustomization}>
-              <TypographyH3>Scenario parameters customization</TypographyH3>
+              <TypographyH3>Customise scenario parameters</TypographyH3>
               <TypographyContent>
-                <TypographyMuted>
-                  [This functionality becomes active once the newly generated
-                  scenario results are loaded to the tool.]
-                </TypographyMuted>
-
                 <TypographyP>
                   Beyond the pre-defined scenarios available from the dropdown
                   menu, users can explore various additional scenarios. These
@@ -434,7 +424,7 @@ function Help() {
           </SectionForDoc>
         </SectionForDoc>
         <SectionForDoc id={HELP_PAGE_IDS.filterSetting}>
-          <TypographyH2>Filter settings</TypographyH2>
+          <TypographyH2>Filters</TypographyH2>
 
           <SectionForDoc>
             <TypographyH3>Year</TypographyH3>

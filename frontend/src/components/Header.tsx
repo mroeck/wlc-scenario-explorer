@@ -1,5 +1,5 @@
 import {
-  DEFAULT_ATTRIBUTE,
+  DEFAULT_BREAKDOWN_BY,
   DEFAULT_DISPLAY,
   DEFAULT_SCENARIO,
   DEFAULT_INDICATOR,
@@ -17,7 +17,7 @@ import { Menu } from "lucide-react";
 import euFlagUrl from "@/assets/eu-flag.jpg";
 
 const dashboardSearch = {
-  attribute: DEFAULT_ATTRIBUTE,
+  breakdownBy: DEFAULT_BREAKDOWN_BY,
   display: DEFAULT_DISPLAY,
   scenarioA: DEFAULT_SCENARIO,
   indicator: DEFAULT_INDICATOR,

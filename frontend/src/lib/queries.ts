@@ -15,7 +15,7 @@ import { YEAR_KEY } from "./shared_with_backend/constants";
 import { ATTRIBUTE_OPTIONS_COLOR } from "@/routes/-index/components/data-section/colors";
 
 type FetchScenarioRowsArgs = {
-  attribute: Attribute;
+  breakdownBy: Attribute;
   scenario: Scenario | undefined;
   indicator: Indicator;
   dividedBy: DividedBy;
@@ -23,7 +23,7 @@ type FetchScenarioRowsArgs = {
 };
 
 export async function fetchScenarioRowsAggregated({
-  attribute,
+  breakdownBy,
   filters,
   scenario,
   indicator,
@@ -38,7 +38,7 @@ export async function fetchScenarioRowsAggregated({
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
-      attribute,
+      breakdownBy,
       scenario,
       indicator,
       dividedBy,

@@ -15,6 +15,7 @@ import {
 import {
   DEFAULT_DISPLAY,
   HELP_PAGE_IDS,
+  RESET_LABEL,
   ROUTES,
   SCENARIO_A_AND_B,
   SCENARIO_A_LABEL,
@@ -109,10 +110,10 @@ export const Scenarios = () => {
   }, []);
 
   return (
-    <section className=" px-primary-x">
+    <section className="px-primary-x">
       <h2 className="sr-only">Scenarios</h2>
       <div className="flex justify-end pb-px pt-3">
-        <ResetButton reset={reset} text="Reset all" />
+        <ResetButton reset={reset} text={RESET_LABEL} />
       </div>
       <Form {...form}>
         <form
@@ -126,7 +127,9 @@ export const Scenarios = () => {
               render={({ field }) => (
                 <FormItem>
                   <FormLabel className="flex items-center gap-2 font-medium">
-                    <span>{SCENARIO_A_LABEL}:</span>
+                    <span className="first-letter:uppercase">
+                      {SCENARIO_A_LABEL}:
+                    </span>
                     <InfoButton>
                       <p>
                         Choose from predefined scenarios. They represent
@@ -189,12 +192,12 @@ export const Scenarios = () => {
             />
             <div className="px-2">
               <div className="flex items-center gap-2">
-                <span className="text-sm font-medium underline">
-                  Customize Parameters:
+                <span className="text-sm font-medium">
+                  Customise scenario parameters:
                 </span>
                 <InfoButton>
                   <p>
-                    Customize scenario parameters by adjusting the ambition
+                    Customise scenario parameters by adjusting the ambition
                     levels for different carbon reduction and removal (CRR)
                     strategies. Explore strategies such as improving supply
                     chains, shifting to bio-based solutions, and avoiding
@@ -219,7 +222,7 @@ export const Scenarios = () => {
             render={({ field }) => (
               <FormItem>
                 <FormLabel className="flex items-center gap-2 font-medium">
-                  <span>Compare with scenario:</span>
+                  <span>Compare with:</span>
                   <InfoButton>
                     <p>
                       Select a second predefined scenario to compare with your

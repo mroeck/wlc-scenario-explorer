@@ -7,6 +7,8 @@ import {
 } from "./constants";
 import { ScenarioRowsAggregatedSchema } from "./shared_with_backend/schemas";
 import type { UnionToTuple } from "type-fest";
+import { ATTRIBUTE_OPTIONS_COLOR } from "@/routes/-index/components/data-section/colors";
+import type { BreakdownByOptions } from "@/routes/-index/components/data-section/graphs/types";
 
 export const DisplaySchema = z.enum(DISPLAY_OPTIONS);
 
@@ -24,4 +26,10 @@ const DATA_TABS = Object.values(DATA_TABS_NAMES) as UnionToTuple<
   (typeof DATA_TABS_NAMES)[keyof typeof DATA_TABS_NAMES]
 >;
 export const DataTabSchema = z.enum(DATA_TABS);
-export const AnimationTabSchema = z.boolean();
+export const AnimationSchema = z.boolean();
+
+const breakdownByOptions = Object.values(ATTRIBUTE_OPTIONS_COLOR).flatMap(
+  Object.keys,
+) as [BreakdownByOptions, ...BreakdownByOptions[]];
+
+export const HighlightSchema = z.enum(breakdownByOptions);

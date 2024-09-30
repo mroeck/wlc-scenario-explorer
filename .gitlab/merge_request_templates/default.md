@@ -2,5 +2,3 @@
 - [ ] Tests have been added or updated when necessary.
 
 # What is it?
-
-%{all_commits}

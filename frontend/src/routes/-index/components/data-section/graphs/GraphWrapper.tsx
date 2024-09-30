@@ -10,6 +10,7 @@ import type { StackedAreaChart } from "./StackedAreaChart";
 import type { StackedBarChart } from "./StackedBarChart";
 import type { LineGraph } from "./LineGraph";
 import type { UnitMinified } from "../types";
+import type { BreakdownByOptions } from "./types";
 
 const route = getRouteApi(ROUTES.DASHBOARD);
 
@@ -26,10 +27,11 @@ export const GraphWrapper = ({
   Graph,
 }: GraphWrapperProps) => {
   const chartRef = useRef<HTMLDivElement>(null);
-  const { animation, sort } = route.useSearch({
+  const { animation, sort, highlight } = route.useSearch({
     select: (search) => ({
       animation: search.animation,
       sort: search.sort,
+      highlight: search.highlight,
     }),
   });
 
@@ -37,7 +39,9 @@ export const GraphWrapper = ({
   const firstItem = Object.fromEntries(
     Object.entries(firstItemRaw).filter(([key]) => key !== YEAR_KEY),
   );
-  const firstItemKeys = Object.keys(firstItem);
+  const firstItemKeys = Object.keys(firstItem).sort((keyA, keyB) =>
+    keyB.localeCompare(keyA),
+  ) as BreakdownByOptions[];
 
   const attributeOptions =
     sort === SORT_OPTIONS.categoriesAlphabetically
@@ -60,6 +64,7 @@ export const GraphWrapper = ({
           chartRef={chartRef}
           data={data}
           unit={unit}
+          highlight={highlight}
         />
       </div>
     </div>

@@ -12,7 +12,7 @@ import {
 
 export const IndicatorSchema = z.enum(INDICATORS);
 export const DividedBySchema = z.enum(DIVIDED_BY_OPTIONS);
-export const AttributeSchema = z.enum(ATTRIBUTES);
+export const BreakdownBySchema = z.enum(ATTRIBUTES);
 
 export const ScenarioRowsAggregatedSchema = z
   .object({

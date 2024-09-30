@@ -1,6 +1,6 @@
 import { GRAPH_FONT_SIZE } from "@/lib/constants";
 import { ColorCube } from "../Legend/ColorCube";
-import { getColor } from "@/lib/utils";
+import { cn, getColor } from "@/lib/utils";
 import type {
   NameType,
   Payload,
@@ -8,25 +8,42 @@ import type {
 } from "recharts/types/component/DefaultTooltipContent";
 import type { Attribute } from "@/lib/types";
 import type { UnitMinified } from "../types";
+import type { z } from "zod";
+import type { HighlightSchema } from "@/lib/schemas";
 
 type ContentProps = {
   label: string;
   unit: UnitMinified;
   data: Payload<ValueType, NameType>[];
   breakdownBy: Attribute;
+  highlight: z.infer<typeof HighlightSchema> | undefined;
 };
-export const Content = ({ label, unit, data, breakdownBy }: ContentProps) => {
+export const Content = ({
+  label,
+  unit,
+  data,
+  breakdownBy,
+  highlight,
+}: ContentProps) => {
   const totalValue = data.reduce(
     (acc, item) => acc + (item.value as number),
     0,
   );
 
+  const isSomethingHighlighted = !!highlight;
+
   return (
     <>
-      <div className="mx-auto flex w-max flex-col text-center">
+      <div className="mx-auto flex w-max flex-col text-left">
         <span style={{ fontSize: GRAPH_FONT_SIZE }}>{label}</span>
-        <span className="pb-2 text-left" style={{ fontSize: GRAPH_FONT_SIZE }}>
-          From top to bottom on graph in {unit}
+        <span
+          className="py-1 text-left font-semibold"
+          style={{ fontSize: GRAPH_FONT_SIZE }}
+        >
+          Unit: {unit}
+        </span>
+        <span className="text-left" style={{ fontSize: GRAPH_FONT_SIZE }}>
+          From top to bottom on graph
         </span>
       </div>
       <div style={{ fontSize: GRAPH_FONT_SIZE }}>
@@ -42,29 +59,39 @@ export const Content = ({ label, unit, data, breakdownBy }: ContentProps) => {
             .map((item) => {
               const value = item.value as number;
               const percentage = totalValue ? (value / totalValue) * 100 : 0;
+              const isHighlight = item.name === highlight;
 
               return (
-                <li
-                  key={item.name}
-                  className="flex items-center gap-1"
-                  style={{ fontSize: GRAPH_FONT_SIZE }}
-                >
-                  <div>
-                    <ColorCube
-                      color={getColor({
-                        breakdownBy,
-                        option:
-                          typeof item.dataKey === "string" ? item.dataKey : "",
-                      })}
-                    />
+                <li key={item.name} style={{ fontSize: GRAPH_FONT_SIZE }}>
+                  <div
+                    className={cn(
+                      "relative flex w-max items-center gap-1",
+                      isSomethingHighlighted &&
+                        isHighlight &&
+                        "before:absolute before:left-1/2 before:top-0 before:h-full before:w-[calc(100%+20px)] before:-translate-x-1/2 before:rounded-full before:bg-slate-200 before:content-['']",
+                    )}
+                  >
+                    <div>
+                      <ColorCube
+                        color={getColor({
+                          breakdownBy,
+                          option:
+                            typeof item.dataKey === "string"
+                              ? item.dataKey
+                              : "",
+                        })}
+                        isHighlight={isHighlight}
+                        isSomethingHighlighted={isSomethingHighlighted}
+                      />
+                    </div>
+                    <span className="z-0">{item.name}:</span>
+                    <span className="z-0 font-bold">
+                      {value.toLocaleString("en-US", {
+                        maximumFractionDigits: 2,
+                      })}{" "}
+                    </span>
+                    <span className="z-0">({percentage.toFixed(2)}%)</span>
                   </div>
-                  <span>{item.name}:</span>
-                  <span className="font-bold">
-                    {value.toLocaleString("en-US", {
-                      maximumFractionDigits: 2,
-                    })}{" "}
-                  </span>
-                  ({percentage.toFixed(2)}%)
                 </li>
               );
             })
