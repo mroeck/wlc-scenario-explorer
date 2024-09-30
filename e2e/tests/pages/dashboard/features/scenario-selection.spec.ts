@@ -3,6 +3,7 @@ import {
   DISPLAY_SELECT_TESTID,
   SCENARIO_B_TESTID,
   FOR_SCENARIOS_TESTID,
+  RESET_LABEL,
 } from "@/lib/constants";
 import { SCENARIOS_OPTIONS } from "@/lib/shared_with_backend/constants";
 import { test, expect } from "@playwright/test";
@@ -48,7 +49,7 @@ test.describe("scenario selection", () => {
       await mobileSettings.click();
     }
 
-    await page.getByRole("button", { name: "Reset all" }).click();
+    await page.getByRole("button", { name: RESET_LABEL }).click();
 
     if (isMobile) {
       await page.getByRole("button").first().click();

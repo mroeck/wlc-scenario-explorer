@@ -6,8 +6,7 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { BREAKDOWN_BY_ORDER, PROD, ROUTES } from "@/lib/constants";
-import { cn } from "@/lib/utils";
+import { BREAKDOWN_BY_ORDER, PROD, RESET_LABEL, ROUTES } from "@/lib/constants";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { getRouteApi } from "@tanstack/react-router";
 import { useForm } from "react-hook-form";
@@ -36,6 +35,7 @@ import {
 } from "@/components/ui/select";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Checkbox } from "@/components/ui/checkbox";
+import { InfoButton } from "@/components/InfoButton";
 
 const route = getRouteApi(ROUTES.DASHBOARD);
 const SelectOptionArraySchema = z
@@ -43,7 +43,6 @@ const SelectOptionArraySchema = z
   .array();
 
 const formSchema = z.object({
-  // "flow type": SelectOptionArraySchema,
   "Element Class": SelectOptionArraySchema,
   "Building subtype": SelectOptionArraySchema,
   "Building type": SelectOptionArraySchema,
@@ -58,7 +57,7 @@ const formSchema = z.object({
 
 const FilterMenuItem = ({ option, selected }: MenuItemProps) => {
   return (
-    <div className={cn("flex items-center gap-2")}>
+    <div className="flex items-center gap-2">
       <Checkbox
         checked={selected.some((item) => item.value === option.value)}
       />
@@ -224,18 +223,16 @@ export const Filters = () => {
   };
 
   return (
-    <section className={cn("flex h-full min-h-0 min-w-0 flex-1 flex-col")}>
-      <h2 className={cn("sr-only")}>Filters</h2>
-      <div className={cn("flex justify-end px-primary-x pb-px pt-3")}>
-        <ResetButton reset={reset} text="Reset all" />
+    <section className="flex h-full min-h-0 min-w-0 flex-1 flex-col p-0">
+      <h2 className="sr-only">Filters</h2>
+      <div className="flex justify-end px-primary-x pb-px pt-3">
+        <ResetButton reset={reset} text={RESET_LABEL} />
       </div>
       {!isLoading && error && <ErrorOccurred />}
       {isLoading && <LoadingSpinner />}
       {data != null && (
         <ScrollArea
-          className={cn(
-            "relative flex min-h-0 min-w-0 flex-1 flex-col gap-5 overflow-x-visible px-primary-x",
-          )}
+          className="relative flex min-h-0 min-w-0 flex-1 flex-col gap-5 overflow-x-visible px-primary-x"
           type="always"
         >
           <Form {...form}>
@@ -243,17 +240,15 @@ export const Filters = () => {
               onSubmit={void form.handleSubmit(onSubmit)}
               className="space-y-8"
             >
-              <div className={cn("flex flex-col gap-1")}>
-                <span className={cn("text-sm font-medium")}>Year:</span>
-                <div className={cn("flex justify-between")}>
+              <div className="flex flex-col gap-1">
+                <span className="font-medium">Year:</span>
+                <div className="flex justify-between">
                   <FormField
                     control={form.control}
                     name={"From"}
                     render={({ field }) => (
-                      <FormItem
-                        className={cn("flex flex-row items-center gap-2")}
-                      >
-                        <FormLabel>From</FormLabel>
+                      <FormItem className="flex flex-row items-center gap-2">
+                        <FormLabel className="text-sm">From</FormLabel>
                         <Select
                           onValueChange={(value) => {
                             onSelectChange({
@@ -265,9 +260,7 @@ export const Filters = () => {
                           value={field.value.toString()}
                         >
                           <FormControl>
-                            <SelectTrigger
-                              className={cn("w-fit min-w-16 capitalize")}
-                            >
+                            <SelectTrigger className="w-fit min-w-16 capitalize">
                               <SelectValue placeholder="Select..." />
                             </SelectTrigger>
                           </FormControl>
@@ -290,10 +283,8 @@ export const Filters = () => {
                     control={form.control}
                     name={"To"}
                     render={({ field }) => (
-                      <FormItem
-                        className={cn("flex flex-row items-center gap-2")}
-                      >
-                        <FormLabel>To</FormLabel>
+                      <FormItem className="flex flex-row items-center gap-2">
+                        <FormLabel className="text-sm">To</FormLabel>
                         <Select
                           onValueChange={(value) => {
                             onSelectChange({
@@ -305,9 +296,7 @@ export const Filters = () => {
                           value={field.value.toString()}
                         >
                           <FormControl>
-                            <SelectTrigger
-                              className={cn("w-fit min-w-16 capitalize")}
-                            >
+                            <SelectTrigger className="w-fit min-w-16 capitalize">
                               <SelectValue placeholder="Select..." />
                             </SelectTrigger>
                           </FormControl>
@@ -356,14 +345,15 @@ export const Filters = () => {
                       name={key}
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel className={cn("font-medium capitalize")}>
+                          <FormLabel className="flex items-center font-medium capitalize">
                             {key}:
+                            <InfoButton disabled={true} className="invisible">
+                              This is just to have the exact same design as the
+                              other label with info buttons
+                            </InfoButton>
                           </FormLabel>
-                          <div className={cn("flex gap-5")}>
-                            <div
-                              className={cn("min-w-0 flex-1")}
-                              data-testid={key}
-                            >
+                          <div className="flex gap-5">
+                            <div className="min-w-0 flex-1" data-testid={key}>
                               <FormControl>
                                 <MultiSelect
                                   {...field}
@@ -394,12 +384,8 @@ export const Filters = () => {
                 })}
             </form>
           </Form>
-          <div
-            className={cn(
-              "pointer-events-none sticky inset-x-0 bottom-0 bg-gradient-to-t from-background from-10% to-transparent",
-            )}
-          >
-            <div className={cn("h-52")}></div>
+          <div className="pointer-events-none sticky inset-x-0 bottom-0 bg-gradient-to-t from-background from-10% to-transparent">
+            <div className="h-52"></div>
           </div>
         </ScrollArea>
       )}

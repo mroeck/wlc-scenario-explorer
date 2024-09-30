@@ -1,4 +1,4 @@
-import { GRAPH_FONT_SIZE } from "@/lib/constants";
+import { GRAPH_AXIS_COLOR, GRAPH_FONT_SIZE } from "@/lib/constants";
 import { YEAR_KEY } from "@/lib/shared_with_backend/constants";
 import { tickFormatter } from "@/lib/utils";
 import {
@@ -28,14 +28,14 @@ export const commonTooltipProps = {
 
 export const commonXaxisProps: XAxisProps = {
   dataKey: YEAR_KEY,
-  stroke: "hsl(223 0% 20%)",
+  stroke: GRAPH_AXIS_COLOR,
   tick: { fontSize: GRAPH_FONT_SIZE },
 };
 
 export const commonYaxisProps: YAxisProps = {
   tickFormatter,
   tickCount: 4,
-  stroke: "hsl(223 0% 20%)",
+  stroke: GRAPH_AXIS_COLOR,
   tick: { fontSize: GRAPH_FONT_SIZE },
 };
 
@@ -44,7 +44,7 @@ export const commonYaxisLabelProps: LabelProps = {
   position: "insideLeft",
   dx: 10,
   fontSize: GRAPH_FONT_SIZE,
-  fill: "hsl(223 0% 20%)",
+  fill: GRAPH_AXIS_COLOR,
 };
 
 export const commonGraphElementProps = {

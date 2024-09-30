@@ -31,7 +31,7 @@ export function TableOfContents({
 
   return (
     <div>
-      <div className="px-primary-x pb-5">
+      <div className="pb-5">
         <TypographyH3>Table of Contents</TypographyH3>
       </div>
       <div>

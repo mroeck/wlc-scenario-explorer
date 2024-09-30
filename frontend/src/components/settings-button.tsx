@@ -1,5 +1,5 @@
 import { useId, useRef } from "react";
-import { LinkIcon, MoreVertical } from "lucide-react";
+import { LinkIcon, SettingsIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -76,107 +76,110 @@ export function SettingsButton() {
     <Dialog>
       <DialogTrigger asChild>
         <Button variant="ghost" size="icon" aria-label="Settings">
-          <MoreVertical className="size-5" />
+          <SettingsIcon className="size-5 text-primary" />
         </Button>
       </DialogTrigger>
       <DialogContent
-        className="sm:max-w-[425px]"
         onOpenAutoFocus={(e) => {
           e.preventDefault();
         }}
+        className="max-w-max"
       >
         <DialogHeader>
           <DialogTitle>Settings</DialogTitle>
         </DialogHeader>
-        <div className="grid grid-cols-[min-content_auto] gap-4 pl-2">
-          {dataTab !== DATA_TABS_NAMES.table && (
-            <>
-              <Label
-                htmlFor={SELECT_IDS.display}
-                className="flex items-center gap-2 font-medium"
-              >
-                <InfoButton>
-                  <p>
-                    Choose how to display scenarios in the chart: show{" "}
-                    {SCENARIO_A_LABEL}, {SCENARIO_B_LABEL}, or compare both
-                    side-by-side for a detailed visual analysis.
-                  </p>
-                  <p>
-                    For the table tab, only the primary scenario is displayed
-                  </p>
-                  <Link
-                    to={ROUTES.HELP}
-                    hash={HELP_PAGE_IDS.display}
-                    className="flex items-center gap-1 underline"
-                  >
-                    <LinkIcon className="size-3" /> Read more here
-                  </Link>
-                </InfoButton>
-                <span>Display:</span>
-              </Label>
-              <Select value={display} onValueChange={onDisplayChange}>
-                <SelectTrigger
-                  ref={displaySelectRef}
-                  className="text-left capitalize"
-                  data-testid={DISPLAY_SELECT_TESTID}
+        <div className="flex flex-wrap gap-5">
+          <div>
+            {dataTab !== DATA_TABS_NAMES.table && (
+              <>
+                <Label
+                  htmlFor={SELECT_IDS.display}
+                  className="flex items-center gap-2 font-medium"
                 >
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem
-                    value={SCENARIO_A_ONLY}
-                  >{`${scenarioA} only`}</SelectItem>
-                  <SelectItem
-                    value={SCENARIO_B_ONLY}
-                  >{`${scenarioB ?? "Scenario B"} only`}</SelectItem>
-                  <SelectItem value={SCENARIO_A_AND_B}>
-                    {`${scenarioA} VS ${scenarioB ?? "Scenario B"}`}
-                  </SelectItem>
-                </SelectContent>
-              </Select>{" "}
-            </>
-          )}
-
-          <Label
-            htmlFor={SELECT_IDS.sort}
-            className="flex items-center gap-2 font-medium"
-          >
-            <InfoButton>
-              <p>
-                {SORT_OPTIONS.desc} (Bottom to Top): Sorts the stacked areas in
-                the chart by value, with the largest values at the bottom and
-                the smallest values at the top.
-              </p>
-              <p>
-                {SORT_OPTIONS.categoriesAlphabetically}: Groups the stacked
-                areas by region, and within each region, the items are arranged
-                in alphabetical order from top to bottom.
-              </p>
-              <Link
-                to={ROUTES.HELP}
-                hash={HELP_PAGE_IDS.sort}
-                className="flex items-center gap-1 underline"
-              >
-                <LinkIcon className="size-3" /> Read more here
-              </Link>
-            </InfoButton>
-            <span>Sort:</span>
-          </Label>
-          <Select value={sort} onValueChange={onSortChange}>
-            <SelectTrigger
-              className="text-left capitalize"
-              data-testid={SORT_SELECT_TESTID}
+                  <span>Display:</span>
+                  <InfoButton>
+                    <p>
+                      Choose how to display scenarios in the chart: show{" "}
+                      {SCENARIO_A_LABEL}, {SCENARIO_B_LABEL}, or compare both
+                      side-by-side for a detailed visual analysis.
+                    </p>
+                    <p>
+                      For the table tab, only the primary scenario is displayed
+                    </p>
+                    <Link
+                      to={ROUTES.HELP}
+                      hash={HELP_PAGE_IDS.display}
+                      className="flex items-center gap-1 underline"
+                    >
+                      <LinkIcon className="size-3" /> Read more here
+                    </Link>
+                  </InfoButton>
+                </Label>
+                <Select value={display} onValueChange={onDisplayChange}>
+                  <SelectTrigger
+                    ref={displaySelectRef}
+                    className="text-left capitalize"
+                    data-testid={DISPLAY_SELECT_TESTID}
+                  >
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem
+                      value={SCENARIO_A_ONLY}
+                    >{`${scenarioA} only`}</SelectItem>
+                    <SelectItem
+                      value={SCENARIO_B_ONLY}
+                    >{`${scenarioB ?? "Scenario B"} only`}</SelectItem>
+                    <SelectItem value={SCENARIO_A_AND_B}>
+                      {`${scenarioA} VS ${scenarioB ?? "Scenario B"}`}
+                    </SelectItem>
+                  </SelectContent>
+                </Select>{" "}
+              </>
+            )}
+          </div>
+          <div>
+            <Label
+              htmlFor={SELECT_IDS.sort}
+              className="flex items-center gap-2 font-medium"
             >
-              <SelectValue />
-            </SelectTrigger>
-            <SelectContent>
-              {SORT_OPTIONS_VALUES.map((option) => (
-                <SelectItem key={option} value={option}>
-                  {option}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
+              <span>Sort by:</span>
+              <InfoButton>
+                <p>
+                  {SORT_OPTIONS.desc} (Bottom to Top): Sorts the stacked areas
+                  in the chart by value, with the largest values at the bottom
+                  and the smallest values at the top.
+                </p>
+                <p>
+                  {SORT_OPTIONS.categoriesAlphabetically}: Groups the stacked
+                  areas by region, and within each region, the items are
+                  arranged in alphabetical order from top to bottom.
+                </p>
+                <Link
+                  to={ROUTES.HELP}
+                  hash={HELP_PAGE_IDS.sort}
+                  className="flex items-center gap-1 underline"
+                >
+                  <LinkIcon className="size-3" /> Read more here
+                </Link>
+              </InfoButton>
+            </Label>
+            <Select value={sort} onValueChange={onSortChange}>
+              <SelectTrigger
+                className="text-left capitalize"
+                data-testid={SORT_SELECT_TESTID}
+              >
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                {SORT_OPTIONS_VALUES.map((option) => (
+                  <SelectItem key={option} value={option}>
+                    {option}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
         </div>
       </DialogContent>
     </Dialog>

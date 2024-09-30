@@ -19,6 +19,7 @@ import {
   spreadsheetFormats,
 } from "@/lib/constants";
 import { unparse } from "papaparse";
+import { cn } from "@/lib/utils";
 
 const sourceText = `Source: ${LINKS.explorerWebsite}`;
 const spreadSheetText = `
@@ -201,14 +202,21 @@ function exportAsCsv({ data }: ExportAsCsvArgs) {
 }
 
 type DownloadMenuProps = {
-  domTarget: Parameters<typeof domtoimage.toPng>[0];
-  data: Awaited<ReturnType<typeof fetchScenarioRowsAggregated>>;
+  domTarget: Parameters<typeof domtoimage.toPng>[0] | null;
+  data: Awaited<ReturnType<typeof fetchScenarioRowsAggregated>> | undefined;
 };
 export const DownloadMenu = ({ domTarget, data }: DownloadMenuProps) => {
+  const isReady = !!data && !!domTarget;
+
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger data-testid={DOWNLOAD_AS_TESTID}>
-        <Download className="text-primary" />
+      <DropdownMenuTrigger data-testid={DOWNLOAD_AS_TESTID} disabled={!isReady}>
+        <Download
+          className={cn(
+            !isReady && "cursor-wait text-gray-300",
+            isReady && "text-primary",
+          )}
+        />
       </DropdownMenuTrigger>
       <DropdownMenuContent>
         <DropdownMenuLabel>Download as:</DropdownMenuLabel>
@@ -216,7 +224,9 @@ export const DownloadMenu = ({ domTarget, data }: DownloadMenuProps) => {
           {imageFormats.map((format) => (
             <DropdownMenuItem
               key={format}
-              onClick={() => void exportAsImage({ domTarget, format })}
+              onClick={() =>
+                isReady && void exportAsImage({ domTarget, format })
+              }
             >
               {format}
             </DropdownMenuItem>
@@ -226,7 +236,7 @@ export const DownloadMenu = ({ domTarget, data }: DownloadMenuProps) => {
             <DropdownMenuItem
               key={format}
               onClick={() => {
-                exportAsSpreadsheet({ data, format });
+                isReady && exportAsSpreadsheet({ data, format });
               }}
             >
               {format}

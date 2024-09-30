@@ -5,6 +5,7 @@ import { z } from "zod";
 import type { Attribute } from "./types";
 import { DEFAULT_COLOR } from "./constants";
 import type { Payload } from "recharts/types/component/DefaultLegendContent";
+import type { BreakdownByOptions } from "@/routes/-index/components/data-section/graphs/types";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -33,13 +34,20 @@ export const tickFormatter = (number: number) => {
 
 type GetColorArgs = {
   breakdownBy: Attribute;
-  option: string;
+  // eslint-disable-next-line @typescript-eslint/ban-types
+  option: BreakdownByOptions | (string & {});
 };
 export const getColor = ({ breakdownBy, option }: GetColorArgs) => {
   if (Object.keys(ATTRIBUTE_OPTIONS_COLOR).includes(breakdownBy)) {
     const breakdownByTyped =
       breakdownBy as keyof typeof ATTRIBUTE_OPTIONS_COLOR;
-    return ATTRIBUTE_OPTIONS_COLOR[breakdownByTyped][option];
+
+    type AttributeColorCategory =
+      (typeof ATTRIBUTE_OPTIONS_COLOR)[typeof breakdownByTyped];
+
+    return ATTRIBUTE_OPTIONS_COLOR[breakdownByTyped][
+      option as AttributeColorCategory[keyof AttributeColorCategory]
+    ];
   }
   return DEFAULT_COLOR;
 };
@@ -50,7 +58,7 @@ const CATEGORIES = {
   Walls: ["Internal walls", "External walls", "Common walls"],
   Openings: ["Internal openings", "External openings"],
   Services: ["Technical services", "Electrical services"],
-  Others: ["Substructure", "Storey floors", "Staircases", "Roofs"],
+  Structure: ["Substructure", "Storey floors", "Staircases", "Roofs"],
   Continental: [
     "SK", // Slovakia
     "SI", // Slovenia
@@ -94,7 +102,7 @@ const ATTRIBUTE_OPTIONS_ORDER = {
     ...CATEGORIES["Non-residential"],
   ],
   "Element Class": [
-    ...CATEGORIES.Others,
+    ...CATEGORIES.Structure,
     ...CATEGORIES.Walls,
     ...CATEGORIES.Services,
     ...CATEGORIES.Openings,
@@ -115,7 +123,7 @@ const ORDERED_ATTRIBUTES = [
 
 type GetAttributeOptionsOrderArgs = {
   breakdownBy: Attribute;
-  defaultOptions: string[];
+  defaultOptions: BreakdownByOptions[];
 };
 export const getAttributeOptionsOrdered = ({
   breakdownBy,

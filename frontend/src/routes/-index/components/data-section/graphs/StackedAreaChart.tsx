@@ -21,7 +21,19 @@ import {
   commonYaxisProps,
 } from "../constants";
 import { PortalTooltip } from "../Tooltip/PortalTooltip";
-import type { GraphProps } from "./types";
+import type { BreakdownByOptions, GraphProps } from "./types";
+import { GRAPH_AXIS_COLOR, ROUTES } from "@/lib/constants";
+import { getRouteApi } from "@tanstack/react-router";
+import { HIGHLIGHT_OPACITY } from "./constants";
+
+type WantedProps = "strokeWidth" | "dataKey" | "isAnimationActive";
+
+type CommonAreaProps = Record<
+  WantedProps,
+  React.ComponentProps<typeof Area>[WantedProps]
+>;
+
+const route = getRouteApi(ROUTES.DASHBOARD);
 
 export const StackedAreaChart = ({
   animation,
@@ -30,22 +42,51 @@ export const StackedAreaChart = ({
   chartRef,
   data,
   unit,
+  highlight,
 }: GraphProps) => {
+  const navigate = route.useNavigate();
+  const isSomethingHighlighted = !!highlight;
+
+  type OnAreaClickArgs = {
+    highlight: BreakdownByOptions;
+  };
+  const onAreaClick = ({ highlight }: OnAreaClickArgs) => {
+    void navigate({
+      search: (prev) => ({
+        ...prev,
+        highlight,
+      }),
+    });
+  };
+
   return (
     <ResponsiveContainer width="100%" height="100%" ref={chartRef}>
       <AreaChart {...commonChartProps} data={data}>
         <CartesianGrid {...commonCartisianGridProps} />
         {attributeOptions.map((option) => {
           const areaColor = getColor({ breakdownBy, option });
+          const isHighlight = option === highlight;
+          const opacity =
+            isSomethingHighlighted && !isHighlight
+              ? HIGHLIGHT_OPACITY
+              : undefined;
+
+          const commonAreaProps = {
+            dataKey: option,
+            isAnimationActive: animation,
+            strokeWidth: isHighlight ? 1 : undefined,
+          } satisfies CommonAreaProps;
 
           return (
             <Area
               {...commonGraphElementProps}
+              {...commonAreaProps}
               key={option + "A"}
-              dataKey={option}
-              stroke={areaColor}
+              stroke={isHighlight ? GRAPH_AXIS_COLOR : areaColor}
+              strokeWidth={isHighlight ? 1 : undefined}
               fill={areaColor}
-              isAnimationActive={animation}
+              fillOpacity={opacity}
+              opacity={opacity}
             />
           );
         })}
@@ -58,29 +99,39 @@ export const StackedAreaChart = ({
               breakdownBy={breakdownBy}
               chartRef={chartRef}
               offset={20}
+              highlight={highlight}
             />
           )}
         />
         {attributeOptions.map((option) => {
           const areaColor = getColor({ breakdownBy, option });
+          const isHighlight = option === highlight;
+
+          const commonAreaProps = {
+            dataKey: option,
+            isAnimationActive: animation,
+            strokeWidth: isHighlight ? 1 : undefined,
+          } satisfies CommonAreaProps;
 
           return (
             <Area
               {...commonGraphElementProps}
+              {...commonAreaProps}
               key={option + "B"}
               type="monotone"
               stackId="0"
-              dataKey={option}
-              stroke={areaColor}
-              fill={areaColor}
+              fill="transparent"
               fillOpacity="0"
+              stroke="transparent"
+              onClick={() => {
+                onAreaClick({ highlight: option });
+              }}
               activeDot={{
                 r: 4,
                 stroke: "white",
                 fill: areaColor,
                 strokeWidth: 1,
               }}
-              isAnimationActive={animation}
             />
           );
         })}

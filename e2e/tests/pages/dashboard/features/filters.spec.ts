@@ -5,6 +5,7 @@ import {
   SELECT_ALL_LABEL,
   ALL_LABEL,
   ERROR_OCCURED,
+  RESET_LABEL,
 } from "@/lib/constants";
 import {
   BREAKDOWN_BY_OBJ,
@@ -116,7 +117,7 @@ test.describe("filters", () => {
       .getByRole("combobox")
       .click();
 
-    await page.getByRole("button", { name: "Reset all" }).click();
+    await page.getByRole("button", { name: RESET_LABEL }).click();
     await expect(
       page.getByTestId(FILTERS_OBJ.carbonCategory).getByRole("combobox"),
     ).toHaveText(ALL_LABEL);

@@ -27,7 +27,7 @@ import { SelectMenuStyle } from "./SelectMenuStyle";
 import { getRouteApi } from "@tanstack/react-router";
 import { type Writable } from "type-fest";
 import {
-  AttributeSchema,
+  BreakdownBySchema,
   IndicatorSchema,
   DividedBySchema,
 } from "@/lib/shared_with_backend/schemas";
@@ -44,45 +44,47 @@ const route = getRouteApi(ROUTES.DASHBOARD);
 
 const DataVizFormSchema = z.object<{
   indicator: z.ZodEnum<Writable<typeof INDICATORS>>;
-  attribute: z.ZodEnum<Writable<typeof ATTRIBUTES>>;
+  breakdownBy: z.ZodEnum<Writable<typeof ATTRIBUTES>>;
   dividedBy: z.ZodEnum<Writable<typeof DIVIDED_BY_OPTIONS>>;
 }>({
   indicator: IndicatorSchema,
-  attribute: AttributeSchema,
+  breakdownBy: BreakdownBySchema,
   dividedBy: DividedBySchema,
 });
 
 export const DataVizForm = () => {
   const navigate = route.useNavigate();
-  const { attribute, indicator, dividedBy } = route.useSearch({
+  const { breakdownBy, indicator, dividedBy, highlight } = route.useSearch({
     select: (search) => ({
-      attribute: search.attribute,
+      breakdownBy: search.breakdownBy,
       indicator: search.indicator,
       dividedBy: search.dividedBy,
       scenarioA: search.scenarioA,
       scenarioB: search.scenarioB,
+      highlight: search.highlight,
     }),
   });
   const form = useForm<z.infer<typeof DataVizFormSchema>>({
     resolver: zodResolver(DataVizFormSchema),
     defaultValues: {
       indicator,
-      attribute,
+      breakdownBy,
       dividedBy,
     },
   });
 
   async function onSubmit({
-    attribute,
+    breakdownBy: newBreakdownBy,
     indicator,
     dividedBy,
   }: z.infer<typeof DataVizFormSchema>) {
     await navigate({
       search: (prev) => ({
         ...prev,
-        attribute,
+        breakdownBy: newBreakdownBy,
         indicator,
         dividedBy,
+        highlight: newBreakdownBy === breakdownBy ? highlight : undefined,
       }),
     });
   }
@@ -96,6 +98,13 @@ export const DataVizForm = () => {
     fieldOnChange(value);
     void form.handleSubmit(onSubmit)();
   }
+
+  // TODO:
+  // remove highlight when clicking on anything that has no onClick attribute?
+  /* GTP:
+Can you help me refine the click handling logic for maintaining highlights in my Recharts stacked area chart? I want to ensure that clicking an element with an onClick listener removes the highlight
+  */
+  //  but what happen if you click  on a child of an element with a onClick, it won't work right? :/
 
   return (
     <Form {...form}>
@@ -214,7 +223,7 @@ export const DataVizForm = () => {
         />
         <FormField
           control={form.control}
-          name="attribute"
+          name="breakdownBy"
           render={({ field }) => (
             <FormItem data-testid={BREAKDOWN_BY_TESTID}>
               <FormLabel className="flex items-center gap-2">

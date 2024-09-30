@@ -14,6 +14,7 @@ import { getRouteApi } from "@tanstack/react-router";
 import type { Attribute } from "@/lib/types";
 import type { Payload } from "recharts/types/component/DefaultLegendContent";
 import React from "react";
+import type { BreakdownByOptions } from "../graphs/types";
 
 const route = getRouteApi(ROUTES.DASHBOARD);
 
@@ -32,10 +33,11 @@ export type CustomLegendProps = Pick<Props, "payload"> & {
   className?: string;
 };
 export const CustomLegend = ({ payload, className }: CustomLegendProps) => {
-  const { display, attribute } = route.useSearch({
+  const { display, attribute, highlight } = route.useSearch({
     select: (search) => ({
       display: search.display,
-      attribute: search.attribute,
+      attribute: search.breakdownBy,
+      highlight: search.highlight,
     }),
   });
   if (payload == null) return null;
@@ -57,7 +59,8 @@ export const CustomLegend = ({ payload, className }: CustomLegendProps) => {
         data-testid={COLOR_LEGEND_TESTID}
       >
         <h3 className="font-semibold" style={{ fontSize: GRAPH_FONT_SIZE }}>
-          Color legend:
+          Color legend{" "}
+          <span className="font-normal italic">(click to highlight)</span>
         </h3>
         {hasCategory ? (
           <div className="grid max-w-prose grid-cols-[max-content,1fr] gap-x-2 px-2">
@@ -70,13 +73,18 @@ export const CustomLegend = ({ payload, className }: CustomLegendProps) => {
                     <ColorLegendItemAll
                       breakdownBy={attribute}
                       data={values.reverse()}
+                      highlight={highlight}
                     />
                   </div>
                 </React.Fragment>
               ))}
           </div>
         ) : (
-          <ColorLegendItemAll breakdownBy={attribute} data={data} />
+          <ColorLegendItemAll
+            breakdownBy={attribute}
+            data={data.reverse()}
+            highlight={highlight}
+          />
         )}
       </section>
       <section
@@ -110,26 +118,65 @@ export const CustomLegend = ({ payload, className }: CustomLegendProps) => {
 type ColorLegendItemAllProps = {
   data: Payload[];
   breakdownBy: Attribute;
+  highlight: BreakdownByOptions | undefined;
 };
-function ColorLegendItemAll({ data, breakdownBy }: ColorLegendItemAllProps) {
+function ColorLegendItemAll({
+  data,
+  breakdownBy,
+  highlight,
+}: ColorLegendItemAllProps) {
+  const navigate = route.useNavigate();
+  const isSomethingHighlighted = !!highlight;
+
+  type OnItemClickArgs = {
+    // eslint-disable-next-line @typescript-eslint/ban-types
+    highlight: BreakdownByOptions | (string & {});
+  };
+  const onItemClick = ({ highlight }: OnItemClickArgs) => {
+    void navigate({
+      search: (prev) => ({
+        ...prev,
+        highlight,
+      }),
+    });
+  };
   return (
     <ol className="flex flex-wrap justify-items-start gap-x-6">
-      {data.map((item, index) => (
-        <li key={index} className="flex items-center gap-1">
-          <ColorCube
-            color={getColor({
-              breakdownBy,
-              option: typeof item.dataKey === "string" ? item.dataKey : "",
-            })}
-          />
-          <span
-            className="whitespace-nowrap text-sm"
-            style={{ fontSize: GRAPH_FONT_SIZE }}
+      {data.map((item, index) => {
+        const option = typeof item.dataKey === "string" ? item.dataKey : "";
+
+        const isHighlight = option === highlight;
+
+        return (
+          <li
+            key={index}
+            className={cn(
+              "relative flex items-center gap-1",
+              isSomethingHighlighted &&
+                isHighlight &&
+                "before:absolute before:left-1/2 before:top-0 before:h-full before:w-[calc(100%+20px)] before:-translate-x-1/2 before:rounded-full before:bg-slate-200 before:content-['']",
+            )}
+            onClick={() => {
+              onItemClick({ highlight: option });
+            }}
           >
-            {item.value}
-          </span>
-        </li>
-      ))}
+            <ColorCube
+              color={getColor({
+                breakdownBy,
+                option,
+              })}
+              isHighlight={isHighlight}
+              isSomethingHighlighted={isSomethingHighlighted}
+            />
+            <span
+              className="z-0 whitespace-nowrap text-sm"
+              style={{ fontSize: GRAPH_FONT_SIZE }}
+            >
+              {item.value}
+            </span>
+          </li>
+        );
+      })}
     </ol>
   );
 }

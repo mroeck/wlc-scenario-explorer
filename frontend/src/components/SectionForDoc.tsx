@@ -7,7 +7,7 @@ export const SectionForDoc = ({ children, ...props }: SectionForDocProps) => {
   return (
     <Section
       {...props}
-      className="border-none pl-2 pr-0 pt-primary-y shadow-none"
+      className="border-none px-4 pt-primary-y shadow-none"
       noPadding
     >
       {children}

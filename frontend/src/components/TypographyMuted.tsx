@@ -4,7 +4,5 @@ type TypographyMutedProps = React.ComponentPropsWithoutRef<"p"> & {
   children: React.ReactNode;
 };
 export function TypographyMuted({ children, className }: TypographyMutedProps) {
-  return (
-    <p className={cn("text-sm text-muted-foreground", className)}>{children}</p>
-  );
+  return <p className={cn("text-sm text-gray-500", className)}>{children}</p>;
 }

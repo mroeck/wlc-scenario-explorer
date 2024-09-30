@@ -1,6 +1,5 @@
 import { Section } from "@/components/Section";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { cn } from "@/lib/utils";
 import { Scenarios } from "./Tabs/Scenarios";
 import { Filters } from "./Tabs/Filters";
 import { ROUTES, SETTINGS_TABS_NAMES } from "@/lib/constants";
@@ -36,21 +35,17 @@ export const Settings = () => {
     });
   };
   return (
-    <Section className="flex w-80 flex-col px-0">
-      <h2 className={cn("sr-only")}>Settings</h2>
+    <Section className="flex w-80 flex-col px-0 pt-primary-y" noPadding>
+      <h2 className="sr-only">Settings</h2>
       <Tabs
-        className={cn("flex min-h-0 flex-1 flex-col lg:h-full")}
+        className="flex min-h-0 flex-1 flex-col lg:h-full"
         onValueChange={onTabChange}
         value={settingsTab}
       >
-        <div className={cn("px-primary-x")}>
-          <TabsList className={cn("flex")}>
+        <div className="px-primary-x">
+          <TabsList className="flex">
             {SETTINGS_TABS.map((tab) => (
-              <TabsTrigger
-                key={tab.name}
-                value={tab.name}
-                className={cn("flex-1")}
-              >
+              <TabsTrigger key={tab.name} value={tab.name} className="flex-1">
                 {tab.name}
               </TabsTrigger>
             ))}
@@ -61,7 +56,7 @@ export const Settings = () => {
           <TabsContent
             key={tab.name}
             value={tab.name}
-            className={cn("relative h-[calc(100%-44px)] flex-1")}
+            className="relative h-[calc(100%-44px)] flex-1"
           >
             {tab.content}
           </TabsContent>

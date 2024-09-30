@@ -34,7 +34,7 @@ def hello_world() -> str:
 def scenario() -> list[dict[str, int]]:
     requestdata = request.json
     breakdown_by = ATTRIBUTE_TO_DB_COLUMNS[
-        AttributeEnumSchema(requestdata["attribute"])  # type:ignore[index]
+        AttributeEnumSchema(requestdata["breakdownBy"])  # type:ignore[index]
     ]
     scenario = SCENARIO_TO_FILE_NAME[ScenarioEnumSchema(requestdata["scenario"])]  # type:ignore[index]
     indicator = UNIT_TO_DB_COLUMNS[IndicatorEnumSchema(requestdata["indicator"])]  # type:ignore[index]

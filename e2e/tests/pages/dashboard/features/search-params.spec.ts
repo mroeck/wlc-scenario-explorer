@@ -89,7 +89,7 @@ test.describe("search params", () => {
       .getByRole("combobox");
 
     const attribute = "Building subtype";
-    const url = `${ROUTES.DASHBOARD}?attribute=${attribute}`;
+    const url = `${ROUTES.DASHBOARD}?breakdownBy=${attribute}`;
 
     await page.goto(url);
     await expect(attributeSelect).toHaveText(attribute);

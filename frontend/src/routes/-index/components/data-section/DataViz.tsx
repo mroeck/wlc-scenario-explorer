@@ -32,7 +32,7 @@ import { DataTable } from "./DataTable";
 import { SettingsDrawer } from "./SettingsDrawer";
 import type { Attribute, Scenario } from "@/lib/types";
 import { LineGraph } from "./graphs/LineGraph";
-import { useRef } from "react";
+import { useCallback, useState } from "react";
 import { ComparisonSlider } from "./ComparisonSlider";
 import { SettingsButton } from "@/components/settings-button";
 import { GraphWrapper } from "./graphs/GraphWrapper";
@@ -74,7 +74,7 @@ const defaultTab: TabName = "Stacked Area Chart";
 
 type CreateTitleArgs = {
   unit: Unit;
-  attribute: (typeof ATTRIBUTES)[number];
+  breakdownBy: (typeof ATTRIBUTES)[number];
   scenarioA: string;
   scenarioB?: string;
   activeTab: string;
@@ -83,7 +83,7 @@ type CreateTitleArgs = {
 
 function createTitle({
   unit,
-  attribute,
+  breakdownBy,
   scenarioA,
   scenarioB = "scenario B",
   activeTab,
@@ -106,11 +106,11 @@ function createTitle({
       <span className="transform-none" data-testid={DIVIDED_BY_TESTID}>
         {unit}
       </span>{" "}
-      {attribute !== NONE && (
+      {breakdownBy !== NONE && (
         <>
           <span>by</span>{" "}
           <span className="capitalize" data-testid={ATTRIBUTE_TESTID}>
-            {attribute}
+            {breakdownBy}
           </span>{" "}
         </>
       )}
@@ -124,9 +124,15 @@ function createTitle({
 
 export const DataViz = () => {
   const navigate = route.useNavigate();
-  const visualizationRef = useRef<HTMLDivElement>(null);
+  const [visualizationElement, setVisualizationElement] =
+    useState<HTMLDivElement | null>(null);
+
+  const visualizationRef = useCallback((node: HTMLDivElement) => {
+    setVisualizationElement(node);
+  }, []);
+
   const {
-    attribute,
+    breakdownBy,
     display,
     indicator,
     dividedBy,
@@ -136,7 +142,7 @@ export const DataViz = () => {
     dataTab,
   } = route.useSearch({
     select: (search) => ({
-      attribute: search.attribute,
+      breakdownBy: search.breakdownBy,
       display: search.display,
       indicator: search.indicator,
       dividedBy: search.dividedBy,
@@ -160,14 +166,14 @@ export const DataViz = () => {
 
   const fetchScenarioData = (scenario: Scenario | undefined) =>
     fetchScenarioRowsAggregated({
-      attribute,
+      breakdownBy,
       filters,
       scenario,
       indicator,
       dividedBy,
     });
 
-  const commonKeys = { attribute, filters, indicator, dividedBy };
+  const commonKeys = { breakdownBy, filters, indicator, dividedBy };
   const {
     isLoading: isLoadingA,
     error: errorA,
@@ -256,18 +262,16 @@ export const DataViz = () => {
             <DataVizForm />
           </div>
 
-          {dataA && visualizationRef.current && (
-            <div className="mt-auto flex gap-1">
-              <DownloadMenu data={dataA} domTarget={visualizationRef.current} />
-              <SettingsButton />
-            </div>
-          )}
+          <div className="mt-auto flex gap-1">
+            <DownloadMenu data={dataA} domTarget={visualizationElement} />
+            <SettingsButton />
+          </div>
         </div>
         <div className="pt-12"></div>
         <div ref={visualizationRef} className="flex flex-1 flex-col bg-white">
           <div className="text-center text-base font-semibold">
             {createTitle({
-              attribute,
+              breakdownBy,
               scenarioA,
               scenarioB,
               unit,
@@ -293,7 +297,7 @@ export const DataViz = () => {
                       component: tab.content({
                         data: dataA,
                         unit: unitMinified,
-                        breakdownBy: attribute,
+                        breakdownBy,
                       }),
                     },
                     {
@@ -301,7 +305,7 @@ export const DataViz = () => {
                       component: tab.content({
                         data: dataB,
                         unit: unitMinified,
-                        breakdownBy: attribute,
+                        breakdownBy,
                       }),
                     },
                   ]}

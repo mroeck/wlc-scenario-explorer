@@ -11,7 +11,7 @@ import { PARAMETER_STATUS } from "@/lib/constants";
 
 export const ScenarioParameters = () => {
   return (
-    <Accordion type="single" collapsible>
+    <Accordion type="single" collapsible className="pl-2">
       {Object.entries(SCENARIO_PARAMETERS_OBJ).map(([key, value], index) => {
         return (
           <AccordionItem
