@@ -11,12 +11,17 @@ import {
   DEFAULT_SORT,
 } from "@/lib/constants";
 import { cn } from "@/lib/utils";
-import { Link } from "@tanstack/react-router";
+import {
+  type getRouteApi,
+  Link,
+  useRouterState,
+  useSearch,
+} from "@tanstack/react-router";
 import { Drawer, DrawerClose, DrawerContent, DrawerTrigger } from "./ui/drawer";
 import { Menu } from "lucide-react";
 import euFlagUrl from "@/assets/eu-flag.jpg";
 
-const dashboardSearch = {
+const DEFAULT_DASHBOARD_SEARCH = {
   breakdownBy: DEFAULT_BREAKDOWN_BY,
   display: DEFAULT_DISPLAY,
   scenarioA: DEFAULT_SCENARIO,
@@ -27,11 +32,27 @@ const dashboardSearch = {
   sort: DEFAULT_SORT,
 };
 
+type DashboardRouteApi = ReturnType<
+  typeof getRouteApi<typeof ROUTES.DASHBOARD>
+>;
+type DashboardUseSearchArgument = Parameters<DashboardRouteApi["useSearch"]>[0];
+type NonUndefinedSelectOptions = Exclude<
+  DashboardUseSearchArgument,
+  undefined
+>["select"];
+type FinalSelectOptions = Exclude<NonUndefinedSelectOptions, undefined>;
+type DashboardLinkSearch = Parameters<FinalSelectOptions>[0];
+
 type NavLinksProps = {
   className: string;
   currentRoute: string;
+  dashboardSearchParams: DashboardLinkSearch | undefined;
 };
-const NavLinks = ({ className, currentRoute }: NavLinksProps) => {
+const NavLinks = ({
+  className,
+  currentRoute,
+  dashboardSearchParams = DEFAULT_DASHBOARD_SEARCH,
+}: NavLinksProps) => {
   return (
     <ul className={cn("flex gap-8", className)}>
       <li
@@ -40,7 +61,7 @@ const NavLinks = ({ className, currentRoute }: NavLinksProps) => {
           "opacity-80": ROUTES.DASHBOARD !== currentRoute,
         })}
       >
-        <Link to={ROUTES.DASHBOARD} search={dashboardSearch}>
+        <Link to={ROUTES.DASHBOARD} search={dashboardSearchParams}>
           Dashboard
         </Link>
       </li>
@@ -67,8 +88,12 @@ const NavLinks = ({ className, currentRoute }: NavLinksProps) => {
 
 type BurgerNavigationProps = {
   currentRoute: string;
+  dashboardSearchParams: DashboardLinkSearch | undefined;
 };
-const BurgerNavigation = ({ currentRoute }: BurgerNavigationProps) => {
+const BurgerNavigation = ({
+  currentRoute,
+  dashboardSearchParams = DEFAULT_DASHBOARD_SEARCH,
+}: BurgerNavigationProps) => {
   return (
     <Drawer>
       <DrawerTrigger>
@@ -82,7 +107,7 @@ const BurgerNavigation = ({ currentRoute }: BurgerNavigationProps) => {
               "opacity-80": ROUTES.DASHBOARD !== currentRoute,
             })}
           >
-            <Link to={ROUTES.DASHBOARD} search={dashboardSearch}>
+            <Link to={ROUTES.DASHBOARD} search={dashboardSearchParams}>
               <DrawerClose>Dashboard</DrawerClose>
             </Link>
           </li>
@@ -113,10 +138,20 @@ const BurgerNavigation = ({ currentRoute }: BurgerNavigationProps) => {
   );
 };
 
-type HeaderProps = {
-  currentRoute: string;
-};
-export const Header = ({ currentRoute }: HeaderProps) => {
+let dashboardSearchParams: DashboardLinkSearch | undefined = undefined;
+
+export const Header = () => {
+  const currentRoute = useRouterState({
+    select: (state) => state.location.pathname,
+  });
+  const search = useSearch({
+    strict: false,
+  });
+
+  if (currentRoute === ROUTES.DASHBOARD) {
+    dashboardSearchParams = search as DashboardLinkSearch;
+  }
+
   return (
     <header className="relative">
       {Array.from({ length: 2 }, (_, index) => (
@@ -133,9 +168,16 @@ export const Header = ({ currentRoute }: HeaderProps) => {
             </div>
             <span>{PROJECT_NAME}</span>
           </div>
-          <NavLinks className="hidden sm:flex" currentRoute={currentRoute} />
+          <NavLinks
+            className="hidden sm:flex"
+            currentRoute={currentRoute}
+            dashboardSearchParams={dashboardSearchParams}
+          />
           <div className="sm:hidden">
-            <BurgerNavigation currentRoute={currentRoute} />
+            <BurgerNavigation
+              currentRoute={currentRoute}
+              dashboardSearchParams={dashboardSearchParams}
+            />
           </div>
         </nav>
       ))}

@@ -3,7 +3,6 @@ import { env } from "../env";
 import { lazy, Suspense } from "react";
 import { Header } from "@/components/Header";
 import { Toaster } from "@/components/ui/toaster";
-import { useRouterState } from "@tanstack/react-router";
 import { DisclaimerModal } from "@/components/DisclaimerModal";
 
 const TanStackRouterDevtools = env.PUBLIC_DEBUG
@@ -19,13 +18,9 @@ export const Route = createRootRoute({
 });
 
 function UserInterface() {
-  const currentRoute = useRouterState({
-    select: (state) => state.location.pathname,
-  });
-
   return (
     <div className="mx-auto h-max max-w-screen-2xl bg-accent">
-      <Header currentRoute={currentRoute} />
+      <Header />
       <Outlet />
       <Suspense>
         <TanStackRouterDevtools initialIsOpen={false} />

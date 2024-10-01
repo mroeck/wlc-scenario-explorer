@@ -1,1 +1,1 @@
-export const HIGHLIGHT_OPACITY = 0.3;
+export const HIGHLIGHT_OPACITY = 0.1;
