@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { useCallback, useState } from "react";
 import ReactDOM from "react-dom";
 import type { TooltipProps } from "recharts";
 import type {
@@ -42,7 +42,13 @@ export const PortalTooltip = ({
   chartRef,
   highlight,
 }: PortalTooltipProps) => {
-  const tooltipRef = useRef<HTMLDivElement | null>(null);
+  const [tooltipElement, setTooltipElement] = useState<HTMLDivElement | null>(
+    null,
+  );
+
+  const setTooltipRef = useCallback((element: HTMLDivElement | null) => {
+    setTooltipElement(element);
+  }, []);
 
   if (!active || payload == null || payload.length < 1) return null;
 
@@ -50,7 +56,7 @@ export const PortalTooltip = ({
     !!coordinate && !!coordinate.x && !!coordinate.y;
   if (!areCoordinatesDefined || chartRef.current == null) return null;
 
-  const tooltipDimensions = tooltipRef.current?.getBoundingClientRect() ?? {
+  const tooltipDimensions = tooltipElement?.getBoundingClientRect() ?? {
     width: 0,
     height: 0,
   };
@@ -62,17 +68,21 @@ export const PortalTooltip = ({
 
   const chartX = chartRect.x + window.scrollX || 0;
   const chartWidth = chartRect.width || 0;
-  const halfChart = (chartX + chartWidth) / 2;
+  const halfChart = chartWidth / 2;
 
   const chartY = chartRect.y + window.scrollY || 0;
   const chartHeight = chartRect.height || 0;
 
   const maxTranslateX = chartX + chartWidth - tooltipDimensions.width - offset;
-  const translateX = Math.min(
-    x < halfChart
-      ? chartRect.x + window.scrollX + x + offset
-      : chartRect.x + window.scrollX + x - offset - tooltipDimensions.width,
-    maxTranslateX,
+  const minTranslateX = chartX;
+  const translateX = Math.max(
+    minTranslateX,
+    Math.min(
+      x <= halfChart
+        ? chartRect.x + window.scrollX + x + offset
+        : chartRect.x + window.scrollX + x - offset - tooltipDimensions.width,
+      maxTranslateX,
+    ),
   ).toString();
 
   const maxTranslateY =
@@ -84,7 +94,7 @@ export const PortalTooltip = ({
 
   const tooltipContent = (
     <div
-      ref={tooltipRef}
+      ref={setTooltipRef}
       className="pointer-events-none visible absolute left-0 top-0 z-10 text-wrap rounded bg-white/95 px-3 py-2 outline outline-1 outline-primary transition-transform duration-700"
       style={{ transform: `translate(${translateX}px, ${translateY}px)` }}
     >

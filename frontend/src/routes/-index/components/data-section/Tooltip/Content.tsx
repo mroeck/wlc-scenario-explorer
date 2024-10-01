@@ -34,7 +34,7 @@ export const Content = ({
 
   return (
     <>
-      <div className="mx-auto flex w-max flex-col text-left">
+      <div className="flex w-max flex-col text-left">
         <span style={{ fontSize: GRAPH_FONT_SIZE }}>{label}</span>
         <span
           className="py-1 text-left font-semibold"
@@ -46,6 +46,7 @@ export const Content = ({
           From top to bottom on graph
         </span>
       </div>
+      <div className="pb-5"></div>
       <div style={{ fontSize: GRAPH_FONT_SIZE }}>
         Total:{" "}
         <span className="font-bold">
@@ -53,6 +54,7 @@ export const Content = ({
         </span>
         (100%)
       </div>
+
       <ul className="grid grid-flow-col grid-rows-[repeat(15,auto)] gap-x-5">
         {data.length > 1 &&
           data

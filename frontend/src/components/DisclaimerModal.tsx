@@ -42,7 +42,7 @@ export function DisclaimerModal() {
         <div className="grid gap-4 py-4">
           <DisclaimerText className="text-sm text-gray-500" />
         </div>
-        <DialogFooter className="sm:justify-between">
+        <DialogFooter className="gap-4 sm:justify-between">
           <div className="flex items-center space-x-2">
             <Checkbox
               id="dontShowAgain"
