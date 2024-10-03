@@ -63,13 +63,15 @@ export const StackedAreaChart = ({
     <ResponsiveContainer width="100%" height="100%" ref={chartRef}>
       <AreaChart {...commonChartProps} data={data}>
         <CartesianGrid {...commonCartisianGridProps} />
+        <XAxis {...commonXaxisProps} />
+        <YAxis {...commonYaxisProps}>
+          <Label value={unit} {...commonYaxisLabelProps} />
+        </YAxis>
         {attributeOptions.map((option, index) => {
           const areaColor = getColor({ breakdownBy, option });
           const isHighlight = option === highlight;
-          const adjustedIndex =
-            (index + 1 + attributeOptions.length) % attributeOptions.length;
           const isRigthAfterHighlight =
-            attributeOptions[adjustedIndex] === highlight;
+            !!highlight && attributeOptions[index + 1] === highlight;
 
           const opacity =
             isSomethingHighlighted && !isHighlight
@@ -145,10 +147,6 @@ export const StackedAreaChart = ({
           );
         })}
         <Legend content={(props) => <CustomLegend payload={props.payload} />} />
-        <XAxis {...commonXaxisProps} />
-        <YAxis {...commonYaxisProps}>
-          <Label value={unit} {...commonYaxisLabelProps} />
-        </YAxis>
       </AreaChart>
     </ResponsiveContainer>
   );

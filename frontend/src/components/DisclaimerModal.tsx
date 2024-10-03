@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -15,13 +15,16 @@ import { DISCLAIMER_MODAL_TITLE, STORAGE_KEYS } from "@/lib/constants";
 export function DisclaimerModal() {
   const [isOpen, setIsOpen] = useState(false);
   const [dontShowAgain, setDontShowAgain] = useState(false);
+  const hasRun = useRef(false);
 
-  useEffect(() => {
+  if (!hasRun.current) {
     const hasAccepted = localStorage.getItem(STORAGE_KEYS.isDisclaimerAccepted);
     if (hasAccepted !== "true") {
       setIsOpen(true);
     }
-  }, []);
+
+    hasRun.current = true;
+  }
 
   const handleAccept = () => {
     if (dontShowAgain) {

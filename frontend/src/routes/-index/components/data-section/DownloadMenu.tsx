@@ -20,6 +20,7 @@ import {
 } from "@/lib/constants";
 import { unparse } from "papaparse";
 import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
 
 const sourceText = `Source: ${LINKS.explorerWebsite}`;
 const spreadSheetText = `
@@ -211,12 +212,14 @@ export const DownloadMenu = ({ domTarget, data }: DownloadMenuProps) => {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger data-testid={DOWNLOAD_AS_TESTID} disabled={!isReady}>
-        <Download
-          className={cn(
-            !isReady && "cursor-wait text-gray-300",
-            isReady && "text-primary",
-          )}
-        />
+        <Button variant="ghost" size="icon" aria-label="Settings">
+          <Download
+            className={cn(
+              !isReady && "cursor-wait text-gray-300",
+              isReady && "text-primary",
+            )}
+          />
+        </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent>
         <DropdownMenuLabel>Download as:</DropdownMenuLabel>

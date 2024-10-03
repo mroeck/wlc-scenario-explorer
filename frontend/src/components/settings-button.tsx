@@ -89,7 +89,7 @@ export function SettingsButton() {
           <DialogTitle>Settings</DialogTitle>
         </DialogHeader>
         <div className="flex flex-wrap gap-5">
-          <div>
+          <div className="flex flex-col gap-1">
             {dataTab !== DATA_TABS_NAMES.table && (
               <>
                 <Label
@@ -138,7 +138,7 @@ export function SettingsButton() {
               </>
             )}
           </div>
-          <div>
+          <div className="flex flex-col gap-1">
             <Label
               htmlFor={SELECT_IDS.sort}
               className="flex items-center gap-2 font-medium"

@@ -12,7 +12,7 @@ export function TypographyList({
   return (
     <ul className={cn("list-disc md:ml-6 [&>li]:mt-2", className)}>
       {children}
-      {items?.map((item, index) => <li key={index}>{item}</li>)}
+      {items?.map((item) => <li key={item}>{item}</li>)}
     </ul>
   );
 }

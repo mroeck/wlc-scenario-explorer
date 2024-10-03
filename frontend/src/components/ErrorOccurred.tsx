@@ -5,7 +5,7 @@ import { ERROR_OCCURED } from "@/lib/constants";
 export const ErrorOccurred = () => {
   return (
     <div className={cn("flex h-full flex-col justify-center")}>
-      <div className="flex  -translate-y-1/2 flex-col items-center justify-center space-y-4">
+      <div className="flex flex-col items-center justify-center space-y-4 pb-10 lg:-translate-y-1/2 lg:pb-0">
         <TriangleAlertIcon className="size-12 text-destructive" />
         <div className="space-y-2 text-center">
           <h2 className="text-2xl font-bold text-destructive">

@@ -65,9 +65,15 @@ export const ComparisonSlider: React.FC<ComparisonSliderProps> = ({
 
   useEffect(() => {
     if (display === SCENARIO_A_ONLY) {
+      // disabled eslint: I don't know how to make it work outside the useEffect
+      // eslint-disable-next-line @eslint-react/hooks-extra/no-direct-set-state-in-use-effect
       setSliderValues([MAX_SLIDER]);
     } else if (display === SCENARIO_B_ONLY) {
+      // eslint-disable-next-line @eslint-react/hooks-extra/no-direct-set-state-in-use-effect
       setSliderValues([MIN_SLIDER]);
+    } else {
+      // eslint-disable-next-line @eslint-react/hooks-extra/no-direct-set-state-in-use-effect
+      setSliderValues([50]);
     }
   }, [display]);
 
@@ -124,7 +130,10 @@ export const ComparisonSlider: React.FC<ComparisonSliderProps> = ({
           </div>
         </div>
         <div
-          className="absolute inset-0 size-full overflow-x-hidden sm:visible"
+          className={cn(
+            "absolute inset-0 size-full sm:visible",
+            display !== SCENARIO_A_ONLY && "overflow-x-hidden",
+          )}
           style={{ width: sliderValues[0].toString() + "%" }}
         >
           <div

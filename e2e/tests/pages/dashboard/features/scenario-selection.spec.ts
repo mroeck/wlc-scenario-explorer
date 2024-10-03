@@ -4,6 +4,7 @@ import {
   SCENARIO_B_TESTID,
   FOR_SCENARIOS_TESTID,
   RESET_LABEL,
+  MOBILE_SETTINGS_BUTTON,
 } from "@/lib/constants";
 import { SCENARIOS_OPTIONS } from "@/lib/shared_with_backend/constants";
 import { test, expect } from "@playwright/test";
@@ -19,7 +20,7 @@ test.describe("scenario selection", () => {
   }) => {
     const mobileSettings = page
       .locator("button")
-      .filter({ hasText: "Settings" });
+      .filter({ hasText: MOBILE_SETTINGS_BUTTON });
     const scenarioA = SCENARIOS_OPTIONS[0];
     const scenarioB = SCENARIOS_OPTIONS[1];
 
@@ -40,7 +41,7 @@ test.describe("scenario selection", () => {
     const vsText = `${scenarioA} VS ${scenarioB}`;
     await expect(page.getByTestId(FOR_SCENARIOS_TESTID)).toHaveText(vsText);
 
-    await page.getByLabel("Settings").click();
+    await page.getByLabel("Settings").nth(1).click();
     await expect(page.getByTestId(DISPLAY_SELECT_TESTID)).toHaveText(vsText);
 
     await page.getByRole("button", { name: "Close" }).click();
@@ -57,7 +58,7 @@ test.describe("scenario selection", () => {
 
     await expect(page.getByTestId(FOR_SCENARIOS_TESTID)).toHaveText(scenarioA);
 
-    await page.getByLabel("Settings").click();
+    await page.getByLabel("Settings").nth(1).click();
     await expect(page.getByTestId(DISPLAY_SELECT_TESTID)).toHaveText(
       `${scenarioA} only`,
     );

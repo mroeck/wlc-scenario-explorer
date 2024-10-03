@@ -1,7 +1,11 @@
 import type { UnionToTuple } from "type-fest";
-import type { SCENARIOS_OPTIONS } from "./shared_with_backend/constants";
+import type {
+  PREDEFINED_SCENARIOS,
+  SCENARIOS_OPTIONS,
+} from "./shared_with_backend/constants";
 import type { Attribute, Indicator, Unit } from "./types";
 
+export const MOBILE_SETTINGS_BUTTON = "Scenarios and Filters";
 export const RESET_LABEL = "Reset";
 export const PROD = "production";
 export const DEV = "development";
@@ -169,10 +173,20 @@ export const HELP_PAGE_IDS = {
   visualization: "visualization",
 } as const;
 export const SCENARIO_A_LABEL = "primary scenario";
-export const SCENARIO_B_LABEL = "scenario B";
+export const SCENARIO_B_LABEL = "second scenario";
 export const NONE = "None";
 export const STORAGE_KEYS = {
   isDisclaimerAccepted: "scenarioExplorerIsDisclaimerAccepted",
 };
 export const DISCLAIMER_MODAL_TITLE = "Website Disclaimer";
 export const GRAPH_AXIS_COLOR = "hsl(223 0% 20%)";
+export const SCENARIO_TO_ACRONYM = {
+  "Additional Policy scenario": "APOL",
+  "Conservative scenario of Current Policies": "CPOL/B",
+  "Current Policy + Avoid + Shift + Improve strategies": "CPOL+ASI",
+  "Current Policy + Avoid strategies": "CPOL+A",
+  "Current Policy + Improve strategies": "CPOL+I",
+  "Current Policy + Shift strategies": "CPOL+S",
+  "Optimistic scenario of Current Policies": "CPOL/A",
+  "Example scenario (for illustration purpose only)": undefined,
+} satisfies Record<(typeof PREDEFINED_SCENARIOS)[number], string | undefined>;

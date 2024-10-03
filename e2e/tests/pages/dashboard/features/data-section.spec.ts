@@ -10,6 +10,8 @@ import {
   SELECT_INDICATOR_TESTID,
   INDICATOR_TO_UNIT,
   INDICATORS_UNITS,
+  DISPLAY_SELECT_TESTID,
+  SORT_SELECT_TESTID,
 } from "@/lib/constants";
 import { test, expect } from "@playwright/test";
 import { ACTIVE_DATA_TAB_LOCATOR, TAGS } from "@tests/constants";
@@ -28,8 +30,15 @@ test.describe("data viz", () => {
   });
 
   test("table tab has no display select", async ({ page }) => {
+    const displaySelect = page
+      .getByRole("dialog", { name: "Settings" })
+      .getByTestId(DISPLAY_SELECT_TESTID);
+
     await page.getByRole("tab", { name: "Table" }).click();
-    await expect(page.getByTestId("DISPLAY_SELECT_TESTID")).not.toBeVisible();
+    await page.getByLabel("Settings").nth(1).click();
+
+    await expect(page.getByTestId(SORT_SELECT_TESTID)).toBeVisible();
+    await expect(displaySelect).not.toBeVisible();
   });
 
   test("select breakdown by", { tag: TAGS.snapshot }, async ({ page }) => {

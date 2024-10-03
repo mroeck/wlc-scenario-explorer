@@ -45,7 +45,9 @@ test.describe("dividedBy", () => {
         page.getByText("GWP total per capita (country) by"),
       ).toBeVisible();
       await expect(
-        page.getByText("MtCO2e/capita", { exact: true }),
+        page
+          .locator('[id="radix-\\:rm\\:-content-Stacked\\ Area\\ Chart"]')
+          .getByText("MtCO2e/capita", { exact: true }),
       ).toBeVisible();
 
       await testScreenshot({

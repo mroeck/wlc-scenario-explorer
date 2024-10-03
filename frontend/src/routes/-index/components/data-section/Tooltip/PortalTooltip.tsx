@@ -31,6 +31,8 @@ type PortalTooltipProps = Pick<
   highlight: z.infer<typeof HighlightSchema> | undefined;
 };
 
+let lastTooltip: HTMLDivElement | null = null;
+
 export const PortalTooltip = ({
   active,
   payload,
@@ -43,11 +45,13 @@ export const PortalTooltip = ({
   highlight,
 }: PortalTooltipProps) => {
   const [tooltipElement, setTooltipElement] = useState<HTMLDivElement | null>(
-    null,
+    lastTooltip,
   );
 
   const setTooltipRef = useCallback((element: HTMLDivElement | null) => {
-    setTooltipElement(element);
+    const tooltip = element ?? lastTooltip;
+    setTooltipElement(tooltip);
+    lastTooltip = tooltip;
   }, []);
 
   if (!active || payload == null || payload.length < 1) return null;

@@ -25,7 +25,7 @@ test.describe("sort", () => {
       async ({ page }) => {
         const closeButton = page.getByRole("button", { name: "Close" });
 
-        await page.getByLabel("Settings").click();
+        await page.getByLabel("Settings").nth(1).click();
         await page.getByTestId(SORT_SELECT_TESTID).click();
 
         await page.getByLabel(SORT_OPTIONS.desc).click();

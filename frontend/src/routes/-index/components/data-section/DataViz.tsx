@@ -17,6 +17,9 @@ import {
   DIVIDED_BY_TESTID,
   DIVIDED_BY_NONE,
   DIVIDED_BY_TO_MINIFIED_UNIT,
+  SCENARIO_TO_ACRONYM,
+  SCENARIO_A_LABEL,
+  SCENARIO_B_LABEL,
 } from "@/lib/constants";
 import { useQuery } from "@tanstack/react-query";
 import { fetchScenarioRowsAggregated } from "@/lib/queries";
@@ -164,6 +167,16 @@ export const DataViz = () => {
       ? indicatorMinified
       : (`${indicatorMinified}/${DIVIDED_BY_TO_MINIFIED_UNIT[dividedBy]}` as const);
 
+  // @ts-expect-error: not all scenarios have an acronym
+  const acronymA = SCENARIO_TO_ACRONYM[scenarioA] as string | undefined;
+  // @ts-expect-error: not all scenarios have an acronym
+  const acronymB = SCENARIO_TO_ACRONYM[scenarioB ?? ""] as string | undefined;
+
+  const acronyms = {
+    scenarioA: acronymA ? acronymA : SCENARIO_A_LABEL,
+    scenarioB: acronymB ? acronymB : SCENARIO_B_LABEL,
+  };
+
   const fetchScenarioData = (scenario: Scenario | undefined) =>
     fetchScenarioRowsAggregated({
       breakdownBy,
@@ -207,13 +220,12 @@ export const DataViz = () => {
   const canRenderContent = !isLoading && !hasError && hasSomeData;
   const hasNoData = dataA?.length === 0 && dataB?.length === 0;
 
-  const DataStatus = () => (
-    <>
-      {isLoading && <LoadingSpinner />}
-      {!isLoading && hasError && <ErrorOccurred />}
-      {!isLoading && !hasError && hasNoData && <NoDataFound />}
-    </>
-  );
+  const DataStatus = () => {
+    if (isLoading) return <LoadingSpinner />;
+    if (hasError) return <ErrorOccurred />;
+    if (hasNoData) return <NoDataFound />;
+    return null;
+  };
 
   const onTabChange = (newDataTab: string) => {
     void navigate({
@@ -232,7 +244,7 @@ export const DataViz = () => {
         value={dataTab}
         onValueChange={onTabChange}
       >
-        <div className="flex flex-col items-start justify-between gap-2 md:flex-row">
+        <div className="flex flex-col items-start justify-between gap-4 lg:flex-row">
           <div className="w-full md:w-auto">
             <TabsList className="mx-auto flex flex-col md:flex-row lg:flex-row">
               {tabs.map((tab) => (
@@ -253,7 +265,7 @@ export const DataViz = () => {
               </TabsTrigger>
             </TabsList>
           </div>
-          <div className="lg:hidden">
+          <div className="ml-auto lg:hidden">
             <SettingsDrawer />
           </div>
         </div>
@@ -293,7 +305,7 @@ export const DataViz = () => {
                 <ComparisonSlider
                   items={[
                     {
-                      label: "Scenario A",
+                      label: acronyms.scenarioA,
                       component: tab.content({
                         data: dataA,
                         unit: unitMinified,
@@ -301,7 +313,7 @@ export const DataViz = () => {
                       }),
                     },
                     {
-                      label: "Scenario B",
+                      label: acronyms.scenarioB,
                       component: tab.content({
                         data: dataB,
                         unit: unitMinified,
@@ -316,7 +328,7 @@ export const DataViz = () => {
           <TabsContent
             key={DATA_TABS_NAMES.table}
             value={DATA_TABS_NAMES.table}
-            className="relative min-h-0 flex-1"
+            className="relative min-h-0 flex-1 basis-full lg:basis-0"
             data-testid={TAB_CONTENT_TESTID}
           >
             <DataStatus />

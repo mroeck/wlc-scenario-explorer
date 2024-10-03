@@ -31,7 +31,7 @@ test.describe("comparison slider", () => {
         ).not.toBeVisible();
       };
 
-      await page.getByLabel("Settings").click();
+      await page.getByLabel("Settings").nth(1).click();
 
       await selectDisplay.click();
       await page
@@ -43,7 +43,7 @@ test.describe("comparison slider", () => {
 
       await testScreenshot({ page, target: graph });
 
-      await page.getByLabel("Settings").click();
+      await page.getByLabel("Settings").nth(1).click();
 
       await selectDisplay.click();
       await page
@@ -55,7 +55,7 @@ test.describe("comparison slider", () => {
 
       await testScreenshot({ page, target: graph });
 
-      await page.getByLabel("Settings").click();
+      await page.getByLabel("Settings").nth(1).click();
 
       await selectDisplay.click();
       await page.getByLabel("Scenario B only").click();

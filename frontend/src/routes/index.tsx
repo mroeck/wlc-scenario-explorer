@@ -116,8 +116,6 @@ const Dashboard = memo(function Dashboard() {
   );
 });
 
-export default Dashboard;
-
 export const Route = createFileRoute(ROUTES.DASHBOARD)({
   component: () => <Dashboard />,
   validateSearch: SearchParamsSchema,
