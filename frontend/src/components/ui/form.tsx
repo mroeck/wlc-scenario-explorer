@@ -32,8 +32,10 @@ const FormField = <
 >({
   ...props
 }: ControllerProps<TFieldValues, TName>) => {
+  const value = React.useMemo(() => ({ name: props.name }), [props.name]);
+
   return (
-    <FormFieldContext.Provider value={{ name: props.name }}>
+    <FormFieldContext.Provider value={value}>
       <Controller {...props} />
     </FormFieldContext.Provider>
   );
@@ -78,6 +80,7 @@ const FormItem = React.forwardRef<
   const id = React.useId();
 
   return (
+    // eslint-disable-next-line @eslint-react/no-unstable-context-value
     <FormItemContext.Provider value={{ id }}>
       <div
         ref={ref}

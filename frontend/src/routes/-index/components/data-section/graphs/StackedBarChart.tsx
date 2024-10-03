@@ -56,6 +56,10 @@ export const StackedBarChart = ({
     <ResponsiveContainer width="100%" height="100%" ref={chartRef}>
       <BarChart {...commonChartProps} data={data}>
         <CartesianGrid {...commonCartisianGridProps} />
+        <XAxis {...commonXaxisProps} />
+        <YAxis {...commonYaxisProps}>
+          <Label value={unit} {...commonYaxisLabelProps} />
+        </YAxis>
         {attributeOptions.map((option) => {
           const areaColor = getColor({ breakdownBy, option });
 
@@ -78,7 +82,7 @@ export const StackedBarChart = ({
               strokeWidth={isHighlight ? 1 : undefined}
               fill={areaColor}
               fillOpacity={opacity}
-              opacity={opacity}
+              strokeOpacity={opacity}
             />
           );
         })}
@@ -96,10 +100,6 @@ export const StackedBarChart = ({
           )}
         />
         <Legend content={(props) => <CustomLegend payload={props.payload} />} />
-        <XAxis {...commonXaxisProps} />
-        <YAxis {...commonYaxisProps}>
-          <Label value={unit} {...commonYaxisLabelProps} />
-        </YAxis>
       </BarChart>
     </ResponsiveContainer>
   );

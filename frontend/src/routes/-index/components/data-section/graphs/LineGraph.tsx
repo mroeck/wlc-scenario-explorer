@@ -23,7 +23,7 @@ import {
 import { PortalTooltip } from "../Tooltip/PortalTooltip";
 import type { BreakdownByOptions, GraphProps } from "./types";
 import { getRouteApi } from "@tanstack/react-router";
-import { ROUTES } from "@/lib/constants";
+import { GRAPH_AXIS_COLOR, ROUTES } from "@/lib/constants";
 import { HIGHLIGHT_OPACITY } from "./constants";
 
 const route = getRouteApi(ROUTES.DASHBOARD);
@@ -56,6 +56,10 @@ export const LineGraph = ({
     <ResponsiveContainer width="100%" height="100%" ref={chartRef}>
       <LineChart {...commonChartProps} data={data}>
         <CartesianGrid {...commonCartisianGridProps} />
+        <XAxis {...commonXaxisProps} />
+        <YAxis {...commonYaxisProps}>
+          <Label value={unit} {...commonYaxisLabelProps} />
+        </YAxis>
         {attributeOptions.map((option) => {
           const areaColor = getColor({ breakdownBy, option });
 
@@ -80,6 +84,10 @@ export const LineGraph = ({
               fill={areaColor}
               fillOpacity={opacity}
               opacity={opacity}
+              activeDot={{
+                stroke: GRAPH_AXIS_COLOR,
+                strokeOpacity: 0.7,
+              }}
             />
           );
         })}
@@ -98,10 +106,6 @@ export const LineGraph = ({
         />
 
         <Legend content={(props) => <CustomLegend payload={props.payload} />} />
-        <XAxis {...commonXaxisProps} />
-        <YAxis {...commonYaxisProps}>
-          <Label value={unit} {...commonYaxisLabelProps} />
-        </YAxis>
       </LineChart>
     </ResponsiveContainer>
   );

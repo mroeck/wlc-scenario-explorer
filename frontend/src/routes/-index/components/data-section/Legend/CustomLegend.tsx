@@ -142,14 +142,14 @@ function ColorLegendItemAll({
   };
   return (
     <ol className="flex flex-wrap justify-items-start gap-x-6">
-      {data.map((item, index) => {
+      {data.map((item) => {
         const option = typeof item.dataKey === "string" ? item.dataKey : "";
 
         const isHighlight = option === highlight;
 
         return (
           <li
-            key={index}
+            key={item.dataKey as string}
             className={cn(
               "relative flex items-center gap-1",
               isSomethingHighlighted &&

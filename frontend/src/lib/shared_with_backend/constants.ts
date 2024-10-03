@@ -12,7 +12,6 @@ export const BREAKDOWN_BY_OBJ = {
   buildingUseSubtype: "Building subtype",
   elementClass: "Element Class",
   material: "Material Class",
-  // activityInOut: "flow type", temp: hidden for now
   activityType: "building stock activity",
   carbonCategory: "Whole life cycle stages",
   none: NONE,
@@ -24,19 +23,19 @@ type AttributesEnum = [
 ];
 export const ATTRIBUTES = Object.values(BREAKDOWN_BY_OBJ) as AttributesEnum;
 
-export const PREDEFINED_SCNEARIOS = [
+export const PREDEFINED_SCENARIOS = [
   "Example scenario (for illustration purpose only)",
-  "Current policy optimistic scenario",
-  "Current policy conservative scenario",
-  "Additional policy scenario (APOL)",
-  "APOL + Improve",
-  "APOL + Shift",
-  "APOL + Avoid",
-  "APOL + A+S+I",
+  "Optimistic scenario of Current Policies",
+  "Conservative scenario of Current Policies",
+  "Additional Policy scenario",
+  "Current Policy + Improve strategies",
+  "Current Policy + Shift strategies",
+  "Current Policy + Avoid strategies",
+  "Current Policy + Avoid + Shift + Improve strategies",
 ] as const;
 
 export const SCENARIOS_OPTIONS = [
-  ...PREDEFINED_SCNEARIOS,
+  ...PREDEFINED_SCENARIOS,
   "Custom scenario results",
 ] as const;
 
@@ -48,7 +47,6 @@ export const FILTERS_OBJ = {
   buildingUseSubtype: "Building subtype",
   elementClass: "Element Class",
   material: "Material Class",
-  // activityInOut: "flow type",
   Region: "Region",
   activityType: "building stock activity",
   carbonCategory: "Whole life cycle stages",
@@ -95,3 +93,7 @@ export const SCENARIO_PARAMETERS_OBJ = {
     "Reduce construction waste",
   ],
 } as const;
+
+export const API_ROUTES = {
+  scenario: "/scenario",
+};

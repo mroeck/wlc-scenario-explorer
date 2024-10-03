@@ -35,15 +35,14 @@ export const Content = ({
   return (
     <>
       <div className="flex w-max flex-col text-left">
-        <span style={{ fontSize: GRAPH_FONT_SIZE }}>{label}</span>
-        <span
-          className="py-1 text-left font-semibold"
-          style={{ fontSize: GRAPH_FONT_SIZE }}
-        >
-          Unit: {unit}
+        <span>
+          Year:{" "}
+          <span className="font-bold" style={{ fontSize: GRAPH_FONT_SIZE }}>
+            {label}
+          </span>
         </span>
-        <span className="text-left" style={{ fontSize: GRAPH_FONT_SIZE }}>
-          From top to bottom on graph
+        <span className="py-1 text-left" style={{ fontSize: GRAPH_FONT_SIZE }}>
+          Unit: <span className="font-semibold">{unit}</span>
         </span>
       </div>
       <div className="pb-5"></div>
@@ -71,6 +70,7 @@ export const Content = ({
                       isSomethingHighlighted &&
                         isHighlight &&
                         "before:absolute before:left-1/2 before:top-0 before:h-full before:w-[calc(100%+20px)] before:-translate-x-1/2 before:rounded-full before:bg-slate-200 before:content-['']",
+                      isSomethingHighlighted && !isHighlight && "opacity-50",
                     )}
                   >
                     <div>

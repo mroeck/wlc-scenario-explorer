@@ -23,6 +23,7 @@ import {
   SCENARIO_A_TESTID,
   SCENARIO_B_ONLY,
   SCENARIO_B_TESTID,
+  SCENARIO_TO_ACRONYM,
 } from "@/lib/constants";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { getRouteApi, Link } from "@tanstack/react-router";
@@ -31,7 +32,7 @@ import { z } from "zod";
 import { SelectMenuStyle } from "../../data-section/SelectMenuStyle";
 import { ResetButton } from "../components/ResetButton";
 import {
-  PREDEFINED_SCNEARIOS,
+  PREDEFINED_SCENARIOS,
   SCENARIOS_OPTIONS,
 } from "@/lib/shared_with_backend/constants";
 import { ScenarioSchema } from "@/lib/shared_with_backend/schemas";
@@ -39,6 +40,8 @@ import { ScenarioParameters } from "../components/ScenarioParameters";
 import { useEffect } from "react";
 import { InfoButton } from "@/components/InfoButton";
 import { LinkIcon } from "lucide-react";
+import type { ValueOf } from "type-fest";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 const route = getRouteApi(ROUTES.DASHBOARD);
 
@@ -110,34 +113,138 @@ export const Scenarios = () => {
   }, []);
 
   return (
-    <section className="px-primary-x">
+    <section className="flex h-full min-h-0 min-w-0 flex-1 flex-col p-0">
       <h2 className="sr-only">Scenarios</h2>
-      <div className="flex justify-end pb-px pt-3">
+      <div className="flex justify-end px-primary-x pb-px pt-3">
         <ResetButton reset={reset} text={RESET_LABEL} />
       </div>
-      <Form {...form}>
-        <form
-          onSubmit={void form.handleSubmit(onSubmit)}
-          className="flex flex-col gap-8"
-        >
-          <div className="flex flex-col gap-4">
+      <ScrollArea
+        className="relative flex min-h-0 min-w-0 flex-1 flex-col gap-5 overflow-x-visible px-primary-x"
+        type="always"
+      >
+        <Form {...form}>
+          <form
+            onSubmit={void form.handleSubmit(onSubmit)}
+            className="flex flex-col gap-8"
+          >
+            <div className="flex flex-col gap-4">
+              <FormField
+                control={form.control}
+                name="scenarioA"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="flex items-center gap-2 font-medium">
+                      <span className="first-letter:uppercase">
+                        {SCENARIO_A_LABEL}:
+                      </span>
+                      <InfoButton>
+                        <p>
+                          Choose from predefined scenarios. They represent
+                          aspirational policy ambitions such as current policies
+                          (CPOL) and additional policies (APOL). These scenarios
+                          explore the potential of various carbon reduction and
+                          removal (CRR) strategies.
+                        </p>
+                        <Link
+                          to={ROUTES.HELP}
+                          hash={HELP_PAGE_IDS.predefinedScenarioSelection}
+                          className="flex items-center gap-1 underline"
+                        >
+                          <LinkIcon className="size-3" /> Read more here
+                        </Link>
+                      </InfoButton>
+                    </FormLabel>
+                    <Select
+                      onValueChange={(value) => {
+                        onSelectChange({
+                          fieldOnChange: (value) => {
+                            void navigate({
+                              search: (prev) => ({
+                                ...prev,
+                                display:
+                                  display === SCENARIO_B_ONLY
+                                    ? SCENARIO_A_AND_B
+                                    : display,
+                              }),
+                            });
+                            field.onChange(value);
+                          },
+                          form,
+                          value,
+                        });
+                      }}
+                      value={field.value}
+                    >
+                      <FormControl>
+                        <SelectMenuStyle>
+                          <SelectTrigger
+                            className="w-full max-w-full capitalize"
+                            data-testid={SCENARIO_A_TESTID}
+                          >
+                            <SelectValue placeholder="Select a scenario" />
+                          </SelectTrigger>
+                        </SelectMenuStyle>
+                      </FormControl>
+                      <SelectContent>
+                        {SCENARIOS_OPTIONS.map((scenario) => {
+                          // @ts-expect-error: not all scenarios have a acronym
+                          const acronym = SCENARIO_TO_ACRONYM[scenario] as
+                            | ValueOf<typeof SCENARIO_TO_ACRONYM>
+                            | undefined;
+
+                          return (
+                            <SelectItem key={scenario} value={scenario}>
+                              {scenario} {acronym ? `(${acronym})` : null}
+                            </SelectItem>
+                          );
+                        })}
+                      </SelectContent>
+                    </Select>
+                  </FormItem>
+                )}
+              />
+              <div className="px-2">
+                <div className="flex items-center gap-2">
+                  <span className="text-sm font-medium">
+                    Customise scenario parameters:
+                  </span>
+                  <InfoButton>
+                    <p>
+                      Customise scenario parameters by adjusting the ambition
+                      levels for different carbon reduction and removal (CRR)
+                      strategies. Explore strategies such as improving supply
+                      chains, shifting to bio-based solutions, and avoiding
+                      unnecessary demand. Set ambition levels to simulate
+                      different adoption rates across Member States. Careful,
+                      customized scenarios are not based on EU policies like
+                      CPOL and APOL.
+                    </p>
+                    <Link
+                      to={ROUTES.HELP}
+                      hash={HELP_PAGE_IDS.scenarioParametersCustomization}
+                      className="flex items-center gap-1 underline"
+                    >
+                      <LinkIcon className="size-3" /> Read more here
+                    </Link>
+                  </InfoButton>
+                </div>
+                <ScenarioParameters />
+              </div>
+            </div>
             <FormField
               control={form.control}
-              name="scenarioA"
+              name="scenarioB"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel className="flex items-center gap-2 font-medium">
-                    <span className="first-letter:uppercase">
-                      {SCENARIO_A_LABEL}:
-                    </span>
+                    <span>Compare with:</span>
                     <InfoButton>
                       <p>
-                        Choose from predefined scenarios. They represent
-                        aspirational policy ambitions such as current policies
-                        (CPOL) and additional policies (APOL). These scenarios
-                        explore the potential of various carbon reduction and
-                        removal (CRR) strategies. Careful, customized scenarios
-                        are not based on EU policies like CPOL and APOL.
+                        Select a second predefined scenario to compare with your
+                        primary scenario. Explore policy ambitions like current
+                        policies (CPOL), additional policies (APOL), and
+                        combined CRR strategies (Improve, Shift, Avoid) to
+                        analyze their impact side by side.
                       </p>
                       <Link
                         to={ROUTES.HELP}
@@ -156,7 +263,7 @@ export const Scenarios = () => {
                             search: (prev) => ({
                               ...prev,
                               display:
-                                display === SCENARIO_B_ONLY
+                                display === SCENARIO_A_ONLY
                                   ? SCENARIO_A_AND_B
                                   : display,
                             }),
@@ -172,118 +279,32 @@ export const Scenarios = () => {
                     <FormControl>
                       <SelectMenuStyle>
                         <SelectTrigger
-                          className="w-full max-w-full capitalize"
-                          data-testid={SCENARIO_A_TESTID}
+                          className="w-full max-w-full"
+                          data-testid={SCENARIO_B_TESTID}
                         >
                           <SelectValue placeholder="Select a scenario" />
                         </SelectTrigger>
                       </SelectMenuStyle>
                     </FormControl>
                     <SelectContent>
-                      {SCENARIOS_OPTIONS.map((scenario) => (
-                        <SelectItem key={scenario} value={scenario}>
-                          {scenario}
-                        </SelectItem>
-                      ))}
+                      {PREDEFINED_SCENARIOS.map((scenario) => {
+                        const acronym = SCENARIO_TO_ACRONYM[scenario];
+
+                        return (
+                          <SelectItem key={scenario} value={scenario}>
+                            {scenario} {acronym ? `(${acronym})` : null}
+                          </SelectItem>
+                        );
+                      })}
                     </SelectContent>
                   </Select>
                 </FormItem>
               )}
             />
-            <div className="px-2">
-              <div className="flex items-center gap-2">
-                <span className="text-sm font-medium">
-                  Customise scenario parameters:
-                </span>
-                <InfoButton>
-                  <p>
-                    Customise scenario parameters by adjusting the ambition
-                    levels for different carbon reduction and removal (CRR)
-                    strategies. Explore strategies such as improving supply
-                    chains, shifting to bio-based solutions, and avoiding
-                    unnecessary demand. Set ambition levels to simulate
-                    different adoption rates across Member States
-                  </p>
-                  <Link
-                    to={ROUTES.HELP}
-                    hash={HELP_PAGE_IDS.scenarioParametersCustomization}
-                    className="flex items-center gap-1 underline"
-                  >
-                    <LinkIcon className="size-3" /> Read more here
-                  </Link>
-                </InfoButton>
-              </div>
-              <ScenarioParameters />
-            </div>
-          </div>
-          <FormField
-            control={form.control}
-            name="scenarioB"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel className="flex items-center gap-2 font-medium">
-                  <span>Compare with:</span>
-                  <InfoButton>
-                    <p>
-                      Select a second predefined scenario to compare with your
-                      primary scenario. Explore policy ambitions like current
-                      policies (CPOL), additional policies (APOL), and combined
-                      CRR strategies (Improve, Shift, Avoid) to analyze their
-                      impact side by side.
-                    </p>
-                    <Link
-                      to={ROUTES.HELP}
-                      hash={HELP_PAGE_IDS.predefinedScenarioSelection}
-                      className="flex items-center gap-1 underline"
-                    >
-                      <LinkIcon className="size-3" /> Read more here
-                    </Link>
-                  </InfoButton>
-                </FormLabel>
-                <Select
-                  onValueChange={(value) => {
-                    onSelectChange({
-                      fieldOnChange: (value) => {
-                        void navigate({
-                          search: (prev) => ({
-                            ...prev,
-                            display:
-                              display === SCENARIO_A_ONLY
-                                ? SCENARIO_A_AND_B
-                                : display,
-                          }),
-                        });
-                        field.onChange(value);
-                      },
-                      form,
-                      value,
-                    });
-                  }}
-                  value={field.value}
-                >
-                  <FormControl>
-                    <SelectMenuStyle>
-                      <SelectTrigger
-                        className="w-full max-w-full"
-                        data-testid={SCENARIO_B_TESTID}
-                      >
-                        <SelectValue placeholder="Select a scenario" />
-                      </SelectTrigger>
-                    </SelectMenuStyle>
-                  </FormControl>
-                  <SelectContent>
-                    {PREDEFINED_SCNEARIOS.map((scenario) => (
-                      <SelectItem key={scenario} value={scenario}>
-                        {scenario}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </FormItem>
-            )}
-          />
-        </form>
-      </Form>
+          </form>
+        </Form>
+        <div className="pb-primary-y"></div>
+      </ScrollArea>
     </section>
   );
 };

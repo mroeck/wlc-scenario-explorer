@@ -41,34 +41,39 @@ test.describe("filters", () => {
     ).toBeVisible();
   });
 
-  test("snapshot when multiple filters are on", async ({ page }) => {
-    await page.getByTestId(BREAKDOWN_BY_TESTID).getByRole("combobox").click();
-    await page
-      .getByLabel(BREAKDOWN_BY_OBJ.country)
-      .getByText(BREAKDOWN_BY_OBJ.country)
-      .click();
-    await page.getByRole("tab", { name: "Filters" }).click();
-    const countryFilterTestId: keyof z.infer<typeof FiltersSchema> = "country";
-    const materialTypeFilterTestId: keyof z.infer<typeof FiltersSchema> =
-      "Material Class";
-    await page.getByTestId(countryFilterTestId).click();
-    await page.getByRole("option", { name: "FR" }).click();
+  test(
+    "snapshot when multiple filters are on",
+    { tag: TAGS.snapshot },
+    async ({ page }) => {
+      await page.getByTestId(BREAKDOWN_BY_TESTID).getByRole("combobox").click();
+      await page
+        .getByLabel(BREAKDOWN_BY_OBJ.country)
+        .getByText(BREAKDOWN_BY_OBJ.country)
+        .click();
+      await page.getByRole("tab", { name: "Filters" }).click();
+      const countryFilterTestId: keyof z.infer<typeof FiltersSchema> =
+        "country";
+      const materialTypeFilterTestId: keyof z.infer<typeof FiltersSchema> =
+        "Material Class";
+      await page.getByTestId(countryFilterTestId).click();
+      await page.getByRole("option", { name: "FR" }).click();
 
-    await page
-      .getByTestId(materialTypeFilterTestId)
-      .getByRole("combobox")
-      .click();
-    await page.getByRole("option", { name: "Concrete" }).click();
+      await page
+        .getByTestId(materialTypeFilterTestId)
+        .getByRole("combobox")
+        .click();
+      await page.getByRole("option", { name: "Concrete" }).click();
 
-    await page.bringToFront();
-    await expect(page.locator(ACTIVE_DATA_TAB_LOCATOR)).toHaveScreenshot();
+      await page.bringToFront();
+      await expect(page.locator(ACTIVE_DATA_TAB_LOCATOR)).toHaveScreenshot();
 
-    await page.getByRole("tab", { name: "Stacked Bar Chart" }).click();
-    await expect(page.locator(ACTIVE_DATA_TAB_LOCATOR)).toHaveScreenshot();
+      await page.getByRole("tab", { name: "Stacked Bar Chart" }).click();
+      await expect(page.locator(ACTIVE_DATA_TAB_LOCATOR)).toHaveScreenshot();
 
-    await page.getByRole("tab", { name: "Table" }).click();
-    await expect(page.locator(ACTIVE_DATA_TAB_LOCATOR)).toHaveScreenshot();
-  });
+      await page.getByRole("tab", { name: "Table" }).click();
+      await expect(page.locator(ACTIVE_DATA_TAB_LOCATOR)).toHaveScreenshot();
+    },
+  );
 
   test(
     "snapshot when multiple filter options are on",

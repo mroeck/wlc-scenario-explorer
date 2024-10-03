@@ -158,13 +158,13 @@ class FiltersSchema(BaseModel, extra=Extra.forbid):
 
 class ScenarioEnumSchema(str, Enum):
     Example = "Example scenario (for illustration purpose only)"
-    CPOO = "Current policy optimistic scenario"
-    CPOC = "Current policy conservative scenario"
-    APOL = "Additional policy scenario (APOL)"
-    APOI = "APOL + Improve"
-    APOS = "APOL + Shift"
-    APOA = "APOL + Avoid"
-    AASI = "APOL + A+S+I"
+    CPOO = "Optimistic scenario of Current Policies"
+    CPOC = "Conservative scenario of Current Policies"
+    APOL = "Additional Policy scenario"
+    APOI = "Current Policy + Improve strategies"
+    APOS = "Current Policy + Shift strategies"
+    APOA = "Current Policy + Avoid strategies"
+    AASI = "Current Policy + Avoid + Shift + Improve strategies"
     CUSR = "Custom scenario results"
 
 

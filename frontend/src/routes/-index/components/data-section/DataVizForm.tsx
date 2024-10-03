@@ -99,13 +99,6 @@ export const DataVizForm = () => {
     void form.handleSubmit(onSubmit)();
   }
 
-  // TODO:
-  // remove highlight when clicking on anything that has no onClick attribute?
-  /* GTP:
-Can you help me refine the click handling logic for maintaining highlights in my Recharts stacked area chart? I want to ensure that clicking an element with an onClick listener removes the highlight
-  */
-  //  but what happen if you click  on a child of an element with a onClick, it won't work right? :/
-
   return (
     <Form {...form}>
       <form

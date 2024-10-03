@@ -1,4 +1,3 @@
-import { cn } from "@/lib/utils";
 import { DATA_TABLE_TESTID } from "@/lib/constants";
 
 import {
@@ -18,6 +17,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { useState } from "react";
+import { ScrollArea, ScrollBar } from "./ui/scroll-area";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -42,12 +42,14 @@ export function DataTableGeneric<TData, TValue>({
   });
 
   return (
-    <div
-      className={cn("h-full [&_svg]:overflow-visible")}
+    <ScrollArea
+      className="relative flex h-full flex-1 flex-col overflow-auto"
       data-testid={DATA_TABLE_TESTID}
+      type="always"
     >
+      <ScrollBar orientation="horizontal" />
       <Table>
-        <TableHeader>
+        <TableHeader className="sticky top-0 bg-white">
           {table.getHeaderGroups().map((headerGroup) => (
             <TableRow key={headerGroup.id}>
               {headerGroup.headers.map((header) => {
@@ -88,6 +90,6 @@ export function DataTableGeneric<TData, TValue>({
           )}
         </TableBody>
       </Table>
-    </div>
+    </ScrollArea>
   );
 }

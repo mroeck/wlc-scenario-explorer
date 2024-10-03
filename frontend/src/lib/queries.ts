@@ -11,7 +11,7 @@ import {
   ScenarioRowsAggregatedSchema,
 } from "./shared_with_backend/schemas";
 import { z } from "zod";
-import { YEAR_KEY } from "./shared_with_backend/constants";
+import { API_ROUTES, YEAR_KEY } from "./shared_with_backend/constants";
 import { ATTRIBUTE_OPTIONS_COLOR } from "@/routes/-index/components/data-section/colors";
 
 type FetchScenarioRowsArgs = {
@@ -31,7 +31,7 @@ export async function fetchScenarioRowsAggregated({
 }: FetchScenarioRowsArgs) {
   if (scenario === undefined) return [];
 
-  const url = `${env.PUBLIC_API_URL}/scenario`;
+  const url = env.PUBLIC_API_URL + API_ROUTES.scenario;
   const response = await fetch(url, {
     method: "POST",
     headers: {

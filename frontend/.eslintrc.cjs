@@ -10,12 +10,20 @@ module.exports = {
     "plugin:tailwindcss/recommended",
     "plugin:prettier/recommended",
   ],
+  overrides: [
+    {
+      files: ["**/*.{ts,tsx}"],
+      extends: [
+        "plugin:@eslint-react/recommended-legacy"
+      ]
+    }
+  ],
   ignorePatterns: ["dist", ".eslintrc.cjs", "./*.ts"],
   parser: "@typescript-eslint/parser",
   parserOptions: {
     project: "./tsconfig.eslint.json",
   },
-  plugins: ["react-refresh", "@typescript-eslint"],
+  plugins: ["react-refresh", "@typescript-eslint", "@eslint-react/eslint-plugin"],
   rules: {
     "react/no-unescaped-entities": "off",
     "react/prop-types": "off",

@@ -109,9 +109,9 @@ const MultiSelect = React.forwardRef<HTMLButtonElement, MultiSelectProps>(
                 </div>
               </CommandItem>
               <CommandSeparator />
-              {options.map((option, index) => (
+              {options.map((option) => (
                 <CommandItem
-                  key={index}
+                  key={option.value}
                   onSelect={() => {
                     handleSelect(option);
                     setOpen(true);
