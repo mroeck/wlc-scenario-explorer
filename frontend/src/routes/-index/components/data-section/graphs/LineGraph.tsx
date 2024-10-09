@@ -36,6 +36,7 @@ export const LineGraph = ({
   data,
   unit,
   highlight,
+  domain,
 }: GraphProps) => {
   const navigate = route.useNavigate();
   const isSomethingHighlighted = !!highlight;
@@ -57,7 +58,7 @@ export const LineGraph = ({
       <LineChart {...commonChartProps} data={data}>
         <CartesianGrid {...commonCartisianGridProps} />
         <XAxis {...commonXaxisProps} />
-        <YAxis {...commonYaxisProps}>
+        <YAxis {...commonYaxisProps} domain={domain} allowDataOverflow>
           <Label value={unit} {...commonYaxisLabelProps} />
         </YAxis>
         {attributeOptions.map((option) => {
@@ -72,11 +73,11 @@ export const LineGraph = ({
           return (
             <Line
               {...commonGraphElementProps}
-              strokeWidth={3}
               key={option}
               type="monotone"
               dataKey={option}
               stroke={areaColor}
+              strokeWidth={3}
               isAnimationActive={animation}
               onClick={() => {
                 onLineClick({ highlight: option });

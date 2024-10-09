@@ -15,3 +15,5 @@ export type Unit =
 export type UnitMinified =
   | `${ValueOf<typeof INDICATOR_TO_UNIT>}/${ValueOf<typeof DIVIDED_BY_TO_MINIFIED_UNIT>}`
   | ValueOf<typeof INDICATOR_TO_UNIT>;
+
+export type GraphDomain = [number, number];

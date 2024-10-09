@@ -43,6 +43,7 @@ export const StackedAreaChart = ({
   data,
   unit,
   highlight,
+  domain,
 }: GraphProps) => {
   const navigate = route.useNavigate();
   const isSomethingHighlighted = !!highlight;
@@ -64,7 +65,7 @@ export const StackedAreaChart = ({
       <AreaChart {...commonChartProps} data={data}>
         <CartesianGrid {...commonCartisianGridProps} />
         <XAxis {...commonXaxisProps} />
-        <YAxis {...commonYaxisProps}>
+        <YAxis {...commonYaxisProps} domain={domain} allowDataOverflow>
           <Label value={unit} {...commonYaxisLabelProps} />
         </YAxis>
         {attributeOptions.map((option, index) => {

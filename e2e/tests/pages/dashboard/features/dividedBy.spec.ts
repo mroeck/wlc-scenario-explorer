@@ -25,14 +25,18 @@ test.describe("dividedBy", () => {
         .getByRole("combobox");
 
       await expect(page.getByText("GWP total by")).toBeVisible();
-      await expect(page.getByText("MtCO2e", { exact: true })).toBeVisible();
+      await expect(
+        page.getByText("MtCO2e", { exact: true }).nth(1),
+      ).toBeVisible();
       await selectDividedBy.click();
 
       await page.getByLabel("m² (country)").click();
       await expect(
         page.getByText("GWP total per m² (country) by"),
       ).toBeVisible();
-      await expect(page.getByText("MtCO2e/m²", { exact: true })).toBeVisible();
+      await expect(
+        page.getByText("MtCO2e/m²", { exact: true }).nth(1),
+      ).toBeVisible();
 
       await testScreenshot({
         page,
@@ -47,7 +51,8 @@ test.describe("dividedBy", () => {
       await expect(
         page
           .locator('[id="radix-\\:rm\\:-content-Stacked\\ Area\\ Chart"]')
-          .getByText("MtCO2e/capita", { exact: true }),
+          .getByText("MtCO2e/capita", { exact: true })
+          .nth(1),
       ).toBeVisible();
 
       await testScreenshot({

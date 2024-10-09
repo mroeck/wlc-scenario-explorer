@@ -1,6 +1,6 @@
 from flask import Flask, request
 from flask_cors import CORS, cross_origin
-from src.queries import get_scenario_rows
+from src.queries import get_scenario_rows, ScenarioDataType
 from src.shared_with_frontend.schemas import (
     AttributeEnumSchema,
     ScenarioEnumSchema,
@@ -31,7 +31,7 @@ def hello_world() -> str:
 
 @app.route("/scenario", methods=["POST"])
 @cross_origin()  # type:ignore[misc]
-def scenario() -> list[dict[str, int]]:
+def scenario() -> ScenarioDataType:
     requestdata = request.json
     breakdown_by = ATTRIBUTE_TO_DB_COLUMNS[
         AttributeEnumSchema(requestdata["breakdownBy"])  # type:ignore[index]

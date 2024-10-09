@@ -20,6 +20,21 @@ export const ScenarioRowsAggregatedSchema = z
   })
   .catchall(z.number());
 
+const MinmaxSchema = z.strictObject({
+  min: z.number(),
+  max: z.number(),
+});
+
+export const ResultsScenarioRowsAggregatedSchema = z.strictObject({
+  data: ScenarioRowsAggregatedSchema.array(),
+  minmax: z
+    .strictObject({
+      stacked: MinmaxSchema,
+      nonStacked: MinmaxSchema,
+    })
+    .optional(),
+});
+
 export const ScenarioSchema = z.enum(SCENARIOS_OPTIONS);
 
 export const YearSchema = z.coerce

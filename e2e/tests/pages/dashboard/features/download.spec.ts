@@ -6,11 +6,13 @@ import {
 } from "@/lib/constants";
 import { test, expect } from "@playwright/test";
 import { TAGS } from "@tests/constants";
+import { waitLoadingEnds } from "@tests/functions";
 
 test.describe("dashboard download", () => {
   test.skip(({ isMobile }) => isMobile, "Desktop only!");
   test.beforeEach(async ({ page }) => {
     await page.goto(ROUTES.DASHBOARD + "?animation=false");
+    await waitLoadingEnds({ page });
   });
 
   const formats = [...imageFormats, ...spreadsheetFormats] as const;
