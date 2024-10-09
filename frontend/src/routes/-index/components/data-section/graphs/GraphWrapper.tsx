@@ -9,7 +9,7 @@ import { useRef } from "react";
 import type { StackedAreaChart } from "./StackedAreaChart";
 import type { StackedBarChart } from "./StackedBarChart";
 import type { LineGraph } from "./LineGraph";
-import type { UnitMinified } from "../types";
+import type { GraphDomain, UnitMinified } from "../types";
 import type { BreakdownByOptions } from "./types";
 
 const route = getRouteApi(ROUTES.DASHBOARD);
@@ -18,12 +18,14 @@ type GraphWrapperProps = {
   data: z.infer<typeof ScenarioRowsAggregatedArraySchema>;
   unit: UnitMinified;
   breakdownBy: Attribute;
+  domain: GraphDomain | undefined;
   Graph: typeof StackedAreaChart | typeof StackedBarChart | typeof LineGraph;
 };
 export const GraphWrapper = ({
   data,
   unit,
   breakdownBy,
+  domain,
   Graph,
 }: GraphWrapperProps) => {
   const chartRef = useRef<HTMLDivElement>(null);
@@ -65,6 +67,7 @@ export const GraphWrapper = ({
           data={data}
           unit={unit}
           highlight={highlight}
+          domain={domain}
         />
       </div>
     </div>

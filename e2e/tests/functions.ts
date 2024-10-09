@@ -5,6 +5,15 @@ import {
   type PageAssertionsToHaveScreenshotOptions,
 } from "@playwright/test";
 
+type WaitLoadingEnds = {
+  page: Page;
+};
+export const waitLoadingEnds = async ({ page }: WaitLoadingEnds) => {
+  const loadingIcon = page.getByRole("progressbar");
+
+  await expect(loadingIcon).toHaveCount(0, { timeout: 20_0000 });
+};
+
 type TestScreenshotMatch = {
   page: Page;
   target: Locator | Page;
@@ -17,6 +26,7 @@ export async function testScreenshot({
 }: TestScreenshotMatch) {
   await page.bringToFront(); // https://github.com/microsoft/playwright/issues/20434#issuecomment-1477560521
   await page.evaluate(() => document.fonts.ready);
+  await waitLoadingEnds({ page });
 
   await expect(target).toHaveScreenshot(options);
 }
@@ -31,12 +41,3 @@ export async function testPageScreenshot({
 }: TestPageScreenshotMatch) {
   await testScreenshot({ page, target: page, options: { fullPage } });
 }
-
-type WaitLoadingEnds = {
-  page: Page;
-};
-export const waitLoadingEnds = async ({ page }: WaitLoadingEnds) => {
-  const loadingIcon = page.getByRole("progressbar");
-
-  await expect(loadingIcon).toHaveCount(0, { timeout: 20_0000 });
-};

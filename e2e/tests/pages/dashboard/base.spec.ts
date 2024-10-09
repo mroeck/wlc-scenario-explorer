@@ -28,7 +28,7 @@ test.describe("dashboard", () => {
         timeout: 5_000,
       });
       await expect(
-        page.getByTestId(GRAPH_TESTID).getByText(DEFAULT_UNIT_MINIMIZED),
+        page.getByTestId(GRAPH_TESTID).getByText(DEFAULT_UNIT_MINIMIZED).nth(1),
       ).toBeVisible({
         timeout: 10_000,
       });

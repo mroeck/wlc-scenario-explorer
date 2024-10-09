@@ -91,7 +91,7 @@ test.describe("data viz", () => {
     const indicator2 = INDICATORS_UNITS[1];
     const graph = page.locator(ACTIVE_DATA_TAB_LOCATOR);
 
-    await expect(graph.getByText(indicator1)).toBeVisible();
+    await expect(graph.getByText(indicator1).nth(1)).toBeVisible();
 
     await indicatorSelect.click();
     await indicatorOption.click();
@@ -123,7 +123,10 @@ test.describe("data viz", () => {
     await indicatorSelect.click();
     await indicatorOption2.click();
     await expect(
-      page.getByTestId(GRAPH_TESTID).getByText(indicator2, { exact: true }),
+      page
+        .getByTestId(GRAPH_TESTID)
+        .getByText(indicator2, { exact: true })
+        .nth(1),
     ).toBeVisible();
   });
 });

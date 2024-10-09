@@ -53,3 +53,5 @@ export const commonGraphElementProps = {
   fillOpacity: 0.75,
   stackId: "1",
 };
+
+export const SCENARIO_QUERY_KEY = "scenarioRowsAggregated";

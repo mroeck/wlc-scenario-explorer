@@ -36,6 +36,7 @@ export const StackedBarChart = ({
   data,
   unit,
   highlight,
+  domain,
 }: GraphProps) => {
   const navigate = route.useNavigate();
   const isSomethingHighlighted = !!highlight;
@@ -56,8 +57,8 @@ export const StackedBarChart = ({
     <ResponsiveContainer width="100%" height="100%" ref={chartRef}>
       <BarChart {...commonChartProps} data={data}>
         <CartesianGrid {...commonCartisianGridProps} />
-        <XAxis {...commonXaxisProps} />
-        <YAxis {...commonYaxisProps}>
+
+        <YAxis {...commonYaxisProps} domain={domain} allowDataOverflow>
           <Label value={unit} {...commonYaxisLabelProps} />
         </YAxis>
         {attributeOptions.map((option) => {
@@ -99,6 +100,7 @@ export const StackedBarChart = ({
             />
           )}
         />
+        <XAxis {...commonXaxisProps} />
         <Legend content={(props) => <CustomLegend payload={props.payload} />} />
       </BarChart>
     </ResponsiveContainer>

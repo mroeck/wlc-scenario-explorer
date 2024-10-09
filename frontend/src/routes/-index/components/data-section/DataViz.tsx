@@ -39,7 +39,9 @@ import { useCallback, useState } from "react";
 import { ComparisonSlider } from "./ComparisonSlider";
 import { SettingsButton } from "@/components/settings-button";
 import { GraphWrapper } from "./graphs/GraphWrapper";
-import type { Unit, UnitMinified } from "./types";
+import type { GraphDomain, Unit, UnitMinified } from "./types";
+import { SCENARIO_QUERY_KEY } from "./constants";
+import { getDomainAll } from "./utils";
 
 const route = getRouteApi(ROUTES.DASHBOARD);
 
@@ -52,15 +54,17 @@ type ContentProps = {
   data: z.infer<typeof ScenarioRowsAggregatedArraySchema>;
   unit: UnitMinified;
   breakdownBy: Attribute;
+  domain: GraphDomain | undefined;
 };
 
 const createTab = (name: string, Graph: Graph) => ({
   name,
-  content: ({ data, unit, breakdownBy }: ContentProps) => (
+  content: ({ data, unit, breakdownBy, domain }: ContentProps) => (
     <GraphWrapper
       data={data}
       unit={unit}
       breakdownBy={breakdownBy}
+      domain={domain}
       Graph={Graph}
     />
   ),
@@ -190,12 +194,9 @@ export const DataViz = () => {
   const {
     isLoading: isLoadingA,
     error: errorA,
-    data: dataA,
+    data: resultsA,
   } = useQuery({
-    queryKey: [
-      "scenarioRowsAggregated",
-      { ...commonKeys, scenario: scenarioA },
-    ],
+    queryKey: [SCENARIO_QUERY_KEY, { ...commonKeys, scenario: scenarioA }],
     queryFn: () => fetchScenarioData(scenarioA),
     staleTime: Infinity,
   });
@@ -203,12 +204,9 @@ export const DataViz = () => {
   const {
     isLoading: isLoadingB,
     error: errorB,
-    data: dataB,
+    data: resultsB,
   } = useQuery({
-    queryKey: [
-      "scenarioRowsAggregated",
-      { ...commonKeys, scenario: scenarioB },
-    ],
+    queryKey: [SCENARIO_QUERY_KEY, { ...commonKeys, scenario: scenarioB }],
     queryFn: () => fetchScenarioData(scenarioB),
     staleTime: Infinity,
   });
@@ -216,9 +214,21 @@ export const DataViz = () => {
   const hasError = !!errorA || !!errorB;
   const isLoading = isLoadingA || isLoadingB;
   const hasSomeData =
-    !!dataA && !!dataB && (dataA.length > 0 || dataB.length > 0);
+    !!resultsA &&
+    !!resultsB &&
+    (resultsA.data.length > 0 || resultsB.data.length > 0);
   const canRenderContent = !isLoading && !hasError && hasSomeData;
-  const hasNoData = dataA?.length === 0 && dataB?.length === 0;
+  const hasNoData =
+    !!resultsA &&
+    !!resultsB &&
+    resultsA.data.length === 0 &&
+    resultsB.data.length === 0;
+
+  console.log(hasNoData, isLoading, hasError);
+
+  const domains = canRenderContent
+    ? getDomainAll({ resultsA, resultsB, display })
+    : undefined;
 
   const DataStatus = () => {
     if (isLoading) return <LoadingSpinner />;
@@ -275,7 +285,10 @@ export const DataViz = () => {
           </div>
 
           <div className="mt-auto flex gap-1">
-            <DownloadMenu data={dataA} domTarget={visualizationElement} />
+            <DownloadMenu
+              data={resultsA?.data}
+              domTarget={visualizationElement}
+            />
             <SettingsButton />
           </div>
         </div>
@@ -293,38 +306,45 @@ export const DataViz = () => {
           </div>
           <div className="pb-10"></div>
 
-          {tabs.map((tab) => (
-            <TabsContent
-              key={tab.name}
-              value={tab.name}
-              className="relative min-h-0 flex-1"
-              data-testid={TAB_CONTENT_TESTID}
-            >
-              <DataStatus />
-              {canRenderContent && (
-                <ComparisonSlider
-                  items={[
-                    {
-                      label: acronyms.scenarioA,
-                      component: tab.content({
-                        data: dataA,
-                        unit: unitMinified,
-                        breakdownBy,
-                      }),
-                    },
-                    {
-                      label: acronyms.scenarioB,
-                      component: tab.content({
-                        data: dataB,
-                        unit: unitMinified,
-                        breakdownBy,
-                      }),
-                    },
-                  ]}
-                />
-              )}
-            </TabsContent>
-          ))}
+          {tabs.map((tab) => {
+            const isStacked = tab.name !== DATA_TABS_NAMES.lineChart;
+            const domain = isStacked ? domains?.stacked : domains?.nonStacked;
+
+            return (
+              <TabsContent
+                key={tab.name}
+                value={tab.name}
+                className="relative min-h-0 flex-1"
+                data-testid={TAB_CONTENT_TESTID}
+              >
+                <DataStatus />
+                {canRenderContent && (
+                  <ComparisonSlider
+                    items={[
+                      {
+                        label: acronyms.scenarioA,
+                        component: tab.content({
+                          data: resultsA.data,
+                          unit: unitMinified,
+                          domain,
+                          breakdownBy,
+                        }),
+                      },
+                      {
+                        label: acronyms.scenarioB,
+                        component: tab.content({
+                          data: resultsB.data,
+                          unit: unitMinified,
+                          domain,
+                          breakdownBy,
+                        }),
+                      },
+                    ]}
+                  />
+                )}
+              </TabsContent>
+            );
+          })}
           <TabsContent
             key={DATA_TABS_NAMES.table}
             value={DATA_TABS_NAMES.table}
@@ -332,7 +352,9 @@ export const DataViz = () => {
             data-testid={TAB_CONTENT_TESTID}
           >
             <DataStatus />
-            {canRenderContent && <DataTable data={dataA} unit={unitMinified} />}
+            {canRenderContent && (
+              <DataTable data={resultsA.data} unit={unitMinified} />
+            )}
           </TabsContent>
         </div>
       </Tabs>

@@ -8,7 +8,7 @@ import type {
 } from "./types";
 import {
   FiltersSchema,
-  ScenarioRowsAggregatedSchema,
+  ResultsScenarioRowsAggregatedSchema,
 } from "./shared_with_backend/schemas";
 import { z } from "zod";
 import { API_ROUTES, YEAR_KEY } from "./shared_with_backend/constants";
@@ -29,7 +29,10 @@ export async function fetchScenarioRowsAggregated({
   indicator,
   dividedBy,
 }: FetchScenarioRowsArgs) {
-  if (scenario === undefined) return [];
+  if (scenario === undefined)
+    return {
+      data: [],
+    } as z.infer<typeof ResultsScenarioRowsAggregatedSchema>;
 
   const url = env.PUBLIC_API_URL + API_ROUTES.scenario;
   const response = await fetch(url, {
@@ -46,7 +49,7 @@ export async function fetchScenarioRowsAggregated({
     }),
   });
   const dataRaw = (await response.json()) as unknown;
-  const data = ScenarioRowsAggregatedSchema.array().parse(dataRaw);
+  const data = ResultsScenarioRowsAggregatedSchema.parse(dataRaw);
   return data;
 }
 

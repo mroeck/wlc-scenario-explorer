@@ -14,7 +14,7 @@ import {
 import type { FiltersSchema } from "@/lib/shared_with_backend/schemas";
 import { test, expect } from "@playwright/test";
 import { ACTIVE_DATA_TAB_LOCATOR, TAGS } from "@tests/constants";
-import { waitLoadingEnds } from "@tests/functions";
+import { testScreenshot, waitLoadingEnds } from "@tests/functions";
 import type { z } from "zod";
 
 test.describe("filters", () => {
@@ -64,14 +64,22 @@ test.describe("filters", () => {
         .click();
       await page.getByRole("option", { name: "Concrete" }).click();
 
-      await page.bringToFront();
-      await expect(page.locator(ACTIVE_DATA_TAB_LOCATOR)).toHaveScreenshot();
+      await testScreenshot({
+        page,
+        target: page.locator(ACTIVE_DATA_TAB_LOCATOR),
+      });
 
       await page.getByRole("tab", { name: "Stacked Bar Chart" }).click();
-      await expect(page.locator(ACTIVE_DATA_TAB_LOCATOR)).toHaveScreenshot();
+      await testScreenshot({
+        page,
+        target: page.locator(ACTIVE_DATA_TAB_LOCATOR),
+      });
 
       await page.getByRole("tab", { name: "Table" }).click();
-      await expect(page.locator(ACTIVE_DATA_TAB_LOCATOR)).toHaveScreenshot();
+      await testScreenshot({
+        page,
+        target: page.locator(ACTIVE_DATA_TAB_LOCATOR),
+      });
     },
   );
 
@@ -91,14 +99,22 @@ test.describe("filters", () => {
       await page.getByRole("option", { name: "FR" }).click();
       await page.getByRole("option", { name: "IT" }).click();
 
-      await page.bringToFront();
-      await expect(page.locator(ACTIVE_DATA_TAB_LOCATOR)).toHaveScreenshot();
+      await testScreenshot({
+        page,
+        target: page.locator(ACTIVE_DATA_TAB_LOCATOR),
+      });
 
       await page.getByRole("tab", { name: "Stacked Bar Chart" }).click();
-      await expect(page.locator(ACTIVE_DATA_TAB_LOCATOR)).toHaveScreenshot();
+      await testScreenshot({
+        page,
+        target: page.locator(ACTIVE_DATA_TAB_LOCATOR),
+      });
 
       await page.getByRole("tab", { name: "Table" }).click();
-      await expect(page.locator(ACTIVE_DATA_TAB_LOCATOR)).toHaveScreenshot();
+      await testScreenshot({
+        page,
+        target: page.locator(ACTIVE_DATA_TAB_LOCATOR),
+      });
     },
   );
 
@@ -179,8 +195,7 @@ test.describe("filters", () => {
   });
 
   test.describe("Filters do not error", () => {
-    // const comboboxCount = 11;
-    const comboboxCount = 10; //temp: we removed flow type fow now
+    const comboboxCount = 10;
     const FILTERS_TAB = "Filters";
     const xAxisValue = "2025";
 

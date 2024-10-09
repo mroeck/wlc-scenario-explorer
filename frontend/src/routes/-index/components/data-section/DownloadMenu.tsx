@@ -204,7 +204,9 @@ function exportAsCsv({ data }: ExportAsCsvArgs) {
 
 type DownloadMenuProps = {
   domTarget: Parameters<typeof domtoimage.toPng>[0] | null;
-  data: Awaited<ReturnType<typeof fetchScenarioRowsAggregated>> | undefined;
+  data:
+    | Awaited<ReturnType<typeof fetchScenarioRowsAggregated>>["data"]
+    | undefined;
 };
 export const DownloadMenu = ({ domTarget, data }: DownloadMenuProps) => {
   const isReady = !!data && !!domTarget;
