@@ -52,6 +52,7 @@ export const commonGraphElementProps = {
   strokeOpacity: 0.75,
   fillOpacity: 0.75,
   stackId: "1",
+  className: "hover:cursor-pointer",
 };
 
 export const SCENARIO_QUERY_KEY = "scenarioRowsAggregated";
