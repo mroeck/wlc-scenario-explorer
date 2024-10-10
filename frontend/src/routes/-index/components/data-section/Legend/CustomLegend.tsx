@@ -151,10 +151,11 @@ function ColorLegendItemAll({
           <li
             key={item.dataKey as string}
             className={cn(
-              "relative flex items-center gap-1",
+              "relative flex items-center gap-1 hover:cursor-pointer",
               isSomethingHighlighted &&
                 isHighlight &&
                 "before:absolute before:left-1/2 before:top-0 before:h-full before:w-[calc(100%+20px)] before:-translate-x-1/2 before:rounded-full before:bg-slate-200 before:content-['']",
+              isSomethingHighlighted && !isHighlight && "opacity-50",
             )}
             onClick={() => {
               onItemClick({ highlight: option });

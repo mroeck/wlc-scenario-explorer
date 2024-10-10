@@ -42,6 +42,7 @@ import { GraphWrapper } from "./graphs/GraphWrapper";
 import type { GraphDomain, Unit, UnitMinified } from "./types";
 import { SCENARIO_QUERY_KEY } from "./constants";
 import { getDomainAll } from "./utils";
+import type { ValueOf } from "type-fest";
 
 const route = getRouteApi(ROUTES.DASHBOARD);
 
@@ -224,8 +225,6 @@ export const DataViz = () => {
     resultsA.data.length === 0 &&
     resultsB.data.length === 0;
 
-  console.log(hasNoData, isLoading, hasError);
-
   const domains = canRenderContent
     ? getDomainAll({ resultsA, resultsB, display })
     : undefined;
@@ -237,7 +236,10 @@ export const DataViz = () => {
     return null;
   };
 
-  const onTabChange = (newDataTab: string) => {
+  const onTabChange = (
+    // eslint-disable-next-line @typescript-eslint/ban-types
+    newDataTab: ValueOf<typeof DATA_TABS_NAMES> | (string & {}),
+  ) => {
     void navigate({
       search: (prev) => ({
         ...prev,

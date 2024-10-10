@@ -1,6 +1,11 @@
 import { getAttributeOptionsOrdered } from "@/lib/utils";
 import { type z } from "zod";
-import { ROUTES, GRAPH_TESTID, SORT_OPTIONS } from "@/lib/constants";
+import {
+  ROUTES,
+  GRAPH_TESTID,
+  SORT_OPTIONS,
+  DATA_TABS_NAMES,
+} from "@/lib/constants";
 import { YEAR_KEY } from "@/lib/shared_with_backend/constants";
 import type { ScenarioRowsAggregatedArraySchema } from "@/lib/schemas";
 import type { Attribute } from "@/lib/types";
@@ -13,6 +18,50 @@ import type { GraphDomain, UnitMinified } from "../types";
 import type { BreakdownByOptions } from "./types";
 
 const route = getRouteApi(ROUTES.DASHBOARD);
+
+type SortByValueArgs = {
+  keys: BreakdownByOptions[];
+  item: Record<string, number>;
+  isLineGraph: boolean;
+};
+function sortByValue({ keys, item, isLineGraph }: SortByValueArgs) {
+  return keys.sort((keyA, keyB) => {
+    const comparison = item[keyA] - item[keyB];
+    return isLineGraph ? comparison : -comparison;
+  });
+}
+
+type getSortedAttributeOptionsArgs = {
+  sort: string;
+  dataTab: string;
+  breakdownBy: Parameters<typeof getAttributeOptionsOrdered>[0]["breakdownBy"];
+  firstItemKeys: Parameters<
+    typeof getAttributeOptionsOrdered
+  >[0]["defaultOptions"];
+  firstItem: Record<string, number>;
+};
+
+function getSortedAttributeOptions({
+  sort,
+  dataTab,
+  breakdownBy,
+  firstItemKeys,
+  firstItem,
+}: getSortedAttributeOptionsArgs) {
+  const isLineGraph = dataTab === DATA_TABS_NAMES.lineChart;
+  if (sort === SORT_OPTIONS.categoriesAlphabetically && !isLineGraph) {
+    return getAttributeOptionsOrdered({
+      defaultOptions: firstItemKeys,
+      breakdownBy,
+    });
+  }
+
+  return sortByValue({
+    keys: firstItemKeys,
+    item: firstItem,
+    isLineGraph,
+  });
+}
 
 type GraphWrapperProps = {
   data: z.infer<typeof ScenarioRowsAggregatedArraySchema>;
@@ -29,11 +78,12 @@ export const GraphWrapper = ({
   Graph,
 }: GraphWrapperProps) => {
   const chartRef = useRef<HTMLDivElement>(null);
-  const { animation, sort, highlight } = route.useSearch({
+  const { animation, sort, highlight, dataTab } = route.useSearch({
     select: (search) => ({
       animation: search.animation,
       sort: search.sort,
       highlight: search.highlight,
+      dataTab: search.dataTab,
     }),
   });
 
@@ -45,13 +95,13 @@ export const GraphWrapper = ({
     keyB.localeCompare(keyA),
   ) as BreakdownByOptions[];
 
-  const attributeOptions =
-    sort === SORT_OPTIONS.categoriesAlphabetically
-      ? getAttributeOptionsOrdered({
-          defaultOptions: firstItemKeys,
-          breakdownBy,
-        })
-      : firstItemKeys.sort((keyA, keyB) => firstItem[keyB] - firstItem[keyA]);
+  const attributeOptions = getSortedAttributeOptions({
+    sort,
+    dataTab,
+    breakdownBy,
+    firstItemKeys,
+    firstItem,
+  });
 
   return (
     <div className="h-full overflow-x-visible">

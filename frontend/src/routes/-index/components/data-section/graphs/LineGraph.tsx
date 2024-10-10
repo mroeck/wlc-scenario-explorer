@@ -67,7 +67,7 @@ export const LineGraph = ({
           const isHighlight = option === highlight;
           const opacity =
             isSomethingHighlighted && !isHighlight
-              ? HIGHLIGHT_OPACITY
+              ? HIGHLIGHT_OPACITY * 2.5
               : undefined;
 
           return (
