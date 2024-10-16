@@ -1,4 +1,26 @@
+---
+sidebar_position: 1
+---
 # Getting started
+
+## Introduction
+
+Welcome to the Scenario Explorer, an application designed to visualize scenarios generated as parquet files by the [study](https://c.ramboll.com/life-cycle-emissions-of-eu-building-and-construction) team. The app is accessible at [https://ae-scenario-explorer.cloud.set.kuleuven.be](https://ae-scenario-explorer.cloud.set.kuleuven.be).
+
+This application was developed in 2024 by Benjamin Lesné, a temporary subcontractor.
+
+It is hosted on the [KU Leuven university](https://architectuur.kuleuven.be/architectural-engineering) infrastructure, and the DevOps referent is Ronny Moreas.
+
+The terminal commands in this documentation are for linux machines.
+
+### Contacts
+
+- **Ronny Moreas**: it-support@set.kuleuven.be
+- **Benjamin Lesné**: benjamin.lesne@outlook.fr
+
+## Start the app
+
+Here is the content of the [root/README.md](https://gitlab.kuleuven.be/ae/sustainable-construction/dg-grow-eu-scenariotool/scenario-explorer/-/blob/develop/README.md?ref_type=heads) file:
 
 You need [python ^3.12.6](https://www.python.org/downloads/), [node ^20.13.1](https://nodejs.org/en/download/package-manager), [poetry ^1.8.3](https://python-poetry.org/docs/) and [pnpm ^9.4.0](https://pnpm.io/installation#using-other-package-managers) installed on your machine (or higher versions).
 

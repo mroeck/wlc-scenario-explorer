@@ -5,8 +5,8 @@ import type {
 import type { Attribute } from "@/lib/types";
 import type { z } from "zod";
 import type { GraphDomain, UnitMinified } from "../types";
-import type { ATTRIBUTE_OPTIONS_COLOR } from "../colors";
 import type { KeysOfUnion, ValueOf } from "type-fest";
+import type { ATTRIBUTE_OPTIONS_COLOR } from "@/lib/shared_with_backend/constants";
 
 export type BreakdownByOptions = KeysOfUnion<
   ValueOf<typeof ATTRIBUTE_OPTIONS_COLOR>

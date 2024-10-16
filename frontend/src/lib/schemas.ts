@@ -7,7 +7,7 @@ import {
 } from "./constants";
 import { ScenarioRowsAggregatedSchema } from "./shared_with_backend/schemas";
 import type { UnionToTuple } from "type-fest";
-import { ATTRIBUTE_OPTIONS_COLOR } from "@/routes/-index/components/data-section/colors";
+import { ATTRIBUTE_OPTIONS_COLOR } from "@/lib/shared_with_backend/constants";
 import type { BreakdownByOptions } from "@/routes/-index/components/data-section/graphs/types";
 
 export const DisplaySchema = z.enum(DISPLAY_OPTIONS);
