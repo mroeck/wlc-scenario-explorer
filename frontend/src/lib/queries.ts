@@ -11,8 +11,11 @@ import {
   ResultsScenarioRowsAggregatedSchema,
 } from "./shared_with_backend/schemas";
 import { z } from "zod";
-import { API_ROUTES, YEAR_KEY } from "./shared_with_backend/constants";
-import { ATTRIBUTE_OPTIONS_COLOR } from "@/routes/-index/components/data-section/colors";
+import {
+  API_ROUTES,
+  YEAR_KEY,
+  ATTRIBUTE_OPTIONS_COLOR,
+} from "@/lib/shared_with_backend/constants";
 
 type FetchScenarioRowsArgs = {
   breakdownBy: Attribute;
