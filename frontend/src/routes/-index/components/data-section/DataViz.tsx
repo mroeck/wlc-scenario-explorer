@@ -43,6 +43,7 @@ import type { GraphDomain, Unit, UnitMinified } from "./types";
 import { SCENARIO_QUERY_KEY } from "./constants";
 import { getDomainAll } from "./utils";
 import type { ValueOf } from "type-fest";
+import type { ScenarioSchema } from "@/lib/shared_with_backend/schemas";
 
 const route = getRouteApi(ROUTES.DASHBOARD);
 
@@ -83,8 +84,8 @@ const defaultTab: TabName = "Stacked Area Chart";
 type CreateTitleArgs = {
   unit: Unit;
   breakdownBy: (typeof ATTRIBUTES)[number];
-  scenarioA: string;
-  scenarioB?: string;
+  scenarioA: z.infer<typeof ScenarioSchema>;
+  scenarioB?: z.infer<typeof ScenarioSchema> | typeof SCENARIO_B_LABEL;
   activeTab: string;
   display: string;
 };
@@ -93,20 +94,33 @@ function createTitle({
   unit,
   breakdownBy,
   scenarioA,
-  scenarioB = "scenario B",
+  scenarioB = SCENARIO_B_LABEL,
   activeTab,
   display,
 }: CreateTitleArgs) {
   const isTable = activeTab === DATA_TABS_NAMES.table;
 
-  let forScenarios = scenarioA;
+  type Keys = keyof typeof SCENARIO_TO_ACRONYM;
+
+  // @ts-expect-error: I know the index may not exists
+  const acronymA = SCENARIO_TO_ACRONYM[scenarioA]
+    ? ` (${SCENARIO_TO_ACRONYM[scenarioA as Keys]})`
+    : "";
+  // @ts-expect-error: I know the index may not exists
+  const acronymB = SCENARIO_TO_ACRONYM[scenarioB]
+    ? ` (${SCENARIO_TO_ACRONYM[scenarioB as Keys]})`
+    : "";
+
+  const scenarioATitle = `${scenarioA}${acronymA}`;
+  const scenarioBTitle = `${scenarioB}${acronymB}`;
+  let forScenarios: string = scenarioATitle;
 
   if (isTable) {
-    forScenarios = scenarioA;
+    forScenarios = scenarioATitle;
   } else if (display === SCENARIO_A_AND_B) {
-    forScenarios = `${scenarioA} VS ${scenarioB}`;
+    forScenarios = `${scenarioATitle} VS ${scenarioBTitle}`;
   } else if (display === SCENARIO_B_ONLY) {
-    forScenarios = scenarioB;
+    forScenarios = scenarioBTitle;
   }
 
   return (

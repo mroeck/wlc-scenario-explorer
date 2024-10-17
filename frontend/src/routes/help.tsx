@@ -6,10 +6,10 @@ import { TypographyList } from "@/components/TypographyList";
 import { TypographyMuted } from "@/components/TypographyMuted";
 import { TypographyP } from "@/components/TypographyP";
 import { createFileRoute } from "@tanstack/react-router";
-import lineChartShowingColorAndTooltipUrl from "@/assets/line_chart_evolution_gwp_total_new_residential_buildings_by_country.png";
-import tableWithFilteredEmbodiedCaronUrl from "@/assets/table_with_filtered_embodied_carbon_data_of_new_buildings_per_country_ready_for_download.png";
+import lineChartShowingColorAndTooltipUrl from "@/assets/dataViz/line_chart_evolution_gwp_total_new_residential_buildings_by_country.png";
+import tableWithFilteredEmbodiedCaronUrl from "@/assets/dataViz/table_with_filtered_embodied_carbon_data_of_new_buildings_per_country_ready_for_download.png";
 
-import stackedBarChartForEmbodiedCarbonUrl from "@/assets/stacked_bar_chart_showing_filtered_results_for_embodied_carbon_by_building_element_class.png";
+import stackedBarChartForEmbodiedCarbonUrl from "@/assets/dataViz/stacked_bar_chart_showing_filtered_results_for_embodied_carbon_by_building_element_class.png";
 import { TypographyFigure } from "@/components/TypographyFigure";
 import { HELP_PAGE_IDS, HELP_TITLE } from "@/lib/constants";
 import { TypographyContent } from "@/components/TypographyContent";

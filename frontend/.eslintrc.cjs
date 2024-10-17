@@ -27,6 +27,7 @@ module.exports = {
     "@eslint-react/eslint-plugin",
   ],
   rules: {
+    "@typescript-eslint/restrict-template-expressions": ["error", { "allowNumber": true }],
     "react/no-unescaped-entities": "off",
     "react/prop-types": "off",
     "react/react-in-jsx-scope": "off",

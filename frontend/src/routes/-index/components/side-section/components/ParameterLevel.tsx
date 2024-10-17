@@ -37,11 +37,12 @@ export const ParameterLevel = ({
         commonStyles,
         status === PARAMETER_STATUS.active && "bg-primary text-white",
         status === PARAMETER_STATUS.disable && "opacity-30",
+        "aspect-auto size-[unset] px-2 py-0",
         className,
       )}
       type="button"
     >
-      {level}
+      {level?.toFixed(1)}
     </button>
   );
 };

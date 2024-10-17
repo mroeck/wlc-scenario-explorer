@@ -19,7 +19,7 @@ import {
 } from "@tanstack/react-router";
 import { Drawer, DrawerClose, DrawerContent, DrawerTrigger } from "./ui/drawer";
 import { Menu } from "lucide-react";
-import euFlagUrl from "@/assets/eu-flag.jpg";
+import PROJECT_LOGO_URL from "@/assets/PROJECT_LOGO.webp";
 
 const DEFAULT_DASHBOARD_SEARCH = {
   breakdownBy: DEFAULT_BREAKDOWN_BY,
@@ -164,7 +164,7 @@ export const Header = () => {
         >
           <div className="flex items-center gap-2 font-semibold">
             <div className="flex aspect-[1.161px] h-1 w-[48px] items-center">
-              <img src={euFlagUrl} className="border border-white" />
+              <img src={PROJECT_LOGO_URL} className="border border-white" />
             </div>
             <span>{PROJECT_NAME}</span>
           </div>

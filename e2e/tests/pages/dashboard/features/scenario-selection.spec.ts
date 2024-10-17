@@ -5,6 +5,7 @@ import {
   FOR_SCENARIOS_TESTID,
   RESET_LABEL,
   MOBILE_SETTINGS_BUTTON,
+  SCENARIO_TO_ACRONYM,
 } from "@/lib/constants";
 import { SCENARIOS_OPTIONS } from "@/lib/shared_with_backend/constants";
 import { test, expect } from "@playwright/test";
@@ -23,6 +24,8 @@ test.describe("scenario selection", () => {
       .filter({ hasText: MOBILE_SETTINGS_BUTTON });
     const scenarioA = SCENARIOS_OPTIONS[0];
     const scenarioB = SCENARIOS_OPTIONS[1];
+    const acronymA = SCENARIO_TO_ACRONYM[scenarioA];
+    const acronymB = SCENARIO_TO_ACRONYM[scenarioB];
 
     if (isMobile) {
       await mobileSettings.click();
@@ -38,11 +41,22 @@ test.describe("scenario selection", () => {
       await page.getByRole("button").first().click();
     }
 
-    const vsText = `${scenarioA} VS ${scenarioB}`;
-    await expect(page.getByTestId(FOR_SCENARIOS_TESTID)).toHaveText(vsText);
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition, @typescript-eslint/restrict-template-expressions -- current code is more flexible in case of changes on SCENARIOS_OPTIONS
+    const acronymAForTitle = acronymA ? ` (${acronymA})` : "";
+    const acronymBForTitle = acronymB ? ` (${acronymB})` : "";
+
+    const expectedGraphTitle = `${scenarioA + acronymAForTitle} VS ${scenarioB + acronymBForTitle}`;
+    await expect(page.getByTestId(FOR_SCENARIOS_TESTID)).toHaveText(
+      expectedGraphTitle,
+    );
 
     await page.getByLabel("Settings").nth(1).click();
-    await expect(page.getByTestId(DISPLAY_SELECT_TESTID)).toHaveText(vsText);
+
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition -- current code is more flexible in case of changes on SCENARIOS_OPTIONS
+    const expectedDisplayValue = `${acronymA || scenarioA}VS${acronymB || scenarioB}`;
+    await expect(page.getByTestId(DISPLAY_SELECT_TESTID)).toHaveText(
+      expectedDisplayValue,
+    );
 
     await page.getByRole("button", { name: "Close" }).click();
 

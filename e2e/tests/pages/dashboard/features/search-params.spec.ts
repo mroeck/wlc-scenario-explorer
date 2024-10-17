@@ -10,6 +10,7 @@ import {
   SCENARIO_B_ONLY,
   DEFAULT_SCENARIO,
   SELECT_DIVIDED_BY_TESTID,
+  SCENARIO_B_LABEL,
 } from "@/lib/constants";
 import { DIVIDED_BY_OPTIONS } from "@/lib/shared_with_backend/constants";
 import { test, expect } from "@playwright/test";
@@ -99,11 +100,13 @@ test.describe("search params", () => {
     const displaySelect = page.getByTestId(DISPLAY_SELECT_TESTID);
 
     const display = SCENARIO_B_ONLY;
+    const expectedLabel = `${SCENARIO_B_LABEL} only`;
+
     const url = `${ROUTES.DASHBOARD}?display=${display}`;
 
     await page.goto(url);
     await page.getByLabel("Settings").nth(1).click();
-    await expect(displaySelect).toHaveText(display);
+    await expect(displaySelect).toHaveText(expectedLabel);
   });
 
   test("uses filters search param on mount", async ({ page }) => {

@@ -12,6 +12,7 @@
     "e2e:dev:headed:mobile": "playwright test --headed --project='Mobile Chrome'",
     "e2e:update:snapshots": "cd ../ && npm run e2e:update:snapshots && cd e2e",
     "e2e:report": "serve ./playwright-report/ -l 9323",
+    "e2e:nonSnapshot": "npx playwright test --grep-invert @snapshot",
     "prepare": "cd .. && husky e2e/.husky",
     "pre-push": "sh ./scripts/prevent-.only-page.pause-push.sh"
   },
