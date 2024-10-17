@@ -27,6 +27,7 @@ import {
   SCENARIO_A_ONLY,
   SCENARIO_B_LABEL,
   SCENARIO_B_ONLY,
+  SCENARIO_TO_ACRONYM,
   SORT_OPTIONS,
   SORT_OPTIONS_VALUES,
   SORT_SELECT_TESTID,
@@ -35,9 +36,19 @@ import { getRouteApi, Link } from "@tanstack/react-router";
 
 const route = getRouteApi(ROUTES.DASHBOARD);
 
+function getTitleAcronym({ acronym }: { acronym: string | undefined }) {
+  return acronym ? ` (${acronym})` : "";
+}
+
 export function SettingsButton() {
   const navigate = route.useNavigate();
-  const { sort, display, scenarioA, scenarioB, dataTab } = route.useSearch({
+  const {
+    sort,
+    display,
+    scenarioA,
+    scenarioB = SCENARIO_B_LABEL,
+    dataTab,
+  } = route.useSearch({
     select: (search) => ({
       display: search.display,
       sort: search.sort,
@@ -46,6 +57,20 @@ export function SettingsButton() {
       dataTab: search.dataTab,
     }),
   });
+
+  type Keys = keyof typeof SCENARIO_TO_ACRONYM;
+  const acronymA =
+    scenarioA in SCENARIO_TO_ACRONYM
+      ? SCENARIO_TO_ACRONYM[scenarioA as Keys]
+      : undefined;
+
+  const acronymB =
+    scenarioB in SCENARIO_TO_ACRONYM
+      ? SCENARIO_TO_ACRONYM[scenarioB as Keys]
+      : undefined;
+
+  const acronymAForTitle = getTitleAcronym({ acronym: acronymA });
+  const acronymBForTitle = getTitleAcronym({ acronym: acronymB });
 
   const SELECT_IDS = {
     display: useId(),
@@ -126,12 +151,16 @@ export function SettingsButton() {
                   <SelectContent>
                     <SelectItem
                       value={SCENARIO_A_ONLY}
-                    >{`${scenarioA} only`}</SelectItem>
+                    >{`${scenarioA}${acronymAForTitle} only`}</SelectItem>
                     <SelectItem
                       value={SCENARIO_B_ONLY}
-                    >{`${scenarioB ?? "Scenario B"} only`}</SelectItem>
+                    >{`${scenarioB}${acronymBForTitle} only`}</SelectItem>
                     <SelectItem value={SCENARIO_A_AND_B}>
-                      {`${scenarioA} VS ${scenarioB ?? "Scenario B"}`}
+                      <span className="block w-full overflow-hidden text-ellipsis text-nowrap font-medium">
+                        {acronymA || scenarioA}
+                        <span className="mx-2 font-bold">VS</span>
+                        {acronymB || scenarioB}
+                      </span>
                     </SelectItem>
                   </SelectContent>
                 </Select>{" "}

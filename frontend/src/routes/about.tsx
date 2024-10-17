@@ -15,6 +15,13 @@ import {
   ROECK_EMAIL,
 } from "@/lib/constants";
 import { createFileRoute } from "@tanstack/react-router";
+import RAMBOLL_IMAGE_URL from "@/assets/partners/ramboll.svg";
+import BPIE_IMAGE_URL from "@/assets/partners/bpie.svg";
+import KUL_IMAGE_URL from "@/assets/partners/kuleuven.svg";
+import TUGRAZ_IMAGE_URL from "@/assets/partners/tugraz.svg";
+import POLITECNICO_DI_MILANO_IMAGE_URL from "@/assets/partners/politecnicoDiMilano.png";
+import IIASA_IMAGE_URL from "@/assets/partners/IIASA.png";
+import AALBORG_IMAGE_URL from "@/assets/partners/aalborg.svg";
 
 export const Route = createFileRoute("/about")({
   component: () => <About />,
@@ -58,6 +65,40 @@ const HEADERS = {
     id: "license-and-citation",
   },
 };
+
+const PARTNERS = [
+  {
+    imageUrl: RAMBOLL_IMAGE_URL,
+    linkUrl: "https://www.ramboll.com/",
+    name: "Ramboll Management Consulting",
+  },
+  { imageUrl: BPIE_IMAGE_URL, linkUrl: "https://www.bpie.eu/", name: "BPIE" },
+  {
+    imageUrl: KUL_IMAGE_URL,
+    linkUrl: "https://architectuur.kuleuven.be/architectural-engineering",
+    name: "KU Leuven ",
+  },
+  {
+    imageUrl: TUGRAZ_IMAGE_URL,
+    linkUrl: "https://www.tugraz.at/arbeitsgruppen/nhb/home",
+    name: "TU Graz",
+  },
+  {
+    imageUrl: POLITECNICO_DI_MILANO_IMAGE_URL,
+    linkUrl: "https://www.dabc.polimi.it/en/abclab/the-units/lifecycleteam",
+    name: "Politecnico di Milano",
+  },
+  {
+    imageUrl: AALBORG_IMAGE_URL,
+    linkUrl: "https://www.en.build.aau.dk/research/sustainability-of-buildings",
+    name: "Aalborg University",
+  },
+  {
+    imageUrl: IIASA_IMAGE_URL,
+    linkUrl: "https://iiasa.ac.at/programs/ece",
+    name: "IIASA",
+  },
+];
 
 function About() {
   return (
@@ -298,6 +339,32 @@ function About() {
                     {LINKS.explorerWebsite}
                   </a>
                 </TypographyP>
+              </TypographyContent>
+              <TypographyH2>Partners</TypographyH2>
+              <TypographyContent>
+                <ul className="flex flex-wrap justify-center gap-8">
+                  {PARTNERS.map((partner) => (
+                    <li key={partner.linkUrl} className="w-40">
+                      <a
+                        href={partner.linkUrl}
+                        className="group flex flex-col items-center transition-transform hover:scale-105"
+                      >
+                        <figure className="flex size-full flex-col items-center justify-between gap-4">
+                          <div className="flex h-24 w-full items-center justify-center overflow-hidden rounded-lg bg-white p-4 shadow-md">
+                            <img
+                              src={partner.imageUrl}
+                              alt={`${partner.name} logo`}
+                              className="size-auto max-h-full max-w-full object-contain"
+                            />
+                          </div>
+                          <figcaption className="text-center font-medium text-gray-700 group-hover:text-blue-600">
+                            {partner.name}
+                          </figcaption>
+                        </figure>
+                      </a>
+                    </li>
+                  ))}
+                </ul>
               </TypographyContent>
             </TypographyContent>
           </SectionForDoc>
