@@ -9,8 +9,9 @@ from typing import (
     Dict,
     Union,
     NotRequired,
+    Never,
 )
-from sqlalchemy import text, column, select, func, Select
+from sqlalchemy import text, column, select, func, Select, ColumnClause
 from sqlalchemy.sql import ClauseElement
 from .db import Session
 from .shared_with_frontend.schemas import (
@@ -22,12 +23,12 @@ from .shared_with_frontend.schemas import (
     ColumnsEnumSchema,
     FilterFrontEnumSchema,
 )
-from .models import Scenario
 from .constants import DIVIDED_BY_NONE
 
 DATA_PATH = os.getenv("DATA_PATH", "/app/data")
 CONVERSION_FACTOR = 1000
 TOTAL_LABEL = "Total"
+YEAR_COLUMN: ColumnClause[Never] = column("stock_projection_year")
 
 
 def apply_filters(
@@ -39,9 +40,9 @@ def apply_filters(
     filter_conditions: list[ClauseElement] = []
     for key, value in filters.items():  # type: ignore[attr-defined]
         if key == FilterFrontEnumSchema.FROM.value:
-            filter_conditions.append(Scenario.stock_projection_year >= value)
+            filter_conditions.append(YEAR_COLUMN >= value)
         elif key == FilterFrontEnumSchema.TO.value:
-            filter_conditions.append(Scenario.stock_projection_year <= value)
+            filter_conditions.append(YEAR_COLUMN <= value)
         else:
             filter_conditions.append(column(key).in_(value))
 
@@ -50,7 +51,8 @@ def apply_filters(
 
 def compile_statement(statement: Select[Any], scenario: ScenarioEnumSchema) -> str:
     compiled = str(statement.compile(compile_kwargs={"literal_binds": True}))
-    return compiled.replace("FROM scenario", f"FROM '{DATA_PATH}/{scenario}.parquet'")
+
+    return f"FROM (SELECT * FROM '{DATA_PATH}/{scenario}.parquet') " + compiled
 
 
 def get_base_statement(
@@ -60,12 +62,12 @@ def get_base_statement(
 ) -> Select[Any]:
     if attribute == AttributeEnumSchema.NONE:
         return select(
-            Scenario.stock_projection_year,
+            YEAR_COLUMN,
             (func.sum(column(indicator)) / CONVERSION_FACTOR).label(TOTAL_LABEL),
-        ).group_by(Scenario.stock_projection_year)
+        ).group_by(YEAR_COLUMN)
 
-    select_columns = [
-        Scenario.stock_projection_year,
+    select_columns: List[ColumnClause[Never]] = [
+        YEAR_COLUMN,
         column(cast(str, attribute)),
         column(indicator),
     ]
@@ -94,7 +96,7 @@ def get_pivot_query(
 
     return f"""
         SELECT
-            CAST(COLUMNS(*) AS INTEGER) / {CONVERSION_FACTOR},
+            COLUMNS(*) / {CONVERSION_FACTOR},
             stock_projection_year
         FROM (
             PIVOT filtered_data
@@ -193,15 +195,17 @@ def get_scenario_rows(
     indicator_as_sql = get_indicator_as_sql(indicator, dividedBy)
     pivot_query = get_pivot_query(attribute, indicator_as_sql)
 
-    scenario_query = (
-        compiled_statement
-        if attribute == AttributeEnumSchema.NONE
-        else f"""
+    attribute_none_query = compiled_statement
+
+    default_query = f"""
         WITH filtered_data AS (
             {compiled_statement}
         )
         {pivot_query}
     """
+
+    scenario_query = (
+        attribute_none_query if attribute == AttributeEnumSchema.NONE else default_query
     )
 
     minmax_query_for_stacked_graph = get_minmax_query(

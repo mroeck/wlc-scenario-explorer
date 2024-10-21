@@ -33,6 +33,10 @@ export const PREDEFINED_SCENARIOS = [
   "Current Policy + Shift strategies",
   "Current Policy + Avoid strategies",
   "Current Policy + Avoid + Shift + Improve strategies",
+  "Austria",
+  "Austria + Shift",
+  "Austria + Improve",
+  "Austria + Avoid",
 ] as const;
 
 export const SCENARIOS_OPTIONS = [

@@ -189,4 +189,8 @@ export const SCENARIO_TO_ACRONYM = {
   "Current Policy + Shift strategies": "CPOL+S",
   "Optimistic scenario of Current Policies": "CPOL/A",
   "Example scenario (for illustration purpose only)": undefined,
+  Austria: undefined,
+  "Austria + Avoid": "A/A",
+  "Austria + Improve": "A/I",
+  "Austria + Shift": "A/S",
 } satisfies Record<(typeof PREDEFINED_SCENARIOS)[number], string | undefined>;

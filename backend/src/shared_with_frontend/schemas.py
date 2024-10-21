@@ -166,6 +166,10 @@ class ScenarioEnumSchema(str, Enum):
     APOA = "Current Policy + Avoid strategies"
     AASI = "Current Policy + Avoid + Shift + Improve strategies"
     CUSR = "Custom scenario results"
+    AUSTRIA = "Austria"
+    AUSTRIA_SHIFT = "Austria + Shift"
+    AUSTRIA_IMPROVE = "Austria + Improve"
+    AUSTRIA_AVOID = "Austria + Avoid"
 
 
 SCENARIO_TO_FILE_NAME: Dict[str, str] = {
@@ -178,6 +182,10 @@ SCENARIO_TO_FILE_NAME: Dict[str, str] = {
     ScenarioEnumSchema.CPOO.value: "scenario",
     ScenarioEnumSchema.CUSR.value: "scenario",
     ScenarioEnumSchema.Example.value: "scenario",
+    ScenarioEnumSchema.AUSTRIA.value: "BASE",
+    ScenarioEnumSchema.AUSTRIA_SHIFT.value: "SHIFT",
+    ScenarioEnumSchema.AUSTRIA_IMPROVE.value: "IMPROVE",
+    ScenarioEnumSchema.AUSTRIA_AVOID.value: "AVOID",
 }
 
 
