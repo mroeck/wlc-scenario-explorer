@@ -29,6 +29,7 @@ export const ComparisonSlider: React.FC<ComparisonSliderProps> = ({
   const leftSideItem = items[0];
   const rightSideItem = items[1];
 
+  const [isGrabbing, setIsGrabbing] = React.useState(false);
   const navigate = route.useNavigate();
   const display = route.useSearch({
     select: (search) => search.display,
@@ -168,7 +169,15 @@ export const ComparisonSlider: React.FC<ComparisonSliderProps> = ({
           min={0}
           max={100}
           step={0.5}
+          isGrabbing={isGrabbing}
+          setIsGrabbing={setIsGrabbing}
         />
+        <div
+          className={cn("absolute inset-0 z-50", isGrabbing ? "" : "hidden")}
+          onClick={() =>
+            "stop the click from propagating to graph since element with onClick are ignored. (see BLACKLIST_TAGS usage)"
+          }
+        ></div>
       </div>
     </div>
   );

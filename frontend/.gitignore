@@ -57,3 +57,7 @@ yarn-error.log*
 /test-results/
 /playwright-report/
 /playwright/.cache/
+
+# Vite
+
+vite.config.ts.timestamp-*.mjs

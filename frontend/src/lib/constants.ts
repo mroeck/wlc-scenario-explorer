@@ -194,3 +194,7 @@ export const SCENARIO_TO_ACRONYM = {
   "Austria + Improve": "A/I",
   "Austria + Shift": "A/S",
 } satisfies Record<(typeof PREDEFINED_SCENARIOS)[number], string | undefined>;
+export const EMBODIED_CARBON = "Embodied carbon (EC)";
+export const OPERATIONAL_CARBON = "Operational carbon (OC)";
+export const EMBODIED_CARBON_TEXT = "embodied carbon";
+export const OPERATION_CARBON_TEXT = "operational carbon";
