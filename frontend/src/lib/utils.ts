@@ -3,7 +3,13 @@ import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
 import { z } from "zod";
 import type { Attribute } from "./types";
-import { DEFAULT_COLOR } from "./constants";
+import {
+  DEFAULT_COLOR,
+  EMBODIED_CARBON,
+  EMBODIED_CARBON_TEXT,
+  OPERATION_CARBON_TEXT,
+  OPERATIONAL_CARBON,
+} from "./constants";
 import type { Payload } from "recharts/types/component/DefaultLegendContent";
 import type { BreakdownByOptions } from "@/routes/-index/components/data-section/graphs/types";
 
@@ -94,6 +100,13 @@ const CATEGORIES = {
     "DE", // Germany
     "BE", // Belgium
   ],
+  [EMBODIED_CARBON]: [
+    "Construction embodied carbon",
+    "Demolition embodied carbon",
+    "Use phase embodied carbon",
+    "Renovation embodied carbon",
+  ],
+  [OPERATIONAL_CARBON]: ["Use phase operational carbon"],
 } as const;
 
 const ATTRIBUTE_OPTIONS_ORDER = {
@@ -158,6 +171,17 @@ export function groupByCategory({ values }: { values: Payload[] }) {
     if (category) {
       // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       grouped[category] = grouped[category] || [];
+
+      if (category === EMBODIED_CARBON) {
+        value.value = (value.value as string)
+          .toLowerCase()
+          .replace(EMBODIED_CARBON_TEXT, "EC");
+      } else if (category === OPERATIONAL_CARBON) {
+        value.value = (value.value as string)
+          .toLowerCase()
+          .replace(OPERATION_CARBON_TEXT, "OC");
+      }
+
       grouped[category].push(value);
     }
   });

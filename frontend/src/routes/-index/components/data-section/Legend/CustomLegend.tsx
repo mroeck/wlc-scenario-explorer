@@ -170,7 +170,7 @@ function ColorLegendItemAll({
               isSomethingHighlighted={isSomethingHighlighted}
             />
             <span
-              className="z-0 whitespace-nowrap text-sm"
+              className="z-0 whitespace-nowrap text-sm first-letter:uppercase"
               style={{ fontSize: GRAPH_FONT_SIZE }}
             >
               {item.value}

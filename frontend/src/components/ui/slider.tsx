@@ -6,10 +6,11 @@ import { MoveHorizontal } from "lucide-react";
 
 const Slider = React.forwardRef<
   React.ElementRef<typeof SliderPrimitive.Root>,
-  React.ComponentPropsWithoutRef<typeof SliderPrimitive.Root>
->(({ className, ...props }, ref) => {
-  const [isGrabbing, setIsGrabbing] = React.useState(false);
-
+  React.ComponentPropsWithoutRef<typeof SliderPrimitive.Root> & {
+    isGrabbing: boolean;
+    setIsGrabbing: React.Dispatch<React.SetStateAction<boolean>>;
+  }
+>(({ className, isGrabbing, setIsGrabbing, ...props }, ref) => {
   const handlePointerDown = () => {
     setIsGrabbing(true);
   };
