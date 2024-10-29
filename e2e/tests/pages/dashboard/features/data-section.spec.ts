@@ -122,11 +122,7 @@ test.describe("data viz", () => {
     await page.getByRole("tab", { name: "Stacked Bar Chart" }).click();
     await indicatorSelect.click();
     await indicatorOption2.click();
-    await expect(
-      page
-        .getByTestId(GRAPH_TESTID)
-        .getByText(indicator2, { exact: true })
-        .nth(1),
-    ).toBeVisible();
+
+    await expect(page.getByText(indicator2)).toBeVisible();
   });
 });

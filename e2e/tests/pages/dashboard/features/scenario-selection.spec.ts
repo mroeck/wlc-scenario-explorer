@@ -1,7 +1,7 @@
 import {
   ROUTES,
   DISPLAY_SELECT_TESTID,
-  SCENARIO_B_TESTID,
+  SCENARIO_B_MENU_TESTID,
   FOR_SCENARIOS_TESTID,
   RESET_LABEL,
   MOBILE_SETTINGS_BUTTON,
@@ -33,7 +33,7 @@ test.describe("scenario selection", () => {
 
     await page
       .getByRole("tabpanel", { name: "Scenarios" })
-      .getByTestId(SCENARIO_B_TESTID)
+      .getByTestId(SCENARIO_B_MENU_TESTID)
       .click();
     await page.getByLabel(scenarioB).click();
 

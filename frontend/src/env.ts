@@ -14,6 +14,7 @@ export const env = createEnv({
     PUBLIC_NODE_ENV: z.enum(["production", "development", "test"]),
     PUBLIC_DEBUG: z.boolean().optional(),
     PUBLIC_CI: z.literal("true").optional(),
+    PUBLIC_DATA_PATH: z.string().min(1).optional(),
   },
 
   /**
@@ -30,6 +31,7 @@ export const env = createEnv({
       import.meta.env.MODE,
     PUBLIC_DEBUG: import.meta.env.VITE_DEBUG as string | undefined,
     PUBLIC_CI: import.meta.env.VITE_CI as string,
+    PUBLIC_DATA_PATH: import.meta.env.DATA_PATH as string | undefined,
   },
 
   /**

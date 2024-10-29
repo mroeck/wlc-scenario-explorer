@@ -20,9 +20,9 @@ import {
   SCENARIO_A_AND_B,
   SCENARIO_A_LABEL,
   SCENARIO_A_ONLY,
-  SCENARIO_A_TESTID,
+  SCENARIO_A_MENU_TESTID,
   SCENARIO_B_ONLY,
-  SCENARIO_B_TESTID,
+  SCENARIO_B_MENU_TESTID,
   SCENARIO_TO_ACRONYM,
 } from "@/lib/constants";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -179,7 +179,7 @@ export const Scenarios = () => {
                         <SelectMenuStyle>
                           <SelectTrigger
                             className="w-full max-w-full capitalize"
-                            data-testid={SCENARIO_A_TESTID}
+                            data-testid={SCENARIO_A_MENU_TESTID}
                           >
                             <SelectValue placeholder="Select a scenario" />
                           </SelectTrigger>
@@ -280,7 +280,7 @@ export const Scenarios = () => {
                       <SelectMenuStyle>
                         <SelectTrigger
                           className="w-full max-w-full"
-                          data-testid={SCENARIO_B_TESTID}
+                          data-testid={SCENARIO_B_MENU_TESTID}
                         >
                           <SelectValue placeholder="Select a scenario" />
                         </SelectTrigger>

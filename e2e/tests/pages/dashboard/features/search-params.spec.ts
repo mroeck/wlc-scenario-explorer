@@ -5,8 +5,8 @@ import {
   DISPLAY_SELECT_TESTID,
   DEFAULT_FROM,
   DEFAULT_TO,
-  SCENARIO_A_TESTID,
-  SCENARIO_B_TESTID,
+  SCENARIO_A_MENU_TESTID,
+  SCENARIO_B_MENU_TESTID,
   SCENARIO_B_ONLY,
   DEFAULT_SCENARIO,
   SELECT_DIVIDED_BY_TESTID,
@@ -54,7 +54,7 @@ test.describe("search params", () => {
   test("uses scenarioA search param on mount", async ({ page }) => {
     const scenarioASelect = page
       .getByRole("tabpanel", { name: "Scenarios" })
-      .getByTestId(SCENARIO_A_TESTID);
+      .getByTestId(SCENARIO_A_MENU_TESTID);
 
     const scenario = "Example scenario (for illustration purpose only)";
     const url = `${ROUTES.DASHBOARD}?scenarioA=${scenario}`;
@@ -66,7 +66,7 @@ test.describe("search params", () => {
   test("uses scenarioB search param on mount", async ({ page }) => {
     const scenarioBSelect = page
       .getByRole("tabpanel", { name: "Scenarios" })
-      .getByTestId(SCENARIO_B_TESTID);
+      .getByTestId(SCENARIO_B_MENU_TESTID);
 
     const scenario = "Example scenario (for illustration purpose only)";
     const url = `${ROUTES.DASHBOARD}?scenarioB=${scenario}`;

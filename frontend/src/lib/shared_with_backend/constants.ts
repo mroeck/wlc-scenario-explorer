@@ -1,5 +1,5 @@
 import { DIVIDED_BY_NONE, NONE } from "../constants";
-import type { Attribute } from "../types";
+import type { Attribute, ValidOption } from "../types";
 
 /*
   /!\
@@ -38,6 +38,7 @@ export const PREDEFINED_SCENARIOS = [
   "Austria + Improve",
   "Austria + Avoid",
 ] as const;
+export type PredefinedScenario = (typeof PREDEFINED_SCENARIOS)[number];
 
 export const SCENARIOS_OPTIONS = [
   ...PREDEFINED_SCENARIOS,
@@ -103,6 +104,7 @@ export const API_ROUTES = {
   scenario: "/scenario",
 };
 
+// TODO: fix type errors based on final parquet file structure
 export const ATTRIBUTE_OPTIONS_COLOR = {
   // "flow type": {
   //   "Energy in": "#5FB8CE",
@@ -207,5 +209,5 @@ export const ATTRIBUTE_OPTIONS_COLOR = {
   },
 } as const satisfies Record<
   Exclude<Attribute, "stock building stock activity name" | "None">,
-  Record<string, `#${string}`>
+  Partial<Record<ValidOption, `#${string}`>>
 >;
