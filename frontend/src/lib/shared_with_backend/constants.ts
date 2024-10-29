@@ -130,16 +130,19 @@ export const ATTRIBUTE_OPTIONS_COLOR = {
     "Internal walls": "#78D18F",
   },
   "Building subtype": {
+    // @ts-expect-error: temp: parquet file schema has been updated
     "Multi-family house": "#3C7FA8",
     Office: "#3ABB5C",
     "Single-family house": "#499ACC",
   },
   "Building type": {
+    // @ts-expect-error: temp: parquet file schema has been updated
     "Non-residential": "#3ABB5C",
     Residential: "#499ACC",
   },
   country: {
     AT: "#95400E",
+    // @ts-expect-error: temp: parquet file schema has been updated
     BE: "#2D5F7E",
     BG: "#BB4F11",
     CY: "#216934",
@@ -190,6 +193,7 @@ export const ATTRIBUTE_OPTIONS_COLOR = {
     Wood: "#6B3A83",
   },
   Region: {
+    // @ts-expect-error: temp: parquet file schema has been updated
     Continental: "#EE854A",
     Mediterranean: "#3ABB5C",
     Nordic: "#C73B3B",
@@ -203,6 +207,7 @@ export const ATTRIBUTE_OPTIONS_COLOR = {
   "Whole life cycle stages": {
     "Construction embodied carbon": "#377399",
     "Demolition embodied carbon": "#3C7FA8",
+    // @ts-expect-error: temp: parquet file schema has been updated
     "Renovation embodied carbon": "#428CB9",
     "Use phase embodied carbon": "#499ACC",
     "Use phase operational carbon": "#3ABB5C",
