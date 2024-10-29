@@ -77,8 +77,8 @@ export const ATTRIBUTE_TESTID = "attribute";
 export const DISPLAY_SELECT_TESTID = "DISPLAY_SELECT_TESTID";
 export const SORT_SELECT_TESTID = "SORT_SELECT_TESTID";
 export const FOR_SCENARIOS_TESTID = "forScenarios";
-export const SCENARIO_A_TESTID = "scenarioASelect";
-export const SCENARIO_B_TESTID = "scenarioBSelect";
+export const SCENARIO_A_MENU_TESTID = "SCENARIO_A_TESTID";
+export const SCENARIO_B_MENU_TESTID = "SCENARIO_B_MENU_TESTID";
 export const COLOR_LEGEND_TESTID = "colorLegend";
 export const BREAKDOWN_BY_TESTID = "breakdownby";
 export const GRAPH_TESTID = "GRAPH_TESTID";
@@ -174,6 +174,8 @@ export const HELP_PAGE_IDS = {
 } as const;
 export const SCENARIO_A_LABEL = "primary scenario";
 export const SCENARIO_B_LABEL = "second scenario";
+export const SCENARIO_A_ACRONYM = "primary";
+export const SCENARIO_B_ACRONYM = "2nd";
 export const NONE = "None";
 export const STORAGE_KEYS = {
   isDisclaimerAccepted: "scenarioExplorerIsDisclaimerAccepted",
@@ -198,3 +200,5 @@ export const EMBODIED_CARBON = "Embodied carbon (EC)";
 export const OPERATIONAL_CARBON = "Operational carbon (OC)";
 export const EMBODIED_CARBON_TEXT = "embodied carbon";
 export const OPERATION_CARBON_TEXT = "operational carbon";
+export const SCENARIO_A_KEY_PREFIX = `${SCENARIO_A_LABEL}.`;
+export const SCENARIO_B_KEY_PREFIX = `${SCENARIO_B_LABEL}.`;

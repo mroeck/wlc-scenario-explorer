@@ -33,3 +33,5 @@ const breakdownByOptions = Object.values(ATTRIBUTE_OPTIONS_COLOR).flatMap(
 ) as [BreakdownByOptions, ...BreakdownByOptions[]];
 
 export const HighlightSchema = z.enum(breakdownByOptions);
+export const NumberSchema = z.number();
+export const StringSchema = z.string();

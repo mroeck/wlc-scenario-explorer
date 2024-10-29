@@ -9,7 +9,7 @@ import type {
 import type { Attribute } from "@/lib/types";
 import { Content } from "./Content";
 import type { UnitMinified } from "../types";
-import type { HighlightSchema } from "@/lib/schemas";
+import { type HighlightSchema } from "@/lib/schemas";
 import type { z } from "zod";
 
 const removeDuplicates = (arr: Payload<ValueType, NameType>[]) => {

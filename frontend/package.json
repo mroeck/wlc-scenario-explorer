@@ -13,7 +13,8 @@
     "docker:build:prod": "docker build --target prod -t scenario-explorer/front:0.1.0 .",
     "docker:prod": "docker run -p 3001:3001 --rm scenario-explorer/front:0.1.0",
     "test": "echo \"Running dummy command...\" && exit 0",
-    "knip": "knip"
+    "knip": "knip",
+    "test:unit": "vitest"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.6.0",
@@ -68,6 +69,7 @@
     "@typescript-eslint/parser": "^7.10.0",
     "@vitejs/plugin-react": "^4.3.0",
     "autoprefixer": "^10.4.19",
+    "duckdb-async": "^1.1.1",
     "eslint": "^8.57.0",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-playwright": "^1.6.2",
@@ -83,7 +85,8 @@
     "tailwindcss": "^3.4.4",
     "type-fest": "^4.26.0",
     "typescript": "^5.6.2",
-    "vite": "^5.2.11"
+    "vite": "^5.2.11",
+    "vitest": "^2.1.4"
   },
   "packageManager": "pnpm@9.4.0+sha512.f549b8a52c9d2b8536762f99c0722205efc5af913e77835dbccc3b0b0b2ca9e7dc8022b78062c17291c48e88749c70ce88eb5a74f1fa8c4bf5e18bb46c8bd83a"
 }

@@ -7,7 +7,9 @@ import {
   GRAPH_FONT_SIZE,
   ROUTES,
   SCENARIO_A_AND_B,
+  SCENARIO_A_KEY_PREFIX,
   SCENARIO_A_LABEL,
+  SCENARIO_B_KEY_PREFIX,
   SCENARIO_B_LABEL,
 } from "@/lib/constants";
 import { getRouteApi } from "@tanstack/react-router";
@@ -15,6 +17,7 @@ import type { Attribute } from "@/lib/types";
 import type { Payload } from "recharts/types/component/DefaultLegendContent";
 import React from "react";
 import type { BreakdownByOptions } from "../graphs/types";
+import { StringSchema } from "@/lib/schemas";
 
 const route = getRouteApi(ROUTES.DASHBOARD);
 
@@ -23,6 +26,12 @@ const removeDuplicates = (
 ) => {
   const seen = new Set();
   return arr.filter((item) => {
+    const valueAsString = StringSchema.parse(item.value);
+
+    item.value = valueAsString
+      .replace(SCENARIO_A_KEY_PREFIX, "")
+      .replace(SCENARIO_B_KEY_PREFIX, "");
+
     const duplicate = seen.has(item.value);
     seen.add(item.value);
     return !duplicate;
@@ -143,7 +152,7 @@ function ColorLegendItemAll({
   return (
     <ol className="flex flex-wrap justify-items-start gap-x-6">
       {data.map((item) => {
-        const option = typeof item.dataKey === "string" ? item.dataKey : "";
+        const option = typeof item.value === "string" ? item.value : "";
 
         const isHighlight = option === highlight;
 

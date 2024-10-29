@@ -54,6 +54,7 @@ type Graph =
 
 type ContentProps = {
   data: z.infer<typeof ScenarioRowsAggregatedArraySchema>;
+  dataB?: z.infer<typeof ScenarioRowsAggregatedArraySchema>;
   unit: UnitMinified;
   breakdownBy: Attribute;
   domain: GraphDomain | undefined;
@@ -61,9 +62,10 @@ type ContentProps = {
 
 const createTab = (name: string, Graph: Graph) => ({
   name,
-  content: ({ data, unit, breakdownBy, domain }: ContentProps) => (
+  content: ({ data, dataB, unit, breakdownBy, domain }: ContentProps) => (
     <GraphWrapper
       data={data}
+      dataB={dataB ?? []}
       unit={unit}
       breakdownBy={breakdownBy}
       domain={domain}
@@ -324,7 +326,47 @@ export const DataViz = () => {
 
           {tabs.map((tab) => {
             const isStacked = tab.name !== DATA_TABS_NAMES.lineChart;
+            const isStackedBars = tab.name === DATA_TABS_NAMES.stackedBarChart;
             const domain = isStacked ? domains?.stacked : domains?.nonStacked;
+
+            const Content = () => {
+              if (!canRenderContent) return null;
+
+              return isStackedBars ? (
+                tab.content({
+                  data: resultsA.data,
+                  dataB: resultsB.data,
+                  unit: unitMinified,
+                  domain,
+                  breakdownBy,
+                })
+              ) : (
+                <ComparisonSlider
+                  items={[
+                    {
+                      label: acronyms.scenarioA,
+                      component: tab.content({
+                        data: resultsA.data,
+                        dataB: [],
+                        unit: unitMinified,
+                        domain,
+                        breakdownBy,
+                      }),
+                    },
+                    {
+                      label: acronyms.scenarioB,
+                      component: tab.content({
+                        data: resultsB.data,
+                        dataB: [],
+                        unit: unitMinified,
+                        domain,
+                        breakdownBy,
+                      }),
+                    },
+                  ]}
+                />
+              );
+            };
 
             return (
               <TabsContent
@@ -334,30 +376,7 @@ export const DataViz = () => {
                 data-testid={TAB_CONTENT_TESTID}
               >
                 <DataStatus />
-                {canRenderContent && (
-                  <ComparisonSlider
-                    items={[
-                      {
-                        label: acronyms.scenarioA,
-                        component: tab.content({
-                          data: resultsA.data,
-                          unit: unitMinified,
-                          domain,
-                          breakdownBy,
-                        }),
-                      },
-                      {
-                        label: acronyms.scenarioB,
-                        component: tab.content({
-                          data: resultsB.data,
-                          unit: unitMinified,
-                          domain,
-                          breakdownBy,
-                        }),
-                      },
-                    ]}
-                  />
-                )}
+                <Content />
               </TabsContent>
             );
           })}

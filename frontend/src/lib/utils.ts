@@ -2,7 +2,7 @@ import { ATTRIBUTE_OPTIONS_COLOR } from "@/lib/shared_with_backend/constants";
 import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
 import { z } from "zod";
-import type { Attribute } from "./types";
+import type { Attribute, Color } from "./types";
 import {
   DEFAULT_COLOR,
   EMBODIED_CARBON,
@@ -12,6 +12,7 @@ import {
 } from "./constants";
 import type { Payload } from "recharts/types/component/DefaultLegendContent";
 import type { BreakdownByOptions } from "@/routes/-index/components/data-section/graphs/types";
+import type { KeysOfUnion } from "type-fest";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -51,9 +52,32 @@ export const getColor = ({ breakdownBy, option }: GetColorArgs) => {
     type AttributeColorCategory =
       (typeof ATTRIBUTE_OPTIONS_COLOR)[typeof breakdownByTyped];
 
-    return ATTRIBUTE_OPTIONS_COLOR[breakdownByTyped][
-      option as AttributeColorCategory[keyof AttributeColorCategory]
-    ];
+    type Option = KeysOfUnion<AttributeColorCategory>;
+
+    const OptionSchema = z.enum(
+      Object.keys(ATTRIBUTE_OPTIONS_COLOR[breakdownByTyped]) as [
+        Option,
+        ...Option[],
+      ],
+      {
+        message: "Could not find color for: " + option,
+      },
+    );
+
+    const result = OptionSchema.safeParse(option);
+    const validOption = result.data;
+
+    if (result.error) {
+      console.error(result.error);
+    }
+
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+    const color = validOption
+      ? // @ts-expect-error: hard to type properly, valideOption should be a proper key to access
+        ATTRIBUTE_OPTIONS_COLOR[breakdownByTyped][validOption]
+      : DEFAULT_COLOR;
+
+    return color as Color;
   }
   return DEFAULT_COLOR;
 };

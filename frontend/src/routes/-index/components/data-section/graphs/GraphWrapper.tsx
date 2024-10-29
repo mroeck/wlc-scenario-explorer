@@ -63,15 +63,28 @@ function getSortedAttributeOptions({
   });
 }
 
-type GraphWrapperProps = {
-  data: z.infer<typeof ScenarioRowsAggregatedArraySchema>;
+type CoreProps = {
   unit: UnitMinified;
   breakdownBy: Attribute;
   domain: GraphDomain | undefined;
-  Graph: typeof StackedAreaChart | typeof StackedBarChart | typeof LineGraph;
+  data: z.infer<typeof ScenarioRowsAggregatedArraySchema>;
 };
+
+type GraphWrapperProps = CoreProps &
+  (
+    | {
+        dataB?: never;
+        Graph: typeof StackedAreaChart | typeof LineGraph;
+      }
+    | {
+        dataB: z.infer<typeof ScenarioRowsAggregatedArraySchema>;
+        Graph: typeof StackedBarChart;
+      }
+  );
+
 export const GraphWrapper = ({
   data,
+  dataB,
   unit,
   breakdownBy,
   domain,
@@ -109,16 +122,30 @@ export const GraphWrapper = ({
         className="h-0 min-h-[500px] w-full sm:min-w-[600px] lg:min-h-full lg:min-w-[unset] lg:flex-1 [&_svg]:overflow-visible"
         data-testid={GRAPH_TESTID}
       >
-        <Graph
-          animation={animation}
-          attributeOptions={attributeOptions}
-          breakdownBy={breakdownBy}
-          chartRef={chartRef}
-          data={data}
-          unit={unit}
-          highlight={highlight}
-          domain={domain}
-        />
+        {dataB ? (
+          <Graph
+            animation={animation}
+            attributeOptions={attributeOptions}
+            breakdownBy={breakdownBy}
+            chartRef={chartRef}
+            data={data}
+            dataB={dataB}
+            unit={unit}
+            highlight={highlight}
+            domain={domain}
+          />
+        ) : (
+          <Graph
+            animation={animation}
+            attributeOptions={attributeOptions}
+            breakdownBy={breakdownBy}
+            chartRef={chartRef}
+            data={data}
+            unit={unit}
+            highlight={highlight}
+            domain={domain}
+          />
+        )}
       </div>
     </div>
   );
