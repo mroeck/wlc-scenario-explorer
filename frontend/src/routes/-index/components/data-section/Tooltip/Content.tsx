@@ -274,7 +274,7 @@ export const Content = ({
                       />
                     </div>
                     {isOneScenario ? (
-                      <div>
+                      <div className="z-0">
                         <span className="z-0">{item.name}:</span>
                         <span className="z-0 font-bold">
                           {item.value.toLocaleString("en-US", {
@@ -286,7 +286,7 @@ export const Content = ({
                         </span>
                       </div>
                     ) : (
-                      <div>
+                      <div className="z-0">
                         <span className="z-0">{item.name}: </span>
                         <span className="z-0 font-bold">
                           {item.scenarioAValue?.toLocaleString("en-US", {

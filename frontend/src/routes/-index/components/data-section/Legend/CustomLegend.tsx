@@ -103,7 +103,7 @@ export const CustomLegend = ({ payload, className }: CustomLegendProps) => {
         )}
       >
         <h3 className="font-semibold" style={{ fontSize: GRAPH_FONT_SIZE }}>
-          Opacity legend:
+          Pattern legend:
         </h3>
         <ul className="flex max-w-[50ch] flex-col flex-wrap gap-x-6 px-2">
           <li className="flex items-center gap-1">
@@ -113,7 +113,7 @@ export const CustomLegend = ({ payload, className }: CustomLegendProps) => {
             </span>
           </li>
           <li className="flex items-center gap-1">
-            <ColorCube color={colors[0]} className="opacity-50" />
+            <ColorCube color={colors[0]} showPattern />
             <span style={{ fontSize: GRAPH_FONT_SIZE }}>
               {SCENARIO_B_LABEL}
             </span>
