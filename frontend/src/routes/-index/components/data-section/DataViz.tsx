@@ -37,13 +37,13 @@ import type { Attribute, Scenario } from "@/lib/types";
 import { LineGraph } from "./graphs/LineGraph";
 import { useCallback, useState } from "react";
 import { ComparisonSlider } from "./ComparisonSlider";
-import { SettingsButton } from "@/components/settings-button";
 import { GraphWrapper } from "./graphs/GraphWrapper";
 import type { GraphDomain, Unit, UnitMinified } from "./types";
 import { SCENARIO_QUERY_KEY } from "./constants";
 import { getDomainAll } from "./utils";
 import type { ValueOf } from "type-fest";
 import type { ScenarioSchema } from "@/lib/shared_with_backend/schemas";
+import { Sort } from "./components/Sort";
 
 const route = getRouteApi(ROUTES.DASHBOARD);
 
@@ -303,11 +303,11 @@ export const DataViz = () => {
           </div>
 
           <div className="mt-auto flex gap-1">
+            <Sort />
             <DownloadMenu
               data={resultsA?.data}
               domTarget={visualizationElement}
             />
-            <SettingsButton />
           </div>
         </div>
         <div className="pt-12"></div>

@@ -15,6 +15,14 @@ import {
   BREAKDOWN_BY_ORDER,
   SELECT_DIVIDED_BY_TESTID,
   HELP_PAGE_IDS,
+  DATA_TABS_NAMES,
+  SCENARIO_A_LABEL,
+  SCENARIO_B_LABEL,
+  DISPLAY_SELECT_TESTID,
+  SCENARIO_A_ONLY,
+  SCENARIO_B_ONLY,
+  SCENARIO_A_AND_B,
+  SCENARIO_TO_ACRONYM,
 } from "@/lib/constants";
 import {
   Select,
@@ -39,8 +47,14 @@ import {
 import { InfoButton } from "@/components/InfoButton";
 import { Link } from "@tanstack/react-router";
 import { LinkIcon } from "lucide-react";
+import { Label } from "@/components/ui/label";
+import { useId, useRef } from "react";
 
 const route = getRouteApi(ROUTES.DASHBOARD);
+
+function getTitleAcronym({ acronym }: { acronym: string | undefined }) {
+  return acronym ? ` (${acronym})` : "";
+}
 
 const DataVizFormSchema = z.object<{
   indicator: z.ZodEnum<Writable<typeof INDICATORS>>;
@@ -54,7 +68,16 @@ const DataVizFormSchema = z.object<{
 
 export const DataVizForm = () => {
   const navigate = route.useNavigate();
-  const { breakdownBy, indicator, dividedBy, highlight } = route.useSearch({
+  const {
+    breakdownBy,
+    indicator,
+    dividedBy,
+    highlight,
+    dataTab,
+    display,
+    scenarioA,
+    scenarioB = SCENARIO_B_LABEL,
+  } = route.useSearch({
     select: (search) => ({
       breakdownBy: search.breakdownBy,
       indicator: search.indicator,
@@ -62,8 +85,12 @@ export const DataVizForm = () => {
       scenarioA: search.scenarioA,
       scenarioB: search.scenarioB,
       highlight: search.highlight,
+      dataTab: search.dataTab,
+      display: search.display,
+      sort: search.sort,
     }),
   });
+  const displaySelectRef = useRef<HTMLButtonElement>(null);
   const form = useForm<z.infer<typeof DataVizFormSchema>>({
     resolver: zodResolver(DataVizFormSchema),
     defaultValues: {
@@ -72,6 +99,10 @@ export const DataVizForm = () => {
       dividedBy,
     },
   });
+  const SELECT_IDS = {
+    display: useId(),
+    sort: useId(),
+  };
 
   async function onSubmit({
     breakdownBy: newBreakdownBy,
@@ -98,6 +129,29 @@ export const DataVizForm = () => {
     fieldOnChange(value);
     void form.handleSubmit(onSubmit)();
   }
+
+  const onDisplayChange = (newDisplay: string) => {
+    void navigate({
+      search: (prev) => ({
+        ...prev,
+        display: newDisplay,
+      }),
+    });
+  };
+
+  type Keys = keyof typeof SCENARIO_TO_ACRONYM;
+  const acronymA =
+    scenarioA in SCENARIO_TO_ACRONYM
+      ? SCENARIO_TO_ACRONYM[scenarioA as Keys]
+      : undefined;
+
+  const acronymB =
+    scenarioB in SCENARIO_TO_ACRONYM
+      ? SCENARIO_TO_ACRONYM[scenarioB as Keys]
+      : undefined;
+
+  const acronymAForTitle = getTitleAcronym({ acronym: acronymA });
+  const acronymBForTitle = getTitleAcronym({ acronym: acronymB });
 
   return (
     <Form {...form}>
@@ -283,6 +337,59 @@ export const DataVizForm = () => {
             </FormItem>
           )}
         />
+        <div className="flex flex-col gap-1">
+          {dataTab !== DATA_TABS_NAMES.table && (
+            <>
+              <Label
+                htmlFor={SELECT_IDS.display}
+                className="flex items-center gap-2 font-medium"
+              >
+                <span>Display:</span>
+                <InfoButton>
+                  <p>
+                    Choose how to display scenarios in the chart: show{" "}
+                    {SCENARIO_A_LABEL}, {SCENARIO_B_LABEL}, or compare both
+                    side-by-side for a detailed visual analysis.
+                  </p>
+                  <p>
+                    For the table tab, only the primary scenario is displayed
+                  </p>
+                  <Link
+                    to={ROUTES.HELP}
+                    hash={HELP_PAGE_IDS.display}
+                    className="flex items-center gap-1 underline"
+                  >
+                    <LinkIcon className="size-3" /> Read more here
+                  </Link>
+                </InfoButton>
+              </Label>
+              <Select value={display} onValueChange={onDisplayChange}>
+                <SelectTrigger
+                  ref={displaySelectRef}
+                  className="text-left capitalize"
+                  data-testid={DISPLAY_SELECT_TESTID}
+                >
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem
+                    value={SCENARIO_A_ONLY}
+                  >{`${scenarioA}${acronymAForTitle} only`}</SelectItem>
+                  <SelectItem
+                    value={SCENARIO_B_ONLY}
+                  >{`${scenarioB}${acronymBForTitle} only`}</SelectItem>
+                  <SelectItem value={SCENARIO_A_AND_B}>
+                    <span className="block w-full overflow-hidden text-ellipsis text-nowrap font-medium">
+                      {acronymA || scenarioA}
+                      <span className="mx-2 font-bold">VS</span>
+                      {acronymB || scenarioB}
+                    </span>
+                  </SelectItem>
+                </SelectContent>
+              </Select>{" "}
+            </>
+          )}
+        </div>
       </form>
     </Form>
   );

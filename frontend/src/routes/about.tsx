@@ -310,8 +310,15 @@ function About() {
                     GROW/2022/OP/0005
                   </a>
                   . Courtesy of the European Union, DG GROW. Development
-                  authored by Martin Röck, Shadwa Eissa, Benjamin Lesné, and
-                  Karen Allacker.
+                  authored by Martin Röck,{" "}
+                  <a className="link" href="mailto:shadwaae@gmail.com">
+                    Shadwa Eissa
+                  </a>
+                  ,{" "}
+                  <a className="link" href="mailto:benjamin.lesne@outlook.fr">
+                    Benjamin Lesné
+                  </a>
+                  , and Karen Allacker.
                 </TypographyP>
 
                 <TypographyP>
