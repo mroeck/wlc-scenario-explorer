@@ -50,15 +50,11 @@ test.describe("scenario selection", () => {
       expectedGraphTitle,
     );
 
-    await page.getByLabel("Settings").nth(1).click();
-
     // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition -- current code is more flexible in case of changes on SCENARIOS_OPTIONS
     const expectedDisplayValue = `${acronymA || scenarioA}VS${acronymB || scenarioB}`;
     await expect(page.getByTestId(DISPLAY_SELECT_TESTID)).toHaveText(
       expectedDisplayValue,
     );
-
-    await page.getByRole("button", { name: "Close" }).click();
 
     if (isMobile) {
       await mobileSettings.click();
@@ -72,7 +68,6 @@ test.describe("scenario selection", () => {
 
     await expect(page.getByTestId(FOR_SCENARIOS_TESTID)).toHaveText(scenarioA);
 
-    await page.getByLabel("Settings").nth(1).click();
     await expect(page.getByTestId(DISPLAY_SELECT_TESTID)).toHaveText(
       `${scenarioA} only`,
     );

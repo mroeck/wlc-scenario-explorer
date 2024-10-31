@@ -105,7 +105,6 @@ test.describe("search params", () => {
     const url = `${ROUTES.DASHBOARD}?display=${display}`;
 
     await page.goto(url);
-    await page.getByLabel("Settings").nth(1).click();
     await expect(displaySelect).toHaveText(expectedLabel);
   });
 

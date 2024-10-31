@@ -30,12 +30,9 @@ test.describe("data viz", () => {
   });
 
   test("table tab has no display select", async ({ page }) => {
-    const displaySelect = page
-      .getByRole("dialog", { name: "Settings" })
-      .getByTestId(DISPLAY_SELECT_TESTID);
+    const displaySelect = page.getByTestId(DISPLAY_SELECT_TESTID);
 
     await page.getByRole("tab", { name: "Table" }).click();
-    await page.getByLabel("Settings").nth(1).click();
 
     await expect(page.getByTestId(SORT_SELECT_TESTID)).toBeVisible();
     await expect(displaySelect).not.toBeVisible();

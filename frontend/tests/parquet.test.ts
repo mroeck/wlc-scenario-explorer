@@ -472,7 +472,7 @@ describe("parquet files data", () => {
   });
 
   for (const column of COLUMNS) {
-    test.only(`has expected distinct ${column} values`, async () => {
+    test(`has expected distinct ${column} values`, async () => {
       const expectedValues = EXPECTED_VALUES[column];
 
       if (!expectedValues) return;

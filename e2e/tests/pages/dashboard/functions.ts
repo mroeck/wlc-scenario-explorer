@@ -2,10 +2,24 @@ import {
   DISPLAY_SELECT_TESTID,
   SCENARIO_A_MENU_TESTID,
   SCENARIO_B_MENU_TESTID,
+  SORT_SELECT_TESTID,
 } from "@/lib/constants";
 import type { PredefinedScenario } from "@/lib/shared_with_backend/constants";
 import { expect, type Page } from "@playwright/test";
 import type { RequireAtLeastOne } from "type-fest";
+
+type ChangeSortArgs = {
+  page: Page;
+  option: string;
+};
+export const changeSort = async ({ page, option }: ChangeSortArgs) => {
+  await page.getByTestId(SORT_SELECT_TESTID).click();
+
+  const item = page.getByRole("menuitemradio", { name: option });
+  await item.click();
+
+  await expect(item).not.toBeVisible();
+};
 
 type ChangeDisplayInUIArgs = {
   page: Page;
@@ -15,14 +29,12 @@ export const changeDisplayInUI = async ({
   page,
   option,
 }: ChangeDisplayInUIArgs) => {
-  await page.getByLabel("Settings").nth(1).click();
   await page.getByTestId(DISPLAY_SELECT_TESTID).click();
 
-  await page.getByRole("listbox").getByText(option).click();
-  await page.getByRole("button", { name: "Close" }).click();
-  await expect(
-    page.getByRole("dialog", { name: "Settings" }),
-  ).not.toBeVisible();
+  const item = page.getByRole("listbox").getByText(option);
+  await item.click();
+
+  await expect(item).not.toBeVisible();
 };
 
 type ScenarioOption = `${PredefinedScenario}${string}`;
