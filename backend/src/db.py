@@ -23,7 +23,7 @@ Session = sessionmaker(engine)
 #     "stock_activity_type_name",
 #     "carbon_category",
 #     "stock_floor_area_Mm2",
-#     "amount_material_kg_per_building",
+#     "amount_material",
 #     "ind_GWP_Tot",
 #     "ind_GWP_Fos",
 #     "ind_GWP_Bio",

@@ -22,7 +22,7 @@ class Scenario(Base):
     stock_activity_type_name: Mapped[str] = mapped_column(String)
     carbon_category: Mapped[str] = mapped_column(String)
     stock_floor_area_Mm2: Mapped[float] = mapped_column(Float)
-    amount_material_kg_per_building: Mapped[float] = mapped_column(Float)
+    amount_material: Mapped[float] = mapped_column(Float)
     ind_GWP_Tot: Mapped[float] = mapped_column(Float)
     ind_GWP_Fos: Mapped[float] = mapped_column(Float)
     ind_GWP_Bio: Mapped[float] = mapped_column(Float)

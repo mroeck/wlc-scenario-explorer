@@ -10,7 +10,7 @@ import {
   SCENARIO_B_LABEL,
 } from "@/lib/constants";
 import { ColorCube } from "../Legend/ColorCube";
-import { cn, getColor } from "@/lib/utils";
+import { cn, getColor, getValueLabel } from "@/lib/utils";
 import type {
   NameType,
   Payload,
@@ -214,10 +214,11 @@ export const Content = ({
             .map((item) => {
               if (!areDataMerged) {
                 const value = item.value as number;
+                const name = getValueLabel({ value: item.name as string });
                 const percentage = totalValue ? (value / totalValue) * 100 : 0;
 
                 return {
-                  name: item.name,
+                  name,
                   value,
                   percentage,
                   dataKey: item.dataKey,

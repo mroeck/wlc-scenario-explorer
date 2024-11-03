@@ -56,7 +56,7 @@ test.describe("search params", () => {
       .getByRole("tabpanel", { name: "Scenarios" })
       .getByTestId(SCENARIO_A_MENU_TESTID);
 
-    const scenario = "Example scenario (for illustration purpose only)";
+    const scenario = DEFAULT_SCENARIO;
     const url = `${ROUTES.DASHBOARD}?scenarioA=${scenario}`;
 
     await page.goto(url);
@@ -68,7 +68,7 @@ test.describe("search params", () => {
       .getByRole("tabpanel", { name: "Scenarios" })
       .getByTestId(SCENARIO_B_MENU_TESTID);
 
-    const scenario = "Example scenario (for illustration purpose only)";
+    const scenario = DEFAULT_SCENARIO;
     const url = `${ROUTES.DASHBOARD}?scenarioB=${scenario}`;
 
     await page.goto(url);

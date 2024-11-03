@@ -20,7 +20,7 @@ class ColumnsEnumSchema(Enum):
     STOCK_ACTIVITY_TYPE_NAME = "stock_activity_type_name"
     CARBON_CATEGORY = "carbon_category"
     STOCK_FLOOR_AREA_MM2 = "stock_floor_area_Mm2"
-    AMOUNT_MATERIAL_KG_PER_BUILDING = "amount_material_kg_per_building"
+    AMOUNT_MATERIAL = "amount_material"
     IND_GWP_TOT = "ind_GWP_Tot"
     IND_GWP_FOS = "ind_GWP_Fos"
     IND_GWP_BIO = "ind_GWP_Bio"
@@ -82,7 +82,7 @@ UNIT_TO_DB_COLUMNS: Dict[str, str] = {
     IndicatorEnumSchema.FOSSIL_GWP.value: ColumnsEnumSchema.IND_GWP_FOS.value,
     IndicatorEnumSchema.BIO_GWP.value: ColumnsEnumSchema.IND_GWP_BIO.value,
     IndicatorEnumSchema.LULUC_GWP.value: ColumnsEnumSchema.IND_GWP_LULUC.value,
-    IndicatorEnumSchema.MATERIAL_AMOUNT_PER_BUILDING.value: ColumnsEnumSchema.AMOUNT_MATERIAL_KG_PER_BUILDING.value,
+    IndicatorEnumSchema.MATERIAL_AMOUNT_PER_BUILDING.value: ColumnsEnumSchema.AMOUNT_MATERIAL.value,
     DividedByEnumSchema.NONE.value: DIVIDED_BY_NONE,
     DividedByEnumSchema.M2_COUNTRY.value: DIVIDED_BY_NONE,
     DividedByEnumSchema.M2_ARCHETYPE.value: DIVIDED_BY_NONE,
@@ -170,22 +170,36 @@ class ScenarioEnumSchema(str, Enum):
     AUSTRIA_SHIFT = "Austria + Shift"
     AUSTRIA_IMPROVE = "Austria + Improve"
     AUSTRIA_AVOID = "Austria + Avoid"
+    AUSTRIA_FULL = "Austria + Full"
+    DENMARK = "Denmark"
+    DENMARK_SHIFT = "Denmark + Shift"
+    DENMARK_IMPROVE = "Denmark + Improve"
+    DENMARK_AVOID = "Denmark + Avoid"
+    DENMARK_FULL = "Denmark + Full"
 
+
+DEFAULT_SCENARIO = "AT-BASE-1-1-1-1-1-1-1-1-1-1-1"
 
 SCENARIO_TO_FILE_NAME: Dict[str, str] = {
-    ScenarioEnumSchema.AASI.value: "scenario",
-    ScenarioEnumSchema.APOA.value: "scenario",
-    ScenarioEnumSchema.APOI.value: "scenario",
-    ScenarioEnumSchema.APOL.value: "scenario",
-    ScenarioEnumSchema.APOS.value: "scenario",
-    ScenarioEnumSchema.CPOC.value: "scenario",
-    ScenarioEnumSchema.CPOO.value: "scenario",
-    ScenarioEnumSchema.CUSR.value: "scenario",
-    ScenarioEnumSchema.Example.value: "scenario",
-    ScenarioEnumSchema.AUSTRIA.value: "BASE",
-    ScenarioEnumSchema.AUSTRIA_SHIFT.value: "SHIFT",
-    ScenarioEnumSchema.AUSTRIA_IMPROVE.value: "IMPROVE",
-    ScenarioEnumSchema.AUSTRIA_AVOID.value: "AVOID",
+    ScenarioEnumSchema.AASI.value: DEFAULT_SCENARIO,
+    ScenarioEnumSchema.APOA.value: DEFAULT_SCENARIO,
+    ScenarioEnumSchema.APOI.value: DEFAULT_SCENARIO,
+    ScenarioEnumSchema.APOL.value: DEFAULT_SCENARIO,
+    ScenarioEnumSchema.APOS.value: DEFAULT_SCENARIO,
+    ScenarioEnumSchema.CPOC.value: DEFAULT_SCENARIO,
+    ScenarioEnumSchema.CPOO.value: DEFAULT_SCENARIO,
+    ScenarioEnumSchema.CUSR.value: DEFAULT_SCENARIO,
+    ScenarioEnumSchema.Example.value: DEFAULT_SCENARIO,
+    ScenarioEnumSchema.AUSTRIA.value: "AT-BASE-1-1-1-1-1-1-1-1-1-1-1",
+    ScenarioEnumSchema.AUSTRIA_SHIFT.value: "AT-SHIFT-1-1-1-4-1-1-1-4-1-1-4",
+    ScenarioEnumSchema.AUSTRIA_IMPROVE.value: "AT-IMPROVE-1-1-1-1-4-4-4-1-4-1-1",
+    ScenarioEnumSchema.AUSTRIA_AVOID.value: "AT-AVOID-4-4-4-1-1-1-1-1-1-4-1",
+    ScenarioEnumSchema.AUSTRIA_FULL.value: "AT-FULL-4-4-4-4-4-4-4-4-4-4-4",
+    ScenarioEnumSchema.DENMARK.value: "DK-BASE-1-1-1-1-1-1-1-1-1-1-1",
+    ScenarioEnumSchema.DENMARK_SHIFT.value: "DK-SHIFT-1-1-1-4-1-1-1-4-1-1-4",
+    ScenarioEnumSchema.DENMARK_IMPROVE.value: "DK-IMPROVE-1-1-1-1-4-4-4-1-4-1-1",
+    ScenarioEnumSchema.DENMARK_AVOID.value: "DK-AVOID-4-4-4-1-1-1-1-1-1-4-1",
+    ScenarioEnumSchema.DENMARK_FULL.value: "DK-FULL-4-4-4-4-4-4-4-4-4-4-4",
 }
 
 

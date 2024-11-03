@@ -36,6 +36,7 @@ import {
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Checkbox } from "@/components/ui/checkbox";
 import { InfoButton } from "@/components/InfoButton";
+import { getValueLabel } from "@/lib/utils";
 
 const route = getRouteApi(ROUTES.DASHBOARD);
 const SelectOptionArraySchema = z
@@ -334,7 +335,7 @@ export const Filters = () => {
                     typeof YEAR_KEY
                   >;
                   const options = dataValue.map((option) => ({
-                    label: option,
+                    label: getValueLabel({ value: option }),
                     value: option,
                   }));
 

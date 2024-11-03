@@ -59,8 +59,7 @@ export const DEFAULT_DISPLAY: (typeof DISPLAY_OPTIONS)[number] =
   SCENARIO_A_ONLY;
 export const DEFAULT_SORT: (typeof SORT_OPTIONS)[keyof typeof SORT_OPTIONS] =
   "group / alphabetical";
-export const DEFAULT_SCENARIO: (typeof SCENARIOS_OPTIONS)[number] =
-  "Example scenario (for illustration purpose only)";
+export const DEFAULT_SCENARIO: (typeof SCENARIOS_OPTIONS)[number] = "Austria";
 export const DEFAULT_FROM = 2020;
 export const DEFAULT_TO = 2050;
 export const HEADER_HEIGHT = "72";
@@ -183,18 +182,24 @@ export const STORAGE_KEYS = {
 export const DISCLAIMER_MODAL_TITLE = "Website Disclaimer";
 export const GRAPH_AXIS_COLOR = "hsl(223 0% 20%)";
 export const SCENARIO_TO_ACRONYM = {
-  "Additional Policy scenario": "APOL",
-  "Conservative scenario of Current Policies": "CPOL/B",
-  "Current Policy + Avoid + Shift + Improve strategies": "CPOL+ASI",
-  "Current Policy + Avoid strategies": "CPOL+A",
-  "Current Policy + Improve strategies": "CPOL+I",
-  "Current Policy + Shift strategies": "CPOL+S",
-  "Optimistic scenario of Current Policies": "CPOL/A",
-  "Example scenario (for illustration purpose only)": undefined,
+  // "Additional Policy scenario": "APOL",
+  // "Conservative scenario of Current Policies": "CPOL/B",
+  // "Current Policy + Avoid + Shift + Improve strategies": "CPOL+ASI",
+  // "Current Policy + Avoid strategies": "CPOL+A",
+  // "Current Policy + Improve strategies": "CPOL+I",
+  // "Current Policy + Shift strategies": "CPOL+S",
+  // "Optimistic scenario of Current Policies": "CPOL/A",
+  // "Example scenario (for illustration purpose only)": undefined,
   Austria: undefined,
-  "Austria + Avoid": "A/A",
-  "Austria + Improve": "A/I",
-  "Austria + Shift": "A/S",
+  "Austria + Avoid": "AT/A",
+  "Austria + Improve": "AT/I",
+  "Austria + Shift": "AT/S",
+  "Austria + Full": "AT/F",
+  Denmark: undefined,
+  "Denmark + Avoid": "DK/A",
+  "Denmark + Improve": "DK/I",
+  "Denmark + Shift": "DK/S",
+  "Denmark + Full": "DK/F",
 } satisfies Record<(typeof PREDEFINED_SCENARIOS)[number], string | undefined>;
 export const EMBODIED_CARBON = "Embodied carbon (EC)";
 export const OPERATIONAL_CARBON = "Operational carbon (OC)";

@@ -1,4 +1,4 @@
-import { DIVIDED_BY_NONE, NONE } from "../constants";
+import { DEFAULT_COLOR, DIVIDED_BY_NONE, NONE } from "../constants";
 import type { Attribute, ValidOption } from "../types";
 
 /*
@@ -25,18 +25,24 @@ type AttributesEnum = [
 export const ATTRIBUTES = Object.values(BREAKDOWN_BY_OBJ) as AttributesEnum;
 
 export const PREDEFINED_SCENARIOS = [
-  "Example scenario (for illustration purpose only)",
-  "Optimistic scenario of Current Policies",
-  "Conservative scenario of Current Policies",
-  "Additional Policy scenario",
-  "Current Policy + Improve strategies",
-  "Current Policy + Shift strategies",
-  "Current Policy + Avoid strategies",
-  "Current Policy + Avoid + Shift + Improve strategies",
+  // "Example scenario (for illustration purpose only)",
+  // "Optimistic scenario of Current Policies",
+  // "Conservative scenario of Current Policies",
+  // "Additional Policy scenario",
+  // "Current Policy + Improve strategies",
+  // "Current Policy + Shift strategies",
+  // "Current Policy + Avoid strategies",
+  // "Current Policy + Avoid + Shift + Improve strategies",
   "Austria",
   "Austria + Shift",
   "Austria + Improve",
   "Austria + Avoid",
+  "Austria + Full",
+  "Denmark",
+  "Denmark + Shift",
+  "Denmark + Improve",
+  "Denmark + Avoid",
+  "Denmark + Full",
 ] as const;
 export type PredefinedScenario = (typeof PREDEFINED_SCENARIOS)[number];
 
@@ -130,19 +136,23 @@ export const ATTRIBUTE_OPTIONS_COLOR = {
     "Internal walls": "#78D18F",
   },
   "Building subtype": {
-    // @ts-expect-error: temp: parquet file schema has been updated
-    "Multi-family house": "#3C7FA8",
-    Office: "#3ABB5C",
-    "Single-family house": "#499ACC",
+    MFH: "#3C7FA8",
+    OFF: "#3ABB5C",
+    SFH: "#499ACC",
+    ABL: DEFAULT_COLOR,
+    TRA: DEFAULT_COLOR,
+    EDU: DEFAULT_COLOR,
+    HEA: DEFAULT_COLOR,
+    HOR: DEFAULT_COLOR,
+    OTH: DEFAULT_COLOR,
   },
   "Building type": {
-    // @ts-expect-error: temp: parquet file schema has been updated
-    "Non-residential": "#3ABB5C",
+    "Non-Residential": "#3ABB5C",
     Residential: "#499ACC",
   },
   country: {
     AT: "#95400E",
-    // @ts-expect-error: temp: parquet file schema has been updated
+    // @ts-expect-error: temp for new/not final parquet files
     BE: "#2D5F7E",
     BG: "#BB4F11",
     CY: "#216934",
@@ -193,8 +203,8 @@ export const ATTRIBUTE_OPTIONS_COLOR = {
     Wood: "#6B3A83",
   },
   Region: {
-    // @ts-expect-error: temp: parquet file schema has been updated
-    Continental: "#EE854A",
+    CON: "#EE854A",
+    // @ts-expect-error: temp for new/not final parquet files
     Mediterranean: "#3ABB5C",
     Nordic: "#C73B3B",
     Oceanic: "#499ACC",
@@ -207,7 +217,7 @@ export const ATTRIBUTE_OPTIONS_COLOR = {
   "Whole life cycle stages": {
     "Construction embodied carbon": "#377399",
     "Demolition embodied carbon": "#3C7FA8",
-    // @ts-expect-error: temp: parquet file schema has been updated
+    // @ts-expect-error: temp for new/not final parquet files
     "Renovation embodied carbon": "#428CB9",
     "Use phase embodied carbon": "#499ACC",
     "Use phase operational carbon": "#3ABB5C",
@@ -216,3 +226,88 @@ export const ATTRIBUTE_OPTIONS_COLOR = {
   Exclude<Attribute, "stock building stock activity name" | "None">,
   Partial<Record<ValidOption, `#${string}`>>
 >;
+
+export const VALUE_TO_LABEL: Record<ValidOption, string> = {
+  "External openings": "External openings",
+  "Internal openings": "Internal openings",
+  "Electrical services": "Electrical services",
+  "Technical services": "Technical services",
+  Roofs: "Roofs",
+  Staircases: "Staircases",
+  "Storey floors": "Storey floors",
+  Substructure: "Substructure",
+  "Common walls": "Common walls",
+  "External walls": "External walls",
+  "Internal walls": "Internal walls",
+  "Non-Residential": "Non-Residential",
+  Residential: "Residential",
+  Aluminium: "Aluminium",
+  Brick: "Brick",
+  Ceramics: "Ceramics",
+  Cleaning: "Cleaning",
+  Concrete: "Concrete",
+  Copper: "Copper",
+  Electronics: "Electronics",
+  Energy: "Energy",
+  Glass: "Glass",
+  Gypsum: "Gypsum",
+  Insulation: "Insulation",
+  "Other Construction Materials": "Other Construction Materials",
+  "Other Metal": "Other Metal",
+  "Paint and Glue": "Paint and Glue",
+  Plastic: "Plastic",
+  Process: "Process",
+  Sand: "Sand",
+  Steel: "Steel",
+  Undefined: "Undefined",
+  Wood: "Wood",
+  "Existing buildings": "Existing buildings",
+  "New buildings": "New buildings",
+  Refurbishment: "Refurbishment",
+  "Construction embodied carbon": "Construction EC",
+  "Demolition embodied carbon": "Demolition EC",
+  "Use phase embodied carbon": "Use phase EC",
+  "Use phase operational carbon": "Use phase OC",
+  CON: "Continental",
+  AT: "AT",
+  SFH: "Single-family house",
+  MFH: "Multi-family house",
+  ABL: "Apartment block",
+  OFF: "Office",
+  TRA: "Trade",
+  EDU: "Education",
+  HEA: "Health",
+  HOR: "Hotel and restaurant",
+  OTH: "Other",
+  // @ts-expect-error: temp for new/not final parquet files
+  BE: "BE",
+  BG: "BG",
+  CY: "CY",
+  CZ: "CZ",
+  DE: "DE",
+  DK: "DK",
+  EE: "EE",
+  EL: "EL",
+  ES: "ES",
+  FI: "FI",
+  FR: "FR",
+  HR: "HR",
+  HU: "HU",
+  IE: "IE",
+  IT: "IT",
+  LT: "LT",
+  LU: "LU",
+  LV: "LV",
+  MT: "MT",
+  NL: "NL",
+  PL: "PL",
+  PT: "PT",
+  RO: "RO",
+  SE: "SE",
+  SI: "SI",
+  SK: "SK",
+  Mediterranean: "Mediterranean",
+  Nordic: "Nordic",
+  Oceanic: "Oceanic",
+  "Renovation embodied carbon": "Renovation embodied carbon",
+};

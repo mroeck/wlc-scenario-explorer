@@ -26,7 +26,6 @@ from .shared_with_frontend.schemas import (
 from .constants import DIVIDED_BY_NONE
 
 DATA_PATH = os.getenv("DATA_PATH", "/app/data")
-CONVERSION_FACTOR = 1000
 TOTAL_LABEL = "Total"
 YEAR_COLUMN: ColumnClause[Never] = column("stock_projection_year")
 
@@ -63,7 +62,7 @@ def get_base_statement(
     if attribute == AttributeEnumSchema.NONE:
         return select(
             YEAR_COLUMN,
-            (func.sum(column(indicator)) / CONVERSION_FACTOR).label(TOTAL_LABEL),
+            (func.sum(column(indicator))).label(TOTAL_LABEL),
         ).group_by(YEAR_COLUMN)
 
     select_columns: List[ColumnClause[Never]] = [
@@ -96,7 +95,7 @@ def get_pivot_query(
 
     return f"""
         SELECT
-            COLUMNS(*) / {CONVERSION_FACTOR},
+            COLUMNS(*),
             stock_projection_year
         FROM (
             PIVOT filtered_data
@@ -124,8 +123,8 @@ def get_minmax_query(
                 FROM filtered_data
             )
             SELECT 
-                CAST(MIN(total) AS INTEGER) AS min, 
-                CAST(MAX(total) AS INTEGER) AS max
+                MIN(total) AS min, 
+                MAX(total) AS max
             FROM totals_data;
         """
 
@@ -140,8 +139,8 @@ def get_minmax_query(
             GROUP BY stock_projection_year
         )
         SELECT 
-            CAST(MIN(total) / {CONVERSION_FACTOR} AS INTEGER) AS min, 
-            CAST(MAX(total) / {CONVERSION_FACTOR} AS INTEGER) AS max
+            MIN(total) AS min, 
+            MAX(total) AS max
         FROM totals_data;
     """
 
