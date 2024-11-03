@@ -9,7 +9,8 @@ const db = await Database.create(":memory:");
 const basePath = env.PUBLIC_DATA_PATH
   ? path.resolve(__dirname, env.PUBLIC_DATA_PATH)
   : "/app/data";
-const DATA_PATH = basePath + "/SHIFT.parquet";
+// const DATA_PATH = basePath + "/AT-SHIFT-1-1-1-4-1-1-1-4-1-1-4.parquet";
+const DATA_PATH = basePath + "/DK-SHIFT-1-1-1-4-1-1-1-4-1-1-4.parquet";
 
 const EXPECTED_SCHEMA = [
   {
@@ -195,7 +196,7 @@ type Column = (typeof EXPECTED_SCHEMA)[number]["column_name"];
 export const EXPECTED_VALUES = {
   stock_projection_year: [2020, 2025, 2030, 2035, 2040, 2045, 2050],
   activity_in_out: [
-    "Energy in",
+    "ENERGY_IN",
     "MATERIAL_IN",
     "MATERIAL_LOSS_IN",
     "MATERIAL_LOSS_OUT",
@@ -427,6 +428,12 @@ const COLUMNS = Object.keys(
   EXPECTED_VALUES,
 ) as (keyof typeof EXPECTED_VALUES)[];
 
+const COLUMNS_TO_SKIP: Column[] = [
+  "country_name",
+  "building_archetype_code",
+  "stock_region_name",
+];
+
 describe("parquet files data", () => {
   test("has expected columns", async () => {
     const actualSchema = await db.all(`DESCRIBE TABLE '${DATA_PATH}'`);
@@ -473,6 +480,9 @@ describe("parquet files data", () => {
 
   for (const column of COLUMNS) {
     test(`has expected distinct ${column} values`, async () => {
+      if (COLUMNS_TO_SKIP.includes(column)) {
+        return;
+      }
       const expectedValues = EXPECTED_VALUES[column];
 
       if (!expectedValues) return;

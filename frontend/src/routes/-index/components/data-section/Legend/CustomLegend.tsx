@@ -1,6 +1,6 @@
 import type { Props } from "recharts/types/component/Legend";
 import { ColorCube } from "./ColorCube";
-import { cn, getColor, groupByCategory } from "@/lib/utils";
+import { cn, getColor, getValueLabel, groupByCategory } from "@/lib/utils";
 import { colors } from "../colors";
 import {
   COLOR_LEGEND_TESTID,
@@ -153,8 +153,8 @@ function ColorLegendItemAll({
     <ol className="flex flex-wrap justify-items-start gap-x-6">
       {data.map((item) => {
         const option = typeof item.value === "string" ? item.value : "";
-
         const isHighlight = option === highlight;
+        const label = getValueLabel({ value: item.value as string });
 
         return (
           <li
@@ -182,7 +182,7 @@ function ColorLegendItemAll({
               className="z-0 whitespace-nowrap text-sm first-letter:uppercase"
               style={{ fontSize: GRAPH_FONT_SIZE }}
             >
-              {item.value}
+              {label}
             </span>
           </li>
         );

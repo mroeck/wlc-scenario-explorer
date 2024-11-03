@@ -95,9 +95,10 @@ test.describe("data viz", () => {
 
     await expect(indicatorInGraphTitle).toHaveText(optionText);
     await expect(
-      graph.getByText(INDICATOR_TO_UNIT[optionText], { exact: true }),
+      graph.getByText(INDICATOR_TO_UNIT[optionText]).nth(1),
     ).toBeVisible();
-    await expect(graph.getByText(indicator1, { exact: true })).toBeVisible();
+
+    await expect(graph.getByText(indicator1).nth(1)).toBeVisible();
 
     await testScreenshot({
       page,

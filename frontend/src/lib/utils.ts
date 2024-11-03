@@ -1,4 +1,7 @@
-import { ATTRIBUTE_OPTIONS_COLOR } from "@/lib/shared_with_backend/constants";
+import {
+  ATTRIBUTE_OPTIONS_COLOR,
+  VALUE_TO_LABEL,
+} from "@/lib/shared_with_backend/constants";
 import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
 import { z } from "zod";
@@ -6,8 +9,6 @@ import type { Attribute, Color } from "./types";
 import {
   DEFAULT_COLOR,
   EMBODIED_CARBON,
-  EMBODIED_CARBON_TEXT,
-  OPERATION_CARBON_TEXT,
   OPERATIONAL_CARBON,
 } from "./constants";
 import type { Payload } from "recharts/types/component/DefaultLegendContent";
@@ -45,7 +46,9 @@ type GetColorArgs = {
   option: BreakdownByOptions | (string & {});
 };
 export const getColor = ({ breakdownBy, option }: GetColorArgs) => {
-  if (Object.keys(ATTRIBUTE_OPTIONS_COLOR).includes(breakdownBy)) {
+  const hasColor = Object.keys(ATTRIBUTE_OPTIONS_COLOR).includes(breakdownBy);
+
+  if (hasColor) {
     const breakdownByTyped =
       breakdownBy as keyof typeof ATTRIBUTE_OPTIONS_COLOR;
 
@@ -82,9 +85,10 @@ export const getColor = ({ breakdownBy, option }: GetColorArgs) => {
   return DEFAULT_COLOR;
 };
 
-const CATEGORIES = {
-  "Non-residential": ["Office"],
-  Residential: ["Single-family house", "Multi-family house"],
+type Categories = Record<string, BreakdownByOptions[]>;
+const CATEGORIES: Categories = {
+  "Non-residential": ["OFF"],
+  Residential: ["SFH", "MFH"],
   Walls: ["Internal walls", "External walls", "Common walls"],
   Openings: ["Internal openings", "External openings"],
   Services: ["Technical services", "Electrical services"],
@@ -196,19 +200,21 @@ export function groupByCategory({ values }: { values: Payload[] }) {
       // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       grouped[category] = grouped[category] || [];
 
-      if (category === EMBODIED_CARBON) {
-        value.value = (value.value as string)
-          .toLowerCase()
-          .replace(EMBODIED_CARBON_TEXT, "EC");
-      } else if (category === OPERATIONAL_CARBON) {
-        value.value = (value.value as string)
-          .toLowerCase()
-          .replace(OPERATION_CARBON_TEXT, "OC");
-      }
-
       grouped[category].push(value);
     }
   });
 
   return grouped;
+}
+
+type GetValueLabelArgs = {
+  value: string;
+};
+export function getValueLabel({ value }: GetValueLabelArgs) {
+  const valueTyped = value as keyof typeof VALUE_TO_LABEL;
+  const label =
+    (VALUE_TO_LABEL[valueTyped] as string | undefined) ??
+    (valueTyped as string);
+
+  return label;
 }

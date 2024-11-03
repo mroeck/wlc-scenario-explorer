@@ -30,8 +30,8 @@ export const env = createEnv({
       (import.meta.env.VITE_NODE_ENV as string | undefined) ??
       import.meta.env.MODE,
     PUBLIC_DEBUG: import.meta.env.VITE_DEBUG as string | undefined,
-    PUBLIC_CI: import.meta.env.VITE_CI as string,
-    PUBLIC_DATA_PATH: import.meta.env.DATA_PATH as string | undefined,
+    PUBLIC_CI: import.meta.env.CI as string,
+    PUBLIC_DATA_PATH: import.meta.env.VITE_DATA_PATH as string | undefined,
   },
 
   /**

@@ -47,8 +47,8 @@ test.describe("stacked bar chart", () => {
     },
     async ({ page }) => {
       const scenarios = {
-        a: "Austria + Shift (A/S)",
-        b: "Austria + Improve (A/I)",
+        a: "Austria + Shift (AT/S)",
+        b: "Austria + Improve (AT/I)",
       } as const;
 
       await changeScenariosInUI({ page, scenarios });
