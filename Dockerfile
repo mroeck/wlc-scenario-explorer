@@ -11,6 +11,7 @@ COPY ./frontend/src/lib .
 
 WORKDIR /app/frontend/
 COPY ./frontend/package.json .
+RUN npm install -g pnpm@9.4.0 && pnpm install
 
 WORKDIR /app/e2e
 COPY ./e2e .

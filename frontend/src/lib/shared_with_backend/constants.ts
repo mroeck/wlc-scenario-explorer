@@ -1,4 +1,4 @@
-import { DEFAULT_COLOR, DIVIDED_BY_NONE, NONE } from "../constants";
+import { DIVIDED_BY_NONE, NONE } from "../constants";
 import type { Attribute, ValidOption } from "../types";
 
 /*
@@ -110,7 +110,6 @@ export const API_ROUTES = {
   scenario: "/scenario",
 };
 
-// TODO: fix type errors based on final parquet file structure
 export const ATTRIBUTE_OPTIONS_COLOR = {
   // "flow type": {
   //   "Energy in": "#5FB8CE",
@@ -136,15 +135,15 @@ export const ATTRIBUTE_OPTIONS_COLOR = {
     "Internal walls": "#78D18F",
   },
   "Building subtype": {
-    MFH: "#3C7FA8",
-    OFF: "#3ABB5C",
-    SFH: "#499ACC",
-    ABL: DEFAULT_COLOR,
-    TRA: DEFAULT_COLOR,
-    EDU: DEFAULT_COLOR,
-    HEA: DEFAULT_COLOR,
-    HOR: DEFAULT_COLOR,
-    OTH: DEFAULT_COLOR,
+    ABL: "#3C7FA8",
+    MFH: "#499ACC",
+    SFH: "#56B5F0",
+    EDU: "#216044",
+    HEA: "#267248",
+    HOR: "#2B844C",
+    OFF: "#309650",
+    TRA: "#35A854",
+    OTH: "#3ABB5C",
   },
   "Building type": {
     "Non-Residential": "#3ABB5C",
