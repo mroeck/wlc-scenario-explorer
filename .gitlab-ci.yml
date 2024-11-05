@@ -81,3 +81,24 @@ playwright:
     paths:
       - $PLAYWRIGHT_PROJECT_DIR/reports/playwright.*
       - $PLAYWRIGHT_PROJECT_DIR/test-results/**/*.png
+  # Overwrite default rules to avoid running on production
+  rules:
+    # exclude tags
+    - if: $CI_COMMIT_TAG
+      when: never
+    # on integration branch(es): auto & failing
+    - if: "$CI_COMMIT_REF_NAME =~ $INTEG_REF"
+    # disable if no review environment
+    - if: '$REVIEW_ENABLED != "true"'
+      when: never
+    # on ADAPTIVE_PIPELINE_DISABLED: auto & failing
+    - if: '$ADAPTIVE_PIPELINE_DISABLED == "true"'
+    # early stage (dev branch, no MR): manual & non-failing
+    - if: "$CI_MERGE_REQUEST_ID == null && $CI_OPEN_MERGE_REQUESTS == null"
+      when: manual
+      allow_failure: true
+    # Draft MR: auto & non-failing
+    - if: "$CI_MERGE_REQUEST_TITLE =~ /^Draft:.*/"
+      allow_failure: true
+    # else (Ready MR): auto & failing
+    - when: on_success
