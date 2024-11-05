@@ -133,7 +133,7 @@ export const StackedBarChart = ({
             const opacity =
               isSomethingHighlighted && !isHighlight ? HIGHLIGHT_OPACITY : 0.8;
             const dataKey = isAvsB ? `${type}.${option}` : option;
-            const id = dataKey.replace(" ", "");
+            const id = dataKey.replaceAll(" ", "");
             const needPattern = type === COLUMNS_TYPE[1] && isAvsB;
 
             return (
