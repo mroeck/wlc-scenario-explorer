@@ -1,7 +1,7 @@
 import {
   ATTRIBUTE_OPTIONS_COLOR,
   VALUE_TO_LABEL,
-} from "@/lib/shared_with_backend/constants";
+} from "./shared_with_backend/constants";
 import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
 import { z } from "zod";
@@ -13,7 +13,7 @@ import {
 } from "./constants";
 import type { Payload } from "recharts/types/component/DefaultLegendContent";
 import type { BreakdownByOptions } from "@/routes/-index/components/data-section/graphs/types";
-import type { KeysOfUnion } from "type-fest";
+import type { KeysOfUnion, ReadonlyTuple, UnionToTuple } from "type-fest";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -86,9 +86,9 @@ export const getColor = ({ breakdownBy, option }: GetColorArgs) => {
 };
 
 type Categories = Record<string, BreakdownByOptions[]>;
-const CATEGORIES: Categories = {
-  "Non-residential": ["OFF"],
-  Residential: ["SFH", "MFH"],
+const CATEGORIES = {
+  "Non-residential": ["OTH", "TRA", "OFF", "HOR", "HEA", "EDU"],
+  Residential: ["SFH", "MFH", "ABL"],
   Walls: ["Internal walls", "External walls", "Common walls"],
   Openings: ["Internal openings", "External openings"],
   Services: ["Technical services", "Electrical services"],
@@ -135,9 +135,25 @@ const CATEGORIES: Categories = {
     "Renovation embodied carbon",
   ],
   [OPERATIONAL_CARBON]: ["Use phase operational carbon"],
-} as const;
+} as const satisfies Categories;
 
-const ATTRIBUTE_OPTIONS_ORDER = {
+type AttributeOptionsColor = typeof ATTRIBUTE_OPTIONS_COLOR;
+type AttributeOptions = keyof AttributeOptionsColor;
+type AttributeOptionsOrder = Pick<
+  {
+    [Attribute in AttributeOptions]: ReadonlyTuple<
+      keyof AttributeOptionsColor[Attribute],
+      UnionToTuple<
+        keyof AttributeOptionsColor[Attribute]
+      >["length"] extends number
+        ? UnionToTuple<keyof AttributeOptionsColor[Attribute]>["length"]
+        : never
+    >;
+  },
+  "Building subtype" | "Element Class" | "country"
+>;
+
+export const ATTRIBUTE_OPTIONS_ORDER: AttributeOptionsOrder = {
   "Building subtype": [
     ...CATEGORIES.Residential,
     ...CATEGORIES["Non-residential"],
@@ -154,7 +170,7 @@ const ATTRIBUTE_OPTIONS_ORDER = {
     ...CATEGORIES.Mediterranean,
     ...CATEGORIES.Continental,
   ],
-} satisfies Partial<Record<Attribute, string[]>>;
+} as const satisfies Partial<Record<Attribute, string[]>>;
 
 const ORDERED_ATTRIBUTES = [
   "country",

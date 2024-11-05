@@ -1,5 +1,7 @@
 import { ROUTES, BREAKDOWN_BY_TESTID, NONE } from "@/lib/constants";
-import { test } from "@playwright/test";
+import { VALUE_TO_LABEL } from "@/lib/shared_with_backend/constants";
+import { ATTRIBUTE_OPTIONS_ORDER } from "@/lib/utils";
+import { expect, test } from "@playwright/test";
 import { ACTIVE_DATA_TAB_LOCATOR, TAGS } from "@tests/constants";
 import { testScreenshot, waitLoadingEnds } from "@tests/functions";
 
@@ -25,4 +27,16 @@ test.describe("breakdown by", () => {
       });
     },
   );
+
+  test("building subtype display expected color legend", async ({ page }) => {
+    await page.getByTestId(BREAKDOWN_BY_TESTID).getByRole("combobox").click();
+    await page
+      .getByLabel("Building subtype")
+      .getByText("Building subtype")
+      .click();
+
+    for (const subtype of ATTRIBUTE_OPTIONS_ORDER["Building subtype"]) {
+      await expect(page.getByText(VALUE_TO_LABEL[subtype])).toBeVisible();
+    }
+  });
 });
