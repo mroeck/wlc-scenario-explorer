@@ -170,6 +170,13 @@ export const HELP_PAGE_IDS = {
   visualizationSettings: "visualization-settings",
   output: "output",
   visualization: "visualization",
+  introduction: "introduction",
+  studyBackground: "studyBackground",
+  studyObjectives: "studyObjectives",
+  scenarioModellingTool: "scenarioModellingTool",
+  userInterface: "userInterface",
+  generalRemarks: "generalRemarks",
+  faq: "faq",
 } as const;
 export const SCENARIO_A_LABEL = "primary scenario";
 export const SCENARIO_B_LABEL = "second scenario";
