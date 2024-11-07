@@ -1,5 +1,5 @@
-import { ROUTES, HELP_TITLE } from "@/lib/constants";
-import { test, expect } from "@playwright/test";
+import { ROUTES } from "@/lib/constants";
+import { expect, test } from "@playwright/test";
 import { TAGS } from "@tests/constants";
 import { testPageScreenshot } from "@tests/functions";
 
@@ -9,9 +9,10 @@ test.describe("dashboard", () => {
   });
 
   test("page snapshot", { tag: TAGS.snapshot }, async ({ page }) => {
-    await expect(page.getByText(HELP_TITLE)).toBeVisible({
-      timeout: 10_000,
-    });
+    const title = page
+      .locator("#introduction")
+      .getByRole("heading", { name: "Introduction" });
+    await expect(title).toBeVisible();
     await testPageScreenshot({ page });
   });
 });

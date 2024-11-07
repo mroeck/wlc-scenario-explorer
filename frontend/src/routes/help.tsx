@@ -11,12 +11,18 @@ import tableWithFilteredEmbodiedCaronUrl from "@/assets/dataViz/table_with_filte
 
 import stackedBarChartForEmbodiedCarbonUrl from "@/assets/dataViz/stacked_bar_chart_showing_filtered_results_for_embodied_carbon_by_building_element_class.png";
 import { TypographyFigure } from "@/components/TypographyFigure";
-import { HELP_PAGE_IDS, HELP_TITLE } from "@/lib/constants";
+import {
+  HELP_PAGE_IDS,
+  HELP_TITLE,
+  MOSELEY_EMAIL,
+  ROECK_EMAIL,
+} from "@/lib/constants";
 import { TypographyContent } from "@/components/TypographyContent";
 import { SectionForDoc } from "@/components/SectionForDoc";
 import { TableOfContents, type ToCSection } from "@/components/TableOfContents";
 import { TypographyH4 } from "@/components/TypographyH4";
 import { cn } from "@/lib/utils";
+import dashboardStructureUrl from "@/assets/dashboard-structure.png";
 
 export const Route = createFileRoute("/help")({
   component: () => <Help />,
@@ -26,31 +32,66 @@ type Ids = (typeof HELP_PAGE_IDS)[keyof typeof HELP_PAGE_IDS];
 
 const sections = [
   {
+    id: HELP_PAGE_IDS.introduction,
+    title: "Introduction",
+    subsections: [
+      {
+        id: HELP_PAGE_IDS.generalRemarks,
+        title: "General remarks",
+      },
+      {
+        id: HELP_PAGE_IDS.studyBackground,
+        title: "Study background",
+      },
+      {
+        id: HELP_PAGE_IDS.studyObjectives,
+        title: "Study objectives",
+      },
+      {
+        id: HELP_PAGE_IDS.scenarioModellingTool,
+        title: "Scenario modelling tool",
+      },
+    ],
+  },
+
+  {
+    id: HELP_PAGE_IDS.userInterface,
+    title: "User interface",
+  },
+  {
     id: "scenario",
     title: "Scenarios",
     subsections: [
-      { id: "predefined-scenarios", title: "Predefined scenarios" },
       {
-        id: "parameters-customization",
+        id: HELP_PAGE_IDS.predefinedScenarioSelection,
+        title: "Predefined scenarios",
+      },
+      {
+        id: HELP_PAGE_IDS.scenarioParametersCustomization,
         title: "Customise scenario parameters",
       },
     ],
   },
   {
-    id: "filters",
+    id: HELP_PAGE_IDS.filterSetting,
     title: "Filters",
   },
   {
-    id: "visualization",
+    id: HELP_PAGE_IDS.visualization,
     title: "Visualization",
     subsections: [
-      { id: "visualization-types", title: "Types" },
-      { id: "visualization-settings", title: "Settings" },
+      { id: HELP_PAGE_IDS.visualizationTypes, title: "Types" },
+      { id: HELP_PAGE_IDS.visualizationSettings, title: "Settings" },
     ],
   },
   {
-    id: "output",
+    id: HELP_PAGE_IDS.output,
     title: "Output",
+  },
+
+  {
+    id: HELP_PAGE_IDS.faq,
+    title: "F.A.Q.",
   },
 ] satisfies ToCSection<Ids>[];
 
@@ -73,6 +114,278 @@ function Help() {
       <Section className="flex flex-col">
         <TypographyH1 className="sr-only"> {HELP_TITLE} </TypographyH1>
         <SectionForDoc>
+          <SectionForDoc id={HELP_PAGE_IDS.introduction}>
+            <TypographyH2>Introduction</TypographyH2>
+            <SectionForDoc id={HELP_PAGE_IDS.generalRemarks}>
+              <TypographyH3>General remarks</TypographyH3>
+              <TypographyContent>
+                <TypographyP>
+                  This report is documentation accompanying deliverable D4.2:
+                  User-friendly tool that enables selection, comparison and
+                  analysis of the various promising combinations of carbon
+                  reduction/removal strategies that could be applied across
+                  building stocks.
+                </TypographyP>
+                <TypographyP>
+                  The tool itself is available online via:{" "}
+                  <a
+                    href="https://ae-scenario-explorer.cloud.set.kuleuven.be"
+                    className="link"
+                  >
+                    https://ae-scenario-explorer.cloud.set.kuleuven.be
+                  </a>
+                </TypographyP>
+              </TypographyContent>
+            </SectionForDoc>
+
+            <SectionForDoc id={HELP_PAGE_IDS.studyBackground}>
+              <TypographyH3>Study background</TypographyH3>
+              <TypographyContent>
+                <TypographyP>
+                  Over their whole life cycle, buildings account for around 40%
+                  of CO2 emissions in the EU as recent studies using bottom-up
+                  modelling of the building stock indicate. Reducing emissions
+                  from the building sector and construction ecosystem will
+                  therefore play a key role for achieving the targets of a
+                  climate neutral Europe by 2050, as set out in the European
+                  Climate Law.
+                </TypographyP>
+                <TypographyP>
+                  There is a growing recognition of the need to tackle embodied
+                  emissions and carbon removals alongside a continued focus on
+                  reducing emissions from the energy used to operate buildings.
+                  Recent policy initiatives on the EU and national level have
+                  highlighted the importance of such a whole life carbon (WLC)
+                  emission approach.
+                </TypographyP>
+                <TypographyP>
+                  At present, however, only limited information on whole life
+                  carbon emissions of buildings is available in a format that
+                  allows in-depth comparison between countries, building types,
+                  and emission reduction strategies including design and policy
+                  choices. This is especially the case when considering the
+                  larger scale, at the level of national and EU building stocks.
+                </TypographyP>
+                <TypographyP>
+                  To address this, the European Commission has initiated a
+                  preparatory action aimed at developing a better understanding
+                  of WLC emissions and carbon removals of buildings and
+                  construction in the EU. This analysis will help establish a
+                  more accurate picture of the climate impact of Europe’s
+                  building stock and the associated construction activity. It
+                  will also aim to inform the design and proper implementation
+                  of effective building- and construction-related policies.
+                </TypographyP>
+                <TypographyP>
+                  The work in this project builds upon efforts and findings from
+                  the study ‘
+                  <a
+                    href="https://c.ramboll.com/whole-life-carbon-reduction?hsLang=en"
+                    className="link"
+                  >
+                    Supporting the development of a roadmap for the reduction of
+                    whole life carbon of buildings
+                  </a>
+                  ’, launched by the European Commission in 2021.
+                </TypographyP>
+                <TypographyP>
+                  The study is conducted by Ramboll Management Consulting in a
+                  consortium with BPIE, KU Leuven, TU Graz, Aalborg University,
+                  Politecnico di Milano, and IIASA. It runs from 2022 until
+                  2025.
+                </TypographyP>
+              </TypographyContent>
+            </SectionForDoc>
+            <SectionForDoc id={HELP_PAGE_IDS.studyObjectives}>
+              <TypographyH3>Study objectives</TypographyH3>
+              <TypographyContent>
+                <TypographyP>
+                  This study enables a clearer understanding of the effects and
+                  feasibility of applying life-cycle emissions reduction and
+                  carbon removal (CRR) strategies at the EU and national level.
+                </TypographyP>
+                <TypographyP>The objectives include to:</TypographyP>
+                <TypographyList>
+                  <li>
+                    Model the whole life carbon impact of the EU building stock
+                    and the associated construction, renovation and demolition
+                    activity on emissions and carbon removals.
+                  </li>
+                  <li>
+                    Assess and compare strategies for whole life carbon
+                    emissions reduction and removal, within the perspective of
+                    reaching climate neutrality and resilience by 2050.
+                  </li>
+                  <li>
+                    Improve the availability of data to assess the whole life
+                    carbon impact of the EU building stock.
+                  </li>
+                </TypographyList>
+              </TypographyContent>
+            </SectionForDoc>
+
+            <SectionForDoc id={HELP_PAGE_IDS.scenarioModellingTool}>
+              <TypographyH3>Scenario modelling tool</TypographyH3>
+              <SectionForDoc>
+                <TypographyH4>Disclaimer</TypographyH4>
+                <TypographyContent>
+                  <TypographyP>
+                    This tool is part of a study contracted by the European
+                    Commission, DG GROW, on the ‘Analysis of Life-cycle
+                    Greenhouse Gas Emissions and Removals of EU Buildings and
+                    Construction.’ The views expressed in this document and on
+                    the scenario modelling tool web app are the sole
+                    responsibility of the authors and do not necessarily reflect
+                    the views of the European Commission.
+                  </TypographyP>
+                </TypographyContent>
+              </SectionForDoc>
+              <SectionForDoc>
+                <TypographyH4>Purpose and objectives</TypographyH4>
+                <TypographyContent>
+                  <TypographyP>
+                    This scenario modelling tool is part of the ‘Modelling of
+                    future whole life carbon scenarios’ (Task 4). The tool is a
+                    stand-alone deliverable, closely linked to the ‘Modelling of
+                    future scenarios to address whole life carbon and carbon
+                    removals’, where the datasets with scenario results are
+                    generated.{" "}
+                  </TypographyP>
+                  <TypographyP>
+                    The objectives for developing this tool include to establish
+                    a user-friendly tool intended to illustrate the potential
+                    outcomes of predefined scenarios. Furthermore, the tool
+                    enables selection, comparison and analysis of various
+                    promising combinations of carbon reduction and removal
+                    strategies that could be applied across European building
+                    stocks.
+                  </TypographyP>
+                </TypographyContent>
+              </SectionForDoc>
+
+              <SectionForDoc>
+                <TypographyH4>Model resources and data</TypographyH4>
+                <TypographyContent>
+                  <TypographyP>
+                    The scenario results in this scenario modelling tool are
+                    generated using a custom modelling pipeline combining
+                    building archetype data from the SLiCE1 model with upscaling
+                    and scenario analyses based on the PULSE2 model. The
+                    collection of scenario results data [will be] separately
+                    published.
+                  </TypographyP>
+                </TypographyContent>
+              </SectionForDoc>
+              <SectionForDoc>
+                <TypographyH4>Contact details</TypographyH4>
+                <TypographyContent>
+                  <TypographyP>
+                    We encourage users to get in touch with feedback and/or
+                    questions on both the study and the tool:
+                  </TypographyP>
+
+                  <TypographyList>
+                    <li>
+                      Tool Development Lead, KU Leuven: Martin Röck (
+                      <a href={`mailto:${ROECK_EMAIL}`} className="link">
+                        martin.roeck@kuleuven.be{" "}
+                      </a>
+                      )
+                    </li>
+                    <li>
+                      European Commission, DG GROW: Philippe Moseley (
+                      <a href={`mailto:${MOSELEY_EMAIL}`} className="link">
+                        philippe.moseley@ec.europa.eu{" "}
+                      </a>
+                      )
+                    </li>
+                  </TypographyList>
+                  <TypographyP>
+                    An extended list of consortium members and contact details
+                    is available via{" "}
+                    <a
+                      href="https://c.ramboll.com/life-cycle-emissions-of-eu-building-and-construction"
+                      className="link"
+                    >
+                      the project website.
+                    </a>
+                  </TypographyP>
+                </TypographyContent>
+              </SectionForDoc>
+            </SectionForDoc>
+          </SectionForDoc>
+          <SectionForDoc id={HELP_PAGE_IDS.userInterface}>
+            <TypographyH2>User Interface</TypographyH2>
+            <SectionForDoc>
+              <TypographyH3>Main page: Dashboard </TypographyH3>
+              <TypographyContent>
+                <TypographyP>
+                  This is the main page of the scenario explorer tool web
+                  application. As illustrated in Figure 1, it consists of two
+                  main sections: The side panel and the data visualization
+                  section. Each of these sections provides graphical user
+                  interfaces for defining distinct settings. These settings and
+                  functionalities are outlined in the following and elaborated
+                  in subsequent sections of this report:
+                </TypographyP>
+                <TypographyP>
+                  <span className="font-bold">1. Side Panel</span>:
+                </TypographyP>
+                <TypographyList>
+                  <li>
+                    <span className="font-bold">a</span>. Scenario settings –
+                    Define which scenario result are loaded to the tool
+                  </li>
+                  <li>
+                    <span className="font-bold">b</span>. Filter settings –
+                    Define which data is shown out of the selected scenario
+                    results
+                  </li>
+                </TypographyList>
+
+                <TypographyP>
+                  <span className="font-bold">2. Data Visualization</span>:
+                </TypographyP>
+                <TypographyList>
+                  <li>
+                    <span className="font-bold">a</span>. Visualization types –
+                    Define which type of chart or table to use for visualization
+                  </li>
+                  <li>
+                    <span className="font-bold">b</span>. Visualization settings
+                    – Define how data is shown for selected scenario and filters
+                  </li>
+
+                  <li>
+                    <span className="font-bold">c</span>. Output section – Area
+                    which show the data as defined via different charts or as a
+                    data table
+                  </li>
+                </TypographyList>
+                <div className="py-2"></div>
+                <TypographyFigure
+                  url={dashboardStructureUrl}
+                  caption="Figure 1: Dashboard page overview, indicating elements in side panel (1) and data visualization (2)"
+                />
+              </TypographyContent>
+            </SectionForDoc>
+            <SectionForDoc>
+              <TypographyH3>Other pages: Help, About </TypographyH3>
+              <TypographyContent>
+                <TypographyP>
+                  The ‘Help’ and ‘About’ pages offer supplementary information
+                  for users of the tool. The ‘Help’ page offers information to
+                  help users understand how to use the tool. That section
+                  largely mirrors the description and documentation provided on
+                  the following pages. The ‘About’ page offers information on
+                  the project context and related research outcomes. That
+                  section mirrors the description offered in the corresponding
+                  section of this report.
+                </TypographyP>
+              </TypographyContent>
+            </SectionForDoc>
+          </SectionForDoc>
+
           <SectionForDoc id={HELP_PAGE_IDS.scenario}>
             <TypographyH2>Scenarios</TypographyH2>
 
@@ -825,6 +1138,166 @@ function Help() {
                 exporting charts or tables, the export takes into consideration
                 the settings defined for scenarios, filters, and visualization,
                 respectively.
+              </TypographyP>
+            </TypographyContent>
+          </SectionForDoc>
+          <SectionForDoc id={HELP_PAGE_IDS.faq}>
+            <TypographyH2>F.A.Q.</TypographyH2>
+            <TypographyContent>
+              <TypographyP>
+                <span className="font-bold">
+                  How to conduct contribution analysis?
+                </span>
+              </TypographyP>
+              <TypographyP>
+                Contribution analysis can be applied for investigating the
+                contribution of different attributes to the overall results.
+                Users can select, for example to show contributions from
+                different countries, types of buildings, building elements, or
+                life cycle stages. This is done by selecting the desired
+                attribute in ‘Visualization settings: Breakdown by’. The results
+                will the be broken down by contribution of the subcategories
+                available in the respective attribute and can be investigated as
+                charts or table.
+              </TypographyP>
+            </TypographyContent>
+
+            <TypographyContent>
+              <TypographyP>
+                <span className="font-bold">
+                  How to visualize building level results?
+                </span>
+              </TypographyP>
+              <TypographyP>
+                Building level results can be obtained from the tool via two
+                steps. First, filtering the results for the respective context
+                (region, country, building typology) and scope of interest
+                (building elements, life cycle stages included). And second,
+                selecting the respective indicator of interest, and then the
+                reference unit to be “per m²”. This will give the results per
+                square meter of building floor area for the respective filter
+                settings.
+              </TypographyP>
+            </TypographyContent>
+
+            <TypographyContent>
+              <TypographyP>
+                <span className="font-bold">
+                  How to assess results at building stock level?
+                </span>
+              </TypographyP>
+              <TypographyP>
+                The scenario modelling tool shows building stock level totals by
+                default. Users can explore these building stock level results in
+                as charts or table. Users can further apply filter and
+                visualization settings to adjust the scope of results shown to
+                their respective research question or interest. To change from
+                building stock level results to results at building level, users
+                can adjust the indicator and the reference unit (‘per’) to show
+                results per square meter (m²) or per population (capita).
+              </TypographyP>
+            </TypographyContent>
+
+            <TypographyContent>
+              <TypographyP>
+                <span className="font-bold">
+                  How to compare results with baseline or business as usual?
+                </span>
+              </TypographyP>
+              <TypographyP>
+                Users can compare the scenario results with predefined scenarios
+                directly in the tool – see optional scenario comparison
+                described in Visualization settings (‘Display’). In addition to
+                this built-in comparison, users can download data tables to
+                conduct further comparisons externally. For details on how to
+                export see ‘Visualization settings: Export (download as)’.
+              </TypographyP>
+            </TypographyContent>
+
+            <TypographyContent>
+              <TypographyP>
+                <span className="font-bold">
+                  How to export data tables and prepare descriptive statistics?
+                </span>
+              </TypographyP>
+              <TypographyP>
+                Data tables with the specific results for the current filter and
+                visualization settings can be exported via the tool - see
+                ‘Visualization settings: Export (download as)’. These data can
+                then be further processed in external tools, such as Microsoft
+                Excel, to compute descriptive statistics as desired.
+              </TypographyP>
+            </TypographyContent>
+
+            <TypographyContent>
+              <TypographyP>
+                <span className="font-bold">
+                  How to derive benchmarks per region or country, per building
+                  type?
+                </span>
+              </TypographyP>
+              <TypographyP>
+                To obtain benchmarks of different types of buildings in
+                different regions or countries, users can specify filter
+                settings to only show results for one or more countries and/or
+                building (sub)types. Defining the desired indicator and
+                reference unit per square meter or per capita, users can then
+                obtain indicative benchmark values for the different years of
+                the scenario analysis. Data can be viewed and exported as charts
+                or data tables - see ‘Visualization settings: Export (download
+                as)’.
+              </TypographyP>
+            </TypographyContent>
+
+            <TypographyContent>
+              <TypographyP>
+                <span className="font-bold">
+                  How to compare results with cumulative carbon budgets?
+                </span>
+              </TypographyP>
+              <TypographyP>
+                To compare the scenario results with carbon budgets cumulative
+                emission results have to be calculated outside of the tool. To
+                calculate cumulative emissions results, it is required to
+                compute interpolated values for the years in between the 5-year
+                steps based on the data provided. For such a computation, data
+                can be prepared with the desired filter and visualization
+                settings and then downloaded as data table for custom
+                calculation in a next step - see ‘Visualization settings: Export
+                (download as)’.
+              </TypographyP>
+            </TypographyContent>
+
+            <TypographyContent>
+              <TypographyP>
+                <span className="font-bold">
+                  How to zoom-in and change the timeline of the data shown?
+                </span>
+              </TypographyP>
+              <TypographyP>
+                The temporal extent or timeline of the results visualized can be
+                adjusted via the filter settings. Users can select to show the
+                full range of scenario results, spanning from 2020-2050
+                (default), or adjust the start and end points (From-To) as
+                desired – see ‘Filter settings: Year’.
+              </TypographyP>
+            </TypographyContent>
+
+            <TypographyContent>
+              <TypographyP>
+                <span className="font-bold">
+                  How to investigate carbon removal potentials?
+                </span>
+              </TypographyP>
+              <TypographyP>
+                Potential carbon removal effects related to the use of bio-based
+                materials can be investigated when selecting the indicator ‘GWP
+                bio’. Numbers in the graph will show cumulative results for the
+                selected scope, thus potentially including both positive and
+                negative emissions which may cancel out. Users can define the
+                filter settings to only show a subset of results, for example
+                for specific countries, building types, building elements or
+                materials, as well as only selected whole life cycle stages.
               </TypographyP>
             </TypographyContent>
           </SectionForDoc>
