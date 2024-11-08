@@ -52,6 +52,7 @@ const formSchema = z.object({
   Region: SelectOptionArraySchema,
   "building stock activity": SelectOptionArraySchema,
   "Whole life cycle stages": SelectOptionArraySchema,
+  "LCA stages": SelectOptionArraySchema,
   From: YearSchema.transform((number) => number.toString()),
   To: YearSchema.transform((number) => number.toString()),
 } satisfies Record<(typeof FILTERS)[number], z.ZodType>);
@@ -129,6 +130,25 @@ function formatForBackend({ filters }: FormatForBackendArgs) {
 
   return output;
 }
+type DefaultValues = Record<
+  keyof Omit<(typeof formSchema)["shape"], "From" | "To">,
+  SelectOption[]
+> &
+  Record<"From" | "To", string>;
+
+const defaultValues: DefaultValues = {
+  "Element Class": [],
+  "Building subtype": [],
+  "Building type": [],
+  country: [],
+  "Material Class": [],
+  Region: [],
+  "building stock activity": [],
+  "Whole life cycle stages": [],
+  "LCA stages": [],
+  From: "2020",
+  To: "2050",
+};
 
 export const Filters = () => {
   const filters = route.useSearch({
@@ -162,19 +182,7 @@ export const Filters = () => {
   const navigate = route.useNavigate();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
-    defaultValues: {
-      // "flow type": [] satisfies SelectOption[],
-      "Element Class": [] satisfies SelectOption[],
-      "Building subtype": [] satisfies SelectOption[],
-      "Building type": [] satisfies SelectOption[],
-      country: [] satisfies SelectOption[],
-      "Material Class": [] satisfies SelectOption[],
-      Region: [] satisfies SelectOption[],
-      "building stock activity": [] satisfies SelectOption[],
-      "Whole life cycle stages": [] satisfies SelectOption[],
-      From: "2020",
-      To: "2050",
-    },
+    defaultValues,
   });
 
   useEffect(() => {

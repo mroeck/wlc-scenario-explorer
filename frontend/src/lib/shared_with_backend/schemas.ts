@@ -64,6 +64,7 @@ export const FiltersSchema = z
     Region: z.string().array(),
     "building stock activity": z.string().array(),
     "Whole life cycle stages": z.string().array(),
+    "LCA stages": z.string().array(),
     From: YearSchema,
     To: YearSchema,
   } satisfies Record<(typeof FILTERS)[number], z.ZodType>)

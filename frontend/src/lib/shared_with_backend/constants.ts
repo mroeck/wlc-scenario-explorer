@@ -6,15 +6,20 @@ import type { Attribute, ValidOption } from "../types";
   Any variable in this file have a twin variable in the backend. Modifying anything here means modifying also the backend the variable with the same name in the share-with-frontend file
   /!\
  */
-export const BREAKDOWN_BY_OBJ = {
-  region: "Region",
+
+const COMMON_IN_FILTERS_AND_BREAKDOWN = {
   country: "country",
   buildingUseType: "Building type",
   buildingUseSubtype: "Building subtype",
   elementClass: "Element Class",
   material: "Material Class",
+  Region: "Region",
   activityType: "building stock activity",
   carbonCategory: "Whole life cycle stages",
+  lcaStages: "LCA stages",
+} as const;
+export const BREAKDOWN_BY_OBJ = {
+  ...COMMON_IN_FILTERS_AND_BREAKDOWN,
   none: NONE,
 } as const;
 
@@ -52,16 +57,9 @@ export const SCENARIOS_OPTIONS = [
 ] as const;
 
 export const FILTERS_OBJ = {
+  ...COMMON_IN_FILTERS_AND_BREAKDOWN,
   From: "From",
   To: "To",
-  country: "country",
-  buildingUseType: "Building type",
-  buildingUseSubtype: "Building subtype",
-  elementClass: "Element Class",
-  material: "Material Class",
-  Region: "Region",
-  activityType: "building stock activity",
-  carbonCategory: "Whole life cycle stages",
 } as const;
 
 export const FILTERS = Object.values(FILTERS_OBJ);
@@ -110,7 +108,10 @@ export const API_ROUTES = {
   scenario: "/scenario",
 };
 
-export const ATTRIBUTE_OPTIONS_COLOR = {
+export const ATTRIBUTE_OPTIONS_COLOR: Record<
+  Exclude<Attribute, "stock building stock activity name" | "None">,
+  Partial<Record<Exclude<ValidOption, number>, `#${string}`>>
+> = {
   // "flow type": {
   //   "Energy in": "#5FB8CE",
   //   MATERIAL_IN: "#5BB89F",
@@ -221,10 +222,22 @@ export const ATTRIBUTE_OPTIONS_COLOR = {
     "Use phase embodied carbon": "#499ACC",
     "Use phase operational carbon": "#3ABB5C",
   },
-} as const satisfies Record<
-  Exclude<Attribute, "stock building stock activity name" | "None">,
-  Partial<Record<ValidOption, `#${string}`>>
->;
+  "LCA stages": {
+    "A1-3": "#3ABB5C",
+    A4: "#2D5F7E",
+    A5: "#499ACC",
+
+    B2: "#DB6043",
+    B4: "#EE854A",
+    B5: "#EB9C45",
+    B6: "#E7B23F",
+
+    C1: "#6B3A83",
+    C2: "#A131AF",
+    C3: "#C352A7",
+    C4: "#E4739E",
+  },
+} as const;
 
 export const VALUE_TO_LABEL: Record<ValidOption, string> = {
   "External openings": "External openings",

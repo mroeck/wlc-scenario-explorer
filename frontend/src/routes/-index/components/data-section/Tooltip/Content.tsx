@@ -276,7 +276,7 @@ export const Content = ({
                     </div>
                     {isOneScenario ? (
                       <div className="z-0">
-                        <span className="z-0">{item.name}:</span>
+                        <span className="z-0">{item.name}: </span>
                         <span className="z-0 font-bold">
                           {item.value.toLocaleString("en-US", {
                             maximumFractionDigits: 2,

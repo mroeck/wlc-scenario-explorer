@@ -25,6 +25,7 @@ class ColumnsEnumSchema(Enum):
     IND_GWP_FOS = "ind_GWP_Fos"
     IND_GWP_BIO = "ind_GWP_Bio"
     IND_GWP_LULUC = "ind_GWP_LuLuc"
+    LCA_STAGES = "LCS_EN15978"
 
 
 class AttributeEnumSchema(str, Enum):
@@ -38,6 +39,7 @@ class AttributeEnumSchema(str, Enum):
     ACTIVITY_IN_OUT = "flow type"
     STOCK_ACTIVITY_TYPE_NAME = "building stock activity"
     CARBON_CATEGORY = "Whole life cycle stages"
+    LCA_STAGES = "LCA stages"
     NONE = "None"
 
 
@@ -52,6 +54,7 @@ ATTRIBUTE_TO_DB_COLUMNS: Mapping[str, str] = {
     AttributeEnumSchema.ACTIVITY_IN_OUT.value: ColumnsEnumSchema.ACTIVITY_IN_OUT.value,
     AttributeEnumSchema.STOCK_ACTIVITY_TYPE_NAME.value: ColumnsEnumSchema.STOCK_ACTIVITY_TYPE_NAME.value,
     AttributeEnumSchema.CARBON_CATEGORY.value: ColumnsEnumSchema.CARBON_CATEGORY.value,
+    AttributeEnumSchema.LCA_STAGES.value: ColumnsEnumSchema.LCA_STAGES.value,
     AttributeEnumSchema.NONE.value: AttributeEnumSchema.NONE.value,
 }
 
@@ -113,6 +116,7 @@ class FilterFrontEnumSchema(str, Enum):
     REGION = "Region"
     STOCK_ACTIVITY_TYPE_NAME = "building stock activity"
     CARBON_CATEGORY = "Whole life cycle stages"
+    LCA_STAGES = "LCA stages"
 
 
 FILTER_TO_DB_COLUMN: Dict[str, str] = {
@@ -123,10 +127,10 @@ FILTER_TO_DB_COLUMN: Dict[str, str] = {
     FilterFrontEnumSchema.BUILDING_ELEMENT_CLASS.value: ColumnsEnumSchema.ELEMENT_CLASS_GENERIC_NAME.value,
     FilterFrontEnumSchema.MATERIAL_CLASS.value: ColumnsEnumSchema.MATERIAL_NAME_JRC_CDW.value,
     FilterFrontEnumSchema.BUILDING_USE_SUBTYPE.value: ColumnsEnumSchema.BUILDING_USE_SUBTYPE_NAME.value,
-    # FilterFrontEnumSchema.ACTIVITY_IN_OUT.value: ColumnsEnumSchema.ACTIVITY_IN_OUT.value,
     FilterFrontEnumSchema.REGION.value: ColumnsEnumSchema.STOCK_REGION_NAME.value,
     FilterFrontEnumSchema.STOCK_ACTIVITY_TYPE_NAME.value: ColumnsEnumSchema.STOCK_ACTIVITY_TYPE_NAME.value,
     FilterFrontEnumSchema.CARBON_CATEGORY.value: ColumnsEnumSchema.CARBON_CATEGORY.value,
+    FilterFrontEnumSchema.LCA_STAGES.value: ColumnsEnumSchema.LCA_STAGES.value,
 }
 
 DB_COLUMN_TO_FILTER = {v: k for k, v in FILTER_TO_DB_COLUMN.items()}
@@ -144,6 +148,7 @@ class FiltersSchema(BaseModel, extra=Extra.forbid):
     stock_region_name: Optional[List[str]] = None
     stock_activity_type_name: Optional[List[str]] = None
     carbon_category: Optional[List[str]] = None
+    LCS_EN15978: Optional[List[str]] = None
 
     @field_validator("From", "To")
     def validate_year(cls, year: Optional[int]) -> Optional[int]:

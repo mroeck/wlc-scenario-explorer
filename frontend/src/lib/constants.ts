@@ -1,5 +1,6 @@
-import type { UnionToTuple } from "type-fest";
+import type { UnionToTuple, ValueOf } from "type-fest";
 import type {
+  FILTERS_OBJ,
   PREDEFINED_SCENARIOS,
   SCENARIOS_OPTIONS,
 } from "./shared_with_backend/constants";
@@ -94,6 +95,10 @@ export const ALL_LABEL = "All";
 export const GRAPH_FONT_SIZE = 14;
 export const SELECT_INDICATOR_TESTID = "SELECT_INDICATOR_TESTID";
 export const SELECT_DIVIDED_BY_TESTID = "SELECT_DIVIDED_BY_TESTID";
+
+type BreakdownByOrderItem = Lowercase<
+  ValueOf<Omit<typeof FILTERS_OBJ, "From" | "To">> | "None"
+>;
 export const BREAKDOWN_BY_ORDER = [
   "region",
   "country",
@@ -101,11 +106,11 @@ export const BREAKDOWN_BY_ORDER = [
   "building subtype",
   "element class",
   "material class",
-  "flow type",
   "building stock activity",
+  "lca stages",
   "whole life cycle stages",
   "none",
-] as const satisfies readonly Lowercase<string>[];
+] as const satisfies readonly BreakdownByOrderItem[];
 
 export const ERROR_OCCURED = "Oops, an error occurred";
 export const HELP_TITLE = "Functionalities";
