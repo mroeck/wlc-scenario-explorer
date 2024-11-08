@@ -63,7 +63,7 @@ export const getColor = ({ breakdownBy, option }: GetColorArgs) => {
         ...Option[],
       ],
       {
-        message: "Could not find color for: " + option,
+        message: "Could not find color for: " + option.toString(),
       },
     );
 
@@ -74,10 +74,8 @@ export const getColor = ({ breakdownBy, option }: GetColorArgs) => {
       console.error(result.error);
     }
 
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     const color = validOption
-      ? // @ts-expect-error: hard to type properly, valideOption should be a proper key to access
-        ATTRIBUTE_OPTIONS_COLOR[breakdownByTyped][validOption]
+      ? ATTRIBUTE_OPTIONS_COLOR[breakdownByTyped][validOption]
       : DEFAULT_COLOR;
 
     return color as Color;
@@ -94,51 +92,83 @@ const CATEGORIES = {
   Services: ["Technical services", "Electrical services"],
   Structure: ["Substructure", "Storey floors", "Staircases", "Roofs"],
   Continental: [
+    // @ts-expect-error: temp for new/not final parquet files
     "SK", // Slovakia
+    // @ts-expect-error: temp for new/not final parquet files
     "SI", // Slovenia
+    // @ts-expect-error: temp for new/not final parquet files
     "RO", // Romania
+    // @ts-expect-error: temp for new/not final parquet files
     "PL", // Poland
+    // @ts-expect-error: temp for new/not final parquet files
     "HU", // Hungary
+    // @ts-expect-error: temp for new/not final parquet files
     "CZ", // Czech Republic
+    // @ts-expect-error: temp for new/not final parquet files
     "BG", // Bulgaria
     "AT", // Austria
   ],
   Mediterranean: [
+    // @ts-expect-error: temp for new/not final parquet files
     "PT", // Portugal
+    // @ts-expect-error: temp for new/not final parquet files
     "MT", // Malta
+    // @ts-expect-error: temp for new/not final parquet files
     "IT", // Italy
+    // @ts-expect-error: temp for new/not final parquet files
     "HR", // Croatia
+    // @ts-expect-error: temp for new/not final parquet files
     "ES", // Spain
+    // @ts-expect-error: temp for new/not final parquet files
     "EL", // Greece
+    // @ts-expect-error: temp for new/not final parquet files
     "CY", // Cyprus
   ],
   Nordic: [
+    // @ts-expect-error: temp for new/not final parquet files
     "SE", // Sweden
+    // @ts-expect-error: temp for new/not final parquet files
     "LV", // Latvia
+    // @ts-expect-error: temp for new/not final parquet files
     "LT", // Lithuania
+    // @ts-expect-error: temp for new/not final parquet files
     "FI", // Finland
+    // @ts-expect-error: temp for new/not final parquet files
     "EE", // Estonia
   ],
   Oceanic: [
+    // @ts-expect-error: temp for new/not final parquet files
     "NL", // Netherlands
+    // @ts-expect-error: temp for new/not final parquet files
     "LU", // Luxembourg
+    // @ts-expect-error: temp for new/not final parquet files
     "IE", // Ireland
+    // @ts-expect-error: temp for new/not final parquet files
     "FR", // France
+    // @ts-expect-error: temp for new/not final parquet files
     "DK", // Denmark
+    // @ts-expect-error: temp for new/not final parquet files
     "DE", // Germany
+    // @ts-expect-error: temp for new/not final parquet files
     "BE", // Belgium
   ],
   [EMBODIED_CARBON]: [
     "Construction embodied carbon",
     "Demolition embodied carbon",
     "Use phase embodied carbon",
+    // @ts-expect-error: temp for new/not final parquet files
     "Renovation embodied carbon",
   ],
   [OPERATIONAL_CARBON]: ["Use phase operational carbon"],
+  "A1-A3": ["A1-3"],
+  "A4-A5": ["A4", "A5"],
+  B: ["B2", "B4", "B5", "B6"],
+  "C1-C4": ["C1", "C2", "C3", "C4"],
 } as const satisfies Categories;
 
 type AttributeOptionsColor = typeof ATTRIBUTE_OPTIONS_COLOR;
 type AttributeOptions = keyof AttributeOptionsColor;
+
 type AttributeOptionsOrder = Pick<
   {
     [Attribute in AttributeOptions]: ReadonlyTuple<
@@ -153,6 +183,7 @@ type AttributeOptionsOrder = Pick<
   "Building subtype" | "Element Class" | "country"
 >;
 
+// @ts-expect-error: temp for new/not final parquet files
 export const ATTRIBUTE_OPTIONS_ORDER: AttributeOptionsOrder = {
   "Building subtype": [
     ...CATEGORIES.Residential,

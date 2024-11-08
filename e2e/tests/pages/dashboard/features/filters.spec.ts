@@ -195,7 +195,7 @@ test.describe("filters", () => {
   });
 
   test.describe("Filters do not error", () => {
-    const comboboxCount = 10;
+    const comboboxCount = 11;
     const FILTERS_TAB = "Filters";
     const xAxisValue = "2025";
 

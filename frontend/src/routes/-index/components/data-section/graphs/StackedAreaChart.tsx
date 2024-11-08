@@ -89,7 +89,7 @@ export const StackedAreaChart = ({
             <Area
               {...commonGraphElementProps}
               {...commonAreaProps}
-              key={option + "A"}
+              key={`${option}A`}
               stroke={
                 isHighlight || isRigthAfterHighlight
                   ? GRAPH_AXIS_COLOR
@@ -129,7 +129,7 @@ export const StackedAreaChart = ({
             <Area
               {...commonGraphElementProps}
               {...commonAreaProps}
-              key={option + "B"}
+              key={`${option}B`}
               type="monotone"
               stackId="0"
               fill="transparent"
