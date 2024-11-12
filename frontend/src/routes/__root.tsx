@@ -19,7 +19,7 @@ export const Route = createRootRoute({
 
 function UserInterface() {
   return (
-    <div className="mx-auto h-max max-w-screen-2xl bg-accent">
+    <div className="mx-auto h-max max-w-screen-2xl bg-[hsl(220,14%,96%)]">
       <Header />
       <Outlet />
       <Suspense>

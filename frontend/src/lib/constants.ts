@@ -81,7 +81,7 @@ export const SCENARIO_A_MENU_TESTID = "SCENARIO_A_TESTID";
 export const SCENARIO_B_MENU_TESTID = "SCENARIO_B_MENU_TESTID";
 export const COLOR_LEGEND_TESTID = "colorLegend";
 export const BREAKDOWN_BY_TESTID = "breakdownby";
-export const GRAPH_TESTID = "GRAPH_TESTID";
+export const CHART_TESTID = "CHART_TESTID";
 export const DATA_TABLE_TESTID = "dataTable";
 export const NO_DATA_FOUND = "No data found";
 export const PARAMETER_STATUS = {
@@ -130,13 +130,13 @@ type SETTINGS_TAB =
 export const DEFAULT_SETTINGS_TAB: SETTINGS_TAB = "Scenarios";
 
 export const DATA_TABS_NAMES = {
-  stackedAreaChart: "Stacked Area Chart",
-  lineChart: "Line Chart",
-  stackedBarChart: "Stacked Bar Chart",
+  stackedAreaChart: "Stacked Area Graph",
+  lineChart: "Line Graph",
+  stackedBarChart: "Stacked Bar Graph",
   table: "Table",
 } as const;
 type DATA_TAB = (typeof DATA_TABS_NAMES)[keyof typeof DATA_TABS_NAMES];
-export const DEFAULT_DATA_TAB: DATA_TAB = "Stacked Area Chart";
+export const DEFAULT_DATA_TAB: DATA_TAB = "Stacked Area Graph";
 export const DEFAULT_SEARCH_PARAMS = {
   breakdownBy: DEFAULT_BREAKDOWN_BY,
   indicator: DEFAULT_INDICATOR,

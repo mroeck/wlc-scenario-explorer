@@ -2,7 +2,7 @@ import { getAttributeOptionsOrdered } from "@/lib/utils";
 import { type z } from "zod";
 import {
   ROUTES,
-  GRAPH_TESTID,
+  CHART_TESTID,
   SORT_OPTIONS,
   DATA_TABS_NAMES,
 } from "@/lib/constants";
@@ -120,7 +120,7 @@ export const GraphWrapper = ({
     <div className="h-full overflow-x-visible">
       <div
         className="h-0 min-h-[500px] w-full sm:min-w-[600px] lg:min-h-full lg:min-w-[unset] lg:flex-1 [&_svg]:overflow-visible"
-        data-testid={GRAPH_TESTID}
+        data-testid={CHART_TESTID}
       >
         {dataB ? (
           <Graph

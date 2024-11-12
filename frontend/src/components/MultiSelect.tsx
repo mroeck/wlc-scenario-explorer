@@ -68,7 +68,7 @@ const MultiSelect = React.forwardRef<HTMLButtonElement, MultiSelectProps>(
             role="combobox"
             aria-expanded={open}
             className={cn(
-              "group h-9 w-full justify-between border-slate-400 text-slate-700",
+              "group h-9 w-full justify-between border-gray-300 text-gray-700",
             )}
             onClick={() => {
               setOpen(!open);
@@ -82,7 +82,7 @@ const MultiSelect = React.forwardRef<HTMLButtonElement, MultiSelectProps>(
                 {selected.length === 0 && (props.placeholder ?? ALL_LABEL)}
               </span>
             </div>
-            <ChevronDown className="size-4 text-slate-700 opacity-100" />
+            <ChevronDown className="size-4 text-gray-700 opacity-100" />
           </Button>
         </PopoverTrigger>
         <PopoverContent className="w-[272px] p-0">

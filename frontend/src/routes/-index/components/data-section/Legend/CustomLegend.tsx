@@ -67,7 +67,10 @@ export const CustomLegend = ({ payload, className }: CustomLegendProps) => {
         className="flex flex-col gap-1"
         data-testid={COLOR_LEGEND_TESTID}
       >
-        <h3 className="font-semibold" style={{ fontSize: GRAPH_FONT_SIZE }}>
+        <h3
+          className="font-semibold text-gray-800"
+          style={{ fontSize: GRAPH_FONT_SIZE }}
+        >
           Color legend{" "}
           <span className="font-normal italic">(click to highlight)</span>
         </h3>
@@ -102,17 +105,20 @@ export const CustomLegend = ({ payload, className }: CustomLegendProps) => {
           display !== SCENARIO_A_AND_B && "hidden",
         )}
       >
-        <h3 className="font-semibold" style={{ fontSize: GRAPH_FONT_SIZE }}>
+        <h3
+          className="font-semibold text-gray-800"
+          style={{ fontSize: GRAPH_FONT_SIZE }}
+        >
           Pattern legend:
         </h3>
         <ul className="flex max-w-[50ch] flex-col flex-wrap gap-x-6 px-2">
-          <li className="flex items-center gap-1">
+          <li className="flex items-center gap-1 text-gray-800">
             <ColorCube color={colors[0]} />
             <span style={{ fontSize: GRAPH_FONT_SIZE }}>
               {SCENARIO_A_LABEL}
             </span>
           </li>
-          <li className="flex items-center gap-1">
+          <li className="flex items-center gap-1 text-gray-800">
             <ColorCube color={colors[0]} showPattern />
             <span style={{ fontSize: GRAPH_FONT_SIZE }}>
               {SCENARIO_B_LABEL}
@@ -179,7 +185,7 @@ function ColorLegendItemAll({
               isSomethingHighlighted={isSomethingHighlighted}
             />
             <span
-              className="z-0 whitespace-nowrap text-sm first-letter:uppercase"
+              className="z-0 whitespace-nowrap text-sm text-gray-800 first-letter:uppercase"
               style={{ fontSize: GRAPH_FONT_SIZE }}
             >
               {label}

@@ -224,7 +224,9 @@ export const DownloadMenu = ({ domTarget, data }: DownloadMenuProps) => {
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent>
-        <DropdownMenuLabel>Download as:</DropdownMenuLabel>
+        <DropdownMenuLabel className="text-gray-800">
+          Download as:
+        </DropdownMenuLabel>
         <DropdownMenuGroup>
           {imageFormats.map((format) => (
             <DropdownMenuItem
@@ -233,7 +235,7 @@ export const DownloadMenu = ({ domTarget, data }: DownloadMenuProps) => {
                 isReady && void exportAsImage({ domTarget, format })
               }
             >
-              {format}
+              <span className="text-gray-800">{format}</span>
             </DropdownMenuItem>
           ))}
           <DropdownMenuSeparator />

@@ -798,7 +798,7 @@ function Help() {
               <div className="flex justify-center">
                 <TypographyFigure
                   url={stackedBarChartForEmbodiedCarbonUrl}
-                  caption="Figure 2: Stacked Bar Chart showing filtered results for embodied carbon by building element class."
+                  caption="Figure 2: Stacked Bar Graph showing filtered results for embodied carbon by building element class."
                 />
               </div>
               <TypographyP>
@@ -920,13 +920,13 @@ function Help() {
               <TypographyP>
                 At the very top of the visualization settings, users can select
                 the type of chart or table through which the results should be
-                presented. Users can show results via Stacked Area Chart, Line
-                Chart, Stacked Bar Chart, or Table – see examples in Figure 1,
+                presented. Users can show results via Stacked Area Graph, Line
+                Graph, Stacked Bar Graph, or Table – see examples in Figure 1,
                 Figure 2, Figure 3, and Figure 4.
               </TypographyP>
             </TypographyContent>
             <SectionForDoc>
-              <TypographyH4>Stacked Area Chart</TypographyH4>
+              <TypographyH4>Stacked Area Graph</TypographyH4>
               <TypographyContent>
                 <TypographyP>
                   Best for visualizing how selected categories evolve over time.
@@ -940,7 +940,7 @@ function Help() {
               </TypographyContent>
             </SectionForDoc>
             <SectionForDoc>
-              <TypographyH4>Line Chart</TypographyH4>
+              <TypographyH4>Line Graph</TypographyH4>
               <TypographyContent>
                 <TypographyP>
                   Best for investigating the evolution of absolute results
@@ -952,14 +952,14 @@ function Help() {
               </TypographyContent>
             </SectionForDoc>
             <SectionForDoc>
-              <TypographyH4>Stacked Bar Chart</TypographyH4>
+              <TypographyH4>Stacked Bar Graph</TypographyH4>
               <TypographyContent>
                 <TypographyP>
                   Best for comparing categories at a specific point in time.
                   Presents the results as distinct bars for each of the points
                   in time scenario results are available in the underlying
-                  dataset, i.e., in steps of 5 years. The Stacked Bar Chart is
-                  similar to the Stacked Area Chart, with the main difference
+                  dataset, i.e., in steps of 5 years. The Stacked Bar Graph is
+                  similar to the Stacked Area Graph, with the main difference
                   and benefit being that it enables a clear distinction of the
                   situation in a selected year.
                 </TypographyP>

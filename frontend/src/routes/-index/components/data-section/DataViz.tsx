@@ -44,6 +44,10 @@ import { getDomainAll } from "./utils";
 import type { ValueOf } from "type-fest";
 import type { ScenarioSchema } from "@/lib/shared_with_backend/schemas";
 import { Sort } from "./components/Sort";
+import { LineGraphIcon } from "@/components/LineGraphIcon";
+import { StackedAreaGraphIcon } from "@/components/StackedAreaGraphIcon";
+import { TableIcon } from "@/components/TableIcon";
+import { StackedBarGraphIcon } from "@/components/StackedBarGraphIcon";
 
 const route = getRouteApi(ROUTES.DASHBOARD);
 
@@ -60,7 +64,16 @@ type ContentProps = {
   domain: GraphDomain | undefined;
 };
 
-const createTab = (name: string, Graph: Graph) => ({
+type CreateTabArgs = {
+  name: string;
+  Graph: Graph;
+  icon:
+    | typeof StackedAreaGraphIcon
+    | typeof LineGraphIcon
+    | typeof StackedBarGraphIcon
+    | typeof TableIcon;
+};
+const createTab = ({ name, Graph, icon }: CreateTabArgs) => ({
   name,
   content: ({ data, dataB, unit, breakdownBy, domain }: ContentProps) => (
     <GraphWrapper
@@ -72,16 +85,29 @@ const createTab = (name: string, Graph: Graph) => ({
       Graph={Graph}
     />
   ),
+  icon,
 });
 
 const tabs = [
-  createTab(DATA_TABS_NAMES.stackedAreaChart, StackedAreaChart),
-  createTab(DATA_TABS_NAMES.lineChart, LineGraph),
-  createTab(DATA_TABS_NAMES.stackedBarChart, StackedBarChart),
+  createTab({
+    name: DATA_TABS_NAMES.stackedAreaChart,
+    Graph: StackedAreaChart,
+    icon: StackedAreaGraphIcon,
+  }),
+  createTab({
+    name: DATA_TABS_NAMES.lineChart,
+    Graph: LineGraph,
+    icon: LineGraphIcon,
+  }),
+  createTab({
+    name: DATA_TABS_NAMES.stackedBarChart,
+    Graph: StackedBarChart,
+    icon: StackedBarGraphIcon,
+  }),
 ] as const;
 
-type TabName = (typeof tabs)[number]["name"];
-const defaultTab: TabName = "Stacked Area Chart";
+type TabName = ValueOf<typeof DATA_TABS_NAMES>;
+const defaultTab: TabName = "Stacked Area Graph";
 
 type CreateTitleArgs = {
   unit: Unit;
@@ -126,7 +152,7 @@ function createTitle({
   }
 
   return (
-    <h2 data-testid={GRAPH_TITLE_TESTID} className="text-primary">
+    <h2 data-testid={GRAPH_TITLE_TESTID} className="">
       <span className="transform-none" data-testid={DIVIDED_BY_TESTID}>
         {unit}
       </span>{" "}
@@ -279,17 +305,23 @@ export const DataViz = () => {
                 <TabsTrigger
                   key={tab.name}
                   value={tab.name}
-                  className="w-full md:w-auto"
+                  className="flex w-full items-center gap-1 md:w-auto"
                 >
-                  {tab.name}
+                  <div className="flex size-5 items-center justify-center">
+                    <tab.icon colorful={dataTab === tab.name} />
+                  </div>
+                  <span>{tab.name}</span>
                 </TabsTrigger>
               ))}
               <TabsTrigger
                 key="Table"
                 value="Table"
-                className="w-full md:w-auto"
+                className="flex w-full items-center gap-1 md:w-auto"
               >
-                Table
+                <div className="flex size-5 items-center justify-center">
+                  <TableIcon colorful={dataTab === DATA_TABS_NAMES.table} />
+                </div>
+                <span>Table</span>
               </TabsTrigger>
             </TabsList>
           </div>

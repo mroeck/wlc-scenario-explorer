@@ -1,6 +1,6 @@
 import {
   DIVIDED_BY_TESTID,
-  GRAPH_TESTID,
+  CHART_TESTID,
   ROUTES,
   SELECT_INDICATOR_TESTID,
 } from "@/lib/constants";
@@ -36,7 +36,7 @@ test.describe("indicator", () => {
 
       await testScreenshot({
         page,
-        target: page.getByTestId(GRAPH_TESTID).first(),
+        target: page.getByTestId(CHART_TESTID).first(),
       });
 
       await indicatorSelect.click();
@@ -48,7 +48,7 @@ test.describe("indicator", () => {
 
       await testScreenshot({
         page,
-        target: page.getByTestId(GRAPH_TESTID).first(),
+        target: page.getByTestId(CHART_TESTID).first(),
       });
     },
   );

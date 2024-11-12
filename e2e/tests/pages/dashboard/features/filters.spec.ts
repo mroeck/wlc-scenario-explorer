@@ -69,7 +69,7 @@ test.describe("filters", () => {
         target: page.locator(ACTIVE_DATA_TAB_LOCATOR),
       });
 
-      await page.getByRole("tab", { name: "Stacked Bar Chart" }).click();
+      await page.getByRole("tab", { name: "Stacked Bar Graph" }).click();
       await testScreenshot({
         page,
         target: page.locator(ACTIVE_DATA_TAB_LOCATOR),
@@ -104,7 +104,7 @@ test.describe("filters", () => {
         target: page.locator(ACTIVE_DATA_TAB_LOCATOR),
       });
 
-      await page.getByRole("tab", { name: "Stacked Bar Chart" }).click();
+      await page.getByRole("tab", { name: "Stacked Bar Graph" }).click();
       await testScreenshot({
         page,
         target: page.locator(ACTIVE_DATA_TAB_LOCATOR),

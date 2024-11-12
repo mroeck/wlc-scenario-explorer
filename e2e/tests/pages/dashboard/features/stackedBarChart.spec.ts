@@ -1,6 +1,6 @@
 import {
   DATA_TABS_NAMES,
-  GRAPH_TESTID,
+  CHART_TESTID,
   ROUTES,
   SCENARIO_B_LABEL,
 } from "@/lib/constants";
@@ -27,7 +27,7 @@ test.describe("stacked bar chart", () => {
     async ({ page }) => {
       await testScreenshot({
         page,
-        target: page.getByTestId(GRAPH_TESTID).first(),
+        target: page.getByTestId(CHART_TESTID).first(),
       });
 
       const option = SCENARIO_B_LABEL + " only";
@@ -35,7 +35,7 @@ test.describe("stacked bar chart", () => {
 
       await testScreenshot({
         page,
-        target: page.getByTestId(GRAPH_TESTID).first(),
+        target: page.getByTestId(CHART_TESTID).first(),
       });
     },
   );
@@ -58,7 +58,7 @@ test.describe("stacked bar chart", () => {
 
       await testScreenshot({
         page,
-        target: page.getByTestId(GRAPH_TESTID).first(),
+        target: page.getByTestId(CHART_TESTID).first(),
       });
     },
   );
