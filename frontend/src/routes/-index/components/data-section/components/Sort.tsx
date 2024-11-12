@@ -49,7 +49,9 @@ export const Sort = () => {
         <DropdownMenuRadioGroup value={sort} onValueChange={onSortChange}>
           {SORT_OPTIONS_VALUES.map((option) => (
             <DropdownMenuRadioItem key={option} value={option}>
-              {option}
+              <span className="text-gray-800 first-letter:uppercase">
+                {option}
+              </span>
             </DropdownMenuRadioItem>
           ))}
         </DropdownMenuRadioGroup>

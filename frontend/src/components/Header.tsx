@@ -153,7 +153,7 @@ export const Header = () => {
   }
 
   return (
-    <header className="relative">
+    <header className="relative shadow-lg">
       {Array.from({ length: 2 }, (_, index) => (
         <nav
           key={index}

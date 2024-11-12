@@ -5,7 +5,6 @@ import {
   COLOR_LEGEND_TESTID,
   BREAKDOWN_BY_TESTID,
   DATA_TABLE_TESTID,
-  GRAPH_TESTID,
   DIVIDED_BY_TESTID,
   SELECT_INDICATOR_TESTID,
   INDICATOR_TO_UNIT,
@@ -61,7 +60,7 @@ test.describe("data viz", () => {
       target: page.locator(ACTIVE_DATA_TAB_LOCATOR),
     });
 
-    await page.getByRole("tab", { name: "Stacked Bar Chart" }).click();
+    await page.getByRole("tab", { name: "Stacked Bar Graph" }).click();
     await testScreenshot({
       page,
       target: page.locator(ACTIVE_DATA_TAB_LOCATOR),
@@ -105,7 +104,7 @@ test.describe("data viz", () => {
       target: page.locator(ACTIVE_DATA_TAB_LOCATOR),
     });
 
-    await page.getByRole("tab", { name: "Stacked Bar Chart" }).click();
+    await page.getByRole("tab", { name: "Stacked Bar Graph" }).click();
     await testScreenshot({
       page,
       target: page.locator(ACTIVE_DATA_TAB_LOCATOR),
@@ -117,7 +116,7 @@ test.describe("data viz", () => {
       target: page.locator(ACTIVE_DATA_TAB_LOCATOR),
     });
 
-    await page.getByRole("tab", { name: "Stacked Bar Chart" }).click();
+    await page.getByRole("tab", { name: "Stacked Bar Graph" }).click();
     await indicatorSelect.click();
     await indicatorOption2.click();
 

@@ -1,4 +1,3 @@
-import { cn } from "@/lib/utils";
 import { RefreshCcw } from "lucide-react";
 
 type ResetButtonProps = {
@@ -9,10 +8,10 @@ export const ResetButton = ({ reset, text }: ResetButtonProps) => {
   return (
     <button
       type="button"
-      className={cn("flex items-center gap-1 text-sm")}
+      className="flex items-center gap-1 text-sm text-gray-800"
       onClick={reset}
     >
-      <RefreshCcw className={cn("size-4")} />
+      <RefreshCcw className="size-4" />
       <span>{text}</span>
     </button>
   );

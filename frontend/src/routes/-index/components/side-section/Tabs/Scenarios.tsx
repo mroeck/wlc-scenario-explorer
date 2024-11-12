@@ -205,7 +205,7 @@ export const Scenarios = () => {
               />
               <div className="px-2">
                 <div className="flex items-center gap-2">
-                  <span className="text-sm font-medium">
+                  <span className="text-sm font-medium text-gray-800">
                     Customise scenario parameters:
                   </span>
                   <InfoButton>

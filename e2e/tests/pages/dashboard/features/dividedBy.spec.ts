@@ -1,5 +1,5 @@
 import {
-  GRAPH_TESTID,
+  CHART_TESTID,
   ROUTES,
   SELECT_DIVIDED_BY_TESTID,
 } from "@/lib/constants";
@@ -40,7 +40,7 @@ test.describe("dividedBy", () => {
 
       await testScreenshot({
         page,
-        target: page.getByTestId(GRAPH_TESTID).first(),
+        target: page.getByTestId(CHART_TESTID).first(),
       });
 
       await selectDividedBy.click();
@@ -50,14 +50,14 @@ test.describe("dividedBy", () => {
       ).toBeVisible();
       await expect(
         page
-          .locator('[id="radix-\\:rm\\:-content-Stacked\\ Area\\ Chart"]')
+          .locator('[id="radix-\\:rm\\:-content-Stacked\\ Area\\ Graph"]')
           .getByText("MtCO2e/capita", { exact: true })
           .nth(1),
       ).toBeVisible();
 
       await testScreenshot({
         page,
-        target: page.getByTestId(GRAPH_TESTID).first(),
+        target: page.getByTestId(CHART_TESTID).first(),
       });
     },
   );

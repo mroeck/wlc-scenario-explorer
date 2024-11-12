@@ -22,7 +22,7 @@ export const ScenarioParameters = () => {
           >
             <div className="flex justify-between gap-2">
               <div className="flex-1">
-                <AccordionTrigger className="text-sm capitalize">
+                <AccordionTrigger className="text-sm capitalize text-gray-800">
                   {key}
                 </AccordionTrigger>
               </div>
@@ -43,7 +43,9 @@ export const ScenarioParameters = () => {
                     className="flex flex-col gap-1"
                   >
                     <div className="flex items-center gap-2">
-                      <span className="min-w-max text-sm">{item}:</span>
+                      <span className="min-w-max text-sm text-gray-800">
+                        {item}:
+                      </span>
                       <InfoButton>
                         <p>[in progress]</p>
                         <Link

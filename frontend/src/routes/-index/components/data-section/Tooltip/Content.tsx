@@ -160,7 +160,7 @@ export const Content = ({
 
   return (
     <>
-      <div className="flex w-max flex-col text-left">
+      <div className="flex w-max flex-col text-left text-gray-800">
         <span>
           Year:{" "}
           <span className="font-bold" style={{ fontSize: GRAPH_FONT_SIZE }}>
@@ -183,7 +183,7 @@ export const Content = ({
       <div className="pb-5"></div>
 
       {areDataMerged ? (
-        <div style={{ fontSize: GRAPH_FONT_SIZE }}>
+        <div style={{ fontSize: GRAPH_FONT_SIZE }} className="text-gray-800">
           Total:{" "}
           <span className="font-bold">
             {scenarioATotal.toLocaleString("en-US", {
@@ -199,7 +199,7 @@ export const Content = ({
           (100%)
         </div>
       ) : (
-        <div style={{ fontSize: GRAPH_FONT_SIZE }}>
+        <div style={{ fontSize: GRAPH_FONT_SIZE }} className="text-gray-800">
           Total:{" "}
           <span className="font-bold">
             {totalValue.toLocaleString("en-US", { maximumFractionDigits: 2 })}{" "}
@@ -208,7 +208,7 @@ export const Content = ({
         </div>
       )}
 
-      <ul className="grid grid-flow-col grid-rows-[repeat(15,auto)] gap-x-5">
+      <ul className="grid grid-flow-col grid-rows-[repeat(15,auto)] gap-x-5 text-gray-800">
         {finalData.length > 1 &&
           finalData
             .map((item) => {

@@ -1,4 +1,4 @@
-import { GRAPH_TESTID, ROUTES, SELECT_INDICATOR_TESTID } from "@/lib/constants";
+import { CHART_TESTID, ROUTES, SELECT_INDICATOR_TESTID } from "@/lib/constants";
 import { test } from "@playwright/test";
 import { TAGS } from "@tests/constants";
 import { testScreenshot } from "@tests/functions";
@@ -23,13 +23,13 @@ test.describe("graph highlight", () => {
 
       await testScreenshot({
         page,
-        target: page.getByTestId(GRAPH_TESTID).first(),
+        target: page.getByTestId(CHART_TESTID).first(),
       });
 
       await emptySpace.click();
       await testScreenshot({
         page,
-        target: page.getByTestId(GRAPH_TESTID).first(),
+        target: page.getByTestId(CHART_TESTID).first(),
       });
 
       await page.getByText("Non-residential").click();
@@ -41,7 +41,7 @@ test.describe("graph highlight", () => {
 
       await testScreenshot({
         page,
-        target: page.getByTestId(GRAPH_TESTID).first(),
+        target: page.getByTestId(CHART_TESTID).first(),
       });
     },
   );
@@ -57,19 +57,19 @@ test.describe("graph highlight", () => {
       await areaFromGraph.last().click();
       await testScreenshot({
         page,
-        target: page.getByTestId(GRAPH_TESTID).first(),
+        target: page.getByTestId(CHART_TESTID).first(),
       });
 
-      await page.getByRole("tab", { name: "Line Chart" }).click();
+      await page.getByRole("tab", { name: "Line Graph" }).click();
       await testScreenshot({
         page,
-        target: page.getByTestId(GRAPH_TESTID).first(),
+        target: page.getByTestId(CHART_TESTID).first(),
       });
 
-      await page.getByRole("tab", { name: "Stacked Bar Chart" }).click();
+      await page.getByRole("tab", { name: "Stacked Bar Graph" }).click();
       await testScreenshot({
         page,
-        target: page.getByTestId(GRAPH_TESTID).first(),
+        target: page.getByTestId(CHART_TESTID).first(),
       });
     },
   );

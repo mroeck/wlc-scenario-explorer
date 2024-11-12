@@ -1,4 +1,4 @@
-import { GRAPH_TESTID, ROUTES, SORT_OPTIONS } from "@/lib/constants";
+import { CHART_TESTID, ROUTES, SORT_OPTIONS } from "@/lib/constants";
 import { test } from "@playwright/test";
 import { TAGS } from "@tests/constants";
 import { testScreenshot } from "@tests/functions";
@@ -26,7 +26,7 @@ test.describe("sort", () => {
 
         await testScreenshot({
           page,
-          target: page.getByTestId(GRAPH_TESTID).first(),
+          target: page.getByTestId(CHART_TESTID).first(),
         });
       },
     );
