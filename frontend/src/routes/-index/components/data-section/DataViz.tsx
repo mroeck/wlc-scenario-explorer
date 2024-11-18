@@ -14,7 +14,7 @@ import {
   SCENARIO_A_AND_B,
   SCENARIO_B_ONLY,
   TAB_CONTENT_TESTID,
-  DIVIDED_BY_TESTID,
+  GRAPH_TITLE_DIVIDED_BY_TESTID,
   DIVIDED_BY_NONE,
   DIVIDED_BY_TO_MINIFIED_UNIT,
   SCENARIO_TO_ACRONYM,
@@ -153,7 +153,10 @@ function createTitle({
 
   return (
     <h2 data-testid={GRAPH_TITLE_TESTID} className="">
-      <span className="transform-none" data-testid={DIVIDED_BY_TESTID}>
+      <span
+        className="transform-none"
+        data-testid={GRAPH_TITLE_DIVIDED_BY_TESTID}
+      >
         {unit}
       </span>{" "}
       {breakdownBy !== NONE && (
