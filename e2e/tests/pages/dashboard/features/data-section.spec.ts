@@ -5,7 +5,7 @@ import {
   COLOR_LEGEND_TESTID,
   BREAKDOWN_BY_TESTID,
   DATA_TABLE_TESTID,
-  DIVIDED_BY_TESTID,
+  GRAPH_TITLE_DIVIDED_BY_TESTID,
   SELECT_INDICATOR_TESTID,
   INDICATOR_TO_UNIT,
   INDICATORS_UNITS,
@@ -77,7 +77,7 @@ test.describe("data viz", () => {
     const indicatorSelect = page.getByTestId(SELECT_INDICATOR_TESTID);
     const indicatorInGraphTitle = page
       .getByTestId(GRAPH_TITLE_TESTID)
-      .getByTestId(DIVIDED_BY_TESTID);
+      .getByTestId(GRAPH_TITLE_DIVIDED_BY_TESTID);
     const optionText = "GWP bio";
     const indicatorOption = page.getByLabel(optionText).getByText(optionText);
     const indicatorOption2 = page

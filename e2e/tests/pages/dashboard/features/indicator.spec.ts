@@ -1,5 +1,5 @@
 import {
-  DIVIDED_BY_TESTID,
+  GRAPH_TITLE_DIVIDED_BY_TESTID,
   CHART_TESTID,
   ROUTES,
   SELECT_INDICATOR_TESTID,
@@ -30,7 +30,7 @@ test.describe("indicator", () => {
       await indicatorSelect.click();
       await page.getByLabel(option1.name).click();
       await expect(page.getByText(option1.minified).nth(1)).toBeVisible();
-      await expect(page.getByTestId(DIVIDED_BY_TESTID)).toHaveText(
+      await expect(page.getByTestId(GRAPH_TITLE_DIVIDED_BY_TESTID)).toHaveText(
         option1.name,
       );
 
@@ -42,7 +42,7 @@ test.describe("indicator", () => {
       await indicatorSelect.click();
       await page.getByLabel(option2.name).click();
       await expect(page.getByText(option2.minified).nth(1)).toBeVisible();
-      await expect(page.getByTestId(DIVIDED_BY_TESTID)).toHaveText(
+      await expect(page.getByTestId(GRAPH_TITLE_DIVIDED_BY_TESTID)).toHaveText(
         option2.name,
       );
 

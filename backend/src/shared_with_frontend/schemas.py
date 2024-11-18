@@ -26,6 +26,10 @@ class ColumnsEnumSchema(Enum):
     IND_GWP_BIO = "ind_GWP_Bio"
     IND_GWP_LULUC = "ind_GWP_LuLuc"
     LCA_STAGES = "LCS_EN15978"
+    POPULATION_COUNTRY = "population_country"
+    POPULATION_ARCHETYPE = "population_archetype"
+    FLOOR_AREA_COUNTRY = "floor_area_country"
+    FLOOR_AREA_ARCHETYPE = "floor_area_archetype"
 
 
 class AttributeEnumSchema(str, Enum):
@@ -74,10 +78,10 @@ class IndicatorEnumSchema(str, Enum):
 
 class DividedByEnumSchema(str, Enum):
     NONE = "none (total)"
-    M2_COUNTRY = "m² (country)"
-    M2_ARCHETYPE = "m² (archetype)"
-    CAPITA_COUNTRY = "capita (country)"
-    CAPITA_ARCHETYPE = "capita (archetype)"
+    FLOOR_AREA_COUNTRY = "m² (country)"
+    FLOOR_AREA_ARCHETYPE = "m² (archetype)"
+    POPULATION_COUNTRY = "capita (country)"
+    POPULATION_ARCHETYPE = "capita (archetype)"
 
 
 UNIT_TO_DB_COLUMNS: Dict[str, str] = {
@@ -87,10 +91,10 @@ UNIT_TO_DB_COLUMNS: Dict[str, str] = {
     IndicatorEnumSchema.LULUC_GWP.value: ColumnsEnumSchema.IND_GWP_LULUC.value,
     IndicatorEnumSchema.MATERIAL_AMOUNT_PER_BUILDING.value: ColumnsEnumSchema.AMOUNT_MATERIAL.value,
     DividedByEnumSchema.NONE.value: DIVIDED_BY_NONE,
-    DividedByEnumSchema.M2_COUNTRY.value: DIVIDED_BY_NONE,
-    DividedByEnumSchema.M2_ARCHETYPE.value: DIVIDED_BY_NONE,
-    DividedByEnumSchema.CAPITA_COUNTRY.value: DIVIDED_BY_NONE,
-    DividedByEnumSchema.CAPITA_ARCHETYPE.value: ColumnsEnumSchema.IND_GWP_FOS.value,
+    DividedByEnumSchema.FLOOR_AREA_COUNTRY.value: ColumnsEnumSchema.FLOOR_AREA_COUNTRY.value,
+    DividedByEnumSchema.FLOOR_AREA_ARCHETYPE.value: ColumnsEnumSchema.FLOOR_AREA_ARCHETYPE.value,
+    DividedByEnumSchema.POPULATION_COUNTRY.value: ColumnsEnumSchema.POPULATION_COUNTRY.value,
+    DividedByEnumSchema.POPULATION_ARCHETYPE.value: ColumnsEnumSchema.POPULATION_ARCHETYPE.value,
 }
 
 

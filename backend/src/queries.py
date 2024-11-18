@@ -93,7 +93,7 @@ def get_pivot_query(
     if attribute == AttributeEnumSchema.NONE:
         return ""
 
-    return f"""
+    query = f"""
         SELECT
             COLUMNS(*),
             stock_projection_year
@@ -105,6 +105,8 @@ def get_pivot_query(
         )
         ORDER BY stock_projection_year
     """
+
+    return query
 
 
 def get_minmax_query(

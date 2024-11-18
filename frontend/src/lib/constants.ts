@@ -72,7 +72,7 @@ export const ROUTES = {
 } as const;
 export const LOADING_SPINNER_ID = "LoadingSpinner";
 export const GRAPH_TITLE_TESTID = "graphTitle";
-export const DIVIDED_BY_TESTID = "DIVIDED_BY_TESTID";
+export const GRAPH_TITLE_DIVIDED_BY_TESTID = "DIVIDED_BY_TESTID";
 export const ATTRIBUTE_TESTID = "attribute";
 export const DISPLAY_SELECT_TESTID = "DISPLAY_SELECT_TESTID";
 export const SORT_SELECT_TESTID = "SORT_SELECT_TESTID";

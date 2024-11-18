@@ -240,7 +240,10 @@ export const EXPECTED_VALUES = {
     "Technical services",
   ],
   floor_area_archetype: undefined,
-  floor_area_country: undefined,
+  floor_area_country: [
+    495.8386535644531, 565.8834838867188, 612.0538940429688, 650.0704956054688,
+    680.7593994140625, 704.84521484375, 726.406005859375,
+  ],
   ind_GWP_Bio: undefined,
   ind_GWP_Fos: undefined,
   ind_GWP_LuLuc: undefined,
@@ -281,7 +284,9 @@ export const EXPECTED_VALUES = {
     "Wood",
   ],
   population_archetype: undefined,
-  population_country: undefined,
+  population_country: [
+    0, 5818644, 5979924, 6059699, 6112281, 6140844, 6149190, 6150048,
+  ],
   stock_activity_type_name: [
     "Existing buildings",
     "New buildings",
