@@ -15,7 +15,7 @@ const COMMON_IN_FILTERS_AND_BREAKDOWN = {
   material: "Material Class",
   Region: "Region",
   activityType: "building stock activity",
-  carbonCategory: "Whole life cycle stages",
+  carbonCategory: "Whole life cycle modules",
   lcaStages: "LCA stages",
 } as const;
 export const BREAKDOWN_BY_OBJ = {
@@ -30,24 +30,14 @@ type AttributesEnum = [
 export const ATTRIBUTES = Object.values(BREAKDOWN_BY_OBJ) as AttributesEnum;
 
 export const PREDEFINED_SCENARIOS = [
-  // "Example scenario (for illustration purpose only)",
+  "Example scenario (for illustration purpose only)",
   // "Optimistic scenario of Current Policies",
   // "Conservative scenario of Current Policies",
   // "Additional Policy scenario",
   // "Current Policy + Improve strategies",
   // "Current Policy + Shift strategies",
   // "Current Policy + Avoid strategies",
-  // "Current Policy + Avoid + Shift + Improve strategies",
-  "Austria",
-  "Austria + Shift",
-  "Austria + Improve",
-  "Austria + Avoid",
-  "Austria + Full",
-  "Denmark",
-  "Denmark + Shift",
-  "Denmark + Improve",
-  "Denmark + Avoid",
-  "Denmark + Full",
+  "Current Policy + Avoid + Shift + Improve strategies",
 ] as const;
 export type PredefinedScenario = (typeof PREDEFINED_SCENARIOS)[number];
 
@@ -108,10 +98,7 @@ export const API_ROUTES = {
   scenario: "/scenario",
 };
 
-export const ATTRIBUTE_OPTIONS_COLOR: Record<
-  Exclude<Attribute, "stock building stock activity name" | "None">,
-  Partial<Record<Exclude<ValidOption, number>, `#${string}`>>
-> = {
+export const ATTRIBUTE_OPTIONS_COLOR = {
   // "flow type": {
   //   "Energy in": "#5FB8CE",
   //   MATERIAL_IN: "#5BB89F",
@@ -147,12 +134,11 @@ export const ATTRIBUTE_OPTIONS_COLOR: Record<
     OTH: "#3ABB5C",
   },
   "Building type": {
-    "Non-Residential": "#3ABB5C",
+    "Non-residential": "#3ABB5C",
     Residential: "#499ACC",
   },
   country: {
     AT: "#95400E",
-    // @ts-expect-error: temp for new/not final parquet files
     BE: "#2D5F7E",
     BG: "#BB4F11",
     CY: "#216934",
@@ -204,22 +190,20 @@ export const ATTRIBUTE_OPTIONS_COLOR: Record<
   },
   Region: {
     CON: "#EE854A",
-    // @ts-expect-error: temp for new/not final parquet files
-    Mediterranean: "#3ABB5C",
-    Nordic: "#C73B3B",
-    Oceanic: "#499ACC",
+    MED: "#3ABB5C",
+    NOR: "#C73B3B",
+    OCE: "#499ACC",
   },
   "building stock activity": {
     "Existing buildings": "#499ACC",
     "New buildings": "#3ABB5C",
     Refurbishment: "#EE854A",
   },
-  "Whole life cycle stages": {
+  "Whole life cycle modules": {
     "Construction embodied carbon": "#377399",
-    "Demolition embodied carbon": "#3C7FA8",
-    // @ts-expect-error: temp for new/not final parquet files
-    "Renovation embodied carbon": "#428CB9",
-    "Use phase embodied carbon": "#499ACC",
+    "Renovation embodied carbon": "#3C7FA8",
+    "Use phase embodied carbon": "#428CB9",
+    "Demolition embodied carbon": "#499ACC",
     "Use phase operational carbon": "#3ABB5C",
   },
   "LCA stages": {
@@ -237,9 +221,12 @@ export const ATTRIBUTE_OPTIONS_COLOR: Record<
     C3: "#C352A7",
     C4: "#E4739E",
   },
-} as const;
+} as const satisfies Record<
+  Exclude<Attribute, "stock building stock activity name" | "None">,
+  Partial<Record<Exclude<ValidOption, number>, `#${string}`>>
+>;
 
-export const VALUE_TO_LABEL: Record<ValidOption, string> = {
+export const VALUE_TO_LABEL: Record<Exclude<ValidOption, number>, string> = {
   "External openings": "External openings",
   "Internal openings": "Internal openings",
   "Electrical services": "Electrical services",
@@ -251,7 +238,7 @@ export const VALUE_TO_LABEL: Record<ValidOption, string> = {
   "Common walls": "Common walls",
   "External walls": "External walls",
   "Internal walls": "Internal walls",
-  "Non-Residential": "Non-Residential",
+  "Non-residential": "Non-residential",
   Residential: "Residential",
   Aluminium: "Aluminium",
   Brick: "Brick",
@@ -291,7 +278,6 @@ export const VALUE_TO_LABEL: Record<ValidOption, string> = {
   HEA: "Health",
   HOR: "Hotel and restaurant",
   OTH: "Other",
-  // @ts-expect-error: temp for new/not final parquet files
   BE: "BE",
   BG: "BG",
   CY: "CY",
@@ -318,8 +304,27 @@ export const VALUE_TO_LABEL: Record<ValidOption, string> = {
   SE: "SE",
   SI: "SI",
   SK: "SK",
-  Mediterranean: "Mediterranean",
-  Nordic: "Nordic",
-  Oceanic: "Oceanic",
+  MED: "Mediterranean",
+  NOR: "Nordic",
+  OCE: "Oceanic",
   "Renovation embodied carbon": "Renovation embodied carbon",
+  "A1-3": "A1-3",
+  A4: "A4",
+  A5: "A5",
+  B2: "B2",
+  B4: "B4",
+  B5: "B5",
+  B6: "B6",
+  C1: "C1",
+  C2: "C2",
+  C3: "C3",
+  C4: "C4",
+  ENERGY_IN: "ENERGY_IN",
+  MATERIAL_IN: "MATERIAL_IN",
+  MATERIAL_LOSS_IN: "MATERIAL_LOSS_IN",
+  MATERIAL_LOSS_OUT: "MATERIAL_LOSS_OUT",
+  MATERIAL_OUT: "MATERIAL_OUT",
+  PROCESS: "PROCESS",
+  TRANSPORT_EOL: "TRANSPORT_EOL",
+  TRANSPORT_TO_SITE: "TRANSPORT_TO_SITE",
 };

@@ -7,6 +7,7 @@ import {
 import type { PredefinedScenario } from "@/lib/shared_with_backend/constants";
 import { expect, type Page } from "@playwright/test";
 import type { RequireAtLeastOne } from "type-fest";
+import type { ScenarioOption } from "./types";
 
 type ChangeSortArgs = {
   page: Page;
@@ -37,7 +38,6 @@ export const changeDisplayInUI = async ({
   await expect(item).not.toBeVisible();
 };
 
-type ScenarioOption = `${PredefinedScenario}${string}`;
 type ChangeScenariosInUIArgs = {
   page: Page;
   scenarios: RequireAtLeastOne<{

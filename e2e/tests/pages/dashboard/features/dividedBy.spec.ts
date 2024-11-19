@@ -73,51 +73,53 @@ test.describe("dividedBy", () => {
     );
   }
 
-  // test(
-  //   "show expected unit",
-  //   {
-  //     tag: TAGS.snapshot,
-  //   },
-  //   async ({ page }) => {
-  //     const selectDividedBy = page
-  //       .getByTestId(SELECT_DIVIDED_BY_TESTID)
-  //       .getByRole("combobox");
+  // this test is similar to `divided by ${option} show expected graph`
+  // should we delete it?
+  test.fixme(
+    "show expected unit",
+    {
+      tag: TAGS.snapshot,
+    },
+    async ({ page }) => {
+      const selectDividedBy = page
+        .getByTestId(SELECT_DIVIDED_BY_TESTID)
+        .getByRole("combobox");
 
-  //     await expect(page.getByText("GWP total by")).toBeVisible();
-  //     await expect(
-  //       page.getByText("MtCO2e", { exact: true }).nth(1),
-  //     ).toBeVisible();
-  //     await selectDividedBy.click();
+      await expect(page.getByText("GWP total by")).toBeVisible();
+      await expect(
+        page.getByText("MtCO2e", { exact: true }).nth(1),
+      ).toBeVisible();
+      await selectDividedBy.click();
 
-  //     await page.getByLabel("m² (country)").click();
-  //     await expect(
-  //       page.getByText("GWP total per m² (country) by"),
-  //     ).toBeVisible();
-  //     await expect(
-  //       page.getByText("MtCO2e/m²", { exact: true }).nth(1),
-  //     ).toBeVisible();
+      await page.getByLabel("m² (country)").click();
+      await expect(
+        page.getByText("GWP total per m² (country) by"),
+      ).toBeVisible();
+      await expect(
+        page.getByText("MtCO2e/m²", { exact: true }).nth(1),
+      ).toBeVisible();
 
-  //     await testScreenshot({
-  //       page,
-  //       target: page.getByTestId(CHART_TESTID).first(),
-  //     });
+      await testScreenshot({
+        page,
+        target: page.getByTestId(CHART_TESTID).first(),
+      });
 
-  //     await selectDividedBy.click();
-  //     await page.getByLabel("capita (country)").click();
-  //     await expect(
-  //       page.getByText("GWP total per capita (country) by"),
-  //     ).toBeVisible();
-  //     await expect(
-  //       page
-  //         .locator('[id="radix-\\:rm\\:-content-Stacked\\ Area\\ Graph"]')
-  //         .getByText("MtCO2e/capita", { exact: true })
-  //         .nth(1),
-  //     ).toBeVisible();
+      await selectDividedBy.click();
+      await page.getByLabel("capita (country)").click();
+      await expect(
+        page.getByText("GWP total per capita (country) by"),
+      ).toBeVisible();
+      await expect(
+        page
+          .locator('[id="radix-\\:rm\\:-content-Stacked\\ Area\\ Graph"]')
+          .getByText("MtCO2e/capita", { exact: true })
+          .nth(1),
+      ).toBeVisible();
 
-  //     await testScreenshot({
-  //       page,
-  //       target: page.getByTestId(CHART_TESTID).first(),
-  //     });
-  //   },
-  // );
+      await testScreenshot({
+        page,
+        target: page.getByTestId(CHART_TESTID).first(),
+      });
+    },
+  );
 });

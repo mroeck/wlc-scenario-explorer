@@ -60,7 +60,8 @@ export const DEFAULT_DISPLAY: (typeof DISPLAY_OPTIONS)[number] =
   SCENARIO_A_ONLY;
 export const DEFAULT_SORT: (typeof SORT_OPTIONS)[keyof typeof SORT_OPTIONS] =
   "group / alphabetical";
-export const DEFAULT_SCENARIO: (typeof SCENARIOS_OPTIONS)[number] = "Austria";
+export const DEFAULT_SCENARIO: (typeof SCENARIOS_OPTIONS)[number] =
+  "Example scenario (for illustration purpose only)";
 export const DEFAULT_FROM = 2020;
 export const DEFAULT_TO = 2050;
 export const HEADER_HEIGHT = "72";
@@ -108,7 +109,7 @@ export const BREAKDOWN_BY_ORDER = [
   "material class",
   "building stock activity",
   "lca stages",
-  "whole life cycle stages",
+  "whole life cycle modules",
   "none",
 ] as const satisfies readonly BreakdownByOrderItem[];
 
@@ -183,10 +184,11 @@ export const HELP_PAGE_IDS = {
   generalRemarks: "generalRemarks",
   faq: "faq",
 } as const;
-export const SCENARIO_A_LABEL = "primary scenario";
-export const SCENARIO_B_LABEL = "second scenario";
-export const SCENARIO_A_ACRONYM = "primary";
-export const SCENARIO_B_ACRONYM = "2nd";
+export const SCENARIO_A_LABEL = "scenario A";
+export const SCENARIO_B_LABEL = "scenario B";
+export const SCENARIO_A_ACRONYM = "A";
+export const SCENARIO_B_ACRONYM = "B";
+export const NO_SCENARIO_SELECTED_LABEL = "undefined";
 export const NONE = "None";
 export const STORAGE_KEYS = {
   isDisclaimerAccepted: "scenarioExplorerIsDisclaimerAccepted",
@@ -196,22 +198,12 @@ export const GRAPH_AXIS_COLOR = "hsl(223 0% 20%)";
 export const SCENARIO_TO_ACRONYM = {
   // "Additional Policy scenario": "APOL",
   // "Conservative scenario of Current Policies": "CPOL/B",
-  // "Current Policy + Avoid + Shift + Improve strategies": "CPOL+ASI",
+  "Current Policy + Avoid + Shift + Improve strategies": "CPOL+ASI",
   // "Current Policy + Avoid strategies": "CPOL+A",
   // "Current Policy + Improve strategies": "CPOL+I",
   // "Current Policy + Shift strategies": "CPOL+S",
   // "Optimistic scenario of Current Policies": "CPOL/A",
-  // "Example scenario (for illustration purpose only)": undefined,
-  Austria: undefined,
-  "Austria + Avoid": "AT/A",
-  "Austria + Improve": "AT/I",
-  "Austria + Shift": "AT/S",
-  "Austria + Full": "AT/F",
-  Denmark: undefined,
-  "Denmark + Avoid": "DK/A",
-  "Denmark + Improve": "DK/I",
-  "Denmark + Shift": "DK/S",
-  "Denmark + Full": "DK/F",
+  "Example scenario (for illustration purpose only)": undefined,
 } satisfies Record<(typeof PREDEFINED_SCENARIOS)[number], string | undefined>;
 export const EMBODIED_CARBON = "Embodied carbon (EC)";
 export const OPERATIONAL_CARBON = "Operational carbon (OC)";

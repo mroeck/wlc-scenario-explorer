@@ -46,9 +46,10 @@ test.describe("stacked bar chart", () => {
       tag: TAGS.snapshot,
     },
     async ({ page }) => {
-      const scenarios = {
-        a: "Austria + Shift (AT/S)",
-        b: "Austria + Improve (AT/I)",
+      type Scenarios = Parameters<typeof changeScenariosInUI>[0]["scenarios"];
+      const scenarios: Scenarios = {
+        a: "Current Policy + Avoid + Shift + Improve strategies",
+        b: "Example scenario (for illustration purpose only)",
       } as const;
 
       await changeScenariosInUI({ page, scenarios });

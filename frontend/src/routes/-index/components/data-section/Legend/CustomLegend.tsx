@@ -5,12 +5,14 @@ import { colors } from "../colors";
 import {
   COLOR_LEGEND_TESTID,
   GRAPH_FONT_SIZE,
+  NO_SCENARIO_SELECTED_LABEL,
   ROUTES,
   SCENARIO_A_AND_B,
   SCENARIO_A_KEY_PREFIX,
   SCENARIO_A_LABEL,
   SCENARIO_B_KEY_PREFIX,
   SCENARIO_B_LABEL,
+  SCENARIO_TO_ACRONYM,
 } from "@/lib/constants";
 import { getRouteApi } from "@tanstack/react-router";
 import type { Attribute } from "@/lib/types";
@@ -42,19 +44,28 @@ export type CustomLegendProps = Pick<Props, "payload"> & {
   className?: string;
 };
 export const CustomLegend = ({ payload, className }: CustomLegendProps) => {
-  const { display, attribute, highlight } = route.useSearch({
-    select: (search) => ({
-      display: search.display,
-      attribute: search.breakdownBy,
-      highlight: search.highlight,
-    }),
-  });
+  const { display, attribute, highlight, scenarioA, scenarioB } =
+    route.useSearch({
+      select: (search) => ({
+        display: search.display,
+        attribute: search.breakdownBy,
+        highlight: search.highlight,
+        scenarioA: search.scenarioA,
+        scenarioB: search.scenarioB,
+      }),
+    });
   if (payload == null) return null;
 
   const data = removeDuplicates(payload);
 
   const groupedData = groupByCategory({ values: data });
   const hasCategory = Object.keys(groupedData).length > 0;
+
+  type Key = keyof typeof SCENARIO_TO_ACRONYM;
+  const labelA = SCENARIO_TO_ACRONYM[scenarioA as Key] || SCENARIO_A_LABEL;
+  const labelB = scenarioB
+    ? SCENARIO_TO_ACRONYM[scenarioB as Key] || SCENARIO_B_LABEL
+    : NO_SCENARIO_SELECTED_LABEL;
 
   return (
     <div
@@ -114,15 +125,11 @@ export const CustomLegend = ({ payload, className }: CustomLegendProps) => {
         <ul className="flex max-w-[50ch] flex-col flex-wrap gap-x-6 px-2">
           <li className="flex items-center gap-1 text-gray-800">
             <ColorCube color={colors[0]} />
-            <span style={{ fontSize: GRAPH_FONT_SIZE }}>
-              {SCENARIO_A_LABEL}
-            </span>
+            <span style={{ fontSize: GRAPH_FONT_SIZE }}>{labelA}</span>
           </li>
           <li className="flex items-center gap-1 text-gray-800">
             <ColorCube color={colors[0]} showPattern />
-            <span style={{ fontSize: GRAPH_FONT_SIZE }}>
-              {SCENARIO_B_LABEL}
-            </span>
+            <span style={{ fontSize: GRAPH_FONT_SIZE }}>{labelB}</span>
           </li>
         </ul>
       </section>
