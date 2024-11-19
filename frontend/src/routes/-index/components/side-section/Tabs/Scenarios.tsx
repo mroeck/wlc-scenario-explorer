@@ -18,7 +18,6 @@ import {
   RESET_LABEL,
   ROUTES,
   SCENARIO_A_AND_B,
-  SCENARIO_A_LABEL,
   SCENARIO_A_ONLY,
   SCENARIO_A_MENU_TESTID,
   SCENARIO_B_ONLY,
@@ -135,7 +134,7 @@ export const Scenarios = () => {
                   <FormItem>
                     <FormLabel className="flex items-center gap-2 font-medium">
                       <span className="first-letter:uppercase">
-                        {SCENARIO_A_LABEL}:
+                        Select a scenario (A):
                       </span>
                       <InfoButton>
                         <p>
@@ -237,7 +236,7 @@ export const Scenarios = () => {
               render={({ field }) => (
                 <FormItem>
                   <FormLabel className="flex items-center gap-2 font-medium">
-                    <span>Compare with:</span>
+                    <span>Compare with (B):</span>
                     <InfoButton>
                       <p>
                         Select a second predefined scenario to compare with your

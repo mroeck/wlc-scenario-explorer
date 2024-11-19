@@ -42,7 +42,7 @@ class AttributeEnumSchema(str, Enum):
     MATERIAL_NAME_JRC_CDW = "Material Class"
     ACTIVITY_IN_OUT = "flow type"
     STOCK_ACTIVITY_TYPE_NAME = "building stock activity"
-    CARBON_CATEGORY = "Whole life cycle stages"
+    CARBON_CATEGORY = "Whole life cycle modules"
     LCA_STAGES = "LCA stages"
     NONE = "None"
 
@@ -119,7 +119,7 @@ class FilterFrontEnumSchema(str, Enum):
     ACTIVITY_IN_OUT = "flow type"
     REGION = "Region"
     STOCK_ACTIVITY_TYPE_NAME = "building stock activity"
-    CARBON_CATEGORY = "Whole life cycle stages"
+    CARBON_CATEGORY = "Whole life cycle modules"
     LCA_STAGES = "LCA stages"
 
 
@@ -175,22 +175,12 @@ class ScenarioEnumSchema(str, Enum):
     APOA = "Current Policy + Avoid strategies"
     AASI = "Current Policy + Avoid + Shift + Improve strategies"
     CUSR = "Custom scenario results"
-    AUSTRIA = "Austria"
-    AUSTRIA_SHIFT = "Austria + Shift"
-    AUSTRIA_IMPROVE = "Austria + Improve"
-    AUSTRIA_AVOID = "Austria + Avoid"
-    AUSTRIA_FULL = "Austria + Full"
-    DENMARK = "Denmark"
-    DENMARK_SHIFT = "Denmark + Shift"
-    DENMARK_IMPROVE = "Denmark + Improve"
-    DENMARK_AVOID = "Denmark + Avoid"
-    DENMARK_FULL = "Denmark + Full"
 
 
-DEFAULT_SCENARIO = "AT-BASE-1-1-1-1-1-1-1-1-1-1-1"
+DEFAULT_SCENARIO = "BASE"
 
 SCENARIO_TO_FILE_NAME: Dict[str, str] = {
-    ScenarioEnumSchema.AASI.value: DEFAULT_SCENARIO,
+    ScenarioEnumSchema.AASI.value: "FULL",
     ScenarioEnumSchema.APOA.value: DEFAULT_SCENARIO,
     ScenarioEnumSchema.APOI.value: DEFAULT_SCENARIO,
     ScenarioEnumSchema.APOL.value: DEFAULT_SCENARIO,
@@ -199,16 +189,6 @@ SCENARIO_TO_FILE_NAME: Dict[str, str] = {
     ScenarioEnumSchema.CPOO.value: DEFAULT_SCENARIO,
     ScenarioEnumSchema.CUSR.value: DEFAULT_SCENARIO,
     ScenarioEnumSchema.Example.value: DEFAULT_SCENARIO,
-    ScenarioEnumSchema.AUSTRIA.value: "AT-BASE-1-1-1-1-1-1-1-1-1-1-1",
-    ScenarioEnumSchema.AUSTRIA_SHIFT.value: "AT-SHIFT-1-1-1-4-1-1-1-4-1-1-4",
-    ScenarioEnumSchema.AUSTRIA_IMPROVE.value: "AT-IMPROVE-1-1-1-1-4-4-4-1-4-1-1",
-    ScenarioEnumSchema.AUSTRIA_AVOID.value: "AT-AVOID-4-4-4-1-1-1-1-1-1-4-1",
-    ScenarioEnumSchema.AUSTRIA_FULL.value: "AT-FULL-4-4-4-4-4-4-4-4-4-4-4",
-    ScenarioEnumSchema.DENMARK.value: "DK-BASE-1-1-1-1-1-1-1-1-1-1-1",
-    ScenarioEnumSchema.DENMARK_SHIFT.value: "DK-SHIFT-1-1-1-4-1-1-1-4-1-1-4",
-    ScenarioEnumSchema.DENMARK_IMPROVE.value: "DK-IMPROVE-1-1-1-1-4-4-4-1-4-1-1",
-    ScenarioEnumSchema.DENMARK_AVOID.value: "DK-AVOID-4-4-4-1-1-1-1-1-1-4-1",
-    ScenarioEnumSchema.DENMARK_FULL.value: "DK-FULL-4-4-4-4-4-4-4-4-4-4-4",
 }
 
 

@@ -74,8 +74,9 @@ export const getColor = ({ breakdownBy, option }: GetColorArgs) => {
       console.error(result.error);
     }
 
+    type Key = keyof (typeof ATTRIBUTE_OPTIONS_COLOR)[typeof breakdownByTyped];
     const color = validOption
-      ? ATTRIBUTE_OPTIONS_COLOR[breakdownByTyped][validOption]
+      ? ATTRIBUTE_OPTIONS_COLOR[breakdownByTyped][validOption as Key]
       : DEFAULT_COLOR;
 
     return color as Color;
@@ -92,72 +93,45 @@ const CATEGORIES = {
   Services: ["Technical services", "Electrical services"],
   Structure: ["Substructure", "Storey floors", "Staircases", "Roofs"],
   Continental: [
-    // @ts-expect-error: temp for new/not final parquet files
     "SK", // Slovakia
-    // @ts-expect-error: temp for new/not final parquet files
     "SI", // Slovenia
-    // @ts-expect-error: temp for new/not final parquet files
     "RO", // Romania
-    // @ts-expect-error: temp for new/not final parquet files
     "PL", // Poland
-    // @ts-expect-error: temp for new/not final parquet files
     "HU", // Hungary
-    // @ts-expect-error: temp for new/not final parquet files
     "CZ", // Czech Republic
-    // @ts-expect-error: temp for new/not final parquet files
     "BG", // Bulgaria
     "AT", // Austria
   ],
   Mediterranean: [
-    // @ts-expect-error: temp for new/not final parquet files
     "PT", // Portugal
-    // @ts-expect-error: temp for new/not final parquet files
     "MT", // Malta
-    // @ts-expect-error: temp for new/not final parquet files
     "IT", // Italy
-    // @ts-expect-error: temp for new/not final parquet files
     "HR", // Croatia
-    // @ts-expect-error: temp for new/not final parquet files
     "ES", // Spain
-    // @ts-expect-error: temp for new/not final parquet files
     "EL", // Greece
-    // @ts-expect-error: temp for new/not final parquet files
     "CY", // Cyprus
   ],
   Nordic: [
-    // @ts-expect-error: temp for new/not final parquet files
     "SE", // Sweden
-    // @ts-expect-error: temp for new/not final parquet files
     "LV", // Latvia
-    // @ts-expect-error: temp for new/not final parquet files
     "LT", // Lithuania
-    // @ts-expect-error: temp for new/not final parquet files
     "FI", // Finland
-    // @ts-expect-error: temp for new/not final parquet files
     "EE", // Estonia
   ],
   Oceanic: [
-    // @ts-expect-error: temp for new/not final parquet files
     "NL", // Netherlands
-    // @ts-expect-error: temp for new/not final parquet files
     "LU", // Luxembourg
-    // @ts-expect-error: temp for new/not final parquet files
     "IE", // Ireland
-    // @ts-expect-error: temp for new/not final parquet files
     "FR", // France
-    // @ts-expect-error: temp for new/not final parquet files
     "DK", // Denmark
-    // @ts-expect-error: temp for new/not final parquet files
     "DE", // Germany
-    // @ts-expect-error: temp for new/not final parquet files
     "BE", // Belgium
   ],
   [EMBODIED_CARBON]: [
-    "Construction embodied carbon",
     "Demolition embodied carbon",
     "Use phase embodied carbon",
-    // @ts-expect-error: temp for new/not final parquet files
     "Renovation embodied carbon",
+    "Construction embodied carbon",
   ],
   [OPERATIONAL_CARBON]: ["Use phase operational carbon"],
   "A1-A3": ["A1-3"],
@@ -169,21 +143,30 @@ const CATEGORIES = {
 type AttributeOptionsColor = typeof ATTRIBUTE_OPTIONS_COLOR;
 type AttributeOptions = keyof AttributeOptionsColor;
 
-type AttributeOptionsOrder = Pick<
-  {
-    [Attribute in AttributeOptions]: ReadonlyTuple<
-      keyof AttributeOptionsColor[Attribute],
-      UnionToTuple<
-        keyof AttributeOptionsColor[Attribute]
-      >["length"] extends number
-        ? UnionToTuple<keyof AttributeOptionsColor[Attribute]>["length"]
-        : never
-    >;
-  },
-  "Building subtype" | "Element Class" | "country"
+type OrderedAttributes =
+  | "Building subtype"
+  | "Element Class"
+  | "country"
+  | "Whole life cycle modules";
+
+type TupleWithAsManyItemsAsGeneric<T> = ReadonlyTuple<
+  keyof T,
+  UnionToTuple<keyof T>["length"] extends number
+    ? UnionToTuple<keyof T>["length"]
+    : never
 >;
 
-// @ts-expect-error: temp for new/not final parquet files
+type AttributeOptionsColorMapping = {
+  [Attribute in AttributeOptions]: TupleWithAsManyItemsAsGeneric<
+    AttributeOptionsColor[Attribute]
+  >;
+};
+
+type AttributeOptionsOrder = Pick<
+  AttributeOptionsColorMapping,
+  OrderedAttributes
+>;
+
 export const ATTRIBUTE_OPTIONS_ORDER: AttributeOptionsOrder = {
   "Building subtype": [
     ...CATEGORIES.Residential,
@@ -201,12 +184,17 @@ export const ATTRIBUTE_OPTIONS_ORDER: AttributeOptionsOrder = {
     ...CATEGORIES.Mediterranean,
     ...CATEGORIES.Continental,
   ],
+  "Whole life cycle modules": [
+    ...CATEGORIES[OPERATIONAL_CARBON],
+    ...CATEGORIES[EMBODIED_CARBON],
+  ],
 } as const satisfies Partial<Record<Attribute, string[]>>;
 
-const ORDERED_ATTRIBUTES = [
+const ORDERED_ATTRIBUTES: OrderedAttributes[] = [
   "country",
   "Building subtype",
   "Element Class",
+  "Whole life cycle modules",
 ] as const satisfies Attribute[];
 
 type GetAttributeOptionsOrderArgs = {
@@ -219,7 +207,7 @@ export const getAttributeOptionsOrdered = ({
 }: GetAttributeOptionsOrderArgs) => {
   // @ts-expect-error: some breakdownBy need to be ordered some not, no reason to error here
   if (ORDERED_ATTRIBUTES.includes(breakdownBy)) {
-    const breakdownByTyped = breakdownBy as (typeof ORDERED_ATTRIBUTES)[number];
+    const breakdownByTyped = breakdownBy as OrderedAttributes;
     const optionsOrdered = ATTRIBUTE_OPTIONS_ORDER[breakdownByTyped];
 
     return optionsOrdered.filter((option) => defaultOptions.includes(option));

@@ -899,7 +899,7 @@ function Help() {
           </SectionForDoc>
 
           <SectionForDoc>
-            <TypographyH3>Whole Life Cycle Stages</TypographyH3>
+            <TypographyH3>Whole life cycle modules</TypographyH3>
             <TypographyContent>
               <TypographyP>
                 Users can further distinguish results by the corresponding whole
@@ -1041,7 +1041,7 @@ function Help() {
                   the different values of that attribute. For example, that way,
                   users can select to visualize the contribution of different
                   building types, different building elements, or different
-                  whole life cycle stages, respectively. If users wish to
+                  Whole life cycle modules, respectively. If users wish to
                   exclude or include certain values, they can do so via the
                   filter settings.
                 </TypographyP>
@@ -1297,7 +1297,7 @@ function Help() {
                 negative emissions which may cancel out. Users can define the
                 filter settings to only show a subset of results, for example
                 for specific countries, building types, building elements or
-                materials, as well as only selected whole life cycle stages.
+                materials, as well as only selected Whole life cycle modules.
               </TypographyP>
             </TypographyContent>
           </SectionForDoc>

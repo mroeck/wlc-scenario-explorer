@@ -63,7 +63,7 @@ export const FiltersSchema = z
     "Material Class": z.string().array(),
     Region: z.string().array(),
     "building stock activity": z.string().array(),
-    "Whole life cycle stages": z.string().array(),
+    "Whole life cycle modules": z.string().array(),
     "LCA stages": z.string().array(),
     From: YearSchema,
     To: YearSchema,
