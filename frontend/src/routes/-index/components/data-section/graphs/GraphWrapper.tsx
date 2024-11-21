@@ -68,6 +68,7 @@ type CoreProps = {
   breakdownBy: Attribute;
   domain: GraphDomain | undefined;
   data: z.infer<typeof ScenarioRowsAggregatedArraySchema>;
+  scenarioId?: string;
 };
 
 type GraphWrapperProps = CoreProps &
@@ -89,6 +90,7 @@ export const GraphWrapper = ({
   breakdownBy,
   domain,
   Graph,
+  scenarioId,
 }: GraphWrapperProps) => {
   const chartRef = useRef<HTMLDivElement>(null);
   const { animation, sort, highlight, dataTab } = route.useSearch({
@@ -133,6 +135,7 @@ export const GraphWrapper = ({
             unit={unit}
             highlight={highlight}
             domain={domain}
+            scenarioId={scenarioId}
           />
         ) : (
           <Graph
@@ -144,6 +147,7 @@ export const GraphWrapper = ({
             unit={unit}
             highlight={highlight}
             domain={domain}
+            scenarioId={scenarioId}
           />
         )}
       </div>

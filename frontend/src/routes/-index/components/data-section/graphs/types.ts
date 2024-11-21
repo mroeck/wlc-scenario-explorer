@@ -21,4 +21,5 @@ export type GraphProps = {
   unit: UnitMinified;
   highlight: BreakdownByOptions | undefined;
   domain: GraphDomain | undefined;
+  scenarioId?: string;
 };

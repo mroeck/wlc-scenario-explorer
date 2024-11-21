@@ -95,7 +95,7 @@ def get_pivot_query(
 
     query = f"""
         SELECT
-            COLUMNS(*),
+            round(COLUMNS(*), 6),
             stock_projection_year
         FROM (
             PIVOT filtered_data

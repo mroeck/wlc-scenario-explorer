@@ -25,6 +25,7 @@ import type { BreakdownByOptions, GraphProps } from "./types";
 import { getRouteApi } from "@tanstack/react-router";
 import {
   GRAPH_AXIS_COLOR,
+  PATTERN,
   ROUTES,
   SCENARIO_A_AND_B,
   SCENARIO_A_LABEL,
@@ -40,10 +41,6 @@ const COLUMNS_TYPE: [typeof SCENARIO_A_LABEL, typeof SCENARIO_B_LABEL] = [
   SCENARIO_A_LABEL,
   SCENARIO_B_LABEL,
 ];
-const PATTERN = {
-  width: 8,
-  height: 4,
-} as const;
 
 type StackedBarChartProps = GraphProps & {
   dataB: GraphProps["data"];

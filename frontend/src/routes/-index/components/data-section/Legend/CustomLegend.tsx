@@ -4,6 +4,7 @@ import { cn, getColor, getValueLabel, groupByCategory } from "@/lib/utils";
 import { colors } from "../colors";
 import {
   COLOR_LEGEND_TESTID,
+  DATA_TABS_NAMES,
   GRAPH_FONT_SIZE,
   NO_SCENARIO_SELECTED_LABEL,
   ROUTES,
@@ -20,6 +21,7 @@ import type { Payload } from "recharts/types/component/DefaultLegendContent";
 import React from "react";
 import type { BreakdownByOptions } from "../graphs/types";
 import { StringSchema } from "@/lib/schemas";
+import { ColorLine } from "./ColorLine";
 
 const route = getRouteApi(ROUTES.DASHBOARD);
 
@@ -44,7 +46,7 @@ export type CustomLegendProps = Pick<Props, "payload"> & {
   className?: string;
 };
 export const CustomLegend = ({ payload, className }: CustomLegendProps) => {
-  const { display, attribute, highlight, scenarioA, scenarioB } =
+  const { display, attribute, highlight, scenarioA, scenarioB, dataTab } =
     route.useSearch({
       select: (search) => ({
         display: search.display,
@@ -52,10 +54,12 @@ export const CustomLegend = ({ payload, className }: CustomLegendProps) => {
         highlight: search.highlight,
         scenarioA: search.scenarioA,
         scenarioB: search.scenarioB,
+        dataTab: search.dataTab,
       }),
     });
   if (payload == null) return null;
 
+  const isLineGraph = dataTab === DATA_TABS_NAMES.lineChart;
   const data = removeDuplicates(payload);
 
   const groupedData = groupByCategory({ values: data });
@@ -113,7 +117,7 @@ export const CustomLegend = ({ payload, className }: CustomLegendProps) => {
       <section
         className={cn(
           "flex min-w-36 flex-col gap-1",
-          display !== SCENARIO_A_AND_B && "hidden",
+          !scenarioB || display !== SCENARIO_A_AND_B ? "hidden" : "",
         )}
       >
         <h3
@@ -124,11 +128,19 @@ export const CustomLegend = ({ payload, className }: CustomLegendProps) => {
         </h3>
         <ul className="flex max-w-[50ch] flex-col flex-wrap gap-x-6 px-2">
           <li className="flex items-center gap-1 text-gray-800">
-            <ColorCube color={colors[0]} />
+            {isLineGraph ? (
+              <ColorLine color={colors[0]} lineType="solid" />
+            ) : (
+              <ColorCube color={colors[0]} />
+            )}
             <span style={{ fontSize: GRAPH_FONT_SIZE }}>{labelA}</span>
           </li>
           <li className="flex items-center gap-1 text-gray-800">
-            <ColorCube color={colors[0]} showPattern />
+            {isLineGraph ? (
+              <ColorLine color={colors[0]} lineType="dashed" />
+            ) : (
+              <ColorCube color={colors[0]} showPattern />
+            )}
             <span style={{ fontSize: GRAPH_FONT_SIZE }}>{labelB}</span>
           </li>
         </ul>
