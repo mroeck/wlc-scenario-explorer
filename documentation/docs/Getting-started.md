@@ -25,9 +25,10 @@ Here is the content of the [root/README.md](https://gitlab.kuleuven.be/ae/sustai
 You need [python ^3.12.6](https://www.python.org/downloads/), [node ^20.13.1](https://nodejs.org/en/download/package-manager), [poetry ^1.8.3](https://python-poetry.org/docs/) and [pnpm ^9.4.0](https://pnpm.io/installation#using-other-package-managers) installed on your machine (or higher versions).
 
 :::info
-You also need docker to update the tests snapshots but this is not required to run the app.
-See more in [Tests end to end section](./Guides/Tests/end-to-end.md)
-:::
+You don't need the following to start the app locally:
+- docker (required to update the tests snapshots , see more in [Tests end to end section](./Guides/Tests/end-to-end.md))
+- pulse secure (required to access non production deployments, see more in [the VPN section](./Guides/How-to-setup-the-VPN.md))
+  :::
 
 <br/>
 

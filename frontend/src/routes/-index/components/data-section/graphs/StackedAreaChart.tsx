@@ -22,9 +22,15 @@ import {
 } from "../constants";
 import { PortalTooltip } from "../Tooltip/PortalTooltip";
 import type { BreakdownByOptions, GraphProps } from "./types";
-import { GRAPH_AXIS_COLOR, ROUTES } from "@/lib/constants";
+import {
+  GRAPH_AXIS_COLOR,
+  PATTERN,
+  ROUTES,
+  SCENARIO_A_AND_B,
+} from "@/lib/constants";
 import { getRouteApi } from "@tanstack/react-router";
 import { HIGHLIGHT_OPACITY } from "./constants";
+import { Fragment } from "react/jsx-runtime";
 
 type WantedProps = "strokeWidth" | "dataKey" | "isAnimationActive";
 
@@ -44,9 +50,16 @@ export const StackedAreaChart = ({
   unit,
   highlight,
   domain,
+  scenarioId,
 }: GraphProps) => {
   const navigate = route.useNavigate();
+  const { display } = route.useSearch({
+    select: (search) => ({
+      display: search.display,
+    }),
+  });
   const isSomethingHighlighted = !!highlight;
+  const needPattern = scenarioId === "B" && display === SCENARIO_A_AND_B;
 
   type OnAreaClickArgs = {
     highlight: BreakdownByOptions;
@@ -85,21 +98,43 @@ export const StackedAreaChart = ({
             strokeWidth: isHighlight ? 1 : undefined,
           } satisfies CommonAreaProps;
 
+          const id = option.toString().replaceAll(" ", "") + (scenarioId ?? "");
+
           return (
-            <Area
-              {...commonGraphElementProps}
-              {...commonAreaProps}
-              key={`${option}A`}
-              stroke={
-                isHighlight || isRigthAfterHighlight
-                  ? GRAPH_AXIS_COLOR
-                  : areaColor
-              }
-              strokeWidth={isHighlight || isRigthAfterHighlight ? 1 : undefined}
-              strokeOpacity={isRigthAfterHighlight ? undefined : opacity}
-              fill={areaColor}
-              fillOpacity={opacity}
-            />
+            <Fragment key={id}>
+              <defs>
+                <pattern
+                  id={id}
+                  width={PATTERN.width}
+                  height={PATTERN.height}
+                  patternUnits="userSpaceOnUse"
+                  patternTransform="rotate(45)"
+                >
+                  <rect
+                    width={PATTERN.width}
+                    height={PATTERN.height}
+                    fill={areaColor}
+                  />
+                  {needPattern && <rect width="2" height="4" fill="white" />}
+                </pattern>
+              </defs>
+              <Area
+                {...commonGraphElementProps}
+                {...commonAreaProps}
+                key={`${option}A`}
+                stroke={
+                  isHighlight || isRigthAfterHighlight
+                    ? GRAPH_AXIS_COLOR
+                    : areaColor
+                }
+                strokeWidth={
+                  isHighlight || isRigthAfterHighlight ? 1 : undefined
+                }
+                strokeOpacity={isRigthAfterHighlight ? undefined : opacity}
+                fill={`url(#${id})`}
+                fillOpacity={opacity}
+              />
+            </Fragment>
           );
         })}
         <Tooltip

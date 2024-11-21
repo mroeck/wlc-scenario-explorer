@@ -1,14 +1,13 @@
 import {
   DEFAULT_SCENARIO,
   ROUTES,
-  SCENARIO_B_LABEL,
   SCENARIO_TO_ACRONYM,
   TAB_CONTENT_TESTID,
 } from "@/lib/constants";
 import { test } from "@playwright/test";
 import { TAGS } from "@tests/constants";
 import { testScreenshot } from "@tests/functions";
-import { changeDisplayInUI } from "../functions";
+import { changeDisplayInUI, changeScenariosInUI } from "../functions";
 
 test.describe("comparison slider", () => {
   test.skip(({ isMobile }) => isMobile, "Desktop only!");
@@ -30,9 +29,21 @@ test.describe("comparison slider", () => {
       const scenarioATitle =
         SCENARIO_TO_ACRONYM[DEFAULT_SCENARIO as Keys] ?? DEFAULT_SCENARIO;
 
+      const scenarioBlabel =
+        "Current Policy + Avoid + Shift + Improve strategies";
+
+      const acronymB = SCENARIO_TO_ACRONYM[scenarioBlabel];
+
+      await changeScenariosInUI({
+        page,
+        scenarios: {
+          b: "Current Policy + Avoid + Shift + Improve strategies",
+        },
+      });
+
       await changeDisplayInUI({
         page,
-        option: scenarioATitle + "VS" + SCENARIO_B_LABEL,
+        option: scenarioATitle + "VS" + acronymB,
       });
 
       await testScreenshot({ page, target: graph });
@@ -46,7 +57,7 @@ test.describe("comparison slider", () => {
 
       await changeDisplayInUI({
         page,
-        option: `${SCENARIO_B_LABEL} only`,
+        option: `${scenarioBlabel} (${acronymB}) only`,
       });
 
       await testScreenshot({ page, target: graph });

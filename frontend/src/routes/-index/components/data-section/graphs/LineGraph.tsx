@@ -37,9 +37,11 @@ export const LineGraph = ({
   unit,
   highlight,
   domain,
+  scenarioId,
 }: GraphProps) => {
   const navigate = route.useNavigate();
   const isSomethingHighlighted = !!highlight;
+  const isScenarioB = scenarioId === "B";
 
   type OnLineClickArgs = {
     highlight: BreakdownByOptions;
@@ -75,6 +77,7 @@ export const LineGraph = ({
               {...commonGraphElementProps}
               key={option}
               type="monotone"
+              strokeDasharray={isScenarioB ? "10 5" : undefined}
               dataKey={option}
               stroke={areaColor}
               strokeWidth={3}

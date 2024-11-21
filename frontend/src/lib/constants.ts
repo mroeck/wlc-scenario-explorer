@@ -211,3 +211,7 @@ export const EMBODIED_CARBON_TEXT = "embodied carbon";
 export const OPERATION_CARBON_TEXT = "operational carbon";
 export const SCENARIO_A_KEY_PREFIX = `${SCENARIO_A_LABEL}.`;
 export const SCENARIO_B_KEY_PREFIX = `${SCENARIO_B_LABEL}.`;
+export const PATTERN = {
+  width: 8,
+  height: 4,
+} as const;

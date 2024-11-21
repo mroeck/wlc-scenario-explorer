@@ -62,6 +62,7 @@ type ContentProps = {
   unit: UnitMinified;
   breakdownBy: Attribute;
   domain: GraphDomain | undefined;
+  scenarioId?: string;
 };
 
 type CreateTabArgs = {
@@ -75,7 +76,14 @@ type CreateTabArgs = {
 };
 const createTab = ({ name, Graph, icon }: CreateTabArgs) => ({
   name,
-  content: ({ data, dataB, unit, breakdownBy, domain }: ContentProps) => (
+  content: ({
+    data,
+    dataB,
+    unit,
+    breakdownBy,
+    domain,
+    scenarioId,
+  }: ContentProps) => (
     <GraphWrapper
       data={data}
       dataB={dataB ?? []}
@@ -83,6 +91,7 @@ const createTab = ({ name, Graph, icon }: CreateTabArgs) => ({
       breakdownBy={breakdownBy}
       domain={domain}
       Graph={Graph}
+      scenarioId={scenarioId}
     />
   ),
   icon,
@@ -396,6 +405,7 @@ export const DataViz = () => {
                         unit: unitMinified,
                         domain,
                         breakdownBy,
+                        scenarioId: "B",
                       }),
                     },
                   ]}
