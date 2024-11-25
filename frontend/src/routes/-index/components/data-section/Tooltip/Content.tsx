@@ -127,6 +127,8 @@ function restructureData({ data }: RestructureDataArgs) {
 
 const route = getRouteApi(ROUTES.DASHBOARD);
 
+const MAX_ROWS = 15;
+
 type ContentProps = {
   label: string;
   unit: UnitMinified;
@@ -158,57 +160,57 @@ export const Content = ({
 
   const finalData = areDataMerged ? restructureData({ data }) : data;
 
+  const hasGridOverflow = finalData.length > MAX_ROWS;
+
   return (
     <>
       <div className="flex w-max flex-col text-left text-gray-800">
-        <span>
-          Year:{" "}
+        <div className="leading-5">
+          <span>Year:</span>{" "}
           <span className="font-bold" style={{ fontSize: GRAPH_FONT_SIZE }}>
             {label}
           </span>
-        </span>
-        <span className="py-1 text-left" style={{ fontSize: GRAPH_FONT_SIZE }}>
-          Unit: <span className="font-semibold">{unit}</span>
-        </span>
-        {areDataMerged ? (
-          <span
-            className="py-1 text-left capitalize"
-            style={{ fontSize: GRAPH_FONT_SIZE }}
-          >
-            Scenarios: <span className="font-bold">{acronymA}</span> <Versus />{" "}
-            <span className="font-bold">{acronymB}</span>
-          </span>
-        ) : null}
+        </div>
+        <div
+          className="text-left leading-5"
+          style={{ fontSize: GRAPH_FONT_SIZE }}
+        >
+          <span>Unit:</span> <span className="font-semibold">{unit}</span>
+        </div>
       </div>
       <div className="pb-5"></div>
-
-      {areDataMerged ? (
-        <div style={{ fontSize: GRAPH_FONT_SIZE }} className="text-gray-800">
-          Total:{" "}
-          <span className="font-bold">
-            {scenarioATotal.toLocaleString("en-US", {
-              maximumFractionDigits: 2,
-            })}{" "}
-          </span>
-          (100%) <Versus />
-          <span className="font-bold">
-            {scenarioBTotal.toLocaleString("en-US", {
-              maximumFractionDigits: 2,
-            })}{" "}
-          </span>
-          (100%)
-        </div>
-      ) : (
-        <div style={{ fontSize: GRAPH_FONT_SIZE }} className="text-gray-800">
-          Total:{" "}
-          <span className="font-bold">
-            {totalValue.toLocaleString("en-US", { maximumFractionDigits: 2 })}{" "}
-          </span>
-          (100%)
-        </div>
-      )}
-
-      <ul className="grid grid-flow-col grid-rows-[repeat(15,auto)] gap-x-5 text-gray-800">
+      <ul
+        className={cn(
+          "grid grid-flow-col gap-x-5 text-gray-800",
+          areDataMerged
+            ? "grid-cols-[repeat(4,max-content)]"
+            : "grid-cols-[repeat(2,max-content)]",
+        )}
+        style={{
+          gridTemplateRows: `repeat(${MAX_ROWS}, auto)`,
+        }}
+      >
+        {areDataMerged ? (
+          <li
+            className={cn(
+              "grid min-w-0 grid-cols-subgrid gap-x-1 text-left text-sm",
+              hasGridOverflow ? "col-span-8" : "col-span-4",
+            )}
+          >
+            <span></span>
+            <span className="font-bold">{acronymA}</span>{" "}
+            <Versus className="mx-0 text-center" />{" "}
+            <span className="font-bold">{acronymB}</span>
+            {hasGridOverflow ? (
+              <>
+                <span></span>
+                <span className="font-bold">{acronymA}</span>{" "}
+                <Versus className="mx-0 text-center" />{" "}
+                <span className="font-bold">{acronymB}</span>
+              </>
+            ) : null}
+          </li>
+        ) : null}
         {finalData.length > 1 &&
           finalData
             .map((item) => {
@@ -251,32 +253,39 @@ export const Content = ({
               const isOneScenario = !!item.percentage;
 
               return (
-                <li key={item.name} style={{ fontSize: GRAPH_FONT_SIZE }}>
-                  <div
-                    className={cn(
-                      "relative flex w-max items-center gap-1",
-                      isSomethingHighlighted &&
-                        isHighlight &&
-                        "before:absolute before:left-1/2 before:top-0 before:h-full before:w-[calc(100%+20px)] before:-translate-x-1/2 before:rounded-full before:bg-slate-200 before:content-['']",
-                      isSomethingHighlighted && !isHighlight && "opacity-50",
-                    )}
-                  >
-                    <div>
-                      <ColorCube
-                        color={getColor({
-                          breakdownBy,
-                          option:
-                            typeof item.dataKey === "string"
-                              ? item.dataKey
-                              : "",
-                        })}
-                        isHighlight={isHighlight}
-                        isSomethingHighlighted={isSomethingHighlighted}
-                      />
-                    </div>
-                    {isOneScenario ? (
-                      <div className="z-0">
+                <li
+                  key={item.name}
+                  style={{
+                    fontSize: GRAPH_FONT_SIZE,
+                  }}
+                  className={cn(
+                    "relative w-max items-center gap-1",
+                    "grid min-w-0 grid-cols-subgrid",
+                    "gap-x-1",
+                    isOneScenario ? "col-span-2" : "col-span-4",
+                    isSomethingHighlighted &&
+                      isHighlight &&
+                      "before:absolute before:left-1/2 before:top-0 before:-z-10 before:h-full before:w-[calc(100%+20px)] before:-translate-x-1/2 before:rounded-full before:bg-slate-200 before:content-['']",
+                    isSomethingHighlighted && !isHighlight && "opacity-50",
+                  )}
+                >
+                  {isOneScenario ? (
+                    <>
+                      <div className="flex items-center gap-1">
+                        <ColorCube
+                          color={getColor({
+                            breakdownBy,
+                            option:
+                              typeof item.dataKey === "string"
+                                ? item.dataKey
+                                : "",
+                          })}
+                          isHighlight={isHighlight}
+                          isSomethingHighlighted={isSomethingHighlighted}
+                        />
                         <span className="z-0">{item.name}: </span>
+                      </div>
+                      <div>
                         <span className="z-0 font-bold">
                           {item.value.toLocaleString("en-US", {
                             maximumFractionDigits: 2,
@@ -286,9 +295,24 @@ export const Content = ({
                           ({item.percentage.toFixed(2)}%)
                         </span>
                       </div>
-                    ) : (
-                      <div className="z-0">
+                    </>
+                  ) : (
+                    <>
+                      <div className="flex items-center gap-1">
+                        <ColorCube
+                          color={getColor({
+                            breakdownBy,
+                            option:
+                              typeof item.dataKey === "string"
+                                ? item.dataKey
+                                : "",
+                          })}
+                          isHighlight={isHighlight}
+                          isSomethingHighlighted={isSomethingHighlighted}
+                        />
                         <span className="z-0">{item.name}: </span>
+                      </div>
+                      <div>
                         <span className="z-0 font-bold">
                           {item.scenarioAValue?.toLocaleString("en-US", {
                             maximumFractionDigits: 2,
@@ -297,7 +321,9 @@ export const Content = ({
                         <span className="z-0">
                           ({item.percentageA?.toFixed(2)}%)
                         </span>
-                        <Versus />
+                      </div>
+                      <Versus className="mx-1" />
+                      <div>
                         <span className="z-0 font-bold">
                           {item.scenarioBValue?.toLocaleString("en-US", {
                             maximumFractionDigits: 2,
@@ -307,12 +333,48 @@ export const Content = ({
                           ({item.percentageB?.toFixed(2)}%)
                         </span>
                       </div>
-                    )}
-                  </div>
+                    </>
+                  )}
                 </li>
               );
             })
             .reverse()}
+        <li
+          className={cn(
+            "col-span-2 grid min-w-0 grid-cols-subgrid gap-x-1 border-t border-solid border-primary text-left text-sm",
+            areDataMerged ? "col-span-4" : "col-span-2",
+          )}
+          style={{ fontSize: GRAPH_FONT_SIZE }}
+        >
+          {areDataMerged ? (
+            <>
+              <span className="font-bold">Total:</span>{" "}
+              <span className="font-bold">
+                {scenarioATotal.toLocaleString("en-US", {
+                  maximumFractionDigits: 2,
+                })}{" "}
+                <span className="font-normal">(100%)</span>
+              </span>
+              <Versus className="mx-1" />
+              <span className="font-bold">
+                {scenarioBTotal.toLocaleString("en-US", {
+                  maximumFractionDigits: 2,
+                })}{" "}
+                <span className="font-normal">(100%)</span>
+              </span>
+            </>
+          ) : (
+            <>
+              <span className="font-bold">Total:</span>{" "}
+              <span className="font-bold">
+                {totalValue.toLocaleString("en-US", {
+                  maximumFractionDigits: 2,
+                })}{" "}
+                <span className="font-normal">(100%)</span>
+              </span>
+            </>
+          )}
+        </li>
       </ul>
     </>
   );

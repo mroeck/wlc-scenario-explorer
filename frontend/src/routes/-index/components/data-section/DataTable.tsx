@@ -38,6 +38,12 @@ export const DataTable = ({ data, unit }: DataTableProps) => {
           </Button>
         );
       },
+      cell: ({ row }) => {
+        const valueRaw: number = row.getValue(key);
+        const value = valueRaw.toFixed(2).toString().replace(".00", "");
+
+        return <span>{value}</span>;
+      },
     }),
   );
 

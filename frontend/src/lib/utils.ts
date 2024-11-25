@@ -30,11 +30,11 @@ export function createSchema<T extends Record<string, any>>(input: {
 
 export const tickFormatter = (number: number) => {
   if (number >= 1_000_000_000) {
-    return `${Math.floor(number / 1_000_000_000).toString()}B`;
+    return `${(number / 1_000_000_000).toString()}B`;
   } else if (number >= 1_000_000) {
-    return `${Math.floor(number / 1_000_000).toString()}M`;
+    return `${(number / 1_000_000).toString()}M`;
   } else if (number >= 1_000) {
-    return `${Math.floor(number / 1_000).toString()}K`;
+    return `${(number / 1_000).toString()}K`;
   } else {
     return number.toString();
   }

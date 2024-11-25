@@ -99,7 +99,7 @@ export const PortalTooltip = ({
   const tooltipContent = (
     <div
       ref={setTooltipRef}
-      className="pointer-events-none visible absolute left-0 top-0 z-10 text-wrap rounded bg-white/95 px-3 py-2 outline outline-1 outline-primary transition-transform duration-700"
+      className="pointer-events-none visible absolute left-0 top-0 z-10 max-h-[450px] text-wrap rounded bg-white/95 px-3 py-2 outline outline-1 outline-primary transition-transform duration-700"
       style={{ transform: `translate(${translateX}px, ${translateY}px)` }}
     >
       <Content
