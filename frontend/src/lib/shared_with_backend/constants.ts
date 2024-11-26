@@ -328,3 +328,7 @@ export const VALUE_TO_LABEL: Record<Exclude<ValidOption, number>, string> = {
   TRANSPORT_EOL: "TRANSPORT_EOL",
   TRANSPORT_TO_SITE: "TRANSPORT_TO_SITE",
 };
+
+export const LABEL_TO_VALUE = Object.fromEntries(
+  Object.entries(VALUE_TO_LABEL).map(([key, value]) => [value, key]),
+);

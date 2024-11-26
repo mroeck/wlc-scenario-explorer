@@ -9,8 +9,6 @@ import type {
 import type { Attribute } from "@/lib/types";
 import { Content } from "./Content";
 import type { UnitMinified } from "../types";
-import { type HighlightSchema } from "@/lib/schemas";
-import type { z } from "zod";
 
 const removeDuplicates = (arr: Payload<ValueType, NameType>[]) => {
   const seen = new Set();
@@ -28,7 +26,6 @@ type PortalTooltipProps = Pick<
   unit: UnitMinified;
   breakdownBy: Attribute;
   chartRef: React.RefObject<HTMLDivElement>;
-  highlight: z.infer<typeof HighlightSchema> | undefined;
 };
 
 let lastTooltip: HTMLDivElement | null = null;
@@ -42,7 +39,6 @@ export const PortalTooltip = ({
   coordinate,
   offset = 10,
   chartRef,
-  highlight,
 }: PortalTooltipProps) => {
   const [tooltipElement, setTooltipElement] = useState<HTMLDivElement | null>(
     lastTooltip,
@@ -107,7 +103,6 @@ export const PortalTooltip = ({
         data={data}
         unit={unit}
         label={label as string}
-        highlight={highlight}
       />
     </div>
   );

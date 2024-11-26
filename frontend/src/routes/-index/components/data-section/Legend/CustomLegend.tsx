@@ -22,6 +22,7 @@ import React from "react";
 import type { BreakdownByOptions } from "../graphs/types";
 import { StringSchema } from "@/lib/schemas";
 import { ColorLine } from "./ColorLine";
+import { onElementClick } from "../graphs/utils";
 
 const route = getRouteApi(ROUTES.DASHBOARD);
 
@@ -46,12 +47,12 @@ export type CustomLegendProps = Pick<Props, "payload"> & {
   className?: string;
 };
 export const CustomLegend = ({ payload, className }: CustomLegendProps) => {
-  const { display, attribute, highlight, scenarioA, scenarioB, dataTab } =
+  const { display, attribute, highlights, scenarioA, scenarioB, dataTab } =
     route.useSearch({
       select: (search) => ({
         display: search.display,
         attribute: search.breakdownBy,
-        highlight: search.highlight,
+        highlights: search.highlights,
         scenarioA: search.scenarioA,
         scenarioB: search.scenarioB,
         dataTab: search.dataTab,
@@ -61,6 +62,7 @@ export const CustomLegend = ({ payload, className }: CustomLegendProps) => {
 
   const isLineGraph = dataTab === DATA_TABS_NAMES.lineChart;
   const data = removeDuplicates(payload);
+  const amountOfOptions = data.length;
 
   const groupedData = groupByCategory({ values: data });
   const hasCategory = Object.keys(groupedData).length > 0;
@@ -100,7 +102,8 @@ export const CustomLegend = ({ payload, className }: CustomLegendProps) => {
                     <ColorLegendItemAll
                       breakdownBy={attribute}
                       data={values.reverse()}
-                      highlight={highlight}
+                      highlights={highlights}
+                      amountOfOptions={amountOfOptions}
                     />
                   </div>
                 </React.Fragment>
@@ -110,7 +113,8 @@ export const CustomLegend = ({ payload, className }: CustomLegendProps) => {
           <ColorLegendItemAll
             breakdownBy={attribute}
             data={data.reverse()}
-            highlight={highlight}
+            highlights={highlights}
+            amountOfOptions={amountOfOptions}
           />
         )}
       </section>
@@ -152,33 +156,24 @@ export const CustomLegend = ({ payload, className }: CustomLegendProps) => {
 type ColorLegendItemAllProps = {
   data: Payload[];
   breakdownBy: Attribute;
-  highlight: BreakdownByOptions | undefined;
+  highlights: BreakdownByOptions[] | undefined;
+  amountOfOptions: number;
 };
 function ColorLegendItemAll({
   data,
   breakdownBy,
-  highlight,
+  highlights,
+  amountOfOptions,
 }: ColorLegendItemAllProps) {
   const navigate = route.useNavigate();
-  const isSomethingHighlighted = !!highlight;
+  const isSomethingHighlighted = !!highlights && highlights.length > 0;
 
-  type OnItemClickArgs = {
-    // eslint-disable-next-line @typescript-eslint/ban-types
-    highlight: BreakdownByOptions | (string & {});
-  };
-  const onItemClick = ({ highlight }: OnItemClickArgs) => {
-    void navigate({
-      search: (prev) => ({
-        ...prev,
-        highlight,
-      }),
-    });
-  };
   return (
     <ol className="flex flex-wrap justify-items-start gap-x-6">
       {data.map((item) => {
         const option = typeof item.value === "string" ? item.value : "";
-        const isHighlight = option === highlight;
+        const highlightsAsString: string[] | undefined = highlights;
+        const isHighlight = highlightsAsString?.includes(option) === true;
         const label = getValueLabel({ value: item.value as string });
 
         return (
@@ -192,7 +187,11 @@ function ColorLegendItemAll({
               isSomethingHighlighted && !isHighlight && "opacity-50",
             )}
             onClick={() => {
-              onItemClick({ highlight: option });
+              onElementClick({
+                newHighlight: option as BreakdownByOptions,
+                navigate,
+                amountOfOptions,
+              });
             }}
           >
             <ColorCube

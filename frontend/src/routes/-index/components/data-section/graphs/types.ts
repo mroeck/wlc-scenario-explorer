@@ -19,7 +19,7 @@ export type GraphProps = {
   attributeOptions: BreakdownByOptions[];
   chartRef: React.RefObject<HTMLDivElement>;
   unit: UnitMinified;
-  highlight: BreakdownByOptions | undefined;
+  highlights: BreakdownByOptions[] | undefined;
   domain: GraphDomain | undefined;
   scenarioId?: string;
 };

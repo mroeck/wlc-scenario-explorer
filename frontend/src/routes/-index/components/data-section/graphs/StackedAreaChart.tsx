@@ -21,7 +21,7 @@ import {
   commonYaxisProps,
 } from "../constants";
 import { PortalTooltip } from "../Tooltip/PortalTooltip";
-import type { BreakdownByOptions, GraphProps } from "./types";
+import type { GraphProps } from "./types";
 import {
   GRAPH_AXIS_COLOR,
   PATTERN,
@@ -31,6 +31,7 @@ import {
 import { getRouteApi } from "@tanstack/react-router";
 import { HIGHLIGHT_OPACITY } from "./constants";
 import { Fragment } from "react/jsx-runtime";
+import { onElementClick } from "./utils";
 
 type WantedProps = "strokeWidth" | "dataKey" | "isAnimationActive";
 
@@ -48,7 +49,7 @@ export const StackedAreaChart = ({
   chartRef,
   data,
   unit,
-  highlight,
+  highlights,
   domain,
   scenarioId,
 }: GraphProps) => {
@@ -58,20 +59,8 @@ export const StackedAreaChart = ({
       display: search.display,
     }),
   });
-  const isSomethingHighlighted = !!highlight;
+  const isSomethingHighlighted = !!highlights && highlights.length > 0;
   const needPattern = scenarioId === "B" && display === SCENARIO_A_AND_B;
-
-  type OnAreaClickArgs = {
-    highlight: BreakdownByOptions;
-  };
-  const onAreaClick = ({ highlight }: OnAreaClickArgs) => {
-    void navigate({
-      search: (prev) => ({
-        ...prev,
-        highlight,
-      }),
-    });
-  };
 
   return (
     <ResponsiveContainer width="100%" height="100%" ref={chartRef}>
@@ -83,9 +72,9 @@ export const StackedAreaChart = ({
         </YAxis>
         {attributeOptions.map((option, index) => {
           const areaColor = getColor({ breakdownBy, option });
-          const isHighlight = option === highlight;
+          const isHighlight = !!highlights && highlights.includes(option);
           const isRigthAfterHighlight =
-            !!highlight && attributeOptions[index + 1] === highlight;
+            !!highlights && highlights.includes(attributeOptions[index + 1]);
 
           const opacity =
             isSomethingHighlighted && !isHighlight
@@ -146,13 +135,12 @@ export const StackedAreaChart = ({
               breakdownBy={breakdownBy}
               chartRef={chartRef}
               offset={20}
-              highlight={highlight}
             />
           )}
         />
         {attributeOptions.map((option) => {
           const areaColor = getColor({ breakdownBy, option });
-          const isHighlight = option === highlight;
+          const isHighlight = !!highlights && highlights.includes(option);
 
           const commonAreaProps = {
             dataKey: option,
@@ -171,7 +159,11 @@ export const StackedAreaChart = ({
               fillOpacity="0"
               stroke="transparent"
               onClick={() => {
-                onAreaClick({ highlight: option });
+                onElementClick({
+                  navigate,
+                  newHighlight: option,
+                  amountOfOptions: attributeOptions.length,
+                });
               }}
               activeDot={{
                 r: 4,

@@ -72,7 +72,7 @@ export const DataVizForm = () => {
     breakdownBy,
     indicator,
     dividedBy,
-    highlight,
+    highlights,
     dataTab,
     display,
     scenarioA,
@@ -84,7 +84,7 @@ export const DataVizForm = () => {
       dividedBy: search.dividedBy,
       scenarioA: search.scenarioA,
       scenarioB: search.scenarioB,
-      highlight: search.highlight,
+      highlights: search.highlights,
       dataTab: search.dataTab,
       display: search.display,
       sort: search.sort,
@@ -115,7 +115,7 @@ export const DataVizForm = () => {
         breakdownBy: newBreakdownBy,
         indicator,
         dividedBy,
-        highlight: newBreakdownBy === breakdownBy ? highlight : undefined,
+        highlights: newBreakdownBy === breakdownBy ? highlights : undefined,
       }),
     });
   }

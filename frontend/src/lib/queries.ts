@@ -51,7 +51,7 @@ export async function fetchScenarioRowsAggregated({
       filters,
     }),
   });
-  const dataRaw = (await response.json()) as unknown;
+  const dataRaw = await response.json();
   const data = ResultsScenarioRowsAggregatedSchema.parse(dataRaw);
   return data;
 }

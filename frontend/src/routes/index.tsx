@@ -46,7 +46,7 @@ const SearchParamsSchema = z.object({
   animation: AnimationSchema.optional().catch(undefined),
   settingsTab: SettingsTabSchema.catch(DEFAULT_SETTINGS_TAB),
   dataTab: DataTabSchema.catch(DEFAULT_DATA_TAB),
-  highlight: HighlightSchema.optional().catch(undefined),
+  highlights: HighlightSchema.array().optional().catch(undefined),
 });
 const route = getRouteApi(ROUTES.DASHBOARD);
 
@@ -85,7 +85,7 @@ const Dashboard = memo(function Dashboard() {
       void navigate({
         search: (prev) => ({
           ...prev,
-          highlight: undefined,
+          highlights: undefined,
         }),
       });
     }
