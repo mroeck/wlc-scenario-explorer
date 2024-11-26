@@ -60,6 +60,7 @@
     "@playwright/test": "^1.44.1",
     "@tanstack/eslint-plugin-query": "^5.43.1",
     "@tanstack/router-vite-plugin": "^1.38.0",
+    "@total-typescript/ts-reset": "^0.6.1",
     "@types/dom-to-image": "^2.6.7",
     "@types/node": "^20.16.10",
     "@types/papaparse": "^5.3.14",

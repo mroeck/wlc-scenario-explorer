@@ -19,13 +19,10 @@ import type {
 import type { Attribute } from "@/lib/types";
 import type { UnitMinified } from "../types";
 import { z } from "zod";
-import {
-  NumberSchema,
-  StringSchema,
-  type HighlightSchema,
-} from "@/lib/schemas";
+import { NumberSchema, StringSchema } from "@/lib/schemas";
 import { getRouteApi } from "@tanstack/react-router";
 import { Versus } from "./Versus";
+import { LABEL_TO_VALUE } from "@/lib/shared_with_backend/constants";
 
 type DataItem = Payload<ValueType, NameType>;
 
@@ -134,26 +131,20 @@ type ContentProps = {
   unit: UnitMinified;
   data: DataItem[];
   breakdownBy: Attribute;
-  highlight: z.infer<typeof HighlightSchema> | undefined;
 };
-export const Content = ({
-  label,
-  unit,
-  data,
-  breakdownBy,
-  highlight,
-}: ContentProps) => {
+export const Content = ({ label, unit, data, breakdownBy }: ContentProps) => {
   const { totalValue, scenarioATotal, scenarioBTotal, areDataMerged } =
     getScenarioTotals(data);
 
-  const { scenarioA, scenarioB } = route.useSearch({
+  const { scenarioA, scenarioB, highlights } = route.useSearch({
     select: (search) => ({
       scenarioA: search.scenarioA,
       scenarioB: search.scenarioB,
+      highlights: search.highlights,
     }),
   });
 
-  const isSomethingHighlighted = !!highlight;
+  const isSomethingHighlighted = !!highlights && highlights.length > 0;
   type Keys = keyof typeof SCENARIO_TO_ACRONYM;
   const acronymA = SCENARIO_TO_ACRONYM[scenarioA as Keys] ?? SCENARIO_A_ACRONYM;
   const acronymB = SCENARIO_TO_ACRONYM[scenarioB as Keys] ?? SCENARIO_B_ACRONYM;
@@ -249,7 +240,8 @@ export const Content = ({
             .map((item) => {
               if (item.name === "Undefined") return null;
 
-              const isHighlight = item.name === highlight;
+              const value = LABEL_TO_VALUE[item.name as string];
+              const isHighlight = !!highlights && highlights.includes(value);
               const isOneScenario = !!item.percentage;
 
               return (
@@ -265,7 +257,7 @@ export const Content = ({
                     isOneScenario ? "col-span-2" : "col-span-4",
                     isSomethingHighlighted &&
                       isHighlight &&
-                      "before:absolute before:left-1/2 before:top-0 before:-z-10 before:h-full before:w-[calc(100%+20px)] before:-translate-x-1/2 before:rounded-full before:bg-slate-200 before:content-['']",
+                      "before:absolute before:left-1/2 before:top-0 before:-z-10 before:h-full before:w-[calc(100%+20px)] before:-translate-x-1/2 before:rounded-full before:border before:border-solid before:border-white before:bg-slate-200 before:content-['']",
                     isSomethingHighlighted && !isHighlight && "opacity-50",
                   )}
                 >

@@ -93,11 +93,11 @@ export const GraphWrapper = ({
   scenarioId,
 }: GraphWrapperProps) => {
   const chartRef = useRef<HTMLDivElement>(null);
-  const { animation, sort, highlight, dataTab } = route.useSearch({
+  const { animation, sort, highlights, dataTab } = route.useSearch({
     select: (search) => ({
       animation: search.animation,
       sort: search.sort,
-      highlight: search.highlight,
+      highlights: search.highlights,
       dataTab: search.dataTab,
     }),
   });
@@ -133,7 +133,7 @@ export const GraphWrapper = ({
             data={data}
             dataB={dataB}
             unit={unit}
-            highlight={highlight}
+            highlights={highlights}
             domain={domain}
             scenarioId={scenarioId}
           />
@@ -145,7 +145,7 @@ export const GraphWrapper = ({
             chartRef={chartRef}
             data={data}
             unit={unit}
-            highlight={highlight}
+            highlights={highlights}
             domain={domain}
             scenarioId={scenarioId}
           />

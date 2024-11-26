@@ -21,10 +21,11 @@ import {
   commonYaxisProps,
 } from "../constants";
 import { PortalTooltip } from "../Tooltip/PortalTooltip";
-import type { BreakdownByOptions, GraphProps } from "./types";
+import type { GraphProps } from "./types";
 import { getRouteApi } from "@tanstack/react-router";
 import { GRAPH_AXIS_COLOR, ROUTES } from "@/lib/constants";
 import { HIGHLIGHT_OPACITY } from "./constants";
+import { onElementClick } from "./utils";
 
 const route = getRouteApi(ROUTES.DASHBOARD);
 
@@ -35,25 +36,13 @@ export const LineGraph = ({
   chartRef,
   data,
   unit,
-  highlight,
+  highlights,
   domain,
   scenarioId,
 }: GraphProps) => {
   const navigate = route.useNavigate();
-  const isSomethingHighlighted = !!highlight;
+  const isSomethingHighlighted = !!highlights && highlights.length > 0;
   const isScenarioB = scenarioId === "B";
-
-  type OnLineClickArgs = {
-    highlight: BreakdownByOptions;
-  };
-  const onLineClick = ({ highlight }: OnLineClickArgs) => {
-    void navigate({
-      search: (prev) => ({
-        ...prev,
-        highlight,
-      }),
-    });
-  };
 
   return (
     <ResponsiveContainer width="100%" height="100%" ref={chartRef}>
@@ -66,7 +55,7 @@ export const LineGraph = ({
         {attributeOptions.map((option) => {
           const areaColor = getColor({ breakdownBy, option });
 
-          const isHighlight = option === highlight;
+          const isHighlight = !!highlights && highlights.includes(option);
           const opacity =
             isSomethingHighlighted && !isHighlight
               ? HIGHLIGHT_OPACITY * 2.5
@@ -83,7 +72,11 @@ export const LineGraph = ({
               strokeWidth={3}
               isAnimationActive={animation}
               onClick={() => {
-                onLineClick({ highlight: option });
+                onElementClick({
+                  navigate,
+                  newHighlight: option,
+                  amountOfOptions: attributeOptions.length,
+                });
               }}
               fill={areaColor}
               fillOpacity={opacity}
@@ -104,7 +97,6 @@ export const LineGraph = ({
               breakdownBy={breakdownBy}
               chartRef={chartRef}
               offset={20}
-              highlight={highlight}
             />
           )}
         />

@@ -205,7 +205,6 @@ export const getAttributeOptionsOrdered = ({
   breakdownBy,
   defaultOptions,
 }: GetAttributeOptionsOrderArgs) => {
-  // @ts-expect-error: some breakdownBy need to be ordered some not, no reason to error here
   if (ORDERED_ATTRIBUTES.includes(breakdownBy)) {
     const breakdownByTyped = breakdownBy as OrderedAttributes;
     const optionsOrdered = ATTRIBUTE_OPTIONS_ORDER[breakdownByTyped];
@@ -218,7 +217,6 @@ export const getAttributeOptionsOrdered = ({
 
 function findCategory(item: Payload) {
   for (const [category, values] of Object.entries(CATEGORIES)) {
-    // @ts-expect-error: Argument of type 'string' is not assignable to parameter of type 'never'.
     if (!!item.value && values.includes(item.value as string)) {
       return category;
     }
