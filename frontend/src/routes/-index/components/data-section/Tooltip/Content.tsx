@@ -242,7 +242,7 @@ export const Content = ({ label, unit, data, breakdownBy }: ContentProps) => {
 
               const value = LABEL_TO_VALUE[item.name as string];
               const isHighlight = !!highlights && highlights.includes(value);
-              const isOneScenario = !!item.percentage;
+              const isOneScenario = item.percentage != null;
 
               return (
                 <li
@@ -306,23 +306,23 @@ export const Content = ({ label, unit, data, breakdownBy }: ContentProps) => {
                       </div>
                       <div>
                         <span className="z-0 font-bold">
-                          {item.scenarioAValue?.toLocaleString("en-US", {
+                          {item.scenarioAValue.toLocaleString("en-US", {
                             maximumFractionDigits: 2,
                           })}{" "}
                         </span>
                         <span className="z-0">
-                          ({item.percentageA?.toFixed(2)}%)
+                          ({item.percentageA.toFixed(2)}%)
                         </span>
                       </div>
                       <Versus className="mx-1" />
                       <div>
                         <span className="z-0 font-bold">
-                          {item.scenarioBValue?.toLocaleString("en-US", {
+                          {item.scenarioBValue.toLocaleString("en-US", {
                             maximumFractionDigits: 2,
                           })}{" "}
                         </span>
                         <span className="z-0">
-                          ({item.percentageB?.toFixed(2)}%)
+                          ({item.percentageB.toFixed(2)}%)
                         </span>
                       </div>
                     </>

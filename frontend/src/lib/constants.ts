@@ -1,10 +1,11 @@
 import type { UnionToTuple, ValueOf } from "type-fest";
-import type {
-  FILTERS_OBJ,
-  PREDEFINED_SCENARIOS,
-  SCENARIOS_OPTIONS,
+import {
+  UNITS_FROM_BACKEND,
+  type FILTERS_OBJ,
+  type PREDEFINED_SCENARIOS,
+  type SCENARIOS_OPTIONS,
 } from "./shared_with_backend/constants";
-import type { Attribute, Indicator, Unit } from "./types";
+import type { Attribute, Indicator, DividedBy } from "./types";
 
 export const MOBILE_SETTINGS_BUTTON = "Scenarios and Filters";
 export const RESET_LABEL = "Reset";
@@ -15,31 +16,18 @@ export const PROJECT_NAME = "GHG Emissions of EU Building Stock Scenarios";
 
 export const DEFAULT_FILTERS = undefined;
 export const DEFAULT_BREAKDOWN_BY: Attribute = "Building type";
-export const DEFAULT_INDICATOR: Indicator = "GWP total";
-export const DEFAULT_DIVIDED_BY: Unit = "none (total)";
-export const DEFAULT_UNIT_MINIMIZED: (typeof INDICATORS_UNITS)[number] =
-  "MtCO2e";
-export const DIVIDED_BY_UNITS = ["m²", "capita"] as const;
-export const DIVIDED_BY_NONE = "none (total)";
-export const DIVIDED_BY_TO_MINIFIED_UNIT: Record<
-  Exclude<Unit, typeof DIVIDED_BY_NONE>,
-  (typeof DIVIDED_BY_UNITS)[number]
-> = {
-  "capita (archetype)": "capita",
-  "capita (country)": "capita",
-  "m² (archetype)": "m²",
-  "m² (country)": "m²",
-} as const;
-export const INDICATORS_UNITS = ["MtCO2e", "Mt"] as const;
+export const DEFAULT_INDICATOR = "GWP total" satisfies Indicator;
+export const DEFAULT_DIVIDED_BY: DividedBy = "none (total)";
+export const INDICATORS_UNITS = ["MtCO₂", "Mt"] as const;
 export const INDICATOR_TO_UNIT: Record<
   Indicator,
   (typeof INDICATORS_UNITS)[number]
 > = {
-  "GWP bio": "MtCO2e",
-  "GWP fossil": "MtCO2e",
-  "GWP luluc": "MtCO2e",
+  "GWP bio": "MtCO₂",
+  "GWP fossil": "MtCO₂",
+  "GWP luluc": "MtCO₂",
   "Material mass": "Mt",
-  "GWP total": "MtCO2e",
+  "GWP total": "MtCO₂",
 } as const;
 export const SCENARIO_A_ONLY = "Scenario A only";
 export const SCENARIO_B_ONLY = "Scenario B only";
@@ -189,7 +177,6 @@ export const SCENARIO_B_LABEL = "scenario B";
 export const SCENARIO_A_ACRONYM = "A";
 export const SCENARIO_B_ACRONYM = "B";
 export const NO_SCENARIO_SELECTED_LABEL = "undefined";
-export const NONE = "None";
 export const STORAGE_KEYS = {
   isDisclaimerAccepted: "scenarioExplorerIsDisclaimerAccepted",
 };
@@ -215,3 +202,5 @@ export const PATTERN = {
   width: 8,
   height: 4,
 } as const;
+export const DEFAULT_UNIT_MINIMIZED =
+  UNITS_FROM_BACKEND[DEFAULT_INDICATOR][DEFAULT_DIVIDED_BY];

@@ -11,7 +11,12 @@ import {
   INDICATORS_UNITS,
   DISPLAY_SELECT_TESTID,
   SORT_SELECT_TESTID,
+  DEFAULT_DIVIDED_BY,
 } from "@/lib/constants";
+import {
+  DIVIDED_BY_NONE,
+  UNITS_FROM_BACKEND,
+} from "@/lib/shared_with_backend/constants";
 import { test, expect } from "@playwright/test";
 import { ACTIVE_DATA_TAB_LOCATOR, TAGS } from "@tests/constants";
 import { testScreenshot, waitLoadingEnds } from "@tests/functions";

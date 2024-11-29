@@ -1,9 +1,7 @@
 import os
 from typing import (
     Optional,
-    cast,
     Any,
-    Literal,
     TypedDict,
     List,
     Dict,
@@ -16,14 +14,13 @@ from sqlalchemy.sql import ClauseElement
 from .db import Session
 from .shared_with_frontend.schemas import (
     ScenarioEnumSchema,
-    IndicatorEnumSchema,
-    DividedByEnumSchema,
     AttributeEnumSchema,
     FiltersSchema,
     ColumnsEnumSchema,
     FilterFrontEnumSchema,
 )
 from .constants import DIVIDED_BY_NONE
+from enum import Enum
 
 DATA_PATH = os.getenv("DATA_PATH", "/app/data")
 TOTAL_LABEL = "Total"
@@ -55,19 +52,18 @@ def compile_statement(statement: Select[Any], scenario: ScenarioEnumSchema) -> s
 
 
 def get_base_statement(
-    attribute: ColumnsEnumSchema | Literal[AttributeEnumSchema.NONE],
-    indicator: IndicatorEnumSchema,
-    dividedBy: DividedByEnumSchema,
+    attribute: str,
+    indicator: str,
+    dividedBy: str,
 ) -> Select[Any]:
     if attribute == AttributeEnumSchema.NONE:
         return select(
             YEAR_COLUMN,
             (func.sum(column(indicator))).label(TOTAL_LABEL),
         ).group_by(YEAR_COLUMN)
-
     select_columns: List[ColumnClause[Never]] = [
         YEAR_COLUMN,
-        column(cast(str, attribute)),
+        column(attribute),
         column(indicator),
     ]
     if dividedBy != DIVIDED_BY_NONE:
@@ -76,18 +72,97 @@ def get_base_statement(
     return select(*select_columns)
 
 
-def get_indicator_as_sql(
-    indicator: IndicatorEnumSchema, dividedBy: DividedByEnumSchema
-) -> str:
+class UnitsForFrontType(str, Enum):
+    MtCO2 = "MtCO₂"
+    Mt = "Mt"
+    MtCO2_per_capita = "MtCO₂/capita"
+    MtCO2_per_m2 = "MtCO₂/m²"
+    tCO2_per_capita = "tCO₂/capita"
+    Mt_per_m2 = "Mt/m²"
+    ktCO2_per_capita = "ktCO₂/capita"
+    ktCO2_per_m2 = "ktCO₂/m²"
+    t_per_capita = "t/capita"
+    kt_per_capita = "kt/capita"
+    gCO2_per_capita = "gCO₂/capita"
+    kgCO2_per_capita = "kgCO₂/capita"
+
+
+front_unit_to_factor: Dict[UnitsForFrontType, str] = {
+    UnitsForFrontType.MtCO2: "1",
+    UnitsForFrontType.Mt: "1",
+    UnitsForFrontType.Mt_per_m2: "1",
+    UnitsForFrontType.MtCO2_per_m2: "1",
+    UnitsForFrontType.MtCO2_per_capita: "1",
+    UnitsForFrontType.tCO2_per_capita: "1000000",
+    UnitsForFrontType.ktCO2_per_m2: "1000",
+    UnitsForFrontType.ktCO2_per_capita: "1000",
+    UnitsForFrontType.kt_per_capita: "1000",
+    UnitsForFrontType.t_per_capita: "1000000",
+    UnitsForFrontType.gCO2_per_capita: "1000000000000",
+    UnitsForFrontType.kgCO2_per_capita: "1000000000",
+}
+
+
+units_for_front: Dict[
+    str,
+    Dict[str, UnitsForFrontType],
+] = {
+    ColumnsEnumSchema.IND_GWP_TOT.value: {
+        DIVIDED_BY_NONE: UnitsForFrontType.MtCO2,
+        ColumnsEnumSchema.FLOOR_AREA_COUNTRY.value: UnitsForFrontType.ktCO2_per_m2,
+        ColumnsEnumSchema.FLOOR_AREA_ARCHETYPE.value: UnitsForFrontType.MtCO2_per_m2,
+        ColumnsEnumSchema.POPULATION_COUNTRY.value: UnitsForFrontType.tCO2_per_capita,
+        ColumnsEnumSchema.POPULATION_ARCHETYPE.value: UnitsForFrontType.tCO2_per_capita,
+    },
+    ColumnsEnumSchema.IND_GWP_FOS.value: {
+        DIVIDED_BY_NONE: UnitsForFrontType.MtCO2,
+        ColumnsEnumSchema.FLOOR_AREA_COUNTRY.value: UnitsForFrontType.ktCO2_per_m2,
+        ColumnsEnumSchema.FLOOR_AREA_ARCHETYPE.value: UnitsForFrontType.MtCO2_per_m2,
+        ColumnsEnumSchema.POPULATION_COUNTRY.value: UnitsForFrontType.tCO2_per_capita,
+        ColumnsEnumSchema.POPULATION_ARCHETYPE.value: UnitsForFrontType.tCO2_per_capita,
+    },
+    ColumnsEnumSchema.IND_GWP_BIO.value: {
+        DIVIDED_BY_NONE: UnitsForFrontType.MtCO2,
+        ColumnsEnumSchema.FLOOR_AREA_COUNTRY.value: UnitsForFrontType.ktCO2_per_m2,
+        ColumnsEnumSchema.FLOOR_AREA_ARCHETYPE.value: UnitsForFrontType.ktCO2_per_m2,
+        ColumnsEnumSchema.POPULATION_COUNTRY.value: UnitsForFrontType.ktCO2_per_capita,
+        ColumnsEnumSchema.POPULATION_ARCHETYPE.value: UnitsForFrontType.tCO2_per_capita,
+    },
+    ColumnsEnumSchema.IND_GWP_LULUC.value: {
+        DIVIDED_BY_NONE: UnitsForFrontType.MtCO2,
+        ColumnsEnumSchema.FLOOR_AREA_COUNTRY.value: UnitsForFrontType.ktCO2_per_m2,
+        ColumnsEnumSchema.FLOOR_AREA_ARCHETYPE.value: UnitsForFrontType.ktCO2_per_m2,
+        ColumnsEnumSchema.POPULATION_COUNTRY.value: UnitsForFrontType.ktCO2_per_capita,
+        ColumnsEnumSchema.POPULATION_ARCHETYPE.value: UnitsForFrontType.ktCO2_per_capita,
+    },
+    ColumnsEnumSchema.AMOUNT_MATERIAL.value: {
+        DIVIDED_BY_NONE: UnitsForFrontType.Mt,
+        ColumnsEnumSchema.FLOOR_AREA_COUNTRY.value: UnitsForFrontType.Mt_per_m2,
+        ColumnsEnumSchema.FLOOR_AREA_ARCHETYPE.value: UnitsForFrontType.Mt_per_m2,
+        ColumnsEnumSchema.POPULATION_COUNTRY.value: UnitsForFrontType.t_per_capita,
+        ColumnsEnumSchema.POPULATION_ARCHETYPE.value: UnitsForFrontType.kt_per_capita,
+    },
+}
+
+
+def get_indicator_as_sql(indicator: str, dividedBy: str) -> str:
+    factor = front_unit_to_factor[units_for_front[indicator][dividedBy]]
+
     return (
-        f"sum({indicator})"
+        f"sum({indicator} * {factor})"
         if dividedBy == DIVIDED_BY_NONE
-        else f"sum({indicator} / {dividedBy})"
+        else f"""sum(
+                 CASE
+                    WHEN {dividedBy} = 0 THEN 0
+                    ELSE {indicator} * {factor} / {dividedBy}
+                END
+            )
+            """
     )
 
 
 def get_pivot_query(
-    attribute: ColumnsEnumSchema | Literal[AttributeEnumSchema.NONE],
+    attribute: str,
     indicator_as_sql: str,
 ) -> str:
     if attribute == AttributeEnumSchema.NONE:
@@ -111,7 +186,7 @@ def get_pivot_query(
 
 def get_minmax_query(
     compiled_statement: str,
-    attribute: ColumnsEnumSchema | Literal[AttributeEnumSchema.NONE],
+    attribute: str,
     indicator_as_sql: str,
 ) -> str:
     if attribute == AttributeEnumSchema.NONE:
@@ -180,15 +255,17 @@ class MinMaxDict(TypedDict):
 class ScenarioDataType(TypedDict):
     data: List[Dict[str, Union[int, str]]]
     minmax: NotRequired[MinMaxDict]
+    unit: str
 
 
 def get_scenario_rows(
     scenario: ScenarioEnumSchema,
-    attribute: ColumnsEnumSchema | Literal[AttributeEnumSchema.NONE],
-    indicator: IndicatorEnumSchema,
+    attribute: str,
+    indicator: str,
     filters: Optional[FiltersSchema],
-    dividedBy: DividedByEnumSchema,
+    dividedBy: str,
 ) -> ScenarioDataType:
+    unit_for_front = units_for_front[indicator][dividedBy]
     base_statement = get_base_statement(attribute, indicator, dividedBy)
     filtered_statement = apply_filters(base_statement, filters)
     compiled_statement = compile_statement(filtered_statement, scenario)
@@ -218,9 +295,7 @@ def get_scenario_rows(
         data = [row._asdict() for row in data_raw]
 
         if len(data) == 0:
-            return {
-                "data": data,
-            }
+            return {"data": data, "unit": "MtCO2"}
 
         stacked_minmax = (
             session.execute(text(minmax_query_for_stacked_graph)).fetchone()._asdict()  # type: ignore[union-attr]
@@ -254,4 +329,5 @@ def get_scenario_rows(
             "stacked": stacked_minmax,
             "nonStacked": nonstacked_minmax,
         },
+        "unit": unit_for_front,
     }

@@ -35,6 +35,7 @@ export async function fetchScenarioRowsAggregated({
   if (scenario === undefined)
     return {
       data: [],
+      unit: "",
     } as z.infer<typeof ResultsScenarioRowsAggregatedSchema>;
 
   const url = env.PUBLIC_API_URL + API_ROUTES.scenario;
@@ -51,9 +52,9 @@ export async function fetchScenarioRowsAggregated({
       filters,
     }),
   });
-  const dataRaw = await response.json();
-  const data = ResultsScenarioRowsAggregatedSchema.parse(dataRaw);
-  return data;
+  const bodyUnvalidated = await response.json();
+  const body = ResultsScenarioRowsAggregatedSchema.parse(bodyUnvalidated);
+  return body;
 }
 
 export function fetchFilters() {

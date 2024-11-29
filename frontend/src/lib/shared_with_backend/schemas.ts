@@ -25,6 +25,8 @@ const MinmaxSchema = z.strictObject({
   max: z.number(),
 });
 
+const UnitSchema = z.string().min(1);
+
 export const ResultsScenarioRowsAggregatedSchema = z.strictObject({
   data: ScenarioRowsAggregatedSchema.array(),
   minmax: z
@@ -33,6 +35,7 @@ export const ResultsScenarioRowsAggregatedSchema = z.strictObject({
       nonStacked: MinmaxSchema,
     })
     .optional(),
+  unit: UnitSchema,
 });
 
 export const ScenarioSchema = z.enum(SCENARIOS_OPTIONS);

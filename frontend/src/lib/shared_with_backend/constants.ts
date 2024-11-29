@@ -1,4 +1,3 @@
-import { DIVIDED_BY_NONE, NONE } from "../constants";
 import type { Attribute, ValidOption } from "../types";
 
 /*
@@ -18,6 +17,8 @@ const COMMON_IN_FILTERS_AND_BREAKDOWN = {
   carbonCategory: "Whole life cycle modules",
   lcaStages: "LCA stages",
 } as const;
+
+export const NONE = "None";
 export const BREAKDOWN_BY_OBJ = {
   ...COMMON_IN_FILTERS_AND_BREAKDOWN,
   none: NONE,
@@ -61,6 +62,8 @@ export const INDICATORS = [
   "GWP bio",
   "GWP luluc",
 ] as const;
+
+export const DIVIDED_BY_NONE = "none (total)";
 
 export const DIVIDED_BY_OPTIONS = [
   DIVIDED_BY_NONE,
@@ -332,3 +335,13 @@ export const VALUE_TO_LABEL: Record<Exclude<ValidOption, number>, string> = {
 export const LABEL_TO_VALUE = Object.fromEntries(
   Object.entries(VALUE_TO_LABEL).map(([key, value]) => [value, key]),
 );
+
+export const UNITS_FROM_BACKEND = {
+  "GWP total": {
+    [DIVIDED_BY_NONE]: "MtCO₂",
+    "m² (country)": "ktCO₂/m²",
+    "m² (archetype)": "MtCO₂/m²",
+    "capita (country)": "tCO₂/capita",
+    "capita (archetype)": "tCO₂/capita",
+  },
+} as const;
