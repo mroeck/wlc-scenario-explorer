@@ -1,5 +1,5 @@
-import { ROUTES, BREAKDOWN_BY_TESTID, NONE } from "@/lib/constants";
-import { VALUE_TO_LABEL } from "@/lib/shared_with_backend/constants";
+import { ROUTES, BREAKDOWN_BY_TESTID } from "@/lib/constants";
+import { NONE, VALUE_TO_LABEL } from "@/lib/shared_with_backend/constants";
 import { ATTRIBUTE_OPTIONS_ORDER } from "@/lib/utils";
 import { expect, test } from "@playwright/test";
 import { ACTIVE_DATA_TAB_LOCATOR, TAGS } from "@tests/constants";

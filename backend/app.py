@@ -10,7 +10,6 @@ from src.shared_with_frontend.schemas import (
     SCENARIO_TO_FILE_NAME,
     UNIT_TO_DB_COLUMNS,
     ATTRIBUTE_TO_DB_COLUMNS,
-    ColumnsEnumSchema,
     FilterFrontEnumSchema,
 )
 
@@ -52,8 +51,8 @@ def scenario() -> ScenarioDataType:
 
     data = get_scenario_rows(
         cast(ScenarioEnumSchema, scenario),
-        cast(ColumnsEnumSchema, breakdown_by),
-        cast(IndicatorEnumSchema, indicator),
+        breakdown_by,
+        indicator,
         cast(FiltersSchema | None, filters),
         cast(DividedByEnumSchema, dividedBy),
     )

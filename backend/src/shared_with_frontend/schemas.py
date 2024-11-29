@@ -84,17 +84,17 @@ class DividedByEnumSchema(str, Enum):
     POPULATION_ARCHETYPE = "capita (archetype)"
 
 
-UNIT_TO_DB_COLUMNS: Dict[str, str] = {
-    IndicatorEnumSchema.TOTAL_GWP.value: ColumnsEnumSchema.IND_GWP_TOT.value,
-    IndicatorEnumSchema.FOSSIL_GWP.value: ColumnsEnumSchema.IND_GWP_FOS.value,
-    IndicatorEnumSchema.BIO_GWP.value: ColumnsEnumSchema.IND_GWP_BIO.value,
-    IndicatorEnumSchema.LULUC_GWP.value: ColumnsEnumSchema.IND_GWP_LULUC.value,
-    IndicatorEnumSchema.MATERIAL_AMOUNT_PER_BUILDING.value: ColumnsEnumSchema.AMOUNT_MATERIAL.value,
-    DividedByEnumSchema.NONE.value: DIVIDED_BY_NONE,
-    DividedByEnumSchema.FLOOR_AREA_COUNTRY.value: ColumnsEnumSchema.FLOOR_AREA_COUNTRY.value,
-    DividedByEnumSchema.FLOOR_AREA_ARCHETYPE.value: ColumnsEnumSchema.FLOOR_AREA_ARCHETYPE.value,
-    DividedByEnumSchema.POPULATION_COUNTRY.value: ColumnsEnumSchema.POPULATION_COUNTRY.value,
-    DividedByEnumSchema.POPULATION_ARCHETYPE.value: ColumnsEnumSchema.POPULATION_ARCHETYPE.value,
+UNIT_TO_DB_COLUMNS: Dict[IndicatorEnumSchema | DividedByEnumSchema, str] = {
+    IndicatorEnumSchema.TOTAL_GWP: ColumnsEnumSchema.IND_GWP_TOT.value,
+    IndicatorEnumSchema.FOSSIL_GWP: ColumnsEnumSchema.IND_GWP_FOS.value,
+    IndicatorEnumSchema.BIO_GWP: ColumnsEnumSchema.IND_GWP_BIO.value,
+    IndicatorEnumSchema.LULUC_GWP: ColumnsEnumSchema.IND_GWP_LULUC.value,
+    IndicatorEnumSchema.MATERIAL_AMOUNT_PER_BUILDING: ColumnsEnumSchema.AMOUNT_MATERIAL.value,
+    DividedByEnumSchema.NONE: DIVIDED_BY_NONE,
+    DividedByEnumSchema.FLOOR_AREA_COUNTRY: ColumnsEnumSchema.FLOOR_AREA_COUNTRY.value,
+    DividedByEnumSchema.FLOOR_AREA_ARCHETYPE: ColumnsEnumSchema.FLOOR_AREA_ARCHETYPE.value,
+    DividedByEnumSchema.POPULATION_COUNTRY: ColumnsEnumSchema.POPULATION_COUNTRY.value,
+    DividedByEnumSchema.POPULATION_ARCHETYPE: ColumnsEnumSchema.POPULATION_ARCHETYPE.value,
 }
 
 

@@ -213,7 +213,11 @@ export const DownloadMenu = ({ domTarget, data }: DownloadMenuProps) => {
 
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger data-testid={DOWNLOAD_AS_TESTID} disabled={!isReady}>
+      <DropdownMenuTrigger
+        data-testid={DOWNLOAD_AS_TESTID}
+        disabled={!isReady}
+        asChild
+      >
         <Button variant="ghost" size="icon" aria-label="Settings">
           <Download
             className={cn(

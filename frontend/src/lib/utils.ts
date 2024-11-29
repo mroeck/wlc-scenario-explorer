@@ -28,15 +28,27 @@ export function createSchema<T extends Record<string, any>>(input: {
   return Schema;
 }
 
+type FormatTickNumberArgs = {
+  value: number;
+};
+
+function formatTickNumber({ value }: FormatTickNumberArgs) {
+  const formatted = value.toFixed(2).replaceAll(".00", "");
+
+  return formatted.includes(".") && formatted.endsWith("0")
+    ? formatted.slice(0, -1)
+    : formatted;
+}
+
 export const tickFormatter = (number: number) => {
   if (number >= 1_000_000_000) {
-    return `${(number / 1_000_000_000).toString()}B`;
+    return `${formatTickNumber({ value: number / 1_000_000_000 })}B`;
   } else if (number >= 1_000_000) {
-    return `${(number / 1_000_000).toString()}M`;
+    return `${formatTickNumber({ value: number / 1_000_000 })}M`;
   } else if (number >= 1_000) {
-    return `${(number / 1_000).toString()}K`;
+    return `${formatTickNumber({ value: number / 1_000 })}K`;
   } else {
-    return number.toString();
+    return formatTickNumber({ value: number });
   }
 };
 

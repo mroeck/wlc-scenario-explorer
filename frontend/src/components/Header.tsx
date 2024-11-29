@@ -30,7 +30,7 @@ const DEFAULT_DASHBOARD_SEARCH = {
   dataTab: DEFAULT_DATA_TAB,
   settingsTab: DEFAULT_SETTINGS_TAB,
   sort: DEFAULT_SORT,
-};
+} as const;
 
 type DashboardRouteApi = ReturnType<
   typeof getRouteApi<typeof ROUTES.DASHBOARD>

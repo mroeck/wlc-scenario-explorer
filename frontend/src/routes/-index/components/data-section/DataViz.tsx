@@ -8,15 +8,11 @@ import {
   DATA_TABS_NAMES,
   FOR_SCENARIOS_TESTID,
   GRAPH_TITLE_TESTID,
-  INDICATOR_TO_UNIT,
-  NONE,
   ROUTES,
   SCENARIO_A_AND_B,
   SCENARIO_B_ONLY,
   TAB_CONTENT_TESTID,
   GRAPH_TITLE_DIVIDED_BY_TESTID,
-  DIVIDED_BY_NONE,
-  DIVIDED_BY_TO_MINIFIED_UNIT,
   SCENARIO_TO_ACRONYM,
   SCENARIO_A_LABEL,
   SCENARIO_B_LABEL,
@@ -27,7 +23,11 @@ import { getRouteApi } from "@tanstack/react-router";
 import type { z } from "zod";
 import { LoadingSpinner } from "@/components/LoadingSpinner";
 import { ErrorOccurred } from "@/components/ErrorOccurred";
-import { type ATTRIBUTES } from "@/lib/shared_with_backend/constants";
+import {
+  DIVIDED_BY_NONE,
+  NONE,
+  type ATTRIBUTES,
+} from "@/lib/shared_with_backend/constants";
 import type { ScenarioRowsAggregatedArraySchema } from "@/lib/schemas";
 import { NoDataFound } from "@/components/NoDataFound";
 import { StackedBarChart } from "./graphs/StackedBarChart";
@@ -48,6 +48,7 @@ import { LineGraphIcon } from "@/components/LineGraphIcon";
 import { StackedAreaGraphIcon } from "@/components/StackedAreaGraphIcon";
 import { TableIcon } from "@/components/TableIcon";
 import { StackedBarGraphIcon } from "@/components/StackedBarGraphIcon";
+import { env } from "@/env";
 
 const route = getRouteApi(ROUTES.DASHBOARD);
 
@@ -219,13 +220,6 @@ export const DataViz = () => {
       ? indicator
       : (`${indicator} per ${dividedBy}` as const);
 
-  const indicatorMinified = INDICATOR_TO_UNIT[indicator];
-
-  const unitMinified =
-    dividedBy === DIVIDED_BY_NONE
-      ? indicatorMinified
-      : (`${indicatorMinified}/${DIVIDED_BY_TO_MINIFIED_UNIT[dividedBy]}` as const);
-
   // @ts-expect-error: not all scenarios have an acronym
   const acronymA = SCENARIO_TO_ACRONYM[scenarioA] as string | undefined;
   // @ts-expect-error: not all scenarios have an acronym
@@ -278,6 +272,7 @@ export const DataViz = () => {
     !!resultsB &&
     resultsA.data.length === 0 &&
     resultsB.data.length === 0;
+  const unitMinified = resultsA?.unit ?? "";
 
   const domains = canRenderContent
     ? getDomainAll({ resultsA, resultsB, display })
@@ -285,7 +280,13 @@ export const DataViz = () => {
 
   const DataStatus = () => {
     if (isLoading) return <LoadingSpinner />;
-    if (hasError) return <ErrorOccurred />;
+    if (hasError) {
+      if (env.PUBLIC_NODE_ENV !== "production") {
+        console.error(errorA);
+        console.error(errorB);
+      }
+      return <ErrorOccurred />;
+    }
     if (hasNoData) return <NoDataFound />;
     return null;
   };

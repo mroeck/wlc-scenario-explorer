@@ -1,9 +1,11 @@
 import {
   ROUTES,
   PROJECT_NAME,
-  DEFAULT_UNIT_MINIMIZED,
   CHART_TESTID,
+  DEFAULT_DIVIDED_BY,
+  DEFAULT_INDICATOR,
 } from "@/lib/constants";
+import { UNITS_FROM_BACKEND } from "@/lib/shared_with_backend/constants";
 import { test, expect } from "@playwright/test";
 import { DEFAULT_DATA_HEADER, TAGS } from "@tests/constants";
 import { testPageScreenshot, waitLoadingEnds } from "@tests/functions";
@@ -27,8 +29,9 @@ test.describe("dashboard", () => {
       await expect(page.getByText(PROJECT_NAME).first()).toBeVisible({
         timeout: 5_000,
       });
+      const unit = UNITS_FROM_BACKEND[DEFAULT_INDICATOR][DEFAULT_DIVIDED_BY];
       await expect(
-        page.getByTestId(CHART_TESTID).getByText(DEFAULT_UNIT_MINIMIZED).nth(1),
+        page.getByTestId(CHART_TESTID).getByText(unit).nth(1),
       ).toBeVisible({
         timeout: 10_000,
       });

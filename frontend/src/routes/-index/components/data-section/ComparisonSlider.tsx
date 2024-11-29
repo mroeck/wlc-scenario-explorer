@@ -132,7 +132,7 @@ export const ComparisonSlider: React.FC<ComparisonSliderProps> = ({
         </div>
         <div
           className={cn(
-            "absolute inset-0 size-full overflow-y-hidden sm:visible",
+            "absolute inset-0 size-full overflow-y-visible sm:visible",
             display !== SCENARIO_A_ONLY && "overflow-x-hidden",
           )}
           style={{ width: sliderValues[0].toString() + "%" }}

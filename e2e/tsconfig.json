@@ -2,16 +2,12 @@
   "compilerOptions": {
     "target": "ES2020",
     "useDefineForClassFields": true,
-    "lib": ["ES2020", "DOM", "DOM.Iterable"],
+    "lib": ["es2021", "DOM", "DOM.Iterable"],
     "module": "ESNext",
     "skipLibCheck": true,
     "paths": {
-      "@tests/*": [
-        "./tests/*"
-      ],
-      "@/*": [
-        "../frontend/src/*"
-      ],
+      "@tests/*": ["./tests/*"],
+      "@/*": ["../frontend/src/*"]
     },
     /* Bundler mode */
     "moduleResolution": "bundler",
@@ -27,5 +23,5 @@
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true
   },
-  "include": ["./", "../frontend"],
+  "include": ["./", "../frontend"]
 }
