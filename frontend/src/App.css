@@ -12,7 +12,7 @@ html {
 
 body {
   background-color: hsl(var(--background));
-  overflow-x: hidden;
+  overflow: hidden;
   position: relative;
 }
 

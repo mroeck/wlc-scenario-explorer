@@ -125,7 +125,7 @@ units_for_front: Dict[
         DIVIDED_BY_NONE: UnitsForFrontType.MtCO2,
         ColumnsEnumSchema.FLOOR_AREA_COUNTRY.value: UnitsForFrontType.ktCO2_per_m2,
         ColumnsEnumSchema.FLOOR_AREA_ARCHETYPE.value: UnitsForFrontType.ktCO2_per_m2,
-        ColumnsEnumSchema.POPULATION_COUNTRY.value: UnitsForFrontType.ktCO2_per_capita,
+        ColumnsEnumSchema.POPULATION_COUNTRY.value: UnitsForFrontType.kgCO2_per_capita,
         ColumnsEnumSchema.POPULATION_ARCHETYPE.value: UnitsForFrontType.tCO2_per_capita,
     },
     ColumnsEnumSchema.IND_GWP_LULUC.value: {
