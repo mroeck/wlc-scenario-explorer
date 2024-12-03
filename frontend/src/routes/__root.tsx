@@ -1,4 +1,8 @@
-import { createRootRoute, Outlet } from "@tanstack/react-router";
+import {
+  createRootRoute,
+  Outlet,
+  ScrollRestoration,
+} from "@tanstack/react-router";
 import { env } from "../env";
 import { lazy, Suspense } from "react";
 import { Header } from "@/components/Header";
@@ -21,6 +25,7 @@ function UserInterface() {
   return (
     <div className="mx-auto h-max max-w-screen-2xl bg-[hsl(220,14%,96%)]">
       <Header />
+      <ScrollRestoration />
       <Outlet />
       <Suspense>
         <TanStackRouterDevtools initialIsOpen={false} />

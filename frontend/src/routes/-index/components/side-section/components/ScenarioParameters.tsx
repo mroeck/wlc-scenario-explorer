@@ -21,10 +21,25 @@ export const ScenarioParameters = () => {
             value={key + index.toString()}
           >
             <div className="flex justify-between gap-2">
-              <div className="flex-1">
-                <AccordionTrigger className="text-sm capitalize text-gray-800">
-                  {key}
-                </AccordionTrigger>
+              <div className="flex flex-1 items-center gap-x-2">
+                <InfoButton>
+                  <p>[in progress]</p>
+                  <Link
+                    to={ROUTES.HELP}
+                    hash={HELP_PAGE_IDS.scenarioParametersCustomization}
+                    className="flex items-center gap-1 underline"
+                  >
+                    <LinkIcon className="size-3" /> Read more here
+                  </Link>
+                </InfoButton>
+                <div className="flex-1">
+                  <AccordionTrigger
+                    className="
+                text-sm capitalize text-gray-800"
+                  >
+                    {key}
+                  </AccordionTrigger>
+                </div>
               </div>
               <div className="flex items-center justify-center">
                 <ParameterLevel
@@ -46,16 +61,6 @@ export const ScenarioParameters = () => {
                       <span className="min-w-max text-sm text-gray-800">
                         {item}:
                       </span>
-                      <InfoButton>
-                        <p>[in progress]</p>
-                        <Link
-                          to={ROUTES.HELP}
-                          hash={HELP_PAGE_IDS.scenarioParametersCustomization}
-                          className="flex items-center gap-1 underline"
-                        >
-                          <LinkIcon className="size-3" /> Read more here
-                        </Link>
-                      </InfoButton>
                     </div>
                     <div className="flex max-w-40 justify-around gap-2">
                       <ParameterLevel level={1.0} />
