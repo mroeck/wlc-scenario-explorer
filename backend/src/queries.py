@@ -1,4 +1,3 @@
-import os
 from typing import (
     Optional,
     Any,
@@ -11,18 +10,20 @@ from typing import (
 )
 from sqlalchemy import text, column, select, func, Select, ColumnClause
 from sqlalchemy.sql import ClauseElement
-from .db import Session
+from .db import Session, FilenameSession
 from .shared_with_frontend.schemas import (
-    ScenarioEnumSchema,
     AttributeEnumSchema,
     FiltersSchema,
     ColumnsEnumSchema,
     FilterFrontEnumSchema,
+    ScenarioParameters,
+    PossibleScenarioParameters,
 )
-from .constants import DIVIDED_BY_NONE
+from .models import Filenames
+from .constants import DIVIDED_BY_NONE, DATA_PATH, FILENAME_SEARCH_OPERATOR
+from .utils import construct_filename
 from enum import Enum
 
-DATA_PATH = os.getenv("DATA_PATH", "/app/data")
 TOTAL_LABEL = "Total"
 YEAR_COLUMN: ColumnClause[Never] = column("stock_projection_year")
 
@@ -45,10 +46,12 @@ def apply_filters(
     return statement.where(*filter_conditions)  # type: ignore[arg-type]
 
 
-def compile_statement(statement: Select[Any], scenario: ScenarioEnumSchema) -> str:
+def compile_statement(statement: Select[Any], scenario: str) -> str:
     compiled = str(statement.compile(compile_kwargs={"literal_binds": True}))
 
-    return f"FROM (SELECT * FROM '{DATA_PATH}/{scenario}.parquet') " + compiled
+    return (
+        f"FROM (SELECT * FROM '{DATA_PATH}/scenarios/{scenario}.parquet') " + compiled
+    )
 
 
 def get_base_statement(
@@ -259,7 +262,7 @@ class ScenarioDataType(TypedDict):
 
 
 def get_scenario_rows(
-    scenario: ScenarioEnumSchema,
+    scenario: str,
     attribute: str,
     indicator: str,
     filters: Optional[FiltersSchema],
@@ -331,3 +334,31 @@ def get_scenario_rows(
         },
         "unit": unit_for_front,
     }
+
+
+def get_possible_parameters(
+    scenario_parameters: ScenarioParameters,
+    suggestion_target: str,
+) -> PossibleScenarioParameters:
+    search_pattern = construct_filename(scenario_parameters, suggestion_target)
+    suggestion_index = search_pattern.find(FILENAME_SEARCH_OPERATOR)
+
+    if suggestion_index == -1:
+        raise ValueError(
+            f"Character '{FILENAME_SEARCH_OPERATOR}' not found in search_pattern"
+        )
+
+    with FilenameSession() as session:
+        results = (
+            session.query(Filenames)
+            .filter(Filenames.filename.like(f"{search_pattern}.parquet"))
+            .all()
+        )
+        filenames = [item.filename for item in results]
+
+        possible_levels = [
+            filename[suggestion_index : suggestion_index + 3] for filename in filenames
+        ]
+
+    result = PossibleScenarioParameters(**{suggestion_target: possible_levels})
+    return result

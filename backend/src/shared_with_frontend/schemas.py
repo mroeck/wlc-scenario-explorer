@@ -1,4 +1,4 @@
-from typing import List, Dict, Optional, Mapping
+from typing import List, Dict, Optional, Mapping, TypedDict
 from pydantic import BaseModel, Field, field_validator, Extra
 from enum import Enum
 from ..constants import DIVIDED_BY_NONE
@@ -194,3 +194,15 @@ SCENARIO_TO_FILE_NAME: Dict[str, str] = {
 
 class ScenarioRowsAggregatedSchema(BaseModel):
     year: int = Field(..., alias="stock_projection_year")
+
+
+class ScenarioParameters(TypedDict):
+    scenario_parameter_1: str
+    scenario_parameter_2: str
+    scenario_parameter_3: str
+
+
+class PossibleScenarioParameters(BaseModel):
+    scenario_parameter_1: Optional[List[str]] = None
+    scenario_parameter_2: Optional[List[str]] = None
+    scenario_parameter_3: Optional[List[str]] = None
