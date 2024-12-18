@@ -7,7 +7,7 @@ sidebar_position: 1
 
 Welcome to the Scenario Explorer, an application designed to visualize scenarios generated as parquet files by the [study](https://c.ramboll.com/life-cycle-emissions-of-eu-building-and-construction) team. The app is accessible at [https://ae-scenario-explorer.cloud.set.kuleuven.be](https://ae-scenario-explorer.cloud.set.kuleuven.be).
 
-This application was developed in 2024 by Benjamin Lesné, a temporary subcontractor.
+This application was developed in 2024 by Benjamin Lesné, a temporary contractor.
 
 It is hosted on the [KU Leuven university](https://architectuur.kuleuven.be/architectural-engineering) infrastructure, and the DevOps referent is Ronny Moreas.
 
