@@ -140,9 +140,10 @@ function createTitle({
 
   type Keys = keyof typeof SCENARIO_TO_ACRONYM;
 
-  // @ts-expect-error: I know the index may not exists
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   const acronymA = SCENARIO_TO_ACRONYM[scenarioA]
-    ? ` (${SCENARIO_TO_ACRONYM[scenarioA as Keys]})`
+    ? // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
+      ` (${SCENARIO_TO_ACRONYM[scenarioA]})`
     : "";
   // @ts-expect-error: I know the index may not exists
   const acronymB = SCENARIO_TO_ACRONYM[scenarioB]
@@ -216,11 +217,12 @@ export const DataViz = () => {
     }),
   });
   const unit =
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     dividedBy === DIVIDED_BY_NONE
       ? indicator
-      : (`${indicator} per ${dividedBy}` as const);
+      : // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
+        (`${indicator} per ${dividedBy}` as const);
 
-  // @ts-expect-error: not all scenarios have an acronym
   const acronymA = SCENARIO_TO_ACRONYM[scenarioA] as string | undefined;
   // @ts-expect-error: not all scenarios have an acronym
   const acronymB = SCENARIO_TO_ACRONYM[scenarioB ?? ""] as string | undefined;

@@ -1,13 +1,12 @@
 import {
   GRAPH_FONT_SIZE,
   ROUTES,
-  SCENARIO_A_ACRONYM,
   SCENARIO_A_KEY_PREFIX,
   SCENARIO_A_LABEL,
-  SCENARIO_B_ACRONYM,
   SCENARIO_B_KEY_PREFIX,
   SCENARIO_TO_ACRONYM,
   SCENARIO_B_LABEL,
+  SCENARIO_B_ACRONYM,
 } from "@/lib/constants";
 import { ColorCube } from "../Legend/ColorCube";
 import { cn, getColor, getValueLabel } from "@/lib/utils";
@@ -145,9 +144,10 @@ export const Content = ({ label, unit, data, breakdownBy }: ContentProps) => {
   });
 
   const isSomethingHighlighted = !!highlights && highlights.length > 0;
-  type Keys = keyof typeof SCENARIO_TO_ACRONYM;
-  const acronymA = SCENARIO_TO_ACRONYM[scenarioA as Keys] ?? SCENARIO_A_ACRONYM;
-  const acronymB = SCENARIO_TO_ACRONYM[scenarioB as Keys] ?? SCENARIO_B_ACRONYM;
+  const acronymA = SCENARIO_TO_ACRONYM[scenarioA];
+  const acronymB = scenarioB
+    ? SCENARIO_TO_ACRONYM[scenarioB]
+    : SCENARIO_B_ACRONYM;
 
   const finalData = areDataMerged ? restructureData({ data }) : data;
 

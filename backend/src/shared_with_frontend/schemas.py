@@ -169,15 +169,21 @@ class ScenarioEnumSchema(str, Enum):
     Example = "Example scenario (for illustration purpose only)"
     CPOO = "Optimistic scenario of Current Policies"
     CPOC = "Conservative scenario of Current Policies"
-    APOL = "Additional Policy scenario"
+    # APOL = "Additional Policy scenario"
     APOI = "Current Policy + Improve strategies"
     APOS = "Current Policy + Shift strategies"
     APOA = "Current Policy + Avoid strategies"
     AASI = "Current Policy + Avoid + Shift + Improve strategies"
     CUSR = "Custom scenario results"
 
+    BAU = "BAU"
+    CPOL_A = "CPOL/A"
+    CPOL_B = "CPOL/B"
+    APOL = "APOL"
+    ALL_HIGH = "ALL/HIGH"
 
-DEFAULT_SCENARIO = "BASE"
+
+DEFAULT_SCENARIO = "CPOL A"
 
 SCENARIO_TO_FILE_NAME: Dict[str, str] = {
     ScenarioEnumSchema.AASI.value: "FULL",
@@ -189,6 +195,11 @@ SCENARIO_TO_FILE_NAME: Dict[str, str] = {
     ScenarioEnumSchema.CPOO.value: DEFAULT_SCENARIO,
     ScenarioEnumSchema.CUSR.value: DEFAULT_SCENARIO,
     ScenarioEnumSchema.Example.value: DEFAULT_SCENARIO,
+    ScenarioEnumSchema.BAU.value: "BAU",
+    ScenarioEnumSchema.CPOL_A.value: "CPOL A",
+    ScenarioEnumSchema.CPOL_B.value: "CPOL B",
+    ScenarioEnumSchema.APOL.value: "APOL",
+    ScenarioEnumSchema.ALL_HIGH.value: "ALL HIGH",
 }
 
 

@@ -1,4 +1,4 @@
-# How to deploy the app?
+# How to make a release?
 
 ## Review
 

@@ -23,6 +23,7 @@ import {
   SCENARIO_B_ONLY,
   SCENARIO_B_MENU_TESTID,
   SCENARIO_TO_ACRONYM,
+  DEFAULT_SCENARIO,
 } from "@/lib/constants";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { getRouteApi, Link } from "@tanstack/react-router";
@@ -39,7 +40,6 @@ import { ScenarioParameters } from "../components/ScenarioParameters";
 import { useEffect } from "react";
 import { InfoButton } from "@/components/InfoButton";
 import { LinkIcon } from "lucide-react";
-import type { ValueOf } from "type-fest";
 import { ScrollArea } from "@/components/ui/scroll-area";
 
 const route = getRouteApi(ROUTES.DASHBOARD);
@@ -61,7 +61,7 @@ export const Scenarios = () => {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      scenarioA: SCENARIOS_OPTIONS[0],
+      scenarioA: DEFAULT_SCENARIO,
       scenarioB: "",
     },
   });
@@ -186,13 +186,11 @@ export const Scenarios = () => {
                       </FormControl>
                       <SelectContent>
                         {SCENARIOS_OPTIONS.map((scenario) => {
-                          // @ts-expect-error: not all scenarios have a acronym
-                          const acronym = SCENARIO_TO_ACRONYM[scenario] as
-                            | ValueOf<typeof SCENARIO_TO_ACRONYM>
-                            | undefined;
+                          const acronym = SCENARIO_TO_ACRONYM[scenario];
 
                           return (
                             <SelectItem key={scenario} value={scenario}>
+                              {/* eslint-disable-next-line @typescript-eslint/no-unnecessary-condition, @typescript-eslint/restrict-template-expressions */}
                               {scenario} {acronym ? `(${acronym})` : null}
                             </SelectItem>
                           );
@@ -291,6 +289,7 @@ export const Scenarios = () => {
 
                         return (
                           <SelectItem key={scenario} value={scenario}>
+                            {/* eslint-disable-next-line @typescript-eslint/no-unnecessary-condition, @typescript-eslint/restrict-template-expressions */}
                             {scenario} {acronym ? `(${acronym})` : null}
                           </SelectItem>
                         );

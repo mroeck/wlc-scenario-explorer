@@ -96,13 +96,12 @@ test.describe("data viz", () => {
 
     await indicatorSelect.click();
     await indicatorOption.click();
+    await waitLoadingEnds({ page });
 
     await expect(indicatorInGraphTitle).toHaveText(optionText);
-    await expect(
-      graph.getByText(INDICATOR_TO_UNIT[optionText]).nth(1),
-    ).toBeVisible();
+    await expect(graph.getByText(INDICATOR_TO_UNIT[optionText])).toBeVisible();
 
-    await expect(graph.getByText(indicator1).nth(1)).toBeVisible();
+    await expect(graph.getByText(indicator1)).toBeVisible();
 
     await testScreenshot({
       page,

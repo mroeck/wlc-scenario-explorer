@@ -1,6 +1,8 @@
 import {
   DEFAULT_SCENARIO,
   ROUTES,
+  SCENARIO_A_ACRONYM,
+  SCENARIO_B_ACRONYM,
   SCENARIO_TO_ACRONYM,
   TAB_CONTENT_TESTID,
 } from "@/lib/constants";
@@ -25,19 +27,20 @@ test.describe("comparison slider", () => {
 
       type Keys = keyof typeof SCENARIO_TO_ACRONYM;
 
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
       const scenarioATitle =
-        SCENARIO_TO_ACRONYM[DEFAULT_SCENARIO as Keys] ?? DEFAULT_SCENARIO;
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+        SCENARIO_TO_ACRONYM[DEFAULT_SCENARIO] ?? DEFAULT_SCENARIO;
 
-      const scenarioBlabel =
-        "Current Policy + Avoid + Shift + Improve strategies";
+      const scenarioBlabel: Keys = "BAU";
 
-      const acronymB = SCENARIO_TO_ACRONYM[scenarioBlabel];
+      const acronymB =
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+        SCENARIO_TO_ACRONYM[scenarioBlabel] ?? scenarioBlabel;
 
       await changeScenariosInUI({
         page,
         scenarios: {
-          b: "Current Policy + Avoid + Shift + Improve strategies",
+          b: scenarioBlabel,
         },
       });
 
@@ -57,7 +60,7 @@ test.describe("comparison slider", () => {
 
       await changeDisplayInUI({
         page,
-        option: `${scenarioBlabel} (${acronymB}) only`,
+        option: `${scenarioBlabel} only`,
       });
 
       await testScreenshot({ page, target: graph });
