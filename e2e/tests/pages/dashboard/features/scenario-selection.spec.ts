@@ -6,6 +6,7 @@ import {
   RESET_LABEL,
   MOBILE_SETTINGS_BUTTON,
   SCENARIO_TO_ACRONYM,
+  DEFAULT_SCENARIO,
 } from "@/lib/constants";
 import { SCENARIOS_OPTIONS } from "@/lib/shared_with_backend/constants";
 import { test, expect } from "@playwright/test";
@@ -22,8 +23,8 @@ test.describe("scenario selection", () => {
     const mobileSettings = page
       .locator("button")
       .filter({ hasText: MOBILE_SETTINGS_BUTTON });
-    const scenarioA = SCENARIOS_OPTIONS[0];
-    const scenarioB = SCENARIOS_OPTIONS[1];
+    const scenarioA = DEFAULT_SCENARIO;
+    const scenarioB = SCENARIOS_OPTIONS[2];
     const acronymA = SCENARIO_TO_ACRONYM[scenarioA];
     const acronymB = SCENARIO_TO_ACRONYM[scenarioB];
 

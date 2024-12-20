@@ -48,8 +48,7 @@ export const DEFAULT_DISPLAY: (typeof DISPLAY_OPTIONS)[number] =
   SCENARIO_A_ONLY;
 export const DEFAULT_SORT: (typeof SORT_OPTIONS)[keyof typeof SORT_OPTIONS] =
   "group / alphabetical";
-export const DEFAULT_SCENARIO: (typeof SCENARIOS_OPTIONS)[number] =
-  "Example scenario (for illustration purpose only)";
+export const DEFAULT_SCENARIO: (typeof SCENARIOS_OPTIONS)[number] = "CPOL/A";
 export const DEFAULT_FROM = 2020;
 export const DEFAULT_TO = 2050;
 export const HEADER_HEIGHT = "72";
@@ -185,12 +184,17 @@ export const GRAPH_AXIS_COLOR = "hsl(223 0% 20%)";
 export const SCENARIO_TO_ACRONYM = {
   // "Additional Policy scenario": "APOL",
   // "Conservative scenario of Current Policies": "CPOL/B",
-  "Current Policy + Avoid + Shift + Improve strategies": "CPOL+ASI",
+  // "Current Policy + Avoid + Shift + Improve strategies": "CPOL+ASI",
   // "Current Policy + Avoid strategies": "CPOL+A",
   // "Current Policy + Improve strategies": "CPOL+I",
   // "Current Policy + Shift strategies": "CPOL+S",
   // "Optimistic scenario of Current Policies": "CPOL/A",
-  "Example scenario (for illustration purpose only)": undefined,
+  // "Example scenario (for illustration purpose only)": undefined,
+  "ALL/HIGH": undefined,
+  "CPOL/A": undefined,
+  "CPOL/B": undefined,
+  APOL: undefined,
+  BAU: undefined,
 } satisfies Record<(typeof PREDEFINED_SCENARIOS)[number], string | undefined>;
 export const EMBODIED_CARBON = "Embodied carbon (EC)";
 export const OPERATIONAL_CARBON = "Operational carbon (OC)";

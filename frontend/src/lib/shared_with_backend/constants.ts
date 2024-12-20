@@ -2,7 +2,7 @@ import type { Attribute, ValidOption } from "../types";
 
 /*
   /!\
-  Any variable in this file have a twin variable in the backend. Modifying anything here means modifying also the backend the variable with the same name in the share-with-frontend file
+  Any variable in this file has a twin variable in the backend. Modifying anything here means modifying also the backend the variable with the same name in the share-with-frontend file
   /!\
  */
 
@@ -31,20 +31,25 @@ type AttributesEnum = [
 export const ATTRIBUTES = Object.values(BREAKDOWN_BY_OBJ) as AttributesEnum;
 
 export const PREDEFINED_SCENARIOS = [
-  "Example scenario (for illustration purpose only)",
+  // "Example scenario (for illustration purpose only)",
   // "Optimistic scenario of Current Policies",
   // "Conservative scenario of Current Policies",
   // "Additional Policy scenario",
   // "Current Policy + Improve strategies",
   // "Current Policy + Shift strategies",
   // "Current Policy + Avoid strategies",
-  "Current Policy + Avoid + Shift + Improve strategies",
+  // "Current Policy + Avoid + Shift + Improve strategies",
+  "BAU",
+  "CPOL/A",
+  "CPOL/B",
+  "APOL",
+  "ALL/HIGH",
 ] as const;
 export type PredefinedScenario = (typeof PREDEFINED_SCENARIOS)[number];
 
 export const SCENARIOS_OPTIONS = [
   ...PREDEFINED_SCENARIOS,
-  "Custom scenario results",
+  // "Custom scenario results",
 ] as const;
 
 export const FILTERS_OBJ = {
@@ -67,10 +72,10 @@ export const DIVIDED_BY_NONE = "none (total)";
 
 export const DIVIDED_BY_OPTIONS = [
   DIVIDED_BY_NONE,
-  "m² (country)",
-  "m² (archetype)",
-  "capita (country)",
-  "capita (archetype)",
+  // "m² (country)",
+  // "m² (archetype)",
+  // "capita (country)",
+  // "capita (archetype)",
 ] as const;
 
 export const YEAR_KEY = "stock_projection_year";

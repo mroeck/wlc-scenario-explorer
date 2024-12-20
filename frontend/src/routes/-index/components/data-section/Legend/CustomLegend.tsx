@@ -67,10 +67,11 @@ export const CustomLegend = ({ payload, className }: CustomLegendProps) => {
   const groupedData = groupByCategory({ values: data });
   const hasCategory = Object.keys(groupedData).length > 0;
 
-  type Key = keyof typeof SCENARIO_TO_ACRONYM;
-  const labelA = SCENARIO_TO_ACRONYM[scenarioA as Key] || SCENARIO_A_LABEL;
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+  const labelA = SCENARIO_TO_ACRONYM[scenarioA] || SCENARIO_A_LABEL;
   const labelB = scenarioB
-    ? SCENARIO_TO_ACRONYM[scenarioB as Key] || SCENARIO_B_LABEL
+    ? // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+      SCENARIO_TO_ACRONYM[scenarioB] || SCENARIO_B_LABEL
     : NO_SCENARIO_SELECTED_LABEL;
 
   return (

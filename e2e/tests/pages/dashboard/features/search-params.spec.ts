@@ -40,6 +40,12 @@ test.describe("search params", () => {
   });
 
   test("uses dividedBy search param on mount", async ({ page }) => {
+    test.skip(
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+      DIVIDED_BY_OPTIONS.length < 2,
+      "temporary until we put back the dividedBy options",
+    );
+
     const dividedBySelect = page
       .getByTestId(SELECT_DIVIDED_BY_TESTID)
       .getByRole("combobox");

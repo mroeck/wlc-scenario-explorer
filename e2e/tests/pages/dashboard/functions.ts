@@ -4,7 +4,6 @@ import {
   SCENARIO_B_MENU_TESTID,
   SORT_SELECT_TESTID,
 } from "@/lib/constants";
-import type { PredefinedScenario } from "@/lib/shared_with_backend/constants";
 import { expect, type Page } from "@playwright/test";
 import type { RequireAtLeastOne } from "type-fest";
 import type { ScenarioOption } from "./types";

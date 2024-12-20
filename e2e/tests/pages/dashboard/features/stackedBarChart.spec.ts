@@ -8,6 +8,7 @@ import { test } from "@playwright/test";
 import { TAGS } from "@tests/constants";
 import { testScreenshot } from "@tests/functions";
 import { changeDisplayInUI, changeScenariosInUI } from "../functions";
+import { PREDEFINED_SCENARIOS } from "@/lib/shared_with_backend/constants";
 
 test.describe("stacked bar chart", () => {
   test.skip(({ isMobile }) => isMobile, "Desktop only!");
@@ -48,8 +49,8 @@ test.describe("stacked bar chart", () => {
     async ({ page }) => {
       type Scenarios = Parameters<typeof changeScenariosInUI>[0]["scenarios"];
       const scenarios: Scenarios = {
-        a: "Current Policy + Avoid + Shift + Improve strategies",
-        b: "Example scenario (for illustration purpose only)",
+        a: PREDEFINED_SCENARIOS[0],
+        b: PREDEFINED_SCENARIOS[1],
       } as const;
 
       await changeScenariosInUI({ page, scenarios });
