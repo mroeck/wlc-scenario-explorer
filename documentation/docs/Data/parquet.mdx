@@ -1,0 +1,67 @@
+import {
+  Table,
+  TableBody,
+  TableCaption,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@site/src/components/ui/table";
+
+# Parquet files
+
+## Data shape
+
+<Table>
+  <TableCaption>Core columns and their units [IN PROGRESS]</TableCaption>
+  <TableHeader>
+    <TableRow>
+      <TableHead className="w-[100px]">Column</TableHead>
+      <TableHead>Unit</TableHead>
+    </TableRow>
+  </TableHeader>
+  <TableBody>
+    <TableRow>
+      <TableCell className="font-medium">
+        <ul>
+          <li>ind_GWP_Tot</li>
+          <li>ind_GWP_Fos</li>
+          <li>ind_GWP_Bio</li>
+          <li>ind_GWP_LuLuc</li>
+        </ul>
+      </TableCell>
+      <TableCell className="font-medium">
+        Million Tonnes of carbon dioxide (MtCO2)
+      </TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell className="font-medium">
+        <ul>
+          <li>floor_area_country</li>
+          <li>floor_area_archetype</li>
+        </ul>
+      </TableCell>
+      <TableCell className="font-medium">m²</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell className="font-medium">amount_material</TableCell>
+      <TableCell className="font-medium">megaton (Mt)</TableCell>
+    </TableRow>
+  </TableBody>
+</Table>
+
+You can check `parquet.test.ts` file to know the expected distinct values and their types of each column.
+
+You can also open a parquet file with the [parquet explorer extension](https://marketplace.visualstudio.com/items?itemName=AdamViola.parquet-explorer) which will display the columns.
+
+## How to verify a parquet file follows the expected structure/values?
+
+Run the following command to run a unit test on a parquet file (filename hardcoded in the test)
+
+```bash
+cd frontend && pnpm run test:unit
+```
+
+If the test fails, the received and expected values will be displayed. You can then decide whether to update the expected values or adjust the Parquet file structure as needed.
+
+Currently, the unit tests are not included in the pipeline. This specific unit test is only relevant when receiving new Parquet files. For now, I run it manually whenever new Parquet files are provided.

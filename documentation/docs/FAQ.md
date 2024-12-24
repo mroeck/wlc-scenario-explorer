@@ -11,23 +11,6 @@ It uses duckdb under the hood to read the parquet files like the scenario explor
 - in rare cases an SQL query return different data based on if we use the extension or the scenario explorer duckdb instance directly
 
 
-## How to fix the error: Host system is missing dependencies to run browsers?
-
-use:
-
-```bash
-pnpm dlx playwright install
-```
-
-instead of:
-
-```bash
-pnpm playwright install
-# or
-pnpm exec playwright install
-```
-
-
 ## How to run the production app?
 
 Look at the dockerfiles prod stage.
