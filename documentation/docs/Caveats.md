@@ -43,3 +43,16 @@ Then we need to remove the column from ATTRIBUTE_OPTIONS_COLOR so the user can't
 :::warning
 The distinct values are case sensitive
 :::
+
+## e2e folder
+
+### Typescript
+
+TypeScript isn't configured properly, so we can't run typecheck to catch type errors in the e2e folder right now. It's not a big deal since this won't cause the pipeline to fail or block the app from building. However, the downside is that we might miss some type errors, such as unused imports.
+That said, we still get IntelliSense/red lines in VSCode.
+
+## Backend
+
+### Type safety
+
+Some type errors were ignored, and certain types were widened due to limited expertise and time with MyPy.

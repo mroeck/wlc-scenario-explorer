@@ -29,6 +29,10 @@ To run it on mobile:
 npm run e2e:dev:headed:mobile
 ```
 
+:::info
+Check all the `functions.ts` files, they contain utility functions for common UI actions such as changeScenariosInUI, changeDisplayInUI, and waitLoadingEnds.
+:::
+
 ## How to update the snapshots?
 
 In your root directory, run:
@@ -92,3 +96,20 @@ This will open the test-report generated inside the docker container.
 :::warning
 When you are done don't forget to put back the update snapshot command in the compose.yaml
 :::
+
+
+## How to fix the error: Host system is missing dependencies to run browsers?
+
+use:
+
+```bash
+pnpm dlx playwright install
+```
+
+instead of:
+
+```bash
+pnpm playwright install
+# or
+pnpm exec playwright install
+```

@@ -69,7 +69,8 @@ The minmax stacked are for stacked graphs (stacked area/bar) and the non stacked
   "minmax": {
     "nonStacked": { "max": 319.473, "min": 101.861 },
     "stacked": { "max": 439, "min": 356 }
-  }
+  },
+  "unit": "MtC02"
 }
 ```
 
