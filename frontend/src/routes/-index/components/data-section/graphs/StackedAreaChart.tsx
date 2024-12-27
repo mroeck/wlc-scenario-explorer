@@ -15,14 +15,17 @@ import {
   commonCartisianGridProps,
   commonChartProps,
   commonGraphElementProps,
+  commonStackedGraphElementProps,
   commonTooltipProps,
   commonXaxisProps,
   commonYaxisLabelProps,
   commonYaxisProps,
+  DOMAINS_QUERY_KEY,
 } from "../constants";
 import { PortalTooltip } from "../Tooltip/PortalTooltip";
 import type { GraphProps } from "./types";
 import {
+  DEFAULT_DOMAIN_ALL,
   GRAPH_AXIS_COLOR,
   PATTERN,
   ROUTES,
@@ -32,6 +35,13 @@ import { getRouteApi } from "@tanstack/react-router";
 import { HIGHLIGHT_OPACITY } from "./constants";
 import { Fragment } from "react/jsx-runtime";
 import { onElementClick } from "./utils";
+import { getNiceTickValues } from "recharts-scale";
+import {
+  useQuery,
+  useQueryClient,
+  type QueryClient,
+} from "@tanstack/react-query";
+import type { DomainAll } from "../types";
 
 type WantedProps = "strokeWidth" | "dataKey" | "isAnimationActive";
 
@@ -45,36 +55,145 @@ const route = getRouteApi(ROUTES.DASHBOARD);
 export const StackedAreaChart = ({
   animation,
   attributeOptions,
-  breakdownBy,
   chartRef,
   data,
   unit,
   highlights,
-  domain,
   scenarioId,
 }: GraphProps) => {
   const navigate = route.useNavigate();
-  const { display } = route.useSearch({
+  const {
+    display,
+    breakdownBy,
+    dividedBy,
+    filters,
+    indicator,
+    scenarioA,
+    scenarioB,
+  } = route.useSearch({
     select: (search) => ({
       display: search.display,
+      breakdownBy: search.breakdownBy,
+      dividedBy: search.dividedBy,
+      filters: search.filters,
+      indicator: search.indicator,
+      scenarioA: search.scenarioA,
+      scenarioB: search.scenarioB,
     }),
   });
+
+  const queryClient = useQueryClient();
+  const hash = {
+    breakdownBy,
+    dividedBy,
+    filters,
+    indicator,
+    scenarioA,
+    scenarioB,
+  };
+
+  const { data: domainsData } = useQuery({
+    queryKey: [DOMAINS_QUERY_KEY, hash],
+    initialData: DEFAULT_DOMAIN_ALL,
+    staleTime: Infinity,
+  });
+
+  const stackedAreaDomain = domainsData.stackedArea;
+
   const isSomethingHighlighted = !!highlights && highlights.length > 0;
   const needPattern = scenarioId === "B" && display === SCENARIO_A_AND_B;
+  const isAvsB = display === SCENARIO_A_AND_B;
+
+  type UpdateDomainArgs = {
+    graphType: "stackedArea" | "line";
+    newMin: number | null;
+    newMax: number | null;
+    queryClient: QueryClient;
+  };
+  const updateDomain = ({
+    graphType,
+    newMin,
+    newMax,
+    queryClient,
+  }: UpdateDomainArgs) => {
+    const id = (scenarioId ?? "A") as "A" | "B";
+
+    if (!stackedAreaDomain.update[id]) {
+      queryClient.setQueryData<DomainAll>([DOMAINS_QUERY_KEY, hash], (old) => {
+        const currentData = old ?? DEFAULT_DOMAIN_ALL;
+        const minValues = [currentData[graphType].min, newMin].filter(
+          (item) => item != null,
+        );
+        const maxValues = [currentData[graphType].max, newMax].filter(
+          (item) => item != null,
+        );
+
+        return {
+          ...currentData,
+          [graphType]: {
+            min: minValues.length > 0 ? Math.min(...minValues) : null,
+            max: maxValues.length > 0 ? Math.max(...maxValues) : null,
+            update: {
+              ...currentData[graphType].update,
+              [id]: true,
+            },
+          },
+        };
+      });
+    }
+  };
+
+  type GetDomainArg = number;
+  const getDomainMin = (dataMin: GetDomainArg) => {
+    updateDomain({
+      graphType: "stackedArea",
+      newMin: dataMin,
+      newMax: null,
+      queryClient,
+    });
+
+    return stackedAreaDomain.min ?? dataMin;
+  };
+
+  const getDomainMax = (dataMax: GetDomainArg) => {
+    updateDomain({
+      graphType: "stackedArea",
+      newMin: null,
+      newMax: dataMax,
+      queryClient,
+    });
+
+    return stackedAreaDomain.max ?? dataMax;
+  };
+
+  type GetFinalDomainArg = [number, number];
+  const getDomain = ([dataMin, dataMax]: GetFinalDomainArg) => {
+    const domainRaw = [getDomainMin(dataMin), getDomainMax(dataMax)] satisfies [
+      number,
+      number,
+    ];
+    const { tickCount } = commonYaxisProps;
+    const tickValues = getNiceTickValues(domainRaw, commonYaxisProps.tickCount);
+
+    const domain = [tickValues[0], tickValues[tickCount - 1]] satisfies [
+      number,
+      number,
+    ];
+
+    return domain;
+  };
 
   return (
     <ResponsiveContainer width="100%" height="100%" ref={chartRef}>
-      <AreaChart {...commonChartProps} data={data}>
+      <AreaChart {...commonChartProps} data={data} stackOffset="sign">
         <CartesianGrid {...commonCartisianGridProps} />
         <XAxis {...commonXaxisProps} />
-        <YAxis {...commonYaxisProps} domain={domain} allowDataOverflow>
+        <YAxis {...commonYaxisProps} domain={isAvsB ? getDomain : undefined}>
           <Label value={unit} {...commonYaxisLabelProps} />
         </YAxis>
-        {attributeOptions.map((option, index) => {
+        {attributeOptions.map((option) => {
           const areaColor = getColor({ breakdownBy, option });
           const isHighlight = !!highlights && highlights.includes(option);
-          const isRigthAfterHighlight =
-            !!highlights && highlights.includes(attributeOptions[index + 1]);
 
           const opacity =
             isSomethingHighlighted && !isHighlight
@@ -109,17 +228,12 @@ export const StackedAreaChart = ({
               </defs>
               <Area
                 {...commonGraphElementProps}
+                {...commonStackedGraphElementProps}
                 {...commonAreaProps}
                 key={`${option}A`}
-                stroke={
-                  isHighlight || isRigthAfterHighlight
-                    ? GRAPH_AXIS_COLOR
-                    : areaColor
-                }
-                strokeWidth={
-                  isHighlight || isRigthAfterHighlight ? 1 : undefined
-                }
-                strokeOpacity={isRigthAfterHighlight ? undefined : opacity}
+                stroke={isHighlight ? GRAPH_AXIS_COLOR : areaColor}
+                strokeWidth={isHighlight ? 1 : undefined}
+                strokeOpacity={opacity}
                 fill={`url(#${id})`}
                 fillOpacity={opacity}
               />
@@ -151,6 +265,7 @@ export const StackedAreaChart = ({
           return (
             <Area
               {...commonGraphElementProps}
+              {...commonStackedGraphElementProps}
               {...commonAreaProps}
               key={`${option}B`}
               type="monotone"

@@ -32,12 +32,12 @@ export const commonXaxisProps: XAxisProps = {
   tick: { fontSize: GRAPH_FONT_SIZE },
 };
 
-export const commonYaxisProps: YAxisProps = {
+export const commonYaxisProps = {
   tickFormatter,
   tickCount: 4,
   stroke: GRAPH_AXIS_COLOR,
   tick: { fontSize: GRAPH_FONT_SIZE },
-};
+} as const satisfies YAxisProps;
 
 export const commonYaxisLabelProps: LabelProps = {
   angle: -90,
@@ -51,8 +51,12 @@ export const commonGraphElementProps = {
   strokeWidth: 0.5,
   strokeOpacity: 0.75,
   fillOpacity: 0.75,
-  stackId: "1",
   className: "hover:cursor-pointer",
 };
 
+export const commonStackedGraphElementProps = {
+  stackId: "1",
+};
+
 export const SCENARIO_QUERY_KEY = "scenarioRowsAggregated";
+export const DOMAINS_QUERY_KEY = "DOMAINS_QUERY_KEY";

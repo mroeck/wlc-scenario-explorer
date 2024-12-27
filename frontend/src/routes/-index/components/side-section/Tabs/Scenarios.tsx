@@ -228,13 +228,19 @@ export const Scenarios = () => {
                 <ScenarioParameters />
               </div>
             </div>
+            <div></div>
             <FormField
               control={form.control}
               name="scenarioB"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel className="flex items-center gap-2 font-medium">
-                    <span>Compare with:</span>
+                    <div className="flex flex-col">
+                      <span>Select another scenario:</span>
+                      <span className="text-sm font-normal italic text-gray-800">
+                        (for comparison)
+                      </span>
+                    </div>
                     <InfoButton>
                       <p>
                         Select a second predefined scenario to compare with your

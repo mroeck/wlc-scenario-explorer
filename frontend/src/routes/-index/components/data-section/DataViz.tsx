@@ -16,6 +16,7 @@ import {
   SCENARIO_TO_ACRONYM,
   SCENARIO_A_LABEL,
   SCENARIO_B_LABEL,
+  DEFAULT_DOMAIN_ALL,
 } from "@/lib/constants";
 import { useQuery } from "@tanstack/react-query";
 import { fetchScenarioRowsAggregated } from "@/lib/queries";
@@ -39,7 +40,7 @@ import { useCallback, useState } from "react";
 import { ComparisonSlider } from "./ComparisonSlider";
 import { GraphWrapper } from "./graphs/GraphWrapper";
 import type { GraphDomain, Unit, UnitMinified } from "./types";
-import { SCENARIO_QUERY_KEY } from "./constants";
+import { DOMAINS_QUERY_KEY, SCENARIO_QUERY_KEY } from "./constants";
 import { getDomainAll } from "./utils";
 import type { ValueOf } from "type-fest";
 import type { ScenarioSchema } from "@/lib/shared_with_backend/schemas";
@@ -216,6 +217,7 @@ export const DataViz = () => {
       dataTab: search.dataTab,
     }),
   });
+
   const unit =
     // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     dividedBy === DIVIDED_BY_NONE
@@ -259,6 +261,13 @@ export const DataViz = () => {
   } = useQuery({
     queryKey: [SCENARIO_QUERY_KEY, { ...commonKeys, scenario: scenarioB }],
     queryFn: () => fetchScenarioData(scenarioB),
+    staleTime: Infinity,
+  });
+
+  useQuery({
+    queryKey: [DOMAINS_QUERY_KEY, { ...commonKeys, scenarioA, scenarioB }],
+    queryFn: () => DEFAULT_DOMAIN_ALL,
+    initialData: DEFAULT_DOMAIN_ALL,
     staleTime: Infinity,
   });
 

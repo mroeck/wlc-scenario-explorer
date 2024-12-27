@@ -12,7 +12,10 @@ export const env = createEnv({
   client: {
     PUBLIC_API_URL: z.string().min(1),
     PUBLIC_NODE_ENV: z.enum(["production", "development", "test"]),
-    PUBLIC_DEBUG: z.boolean().optional(),
+    PUBLIC_DEBUG: z
+      .enum(["true", "false"])
+      .transform((value) => value === "true")
+      .optional(),
     PUBLIC_CI: z.literal("true").optional(),
     PUBLIC_DATA_PATH: z.string().min(1).optional(),
   },

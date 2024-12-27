@@ -159,7 +159,7 @@ type OrderedAttributes =
   | "Building subtype"
   | "Element Class"
   | "country"
-  | "Whole life cycle modules";
+  | "Life cycle stages";
 
 type TupleWithAsManyItemsAsGeneric<T> = ReadonlyTuple<
   keyof T,
@@ -196,7 +196,7 @@ export const ATTRIBUTE_OPTIONS_ORDER: AttributeOptionsOrder = {
     ...CATEGORIES.Mediterranean,
     ...CATEGORIES.Continental,
   ],
-  "Whole life cycle modules": [
+  "Life cycle stages": [
     ...CATEGORIES[OPERATIONAL_CARBON],
     ...CATEGORIES[EMBODIED_CARBON],
   ],
@@ -206,7 +206,7 @@ const ORDERED_ATTRIBUTES: OrderedAttributes[] = [
   "country",
   "Building subtype",
   "Element Class",
-  "Whole life cycle modules",
+  "Life cycle stages",
 ] as const satisfies Attribute[];
 
 type GetAttributeOptionsOrderArgs = {
@@ -221,7 +221,11 @@ export const getAttributeOptionsOrdered = ({
     const breakdownByTyped = breakdownBy as OrderedAttributes;
     const optionsOrdered = ATTRIBUTE_OPTIONS_ORDER[breakdownByTyped];
 
-    return optionsOrdered.filter((option) => defaultOptions.includes(option));
+    const result = optionsOrdered.filter((option) =>
+      defaultOptions.includes(option),
+    );
+
+    return result;
   } else {
     return defaultOptions;
   }

@@ -13,6 +13,7 @@ import { testPageScreenshot, waitLoadingEnds } from "@tests/functions";
 test.describe("dashboard", () => {
   test.beforeEach(async ({ page }) => {
     await page.goto(ROUTES.DASHBOARD + "?animation=false");
+    await waitLoadingEnds({ page });
   });
 
   test("has tab title and data header", async ({ page }) => {
@@ -30,9 +31,7 @@ test.describe("dashboard", () => {
         timeout: 5_000,
       });
       const unit = UNITS_FROM_BACKEND[DEFAULT_INDICATOR][DEFAULT_DIVIDED_BY];
-      await expect(
-        page.getByTestId(CHART_TESTID).getByText(unit).nth(1),
-      ).toBeVisible({
+      await expect(page.getByTestId(CHART_TESTID).getByText(unit)).toBeVisible({
         timeout: 10_000,
       });
       await testPageScreenshot({ page });

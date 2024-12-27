@@ -15,6 +15,7 @@ import {
   commonCartisianGridProps,
   commonChartProps,
   commonGraphElementProps,
+  commonStackedGraphElementProps,
   commonTooltipProps,
   commonXaxisProps,
   commonYaxisLabelProps,
@@ -56,7 +57,6 @@ export const StackedBarChart = ({
   dataB,
   unit,
   highlights,
-  domain,
 }: StackedBarChartProps) => {
   const navigate = route.useNavigate();
   const { display } = route.useSearch({
@@ -101,10 +101,10 @@ export const StackedBarChart = ({
 
   return (
     <ResponsiveContainer width="100%" height="100%" ref={chartRef}>
-      <BarChart {...commonChartProps} data={finalData}>
+      <BarChart {...commonChartProps} data={finalData} stackOffset="sign">
         <CartesianGrid {...commonCartisianGridProps} />
 
-        <YAxis {...commonYaxisProps} domain={domain} allowDataOverflow>
+        <YAxis {...commonYaxisProps}>
           <Label value={unit} {...commonYaxisLabelProps} />
         </YAxis>
         {COLUMNS_TYPE.map((type, index) => {
@@ -142,6 +142,7 @@ export const StackedBarChart = ({
                 </defs>
                 <Bar
                   {...commonGraphElementProps}
+                  {...commonStackedGraphElementProps}
                   type="monotone"
                   dataKey={dataKey}
                   stackId={type}
