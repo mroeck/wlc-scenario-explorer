@@ -6,6 +6,7 @@ import {
   type SCENARIOS_OPTIONS,
 } from "./shared_with_backend/constants";
 import type { Attribute, Indicator, DividedBy } from "./types";
+import type { DomainAll } from "@/routes/-index/components/data-section/types";
 
 export const MOBILE_SETTINGS_BUTTON = "Scenarios and Filters";
 export const RESET_LABEL = "Reset";
@@ -95,8 +96,8 @@ export const BREAKDOWN_BY_ORDER = [
   "element class",
   "material class",
   "building stock activity",
-  "lca stages",
-  "whole life cycle modules",
+  "life cycle stages",
+  "life cycle modules",
   "none",
 ] as const satisfies readonly BreakdownByOrderItem[];
 
@@ -208,3 +209,21 @@ export const PATTERN = {
 } as const;
 export const DEFAULT_UNIT_MINIMIZED =
   UNITS_FROM_BACKEND[DEFAULT_INDICATOR][DEFAULT_DIVIDED_BY];
+export const DEFAULT_DOMAIN_ALL: DomainAll = {
+  line: {
+    max: null,
+    min: null,
+    update: {
+      A: false,
+      B: false,
+    },
+  },
+  stackedArea: {
+    max: null,
+    min: null,
+    update: {
+      A: false,
+      B: false,
+    },
+  },
+};

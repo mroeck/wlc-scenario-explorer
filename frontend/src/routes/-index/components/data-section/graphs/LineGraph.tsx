@@ -19,39 +19,171 @@ import {
   commonXaxisProps,
   commonYaxisLabelProps,
   commonYaxisProps,
+  DOMAINS_QUERY_KEY,
 } from "../constants";
 import { PortalTooltip } from "../Tooltip/PortalTooltip";
 import type { GraphProps } from "./types";
 import { getRouteApi } from "@tanstack/react-router";
-import { GRAPH_AXIS_COLOR, ROUTES } from "@/lib/constants";
+import {
+  DEFAULT_DOMAIN_ALL,
+  GRAPH_AXIS_COLOR,
+  ROUTES,
+  SCENARIO_A_AND_B,
+} from "@/lib/constants";
 import { HIGHLIGHT_OPACITY } from "./constants";
 import { onElementClick } from "./utils";
+import { getNiceTickValues } from "recharts-scale";
+import {
+  useQuery,
+  useQueryClient,
+  type QueryClient,
+} from "@tanstack/react-query";
+import type { DomainAll } from "../types";
 
 const route = getRouteApi(ROUTES.DASHBOARD);
 
 export const LineGraph = ({
   animation,
   attributeOptions,
-  breakdownBy,
   chartRef,
   data,
   unit,
   highlights,
-  domain,
   scenarioId,
 }: GraphProps) => {
   const navigate = route.useNavigate();
+  const {
+    display,
+    breakdownBy,
+    dividedBy,
+    filters,
+    indicator,
+    scenarioA,
+    scenarioB,
+  } = route.useSearch({
+    select: (search) => ({
+      display: search.display,
+      breakdownBy: search.breakdownBy,
+      dividedBy: search.dividedBy,
+      filters: search.filters,
+      indicator: search.indicator,
+      scenarioA: search.scenarioA,
+      scenarioB: search.scenarioB,
+    }),
+  });
+
   const isSomethingHighlighted = !!highlights && highlights.length > 0;
   const isScenarioB = scenarioId === "B";
+  const isAvsB = display === SCENARIO_A_AND_B;
+
+  const queryClient = useQueryClient();
+  const hash = {
+    breakdownBy,
+    dividedBy,
+    filters,
+    indicator,
+    scenarioA,
+    scenarioB,
+  };
+
+  const { data: domainsData } = useQuery({
+    queryKey: [DOMAINS_QUERY_KEY, hash],
+    initialData: DEFAULT_DOMAIN_ALL,
+    staleTime: Infinity,
+  });
+
+  const lineGraphDomain = domainsData.line;
+
+  type UpdateDomainArgs = {
+    graphType: "stackedArea" | "line";
+    newMin: number | null;
+    newMax: number | null;
+    queryClient: QueryClient;
+  };
+  const updateDomain = ({
+    graphType,
+    newMin,
+    newMax,
+    queryClient,
+  }: UpdateDomainArgs) => {
+    const id = (scenarioId ?? "A") as "A" | "B";
+
+    if (!lineGraphDomain.update[id]) {
+      queryClient.setQueryData<DomainAll>([DOMAINS_QUERY_KEY, hash], (old) => {
+        const currentData = old ?? DEFAULT_DOMAIN_ALL;
+        const minValues = [currentData[graphType].min, newMin].filter(
+          (item) => item != null,
+        );
+        const maxValues = [currentData[graphType].max, newMax].filter(
+          (item) => item != null,
+        );
+
+        return {
+          ...currentData,
+          [graphType]: {
+            min: minValues.length > 0 ? Math.min(...minValues) : null,
+            max: maxValues.length > 0 ? Math.max(...maxValues) : null,
+            update: {
+              ...currentData[graphType].update,
+              [id]: true,
+            },
+          },
+        };
+      });
+    }
+  };
+
+  type GetDomainArg = number;
+  const getDomainMin = (dataMin: GetDomainArg) => {
+    updateDomain({
+      graphType: "line",
+      newMin: dataMin,
+      newMax: null,
+      queryClient,
+    });
+
+    return lineGraphDomain.min ?? dataMin;
+  };
+
+  const getDomainMax = (dataMax: GetDomainArg) => {
+    updateDomain({
+      graphType: "line",
+      newMin: null,
+      newMax: dataMax,
+      queryClient,
+    });
+
+    return lineGraphDomain.max ?? dataMax;
+  };
+
+  type GetFinalDomainArg = [number, number];
+  const getDomain = ([dataMin, dataMax]: GetFinalDomainArg) => {
+    const domainRaw = [getDomainMin(dataMin), getDomainMax(dataMax)] satisfies [
+      number,
+      number,
+    ];
+    const { tickCount } = commonYaxisProps;
+    const tickValues = getNiceTickValues(domainRaw, commonYaxisProps.tickCount);
+
+    const domain = [tickValues[0], tickValues[tickCount - 1]] satisfies [
+      number,
+      number,
+    ];
+
+    return domain;
+  };
+
+  const domain = isAvsB ? getDomain : undefined;
 
   return (
     <ResponsiveContainer width="100%" height="100%" ref={chartRef}>
-      <LineChart {...commonChartProps} data={data}>
+      <LineChart {...commonChartProps} data={data} stackOffset="sign">
         <CartesianGrid {...commonCartisianGridProps} />
         <XAxis {...commonXaxisProps} />
-        <YAxis {...commonYaxisProps} domain={domain} allowDataOverflow>
+        <YAxis {...commonYaxisProps} domain={domain}>
           <Label value={unit} {...commonYaxisLabelProps} />
         </YAxis>
+
         {attributeOptions.map((option) => {
           const areaColor = getColor({ breakdownBy, option });
 

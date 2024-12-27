@@ -51,8 +51,8 @@ const formSchema = z.object({
   "Material Class": SelectOptionArraySchema,
   Region: SelectOptionArraySchema,
   "building stock activity": SelectOptionArraySchema,
-  "Whole life cycle modules": SelectOptionArraySchema,
-  "LCA stages": SelectOptionArraySchema,
+  "Life cycle stages": SelectOptionArraySchema,
+  "Life cycle modules": SelectOptionArraySchema,
   From: YearSchema.transform((number) => number.toString()),
   To: YearSchema.transform((number) => number.toString()),
 } satisfies Record<(typeof FILTERS)[number], z.ZodType>);
@@ -144,8 +144,8 @@ const defaultValues: DefaultValues = {
   "Material Class": [],
   Region: [],
   "building stock activity": [],
-  "Whole life cycle modules": [],
-  "LCA stages": [],
+  "Life cycle stages": [],
+  "Life cycle modules": [],
   From: "2020",
   To: "2050",
 };

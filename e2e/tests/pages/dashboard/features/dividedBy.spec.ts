@@ -39,8 +39,7 @@ test.describe("dividedBy", () => {
         const graphYaxisUnitText = unit;
         const graphYaxisUnit = page
           .getByTestId(CHART_TESTID)
-          .getByText(graphYaxisUnitText)
-          .nth(1);
+          .getByText(graphYaxisUnitText);
         const dividedByInTitle = page.getByTestId(
           GRAPH_TITLE_DIVIDED_BY_TESTID,
         );

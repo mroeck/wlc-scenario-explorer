@@ -14,8 +14,8 @@ const COMMON_IN_FILTERS_AND_BREAKDOWN = {
   material: "Material Class",
   Region: "Region",
   activityType: "building stock activity",
-  carbonCategory: "Whole life cycle modules",
-  lcaStages: "LCA stages",
+  carbonCategory: "Life cycle stages",
+  lcaStages: "Life cycle modules",
 } as const;
 
 export const NONE = "None";
@@ -107,16 +107,6 @@ export const API_ROUTES = {
 };
 
 export const ATTRIBUTE_OPTIONS_COLOR = {
-  // "flow type": {
-  //   "Energy in": "#5FB8CE",
-  //   MATERIAL_IN: "#5BB89F",
-  //   MATERIAL_LOSS_IN: "#56B770",
-  //   MATERIAL_LOSS_OUT: "#ABD561",
-  //   MATERIAL_OUT: "#FFF352",
-  //   PROCESS: "#FCC74B",
-  //   TRANSPORT_EOL: "#F99B43",
-  //   TRANSPORT_TO_SITE: "#E34542",
-  // },
   "Element Class": {
     "External openings": "#882929",
     "Internal openings": "#C73B3B",
@@ -193,7 +183,6 @@ export const ATTRIBUTE_OPTIONS_COLOR = {
     Process: "#E4739E",
     Sand: "#C352A7",
     Steel: "#A131AF",
-    Undefined: "#863699",
     Wood: "#6B3A83",
   },
   Region: {
@@ -207,14 +196,14 @@ export const ATTRIBUTE_OPTIONS_COLOR = {
     "New buildings": "#3ABB5C",
     Refurbishment: "#EE854A",
   },
-  "Whole life cycle modules": {
+  "Life cycle stages": {
     "Construction embodied carbon": "#377399",
     "Renovation embodied carbon": "#3C7FA8",
     "Use phase embodied carbon": "#428CB9",
     "Demolition embodied carbon": "#499ACC",
     "Use phase operational carbon": "#3ABB5C",
   },
-  "LCA stages": {
+  "Life cycle modules": {
     "A1-3": "#3ABB5C",
     A4: "#2D5F7E",
     A5: "#499ACC",

@@ -21,3 +21,4 @@ export type Sort = z.infer<typeof SortSchema>;
 export type ValidValues = Partial<typeof EXPECTED_VALUES>;
 export type ValidColumn = keyof ValidValues;
 export type ValidOption = TupleToUnion<ValidValues[ValidColumn]>;
+export type ScenarioId = "A" | "B";

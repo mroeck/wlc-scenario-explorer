@@ -42,8 +42,8 @@ class AttributeEnumSchema(str, Enum):
     MATERIAL_NAME_JRC_CDW = "Material Class"
     ACTIVITY_IN_OUT = "flow type"
     STOCK_ACTIVITY_TYPE_NAME = "building stock activity"
-    CARBON_CATEGORY = "Whole life cycle modules"
-    LCA_STAGES = "LCA stages"
+    CARBON_CATEGORY = "Life cycle stages"
+    LCA_STAGES = "Life cycle modules"
     NONE = "None"
 
 
@@ -119,8 +119,8 @@ class FilterFrontEnumSchema(str, Enum):
     ACTIVITY_IN_OUT = "flow type"
     REGION = "Region"
     STOCK_ACTIVITY_TYPE_NAME = "building stock activity"
-    CARBON_CATEGORY = "Whole life cycle modules"
-    LCA_STAGES = "LCA stages"
+    CARBON_CATEGORY = "Life cycle stages"
+    LCA_STAGES = "Life cycle modules"
 
 
 FILTER_TO_DB_COLUMN: Dict[str, str] = {

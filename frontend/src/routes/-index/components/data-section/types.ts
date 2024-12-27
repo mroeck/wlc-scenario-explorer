@@ -10,3 +10,17 @@ export type Unit =
 export type UnitMinified = string;
 
 export type GraphDomain = [number, number];
+
+export type Domain = {
+  max: null | number;
+  min: null | number;
+  update: {
+    A: boolean;
+    B: boolean;
+  };
+};
+
+export type DomainAll = {
+  line: Domain;
+  stackedArea: Domain;
+};

@@ -92,7 +92,7 @@ test.describe("data viz", () => {
     const indicator2 = INDICATORS_UNITS[1];
     const graph = page.locator(ACTIVE_DATA_TAB_LOCATOR);
 
-    await expect(graph.getByText(indicator1).nth(1)).toBeVisible();
+    await expect(graph.getByText(indicator1)).toBeVisible();
 
     await indicatorSelect.click();
     await indicatorOption.click();
