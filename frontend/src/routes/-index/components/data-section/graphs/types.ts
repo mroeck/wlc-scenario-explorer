@@ -2,7 +2,7 @@ import type {
   AnimationSchema,
   ScenarioRowsAggregatedArraySchema,
 } from "@/lib/schemas";
-import type { Attribute } from "@/lib/types";
+import type { Attribute, ScenarioId } from "@/lib/types";
 import type { z } from "zod";
 import type { GraphDomain, UnitMinified } from "../types";
 import type { KeysOfUnion, ValueOf } from "type-fest";
@@ -21,5 +21,5 @@ export type GraphProps = {
   unit: UnitMinified;
   highlights: BreakdownByOptions[] | undefined;
   domain: GraphDomain | undefined;
-  scenarioId?: string;
+  scenarioId?: ScenarioId;
 };

@@ -30,7 +30,7 @@ export function TableOfContents({
   };
 
   return (
-    <div>
+    <div className="pl-2 sm:pl-0">
       <div className="pb-5">
         <TypographyH3>Table of Contents</TypographyH3>
       </div>

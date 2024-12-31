@@ -1,10 +1,16 @@
 import { lazy } from "react";
-import { RouterProvider, createRouter } from "@tanstack/react-router";
+import {
+  NotFoundRoute,
+  RouterProvider,
+  createRouter,
+} from "@tanstack/react-router";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import "./App.css";
 
 import { routeTree } from "./routeTree.gen";
 import { env } from "./env";
+import { NotFound } from "./components/NotFound";
+import { Route as rootRoute } from "./routes/__root";
 
 const ReactQueryDevtools = env.PUBLIC_DEBUG
   ? lazy(() =>
@@ -16,8 +22,14 @@ const ReactQueryDevtools = env.PUBLIC_DEBUG
 
 const queryClient = new QueryClient();
 
+const notFoundRoute = new NotFoundRoute({
+  getParentRoute: () => rootRoute,
+  component: () => <NotFound />,
+});
+
 const router = createRouter({
   routeTree,
+  notFoundRoute,
   context: {
     queryClient,
   },

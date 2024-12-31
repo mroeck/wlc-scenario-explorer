@@ -34,7 +34,7 @@ import { NoDataFound } from "@/components/NoDataFound";
 import { StackedBarChart } from "./graphs/StackedBarChart";
 import { DataTable } from "./DataTable";
 import { SettingsDrawer } from "./SettingsDrawer";
-import type { Attribute, Scenario } from "@/lib/types";
+import type { Attribute, Scenario, ScenarioId } from "@/lib/types";
 import { LineGraph } from "./graphs/LineGraph";
 import { useCallback, useState } from "react";
 import { ComparisonSlider } from "./ComparisonSlider";
@@ -64,7 +64,7 @@ type ContentProps = {
   unit: UnitMinified;
   breakdownBy: Attribute;
   domain: GraphDomain | undefined;
-  scenarioId?: string;
+  scenarioId?: ScenarioId;
 };
 
 type CreateTabArgs = {
@@ -217,7 +217,6 @@ export const DataViz = () => {
       dataTab: search.dataTab,
     }),
   });
-
   const unit =
     // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     dividedBy === DIVIDED_BY_NONE
@@ -407,6 +406,7 @@ export const DataViz = () => {
                         unit: unitMinified,
                         domain,
                         breakdownBy,
+                        scenarioId: "A",
                       }),
                     },
                     {

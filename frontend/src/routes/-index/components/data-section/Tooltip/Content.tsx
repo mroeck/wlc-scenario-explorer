@@ -150,7 +150,6 @@ export const Content = ({ label, unit, data, breakdownBy }: ContentProps) => {
     : SCENARIO_B_ACRONYM;
 
   const finalData = areDataMerged ? restructureData({ data }) : data;
-
   const hasGridOverflow = finalData.length > MAX_ROWS;
 
   return (
@@ -209,7 +208,6 @@ export const Content = ({ label, unit, data, breakdownBy }: ContentProps) => {
                 const value = item.value as number;
                 const name = getValueLabel({ value: item.name as string });
                 const percentage = totalValue ? (value / totalValue) * 100 : 0;
-
                 return {
                   name,
                   value,
@@ -226,9 +224,10 @@ export const Content = ({ label, unit, data, breakdownBy }: ContentProps) => {
                 const percentageB = scenarioBTotal
                   ? (scenarioBValue / scenarioBTotal) * 100
                   : 0;
+                const name = getValueLabel({ value: item.name as string });
 
                 return {
-                  name: item.name,
+                  name: name,
                   scenarioAValue,
                   scenarioBValue,
                   percentageA,
@@ -240,7 +239,7 @@ export const Content = ({ label, unit, data, breakdownBy }: ContentProps) => {
             .map((item) => {
               if (item.name === "Undefined") return null;
 
-              const value = LABEL_TO_VALUE[item.name as string];
+              const value = LABEL_TO_VALUE[item.name] ?? item.name;
               const isHighlight = !!highlights && highlights.includes(value);
               const isOneScenario = item.percentage != null;
 

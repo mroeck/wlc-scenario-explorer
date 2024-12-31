@@ -7,12 +7,12 @@ import {
 } from "./shared_with_backend/constants";
 import type { Attribute, Indicator, DividedBy } from "./types";
 import type { DomainAll } from "@/routes/-index/components/data-section/types";
+import { env } from "../env";
 
 export const MOBILE_SETTINGS_BUTTON = "Scenarios and Filters";
 export const RESET_LABEL = "Reset";
 export const PROD = "production";
 export const DEV = "development";
-export const TEST = "test";
 export const PROJECT_NAME = "GHG Emissions of EU Building Stock Scenarios";
 
 export const DEFAULT_FILTERS = undefined;
@@ -142,7 +142,7 @@ export const DEFAULT_SEARCH_PARAMS = {
 };
 export const LINKS = {
   doi: "https://doi.org/10.5281/zenodo.13315281",
-  explorerWebsite: "https://ae-scenario-explorer.cloud.set.kuleuven.be",
+  explorerWebsite: `https://${env.PUBLIC_HOSTNAME}`,
   study: {
     wholeLifeCarbon: "https://c.ramboll.com/whole-life-carbon-reduction",
     lifeCycleGreenhouse:
@@ -227,3 +227,14 @@ export const DEFAULT_DOMAIN_ALL: DomainAll = {
     },
   },
 };
+
+export const DEFAULT_DASHBOARD_SEARCH = {
+  breakdownBy: DEFAULT_BREAKDOWN_BY,
+  display: DEFAULT_DISPLAY,
+  scenarioA: DEFAULT_SCENARIO,
+  indicator: DEFAULT_INDICATOR,
+  dividedBy: DEFAULT_DIVIDED_BY,
+  dataTab: DEFAULT_DATA_TAB,
+  settingsTab: DEFAULT_SETTINGS_TAB,
+  sort: DEFAULT_SORT,
+} as const;

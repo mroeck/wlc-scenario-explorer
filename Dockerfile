@@ -9,6 +9,9 @@ RUN npm ci
 WORKDIR /app/frontend/src/lib
 COPY ./frontend/src/lib .
 
+WORKDIR /app/frontend/src
+COPY ./frontend/src/env.ts .
+
 WORKDIR /app/frontend/
 COPY ./frontend/package.json .
 RUN npm install -g pnpm@9.4.0 && pnpm install
