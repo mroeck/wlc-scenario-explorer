@@ -1,6 +1,18 @@
 import { createEnv } from "@t3-oss/env-core";
 import { z } from "zod";
-import { TEST } from "./lib/constants";
+
+// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+const envProvider = import.meta.env
+  ? import.meta.env
+  : {
+      VITE_NODE_ENV: "test",
+      VITE_API_URL: "",
+      VITE_DATA_PATH: "",
+      CI: "true",
+      MODE: "",
+      VITE_DEBUG: undefined,
+      VITE_HOSTNAME: undefined,
+    };
 
 export const env = createEnv({
   /**
@@ -18,6 +30,10 @@ export const env = createEnv({
       .optional(),
     PUBLIC_CI: z.literal("true").optional(),
     PUBLIC_DATA_PATH: z.string().min(1).optional(),
+    PUBLIC_HOSTNAME: z
+      .string()
+      .url()
+      .catch("ae-scenario-explorer.cloud.set.kuleuven.be"),
   },
 
   /**
@@ -26,15 +42,15 @@ export const env = createEnv({
    */
   runtimeEnv: {
     PUBLIC_API_URL:
-      import.meta.env.VITE_NODE_ENV === TEST
+      envProvider.VITE_NODE_ENV === "test"
         ? "http://localhost:8081"
-        : (import.meta.env.VITE_API_URL as string | undefined) ?? "/api",
+        : (envProvider.VITE_API_URL as string | undefined) ?? "/api",
     PUBLIC_NODE_ENV:
-      (import.meta.env.VITE_NODE_ENV as string | undefined) ??
-      import.meta.env.MODE,
-    PUBLIC_DEBUG: import.meta.env.VITE_DEBUG as string | undefined,
-    PUBLIC_CI: import.meta.env.CI as string,
-    PUBLIC_DATA_PATH: import.meta.env.VITE_DATA_PATH as string | undefined,
+      (envProvider.VITE_NODE_ENV as string | undefined) ?? envProvider.MODE,
+    PUBLIC_DEBUG: envProvider.VITE_DEBUG as string | undefined,
+    PUBLIC_CI: envProvider.CI as string,
+    PUBLIC_DATA_PATH: envProvider.VITE_DATA_PATH as string | undefined,
+    PUBLIC_HOSTNAME: envProvider.VITE_HOSTNAME as string | undefined,
   },
 
   /**

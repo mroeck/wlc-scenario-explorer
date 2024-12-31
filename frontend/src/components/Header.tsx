@@ -1,14 +1,7 @@
 import {
-  DEFAULT_BREAKDOWN_BY,
-  DEFAULT_DISPLAY,
-  DEFAULT_SCENARIO,
-  DEFAULT_INDICATOR,
   PROJECT_NAME,
   ROUTES,
-  DEFAULT_DIVIDED_BY,
-  DEFAULT_DATA_TAB,
-  DEFAULT_SETTINGS_TAB,
-  DEFAULT_SORT,
+  DEFAULT_DASHBOARD_SEARCH,
 } from "@/lib/constants";
 import { cn } from "@/lib/utils";
 import {
@@ -20,17 +13,6 @@ import {
 import { Drawer, DrawerClose, DrawerContent, DrawerTrigger } from "./ui/drawer";
 import { Menu } from "lucide-react";
 import PROJECT_LOGO_URL from "@/assets/PROJECT_LOGO.webp";
-
-const DEFAULT_DASHBOARD_SEARCH = {
-  breakdownBy: DEFAULT_BREAKDOWN_BY,
-  display: DEFAULT_DISPLAY,
-  scenarioA: DEFAULT_SCENARIO,
-  indicator: DEFAULT_INDICATOR,
-  dividedBy: DEFAULT_DIVIDED_BY,
-  dataTab: DEFAULT_DATA_TAB,
-  settingsTab: DEFAULT_SETTINGS_TAB,
-  sort: DEFAULT_SORT,
-} as const;
 
 type DashboardRouteApi = ReturnType<
   typeof getRouteApi<typeof ROUTES.DASHBOARD>

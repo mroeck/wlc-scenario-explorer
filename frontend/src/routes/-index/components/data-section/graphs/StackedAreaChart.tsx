@@ -59,7 +59,7 @@ export const StackedAreaChart = ({
   data,
   unit,
   highlights,
-  scenarioId,
+  scenarioId = "A",
 }: GraphProps) => {
   const navigate = route.useNavigate();
   const {
@@ -101,7 +101,7 @@ export const StackedAreaChart = ({
   const stackedAreaDomain = domainsData.stackedArea;
 
   const isSomethingHighlighted = !!highlights && highlights.length > 0;
-  const needPattern = scenarioId === "B" && display === SCENARIO_A_AND_B;
+  const needPattern = scenarioId === "B";
   const isAvsB = display === SCENARIO_A_AND_B;
 
   type UpdateDomainArgs = {
@@ -116,7 +116,7 @@ export const StackedAreaChart = ({
     newMax,
     queryClient,
   }: UpdateDomainArgs) => {
-    const id = (scenarioId ?? "A") as "A" | "B";
+    const id = scenarioId;
 
     if (!stackedAreaDomain.update[id]) {
       queryClient.setQueryData<DomainAll>([DOMAINS_QUERY_KEY, hash], (old) => {
@@ -206,7 +206,7 @@ export const StackedAreaChart = ({
             strokeWidth: isHighlight ? 1 : undefined,
           } satisfies CommonAreaProps;
 
-          const id = option.toString().replaceAll(" ", "") + (scenarioId ?? "");
+          const id = option.toString().replaceAll(" ", "") + scenarioId;
 
           return (
             <Fragment key={id}>

@@ -14,7 +14,8 @@
     "docker:prod": "docker run -p 3001:3001 --rm scenario-explorer/front:0.1.0",
     "test": "echo \"Running dummy command...\" && exit 0",
     "knip": "knip",
-    "test:unit": "vitest"
+    "test:unit": "vitest",
+    "check-circular-dependencies": "madge ./src/main.tsx -c"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.6.0",
@@ -82,6 +83,7 @@
     "eslint-plugin-react-refresh": "^0.4.7",
     "eslint-plugin-tailwindcss": "^3.17.3",
     "knip": "^5.30.6",
+    "madge": "^8.0.0",
     "postcss": "^8.4.38",
     "prettier": "3.3.2",
     "serve": "^14.2.3",

@@ -14,6 +14,7 @@ import { TypographyFigure } from "@/components/TypographyFigure";
 import {
   HELP_PAGE_IDS,
   HELP_TITLE,
+  LINKS,
   MOSELEY_EMAIL,
   ROECK_EMAIL,
 } from "@/lib/constants";
@@ -98,7 +99,7 @@ const sections = [
 function Help() {
   return (
     <main className="flex flex-col justify-stretch gap-5 py-primary-y sm:px-primary-x lg:flex-row">
-      <aside className="">
+      <aside>
         {Array.from({ length: 2 }, (_, index) => (
           <Section
             key={index}
@@ -111,10 +112,10 @@ function Help() {
           </Section>
         ))}
       </aside>
-      <Section className="flex flex-col">
+      <Section noPadding className="flex flex-col">
         <TypographyH1 className="sr-only"> {HELP_TITLE} </TypographyH1>
-        <SectionForDoc>
-          <SectionForDoc id={HELP_PAGE_IDS.introduction}>
+        <SectionForDoc className="!pt-0">
+          <SectionForDoc className="pt-0" id={HELP_PAGE_IDS.introduction}>
             <TypographyH2>Introduction</TypographyH2>
             <SectionForDoc id={HELP_PAGE_IDS.generalRemarks}>
               <TypographyH3>General remarks</TypographyH3>
@@ -128,11 +129,8 @@ function Help() {
                 </TypographyP>
                 <TypographyP>
                   The tool itself is available online via:{" "}
-                  <a
-                    href="https://ae-scenario-explorer.cloud.set.kuleuven.be"
-                    className="link"
-                  >
-                    https://ae-scenario-explorer.cloud.set.kuleuven.be
+                  <a href={LINKS.explorerWebsite} className="link">
+                    {LINKS.explorerWebsite}
                   </a>
                 </TypographyP>
               </TypographyContent>

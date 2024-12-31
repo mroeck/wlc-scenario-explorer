@@ -34,7 +34,7 @@ This tool has been developed as part of GROW/2022/OP/0005. Courtesy of the Europ
 
 Licensed under a Creative Commons Attribution-ShareAlike 4.0 (CC BY-SA 4.0) International License. When using or improving this tool or parts of it, consider giving appropriate credit. Cite as:
 
-Röck M, Eissa S, Lesné B, and Allacker K. “Scenario Modelling Tool - Analysis of Life-cycle Greenhouse Gas Emissions and Removals of EU Buildings and Construction” European Commission DG GROW, 2024. DOI: https://doi.org/10.5281/zenodo.13315281. Web-app available online via: https://ae-scenario-explorer.cloud.set.kuleuven.be
+Röck M, Eissa S, Lesné B, and Allacker K. “Scenario Modelling Tool - Analysis of Life-cycle Greenhouse Gas Emissions and Removals of EU Buildings and Construction” European Commission DG GROW, 2024. DOI: https://doi.org/10.5281/zenodo.13315281. Web-app available online via: ${LINKS.explorerWebsite}
 
 Contact details:
 We encourage users to get in touch with feedback and/or questions on both the study and the tool:

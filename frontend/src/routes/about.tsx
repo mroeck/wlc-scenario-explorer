@@ -22,6 +22,8 @@ import TUGRAZ_IMAGE_URL from "@/assets/partners/tugraz.svg";
 import POLITECNICO_DI_MILANO_IMAGE_URL from "@/assets/partners/politecnicoDiMilano.png";
 import IIASA_IMAGE_URL from "@/assets/partners/IIASA.png";
 import AALBORG_IMAGE_URL from "@/assets/partners/aalborg.svg";
+import { TableOfContents, type ToCSection } from "@/components/TableOfContents";
+import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/about")({
   component: () => <About />,
@@ -64,6 +66,10 @@ const HEADERS = {
     title: "License and citation",
     id: "license-and-citation",
   },
+  partners: {
+    title: "Partners",
+    id: "partners",
+  },
 };
 
 const PARTNERS = [
@@ -100,9 +106,62 @@ const PARTNERS = [
   },
 ];
 
+type Ids = (typeof HEADERS)[keyof typeof HEADERS]["id"];
+
+const sections = [
+  {
+    id: "generalRemarks",
+    title: "General remarks",
+  },
+
+  {
+    id: "study-background",
+    title: "Study background",
+  },
+  {
+    id: "study-objectives",
+    title: "Study objectives",
+  },
+  {
+    id: "scenario-modelling-tool",
+    title: "Scenario modelling tool",
+    subsections: [
+      { id: "disclaimer", title: "Disclaimer" },
+      { id: "purpose-and-objectives", title: "Purpose and objectives" },
+      { id: "model-resources-and-data", title: "Model resources and data" },
+    ],
+  },
+  {
+    id: "contact-details",
+    title: "Contact details",
+  },
+  {
+    id: "license-and-citation",
+    title: "License and citation",
+  },
+
+  {
+    id: "partners",
+    title: "Partners",
+  },
+] satisfies ToCSection<Ids>[];
+
 function About() {
   return (
     <main className="flex flex-col justify-stretch gap-5 py-primary-y sm:px-primary-x lg:flex-row">
+      <aside>
+        {Array.from({ length: 2 }, (_, index) => (
+          <Section
+            key={index}
+            className={cn(
+              "static flex flex-col px-0 lg:fixed lg:h-[calc(100dvh-72px-24px-24px)] lg:w-80",
+              index === 1 && "invisible hidden lg:static lg:flex",
+            )}
+          >
+            <TableOfContents sections={sections} />
+          </Section>
+        ))}
+      </aside>
       <Section className="flex flex-col">
         <TypographyH1>{ABOUT_TITLE}</TypographyH1>
         <SectionForDoc>
@@ -117,7 +176,7 @@ function About() {
                 building stocks.
               </TypographyP>
               <TypographyP>
-                The tool itself is available online via:{" "}
+                The tool itself is available online via:
                 <a
                   href={LINKS.explorerWebsite}
                   rel="noopener noreferrer"
@@ -181,8 +240,8 @@ function About() {
               </TypographyP>
             </TypographyContent>
           </SectionForDoc>
-          <SectionForDoc>
-            <TypographyH2>Study objectives</TypographyH2>
+          <SectionForDoc id={HEADERS.studyObjectives.id}>
+            <TypographyH2>{HEADERS.studyObjectives.title}</TypographyH2>
             <TypographyContent>
               <TypographyP>
                 This study enables a clearer understanding of the effects and
@@ -208,16 +267,18 @@ function About() {
               </TypographyList>
             </TypographyContent>
           </SectionForDoc>
-          <SectionForDoc>
-            <TypographyH2>Scenario modelling tool</TypographyH2>
-            <TypographyContent>
-              <TypographyH3>Disclaimer</TypographyH3>
+          <SectionForDoc id={HEADERS.scenarioModellingTool.id}>
+            <TypographyH2>{HEADERS.scenarioModellingTool.title}</TypographyH2>
+            <TypographyContent id={HEADERS.disclaimer.id}>
+              <TypographyH3>{HEADERS.disclaimer.title}</TypographyH3>
               <TypographyContent>
                 <TypographyP>
                   <DisclaimerText />
                 </TypographyP>
               </TypographyContent>
-              <TypographyH3>Purpose and objectives</TypographyH3>
+              <TypographyH3 id={HEADERS.purposeAndObjectives.id}>
+                {HEADERS.purposeAndObjectives.title}
+              </TypographyH3>
               <TypographyContent>
                 <TypographyP>
                   This scenario modelling tool is part of the ‘Modelling of
@@ -268,7 +329,9 @@ function About() {
                   (Forthcoming), 2024.
                 </TypographyP>
               </TypographyMuted>
-              <TypographyH2> Contact details</TypographyH2>
+              <TypographyH2 id={HEADERS.contactDetails.id}>
+                {HEADERS.contactDetails.title}
+              </TypographyH2>
               <TypographyContent>
                 <TypographyP>
                   We encourage users to get in touch with feedback and/or
@@ -299,7 +362,10 @@ function About() {
                   .
                 </TypographyP>
               </TypographyContent>
-              <TypographyH2> License and citation</TypographyH2>
+              <TypographyH2 id={HEADERS.licenseAndCitation.id}>
+                {" "}
+                {HEADERS.licenseAndCitation.title}
+              </TypographyH2>
               <TypographyContent>
                 <TypographyP>
                   This tool has been developed as part of{" "}
@@ -347,7 +413,9 @@ function About() {
                   </a>
                 </TypographyP>
               </TypographyContent>
-              <TypographyH2>Partners</TypographyH2>
+              <TypographyH2 id={HEADERS.partners.id}>
+                {HEADERS.partners.title}
+              </TypographyH2>
               <TypographyContent>
                 <ul className="flex flex-wrap justify-center gap-8">
                   {PARTNERS.map((partner) => (

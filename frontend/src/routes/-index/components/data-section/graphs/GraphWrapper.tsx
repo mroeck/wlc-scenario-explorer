@@ -8,7 +8,7 @@ import {
 } from "@/lib/constants";
 import { YEAR_KEY } from "@/lib/shared_with_backend/constants";
 import type { ScenarioRowsAggregatedArraySchema } from "@/lib/schemas";
-import type { Attribute } from "@/lib/types";
+import type { Attribute, ScenarioId } from "@/lib/types";
 import { getRouteApi } from "@tanstack/react-router";
 import { useRef } from "react";
 import type { StackedAreaChart } from "./StackedAreaChart";
@@ -68,7 +68,7 @@ type CoreProps = {
   breakdownBy: Attribute;
   domain: GraphDomain | undefined;
   data: z.infer<typeof ScenarioRowsAggregatedArraySchema>;
-  scenarioId?: string;
+  scenarioId?: ScenarioId;
 };
 
 type GraphWrapperProps = CoreProps &

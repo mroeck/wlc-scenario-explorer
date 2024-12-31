@@ -8,6 +8,7 @@ import { lazy, Suspense } from "react";
 import { Header } from "@/components/Header";
 import { Toaster } from "@/components/ui/toaster";
 import { DisclaimerModal } from "@/components/DisclaimerModal";
+import { GlobalErrorOccured } from "./-root/components/GlobalErrorOccured";
 
 const TanStackRouterDevtools = env.PUBLIC_DEBUG
   ? lazy(() =>
@@ -19,6 +20,7 @@ const TanStackRouterDevtools = env.PUBLIC_DEBUG
 
 export const Route = createRootRoute({
   component: () => <UserInterface />,
+  errorComponent: () => <GlobalErrorOccured />,
 });
 
 function UserInterface() {
