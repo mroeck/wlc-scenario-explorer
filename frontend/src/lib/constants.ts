@@ -153,6 +153,9 @@ export const LINKS = {
 export const HELP_PAGE_IDS = {
   predefinedScenarioSelection: "predefined-scenarios",
   scenarioParametersCustomization: "parameters-customization",
+  avoid: "avoid",
+  improve: "improve",
+  shift: "shift",
   filterSetting: "filters",
   indicator: "scenario-indicator",
   dividedBy: "scenario-divided-by",

@@ -133,9 +133,12 @@ export const Scenarios = () => {
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel className="flex items-center gap-2 font-medium">
-                      <span className="first-letter:uppercase">
-                        Select a scenario:
-                      </span>
+                      <div className="flex flex-col">
+                        <span>Select a scenario:</span>
+                        <span className="text-sm font-normal italic text-gray-800">
+                          (primary)
+                        </span>
+                      </div>
                       <InfoButton>
                         <p>
                           Choose from predefined scenarios. They represent
@@ -238,7 +241,7 @@ export const Scenarios = () => {
                     <div className="flex flex-col">
                       <span>Select another scenario:</span>
                       <span className="text-sm font-normal italic text-gray-800">
-                        (for comparison)
+                        (secondary, for comparison)
                       </span>
                     </div>
                     <InfoButton>

@@ -5,7 +5,6 @@ import { TypographyH3 } from "@/components/TypographyH3";
 import { TypographyList } from "@/components/TypographyList";
 import { TypographyMuted } from "@/components/TypographyMuted";
 import { TypographyP } from "@/components/TypographyP";
-import { createFileRoute } from "@tanstack/react-router";
 import lineChartShowingColorAndTooltipUrl from "@/assets/dataViz/line_chart_evolution_gwp_total_new_residential_buildings_by_country.png";
 import tableWithFilteredEmbodiedCaronUrl from "@/assets/dataViz/table_with_filtered_embodied_carbon_data_of_new_buildings_per_country_ready_for_download.png";
 
@@ -24,6 +23,7 @@ import { TableOfContents, type ToCSection } from "@/components/TableOfContents";
 import { TypographyH4 } from "@/components/TypographyH4";
 import { cn } from "@/lib/utils";
 import dashboardStructureUrl from "@/assets/dashboard-structure.png";
+import { createFileRoute } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/help")({
   component: () => <Help />,
@@ -510,7 +510,7 @@ function Help() {
                 <TypographyP>
                   Beyond the pre-defined scenarios available from the dropdown
                   menu, users can explore various additional scenarios. These
-                  [are being] modelled in a generative way, based on the
+                  are being modelled in a generative way, based on the
                   combination of different settings for the scenario parameters,
                   assuming different ambition levels for the uptake of
                   individual CRR strategies across Member States.
@@ -521,7 +521,7 @@ function Help() {
                   reduction and removal can be modified:
                 </TypographyP>
 
-                <SectionForDoc>
+                <SectionForDoc id={HELP_PAGE_IDS.improve}>
                   <TypographyH4>Improve</TypographyH4>
                   <TypographyContent>
                     <TypographyList>
@@ -571,7 +571,7 @@ function Help() {
                   </TypographyContent>
                 </SectionForDoc>
 
-                <SectionForDoc>
+                <SectionForDoc id={HELP_PAGE_IDS.shift}>
                   <TypographyH4>Shift</TypographyH4>
                   <TypographyContent>
                     <TypographyList>
@@ -613,7 +613,7 @@ function Help() {
                   </TypographyContent>
                 </SectionForDoc>
 
-                <SectionForDoc>
+                <SectionForDoc id={HELP_PAGE_IDS.avoid}>
                   <TypographyH4>Avoid</TypographyH4>
                   <TypographyContent>
                     <TypographyList>

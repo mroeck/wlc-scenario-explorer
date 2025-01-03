@@ -6,15 +6,15 @@ import {
 } from "@/components/ui/accordion";
 import { SCENARIO_PARAMETERS_OBJ } from "@/lib/shared_with_backend/constants";
 import { ParameterLevel } from "./ParameterLevel";
-import { HELP_PAGE_IDS, PARAMETER_STATUS, ROUTES } from "@/lib/constants";
+import { PARAMETER_STATUS } from "@/lib/constants";
 import { InfoButton } from "@/components/InfoButton";
-import { Link } from "@tanstack/react-router";
-import { LinkIcon } from "lucide-react";
 
 export const ScenarioParameters = () => {
   return (
     <Accordion type="single" collapsible className="pl-2">
-      {Object.entries(SCENARIO_PARAMETERS_OBJ).map(([key, value], index) => {
+      {Object.entries(SCENARIO_PARAMETERS_OBJ).map(([key, values], index) => {
+        const value = values.strategies;
+        const Info = values.info;
         return (
           <AccordionItem
             key={key + index.toString()}
@@ -23,14 +23,7 @@ export const ScenarioParameters = () => {
             <div className="flex justify-between gap-2">
               <div className="flex flex-1 items-center gap-x-2">
                 <InfoButton>
-                  <p>[in progress]</p>
-                  <Link
-                    to={ROUTES.HELP}
-                    hash={HELP_PAGE_IDS.scenarioParametersCustomization}
-                    className="flex items-center gap-1 underline"
-                  >
-                    <LinkIcon className="size-3" /> Read more here
-                  </Link>
+                  <Info />
                 </InfoButton>
                 <div className="flex-1">
                   <AccordionTrigger

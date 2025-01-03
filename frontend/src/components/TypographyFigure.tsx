@@ -11,7 +11,7 @@ export function TypographyFigure({
 }: TypographyFigureProps) {
   return (
     <figure className={cn("max-w-[900px]", className)}>
-      <img src={url} alt={caption} />
+      <img src={url} alt={caption} width="815" height="516" />
       <div className={cn("py-4")}></div>
       <figcaption className={cn("text-center text-muted-foreground")}>
         {caption}
