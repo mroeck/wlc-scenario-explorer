@@ -16,7 +16,6 @@ import {
   SELECT_DIVIDED_BY_TESTID,
   HELP_PAGE_IDS,
   DATA_TABS_NAMES,
-  SCENARIO_A_LABEL,
   SCENARIO_B_LABEL,
   DISPLAY_SELECT_TESTID,
   SCENARIO_A_ONLY,
@@ -347,9 +346,9 @@ export const DataVizForm = () => {
                 <span>Display:</span>
                 <InfoButton>
                   <p>
-                    Choose how to display scenarios in the chart: show{" "}
-                    {SCENARIO_A_LABEL}, {SCENARIO_B_LABEL}, or compare both
-                    side-by-side for a detailed visual analysis.
+                    Choose how to display scenarios in the chart: show one of
+                    the selected scenarios in the Scenarios panel, or compare
+                    both side-by-side for a detailed visual analysis.
                   </p>
                   <p>
                     For the table tab, only the primary scenario is displayed

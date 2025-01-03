@@ -1,8 +1,11 @@
+import { ImproveInfo } from "@/routes/-index/components/side-section/components/ImproveInfo";
 import type { Attribute, ValidOption } from "../types";
+import { ShiftInfo } from "@/routes/-index/components/side-section/components/ShiftInfo";
+import { AvoidInfo } from "@/routes/-index/components/side-section/components/AvoidInfo";
 
 /*
   /!\
-  Any variable in this file has a twin variable in the backend. Modifying anything here means modifying also the backend the variable with the same name in the share-with-frontend file
+  Any variable in this file has variables in the backend sharing some of its values. Modifying anything here means modifying also the backend the variable with the same name in the share-with-frontend file
   /!\
  */
 
@@ -83,23 +86,32 @@ export const MAX_YEAR = 2500;
 export const MIN_YEAR = 1900;
 
 export const SCENARIO_PARAMETERS_OBJ = {
-  improve: [
-    "Increase low carbon conventional",
-    "Reduce transport emissions",
-    "Reduce construction process",
-    "Reduce operational energy",
-  ],
-  shift: [
-    "Increase bio-based solutions",
-    "Increase circularity and reuse",
-    "Increase carbon dioxide removal",
-  ],
-  avoid: [
-    "Reduce space per capita",
-    "Increase repair and retrofit",
-    "Increase material efficiency",
-    "Reduce construction waste",
-  ],
+  improve: {
+    info: ImproveInfo,
+    strategies: [
+      "Increase low carbon conventional",
+      "Reduce transport emissions",
+      "Reduce construction process",
+      "Reduce operational energy",
+    ],
+  },
+  shift: {
+    info: ShiftInfo,
+    strategies: [
+      "Increase bio-based solutions",
+      "Increase circularity and reuse",
+      "Increase carbon dioxide removal",
+    ],
+  },
+  avoid: {
+    info: AvoidInfo,
+    strategies: [
+      "Reduce space per capita",
+      "Increase repair and retrofit",
+      "Increase material efficiency",
+      "Reduce construction waste",
+    ],
+  },
 } as const;
 
 export const API_ROUTES = {

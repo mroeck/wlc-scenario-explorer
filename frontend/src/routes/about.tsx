@@ -14,7 +14,6 @@ import {
   MOSELEY_EMAIL,
   ROECK_EMAIL,
 } from "@/lib/constants";
-import { createFileRoute } from "@tanstack/react-router";
 import RAMBOLL_IMAGE_URL from "@/assets/partners/ramboll.svg";
 import BPIE_IMAGE_URL from "@/assets/partners/bpie.svg";
 import KUL_IMAGE_URL from "@/assets/partners/kuleuven.svg";
@@ -24,6 +23,7 @@ import IIASA_IMAGE_URL from "@/assets/partners/IIASA.png";
 import AALBORG_IMAGE_URL from "@/assets/partners/aalborg.svg";
 import { TableOfContents, type ToCSection } from "@/components/TableOfContents";
 import { cn } from "@/lib/utils";
+import { createFileRoute } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/about")({
   component: () => <About />,
