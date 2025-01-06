@@ -1,3 +1,0 @@
-envConfigMap:
-  data:
-    VITE_HOSTNAME: {{ .Values.ingress.hostname }}
