@@ -1,5 +1,5 @@
 include:
-  - component: "gitlab.kuleuven.be/to-be-continuous/docker/gitlab-ci-docker@5.10"
+  - component: "gitlab.kuleuven.be/to-be-continuous/docker/gitlab-ci-docker@6.0"
     # Ref: https://to-be-continuous.pages.gitlab.kuleuven.be/doc/ref/docker/
     inputs:
       # Docker file and image names for frontend and backend are defined in the
@@ -23,7 +23,7 @@ include:
       prod-enabled: true
       prod-deploy-strategy: "auto"
       review-namespace: "${CI_PROJECT_NAME}-${CI_PROJECT_ID}-review"
-  - component: "gitlab.kuleuven.be/to-be-continuous/python/gitlab-ci-python@7.0"
+  - component: "gitlab.kuleuven.be/to-be-continuous/python/gitlab-ci-python@7.5"
     # Ref: https://to-be-continuous.pages.gitlab.kuleuven.be/doc/ref/python/
     inputs:
       image: "python:3.12.3-bookworm"
@@ -34,7 +34,7 @@ include:
       ruff-enabled: true
       mypy-enabled: true
       mypy-args: "--strict"
-  - component: "gitlab.kuleuven.be/to-be-continuous/node/gitlab-ci-node@3.13"
+  - component: "gitlab.kuleuven.be/to-be-continuous/node/gitlab-ci-node@3.15"
     # Ref: https://to-be-continuous.pages.gitlab.kuleuven.be/doc/ref/node/
     inputs:
       image: "node:20-bookworm"
