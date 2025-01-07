@@ -6,11 +6,11 @@ COPY ./e2e/package-lock.json ./e2e/package.json ./
 
 RUN npm ci
 
-WORKDIR /app/frontend/src/lib
-COPY ./frontend/src/lib .
-
 WORKDIR /app/frontend/src
 COPY ./frontend/src/env.ts .
+COPY ./frontend/src/lib ./lib
+COPY ./frontend/src/routes/-index/components/side-section/components ./routes/-index/components/side-section/components
+
 
 WORKDIR /app/frontend/
 COPY ./frontend/package.json .

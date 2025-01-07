@@ -1,7 +1,7 @@
-import { ImproveInfo } from "@/routes/-index/components/side-section/components/ImproveInfo";
+import { ImproveInfo } from "../../routes/-index/components/side-section/components/ImproveInfo";
 import type { Attribute, ValidOption } from "../types";
-import { ShiftInfo } from "@/routes/-index/components/side-section/components/ShiftInfo";
-import { AvoidInfo } from "@/routes/-index/components/side-section/components/AvoidInfo";
+import { ShiftInfo } from "../../routes/-index/components/side-section/components/ShiftInfo";
+import { AvoidInfo } from "../../routes/-index/components/side-section/components/AvoidInfo";
 
 /*
   /!\
