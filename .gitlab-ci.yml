@@ -102,3 +102,19 @@ playwright:
       allow_failure: true
     # else (Ready MR): auto & failing
     - when: on_success
+
+# Redefine rules for the build job from the docker ci component
+# to set the NODE_ENV build arg depending on the branch.
+docker-kaniko-build:
+  variables:
+    DOCKER_BUILD_ARGS: "--build-arg VITE_NODE_ENV=review"
+  rules:
+    - if: '$DOCKER_BUILD_TOOL != "kaniko"'
+      when: never
+    - if: '$CI_COMMIT_REF_NAME =~ $PROD_REF || $CI_COMMIT_TAG'
+      variables:
+        DOCKER_BUILD_ARGS: "--build-arg VITE_NODE_ENV=production"
+    - if: '$CI_COMMIT_REF_NAME =~ $INTEG_REF'
+      variables:
+        DOCKER_BUILD_ARGS: "--build-arg VITE_NODE_ENV=integration"
+    - when: always

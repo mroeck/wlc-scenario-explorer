@@ -123,6 +123,7 @@ test.describe("data viz", () => {
     await page.getByRole("tab", { name: "Stacked Bar Graph" }).click();
     await indicatorSelect.click();
     await indicatorOption2.click();
+    await waitLoadingEnds({ page });
 
     await expect(page.getByText(indicator2)).toBeVisible();
   });

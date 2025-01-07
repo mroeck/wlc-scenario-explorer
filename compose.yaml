@@ -7,6 +7,7 @@ services:
       target: prod
       args:
         - VITE_API_URL=http://backend:8081
+        - VITE_NODE_ENV=test
     ports:
       - "8080:8080"
     environment:

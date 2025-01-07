@@ -140,9 +140,13 @@ export const DEFAULT_SEARCH_PARAMS = {
   dataTab: DEFAULT_DATA_TAB,
   sort: DEFAULT_SORT,
 };
+const hostname =
+  env.PUBLIC_NODE_ENV === "production"
+    ? location.hostname
+    : "consistent-url-for-testing.com";
 export const LINKS = {
   doi: "https://doi.org/10.5281/zenodo.13315281",
-  explorerWebsite: `https://${env.PUBLIC_HOSTNAME}`,
+  explorerWebsite: `https://${hostname}`,
   study: {
     wholeLifeCarbon: "https://c.ramboll.com/whole-life-carbon-reduction",
     lifeCycleGreenhouse:

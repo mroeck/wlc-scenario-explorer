@@ -1,4 +1,4 @@
-import { HELP_PAGE_IDS, ROUTES } from "@/lib/constants";
+import { HELP_PAGE_IDS, ROUTES } from "../../../../../lib/constants";
 import { Link } from "@tanstack/react-router";
 import { LinkIcon } from "lucide-react";
 
