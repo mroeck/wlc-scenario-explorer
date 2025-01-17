@@ -1,21 +1,24 @@
 import { PARAMETER_STATUS } from "@/lib/constants";
 import { cn } from "@/lib/utils";
+import { forwardRef } from "react";
 
 type ParameterLevelProps = {
-  level: number | undefined;
+  level: string | undefined;
   status?: (typeof PARAMETER_STATUS)[keyof typeof PARAMETER_STATUS];
   editable?: boolean;
   className?: string;
+  onClick?: React.MouseEventHandler;
 };
 const commonStyles = cn(
   "flex aspect-square size-5 items-center justify-center rounded-full border border-primary text-sm text-primary",
 );
-export const ParameterLevel = ({
-  level,
-  status,
-  editable = false,
-  className,
-}: ParameterLevelProps) => {
+export const ParameterLevel = forwardRef<
+  HTMLButtonElement,
+  ParameterLevelProps
+>(function ParameterLevel(
+  { level, status, editable = false, className, onClick },
+  ref,
+) {
   if (editable) {
     return (
       <input
@@ -33,6 +36,7 @@ export const ParameterLevel = ({
 
   return (
     <button
+      ref={ref}
       className={cn(
         commonStyles,
         status === PARAMETER_STATUS.active && "bg-primary text-white",
@@ -41,8 +45,9 @@ export const ParameterLevel = ({
         className,
       )}
       type="button"
+      onClick={onClick}
     >
-      {level?.toFixed(1)}
+      {level}
     </button>
   );
-};
+});

@@ -8,20 +8,17 @@ from typing import (
     NotRequired,
     Never,
 )
-from sqlalchemy import text, column, select, func, Select, ColumnClause
+from sqlalchemy import text, column, select, func, Select, ColumnClause, inspect
 from sqlalchemy.sql import ClauseElement
-from .db import Session, FilenameSession
+from .db import Session, StrategiesSession, StrategiesEngine
 from .shared_with_frontend.schemas import (
     AttributeEnumSchema,
     FiltersSchema,
     ColumnsEnumSchema,
     FilterFrontEnumSchema,
-    ScenarioParameters,
-    PossibleScenarioParameters,
 )
-from .models import Filenames
-from .constants import DIVIDED_BY_NONE, DATA_PATH, FILENAME_SEARCH_OPERATOR
-from .utils import construct_filename
+from .models import Strategies
+from .constants import DIVIDED_BY_NONE, DATA_PATH, STRATEGIES_TABLE_NAME
 from enum import Enum
 
 TOTAL_LABEL = "Total"
@@ -294,8 +291,8 @@ def get_scenario_rows(
     )
 
     with Session() as session:
-        data_raw = session.execute(text(scenario_query)).fetchall()
-        data = [row._asdict() for row in data_raw]
+        rows = session.execute(text(scenario_query)).fetchall()
+        data = [row._asdict() for row in rows]
 
         if len(data) == 0:
             return {"data": data, "unit": "MtCO2"}
@@ -336,29 +333,42 @@ def get_scenario_rows(
     }
 
 
-def get_possible_parameters(
-    scenario_parameters: ScenarioParameters,
-    suggestion_target: str,
-) -> PossibleScenarioParameters:
-    search_pattern = construct_filename(scenario_parameters, suggestion_target)
-    suggestion_index = search_pattern.find(FILENAME_SEARCH_OPERATOR)
+inspector = inspect(StrategiesEngine)
+all_columns = [
+    col["name"]
+    for col in inspector.get_columns(Strategies.__tablename__)
+    if col["name"] != "id"
+]
 
-    if suggestion_index == -1:
-        raise ValueError(
-            f"Character '{FILENAME_SEARCH_OPERATOR}' not found in search_pattern"
+
+def get_possible_actions_levels(
+    scenario_parameters: Dict[str, str],
+) -> dict[str, List[str]]:
+    columns_with_values = scenario_parameters.keys()
+    columns_to_query = [col for col in all_columns if col not in columns_with_values]
+
+    if columns_with_values:
+        where_clause = " AND ".join(
+            [f"{col} = '{scenario_parameters[col]}'" for col in columns_with_values]
         )
+    else:
+        where_clause = None
 
-    with FilenameSession() as session:
-        results = (
-            session.query(Filenames)
-            .filter(Filenames.filename.like(f"{search_pattern}.parquet"))
-            .all()
-        )
-        filenames = [item.filename for item in results]
+    subqueries = [
+        f"(SELECT GROUP_CONCAT(DISTINCT {col}) FROM {STRATEGIES_TABLE_NAME}"
+        + (f" WHERE {where_clause}" if where_clause else "")
+        + f") AS {col}"
+        for col in columns_to_query
+    ]
 
-        possible_levels = [
-            filename[suggestion_index : suggestion_index + 3] for filename in filenames
-        ]
+    final_query = f"SELECT {', '.join(subqueries)}"
 
-    result = PossibleScenarioParameters(**{suggestion_target: possible_levels})
-    return result
+    with StrategiesSession() as session:
+        row = session.execute(text(final_query)).fetchone()
+
+        suggestions = {
+            key: value.split(",") if value else []
+            for key, value in row._asdict().items()  # type: ignore[union-attr]
+        }
+
+        return suggestions

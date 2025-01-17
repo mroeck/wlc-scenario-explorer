@@ -1,10 +1,9 @@
-from typing import Dict, Any, Union, Optional
+from typing import Dict, Any, Union
 from .shared_with_frontend.schemas import (
     FilterFrontEnumSchema,
     FILTER_TO_DB_COLUMN,
-    ScenarioParameters,
 )
-from .constants import FILENAME_SEARCH_OPERATOR
+from .shared_with_frontend.constants import SCENARIO_PARAMETERS_ORDER
 
 
 def convert_keys_to_columns(
@@ -26,18 +25,10 @@ def convert_keys_to_columns(
 
 
 def construct_filename(
-    scenario_parameters: ScenarioParameters,
-    suggestion_target: Optional[str] = None,
+    scenario_parameters: Dict[str, str],
 ) -> str:
-    params = scenario_parameters
-
-    if suggestion_target in params:
-        params[suggestion_target] = FILENAME_SEARCH_OPERATOR  # type:ignore[literal-required]
-
-    param_1 = params["scenario_parameter_1"]
-    param_2 = params["scenario_parameter_2"]
-    param_3 = params["scenario_parameter_3"]
-
-    filename = f"{param_1}-{param_2}-{param_3}"
+    filename = "-".join(
+        scenario_parameters[action] for action in SCENARIO_PARAMETERS_ORDER
+    )
 
     return filename

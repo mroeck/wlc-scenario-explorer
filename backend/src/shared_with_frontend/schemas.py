@@ -1,7 +1,8 @@
-from typing import List, Dict, Optional, Mapping, TypedDict
+from typing import List, Dict, Optional, Mapping
 from pydantic import BaseModel, Field, field_validator, Extra
 from enum import Enum
 from ..constants import DIVIDED_BY_NONE
+from .constants import SCENARIO_PARAMETERS_ORDER
 
 MAX_YEAR = 2500
 MIN_YEAR = 1900
@@ -183,23 +184,23 @@ class ScenarioEnumSchema(str, Enum):
     ALL_HIGH = "ALL/HIGH"
 
 
-DEFAULT_SCENARIO = "CPOL A"
+DEFAULT_SCENARIO = "1.5-2.5-1.0-1.5-2.0-2.0-1.5-1.5-1.0-1.0-1.0"
 
 SCENARIO_TO_FILE_NAME: Dict[str, str] = {
-    ScenarioEnumSchema.AASI.value: "FULL",
+    ScenarioEnumSchema.AASI.value: "2.5-2.5-2.5-2.5-2.5-2.5-2.5-2.5-2.5-2.5-2.5",
     ScenarioEnumSchema.APOA.value: DEFAULT_SCENARIO,
     ScenarioEnumSchema.APOI.value: DEFAULT_SCENARIO,
     ScenarioEnumSchema.APOL.value: DEFAULT_SCENARIO,
     ScenarioEnumSchema.APOS.value: DEFAULT_SCENARIO,
     ScenarioEnumSchema.CPOC.value: DEFAULT_SCENARIO,
     ScenarioEnumSchema.CPOO.value: DEFAULT_SCENARIO,
-    ScenarioEnumSchema.CUSR.value: DEFAULT_SCENARIO,
+    ScenarioEnumSchema.CUSR.value: ScenarioEnumSchema.CUSR.value,
     ScenarioEnumSchema.Example.value: DEFAULT_SCENARIO,
-    ScenarioEnumSchema.BAU.value: "BAU",
-    ScenarioEnumSchema.CPOL_A.value: "CPOL A",
-    ScenarioEnumSchema.CPOL_B.value: "CPOL B",
-    ScenarioEnumSchema.APOL.value: "APOL",
-    ScenarioEnumSchema.ALL_HIGH.value: "ALL HIGH",
+    ScenarioEnumSchema.BAU.value: "1.0-1.0-1.0-1.0-1.0-1.0-1.0-1.0-1.0-1.0-1.0",
+    ScenarioEnumSchema.CPOL_A.value: "1.0-1.0-1.5-2.0-2.5-1.0-1.0-1.5-2.0-2.5-1.0",
+    ScenarioEnumSchema.CPOL_B.value: "1.5-2.5-1.0-1.5-2.0-2.0-1.5-1.5-1.0-1.0-1.0",
+    ScenarioEnumSchema.APOL.value: "2.5-2.0-1.5-1.0-1.0-2.5-2.0-1.5-1.0-1.0-1.0",
+    ScenarioEnumSchema.ALL_HIGH.value: "2.0-2.0-2.0-2.0-2.0-2.0-2.0-2.0-2.0-2.0-2.0",
 }
 
 
@@ -207,13 +208,11 @@ class ScenarioRowsAggregatedSchema(BaseModel):
     year: int = Field(..., alias="stock_projection_year")
 
 
-class ScenarioParameters(TypedDict):
-    scenario_parameter_1: str
-    scenario_parameter_2: str
-    scenario_parameter_3: str
-
-
-class PossibleScenarioParameters(BaseModel):
-    scenario_parameter_1: Optional[List[str]] = None
-    scenario_parameter_2: Optional[List[str]] = None
-    scenario_parameter_3: Optional[List[str]] = None
+class ScenarioParameters:
+    def __init__(self, **kwargs: Dict[str, str]) -> None:
+        for key, value in kwargs.items():
+            if key not in SCENARIO_PARAMETERS_ORDER:
+                raise TypeError(
+                    "Argument %s not valid for %s" % (key, self.__class__.__name__)
+                )
+            setattr(self, key, value)
