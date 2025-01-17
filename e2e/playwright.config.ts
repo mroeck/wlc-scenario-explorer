@@ -45,7 +45,7 @@ export default defineConfig({
     : [
         {
           command:
-            "cd ../frontend && VITE_NODE_ENV=test npm run build && npm run preview",
+            "cd ../frontend && VITE_NODE_ENV=test VITE_API_URL='http://localhost:8081' npm run build && npm run preview",
           url: "http://localhost:3001/health",
           reuseExistingServer: true,
           timeout: 30 * 1000,

@@ -8,7 +8,14 @@ import {
   INDICATORS,
   YEAR_KEY,
   DIVIDED_BY_OPTIONS,
+  TOTAL_ACTIONS,
+  SCENARIO_PARAMETERS_ORDER,
 } from "./constants";
+import type { ValueOf } from "type-fest";
+import {
+  format_scenario_parameter_for_backend,
+  type FormatString,
+} from "./utils";
 
 export const IndicatorSchema = z.enum(INDICATORS);
 export const DividedBySchema = z.enum(DIVIDED_BY_OPTIONS);
@@ -37,6 +44,46 @@ export const ResultsScenarioRowsAggregatedSchema = z.strictObject({
     .optional(),
   unit: UnitSchema,
 });
+export const ActionLevelSchema = z.enum(["1.0", "1.5", "2.0", "2.5"]);
+const StrategyItem = ActionLevelSchema.or(z.null());
+export const StrategyAsSearchParamSchema = z
+  .tuple([
+    StrategyItem,
+    StrategyItem,
+    StrategyItem,
+    StrategyItem,
+    StrategyItem,
+    StrategyItem,
+    StrategyItem,
+    StrategyItem,
+    StrategyItem,
+    StrategyItem,
+    StrategyItem,
+  ])
+  .and(StrategyItem.array().length(TOTAL_ACTIONS));
+export const ActionsLevelsSuggestionSchema = ActionLevelSchema.array();
+
+const SuggestionSchema = ActionsLevelsSuggestionSchema.optional();
+
+type ActionsFormattedForBackend = ValueOf<{
+  [K in (typeof SCENARIO_PARAMETERS_ORDER)[number]]: FormatString<K>;
+}>;
+type ExpectedObject = Record<
+  ActionsFormattedForBackend,
+  typeof SuggestionSchema
+>;
+const acc = {} as ExpectedObject;
+const expectedObject = SCENARIO_PARAMETERS_ORDER.reduce<ExpectedObject>(
+  (acc, key) => {
+    acc[format_scenario_parameter_for_backend(key)] = SuggestionSchema;
+    return acc;
+  },
+  acc,
+);
+
+export const ResultsActionsLevelsSuggestionsSchema = z.strictObject({
+  suggestions: z.object(expectedObject),
+});
 
 export const ScenarioSchema = z.enum(SCENARIOS_OPTIONS);
 
@@ -58,7 +105,6 @@ export const YearSchema = z.coerce
 
 export const FiltersSchema = z
   .object({
-    // "flow type": z.string().array(),
     "Element Class": z.string().array(),
     "Building subtype": z.string().array(),
     "Building type": z.string().array(),

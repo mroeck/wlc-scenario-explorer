@@ -25,6 +25,7 @@ import type { z } from "zod";
 import { LoadingSpinner } from "@/components/LoadingSpinner";
 import { ErrorOccurred } from "@/components/ErrorOccurred";
 import {
+  CUSTOM_SCENARIO,
   DIVIDED_BY_NONE,
   NONE,
   type ATTRIBUTES,
@@ -141,10 +142,8 @@ function createTitle({
 
   type Keys = keyof typeof SCENARIO_TO_ACRONYM;
 
-  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   const acronymA = SCENARIO_TO_ACRONYM[scenarioA]
-    ? // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
-      ` (${SCENARIO_TO_ACRONYM[scenarioA]})`
+    ? ` (${SCENARIO_TO_ACRONYM[scenarioA]})`
     : "";
   // @ts-expect-error: I know the index may not exists
   const acronymB = SCENARIO_TO_ACRONYM[scenarioB]
@@ -205,6 +204,7 @@ export const DataViz = () => {
     scenarioA,
     scenarioB,
     dataTab,
+    strategy,
   } = route.useSearch({
     select: (search) => ({
       breakdownBy: search.breakdownBy,
@@ -215,6 +215,7 @@ export const DataViz = () => {
       scenarioA: search.scenarioA,
       scenarioB: search.scenarioB,
       dataTab: search.dataTab,
+      strategy: search.strategy,
     }),
   });
   const unit =
@@ -224,7 +225,7 @@ export const DataViz = () => {
       : // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
         (`${indicator} per ${dividedBy}` as const);
 
-  const acronymA = SCENARIO_TO_ACRONYM[scenarioA] as string | undefined;
+  const acronymA = SCENARIO_TO_ACRONYM[scenarioA];
   // @ts-expect-error: not all scenarios have an acronym
   const acronymB = SCENARIO_TO_ACRONYM[scenarioB ?? ""] as string | undefined;
 
@@ -240,15 +241,20 @@ export const DataViz = () => {
       scenario,
       indicator,
       dividedBy,
+      strategy,
     });
 
   const commonKeys = { breakdownBy, filters, indicator, dividedBy };
+  const strategyForA = scenarioA === CUSTOM_SCENARIO ? strategy : undefined;
   const {
     isLoading: isLoadingA,
     error: errorA,
     data: resultsA,
   } = useQuery({
-    queryKey: [SCENARIO_QUERY_KEY, { ...commonKeys, scenario: scenarioA }],
+    queryKey: [
+      SCENARIO_QUERY_KEY,
+      { ...commonKeys, strategy: strategyForA, scenario: scenarioA },
+    ],
     queryFn: () => fetchScenarioData(scenarioA),
     staleTime: Infinity,
   });

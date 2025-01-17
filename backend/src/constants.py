@@ -3,3 +3,4 @@ import os
 DIVIDED_BY_NONE = "DIVIDED_BY_NONE"
 DATA_PATH = os.getenv("DATA_PATH", "/app/data")
 FILENAME_SEARCH_OPERATOR = "_._"
+STRATEGIES_TABLE_NAME = "strategies"

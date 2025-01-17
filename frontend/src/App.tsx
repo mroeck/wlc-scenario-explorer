@@ -11,6 +11,7 @@ import { routeTree } from "./routeTree.gen";
 import { env } from "./env";
 import { NotFound } from "./components/NotFound";
 import { Route as rootRoute } from "./routes/__root";
+import { Toaster } from "./components/ui/toaster";
 
 const ReactQueryDevtools = env.PUBLIC_DEBUG
   ? lazy(() =>
@@ -48,6 +49,7 @@ export function App() {
     <QueryClientProvider client={queryClient}>
       <RouterProvider router={router} />
       <ReactQueryDevtools initialIsOpen={false} />
+      <Toaster />
     </QueryClientProvider>
   );
 }

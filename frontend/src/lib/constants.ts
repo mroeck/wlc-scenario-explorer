@@ -2,17 +2,19 @@ import type { UnionToTuple, ValueOf } from "type-fest";
 import {
   UNITS_FROM_BACKEND,
   type FILTERS_OBJ,
-  type PREDEFINED_SCENARIOS,
   type SCENARIOS_OPTIONS,
 } from "./shared_with_backend/constants";
 import type { Attribute, Indicator, DividedBy } from "./types";
 import type { DomainAll } from "@/routes/-index/components/data-section/types";
 import { env } from "../env";
+import type { z } from "zod";
+import type { ResultsActionsLevelsSuggestionsSchema } from "./shared_with_backend/schemas";
 
 export const MOBILE_SETTINGS_BUTTON = "Scenarios and Filters";
 export const RESET_LABEL = "Reset";
 export const PROD = "production";
 export const DEV = "development";
+export const isProd = env.PUBLIC_NODE_ENV === PROD;
 export const PROJECT_NAME = "GHG Emissions of EU Building Stock Scenarios";
 
 export const DEFAULT_FILTERS = undefined;
@@ -110,6 +112,9 @@ export const imageFormats = ["png", "jpeg", "pdf", "svg"] as const;
 export const spreadsheetFormats = ["csv", "xlsx"] as const;
 export const DOWNLOAD_AS_TESTID = "DOWNLOAD_AS_TESTID";
 export const TAB_CONTENT_TESTID = "TAB_CONTENT_TESTID";
+export const STRATEGY_TESTID = "STRATEGY_TESTID";
+export const SET_ALL_PARAMETERS_TRIGGER_TESTID =
+  "SET_ALL_PARAMETERS_TRIGGER_TESTID";
 export const SETTINGS_TABS_NAMES = {
   scenarios: "Scenarios",
   filters: "Filters",
@@ -203,7 +208,8 @@ export const SCENARIO_TO_ACRONYM = {
   "CPOL/B": undefined,
   APOL: undefined,
   BAU: undefined,
-} satisfies Record<(typeof PREDEFINED_SCENARIOS)[number], string | undefined>;
+  "Custom scenario results": "Custom",
+} satisfies Record<(typeof SCENARIOS_OPTIONS)[number], string | undefined>;
 export const EMBODIED_CARBON = "Embodied carbon (EC)";
 export const OPERATIONAL_CARBON = "Operational carbon (OC)";
 export const EMBODIED_CARBON_TEXT = "embodied carbon";
@@ -245,3 +251,19 @@ export const DEFAULT_DASHBOARD_SEARCH = {
   settingsTab: DEFAULT_SETTINGS_TAB,
   sort: DEFAULT_SORT,
 } as const;
+
+export const DEFAULT_ACTIONS_LEVELS_SUGGESTIONS = {
+  increase_bio_based_solutions: [],
+  increase_carbon_dioxide_removal: [],
+  increase_circularity_and_reuse: [],
+  increase_low_carbon_conventional: [],
+  increase_material_efficiency: [],
+  increase_repair_and_retrofit: [],
+  reduce_construction_process: [],
+  reduce_construction_waste: [],
+  reduce_operational_energy: [],
+  reduce_space_per_capita: [],
+  reduce_transport_emissions: [],
+} satisfies z.infer<
+  typeof ResultsActionsLevelsSuggestionsSchema
+>["suggestions"];

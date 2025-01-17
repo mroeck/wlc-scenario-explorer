@@ -157,10 +157,8 @@ export function SettingsButton() {
                     >{`${scenarioB}${acronymBForTitle} only`}</SelectItem>
                     <SelectItem value={SCENARIO_A_AND_B}>
                       <span className="block w-full overflow-hidden text-ellipsis text-nowrap font-medium">
-                        {/* eslint-disable-next-line @typescript-eslint/no-unnecessary-condition */}
                         {acronymA || scenarioA}
                         <span className="mx-2 font-bold">VS</span>
-                        {/* eslint-disable-next-line @typescript-eslint/no-unnecessary-condition */}
                         {acronymB || scenarioB}
                       </span>
                     </SelectItem>

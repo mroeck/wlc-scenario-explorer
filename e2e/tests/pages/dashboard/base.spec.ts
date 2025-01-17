@@ -7,7 +7,7 @@ import {
 } from "@/lib/constants";
 import { UNITS_FROM_BACKEND } from "@/lib/shared_with_backend/constants";
 import { test, expect } from "@playwright/test";
-import { DEFAULT_DATA_HEADER, TAGS } from "@tests/constants";
+import { DEFAULT_GRAPH_TITLE, TAGS } from "@tests/constants";
 import { testPageScreenshot, waitLoadingEnds } from "@tests/functions";
 
 test.describe("dashboard", () => {
@@ -18,7 +18,7 @@ test.describe("dashboard", () => {
 
   test("has tab title and data header", async ({ page }) => {
     await expect(page).toHaveTitle(/Scenario Explorer/);
-    await expect(page.getByText(DEFAULT_DATA_HEADER)).toBeVisible();
+    await expect(page.getByText(DEFAULT_GRAPH_TITLE)).toBeVisible();
   });
 
   test(

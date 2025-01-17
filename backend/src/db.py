@@ -2,26 +2,32 @@ import os
 from sqlalchemy import create_engine, insert, delete
 from sqlalchemy.orm import sessionmaker
 from .constants import DATA_PATH
-from .models import Filenames, FilenamesBase
+from .models import Strategies, StrategiesBase
+from .shared_with_frontend.constants import SCENARIO_PARAMETERS_ORDER
 
 engine = create_engine("duckdb:///:memory:")
 
 Session = sessionmaker(engine)
 
 is_absolute_path = DATA_PATH.startswith("/")
-sqlite_db_path = f"{DATA_PATH}/filenames.db"
+sqlite_db_path = f"{DATA_PATH}/strategies.db"
 scenarios_dir_path = f"{DATA_PATH}/scenarios"
 db_url = f"sqlite:///file:{sqlite_db_path}?uri=true"
 
-JustOnStartFilenameEngine = create_engine(db_url)
-FilenamesBase.metadata.create_all(JustOnStartFilenameEngine)
+JustOnStartStrategiesEngine = create_engine(db_url)
+StrategiesBase.metadata.create_all(JustOnStartStrategiesEngine)
 
 filenames = os.listdir(scenarios_dir_path)
 
-deleteAllFilenames = delete(Filenames)
-insertFilenames = insert(Filenames).values([{"filename": name} for name in filenames])
+deleteAllFilenames = delete(Strategies)
 
-conn = JustOnStartFilenameEngine.connect()
+formatted_values = [
+    dict(zip(SCENARIO_PARAMETERS_ORDER, name.replace(".parquet", "").split("-")))
+    for name in filenames
+]
+
+insertFilenames = insert(Strategies).values(formatted_values)
+conn = JustOnStartStrategiesEngine.connect()
 
 try:
     conn.execute(deleteAllFilenames)
@@ -32,9 +38,9 @@ finally:
     conn.close()
     engine.dispose()
 
-FilenameEngine = create_engine(
+StrategiesEngine = create_engine(
     f"{db_url}mode=ro&immutable=1&uri=true",
     connect_args={"uri": True},
 )
 
-FilenameSession = sessionmaker(FilenameEngine)
+StrategiesSession = sessionmaker(StrategiesEngine)

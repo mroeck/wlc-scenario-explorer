@@ -5,6 +5,8 @@ import type {
   ScenarioSchema,
   IndicatorSchema,
   DividedBySchema,
+  ActionLevelSchema,
+  StrategyAsSearchParamSchema,
 } from "./shared_with_backend/schemas";
 import type { SortSchema } from "./schemas";
 import type { EXPECTED_VALUES } from "tests/parquet.test";
@@ -22,3 +24,6 @@ export type ValidValues = Partial<typeof EXPECTED_VALUES>;
 export type ValidColumn = keyof ValidValues;
 export type ValidOption = TupleToUnion<ValidValues[ValidColumn]>;
 export type ScenarioId = "A" | "B";
+export type Level = z.infer<typeof ActionLevelSchema>;
+export type CurrentLevel = Level | null;
+export type StrategyAsSearchParam = z.infer<typeof StrategyAsSearchParamSchema>;

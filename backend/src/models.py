@@ -1,8 +1,8 @@
-from sqlalchemy import String
 from sqlalchemy.orm import DeclarativeBase, mapped_column, Mapped
+from .constants import STRATEGIES_TABLE_NAME
 
 
-class FilenamesBase(DeclarativeBase):
+class StrategiesBase(DeclarativeBase):
     pass
 
 
@@ -29,8 +29,18 @@ class FilenamesBase(DeclarativeBase):
 #     ind_GWP_LuLuc: Mapped[float] = mapped_column(Float)
 
 
-class Filenames(FilenamesBase):
-    __tablename__ = "filenames"
+class Strategies(StrategiesBase):
+    __tablename__ = STRATEGIES_TABLE_NAME
 
     id: Mapped[int] = mapped_column(primary_key=True)
-    filename: Mapped[str] = mapped_column(String, nullable=False)
+    increase_low_carbon_conventional: Mapped[str] = mapped_column(nullable=False)
+    reduce_transport_emissions: Mapped[str] = mapped_column(nullable=False)
+    reduce_construction_process: Mapped[str] = mapped_column(nullable=False)
+    reduce_operational_energy: Mapped[str] = mapped_column(nullable=False)
+    increase_bio_based_solutions: Mapped[str] = mapped_column(nullable=False)
+    increase_circularity_and_reuse: Mapped[str] = mapped_column(nullable=False)
+    increase_carbon_dioxide_removal: Mapped[str] = mapped_column(nullable=False)
+    reduce_space_per_capita: Mapped[str] = mapped_column(nullable=False)
+    increase_repair_and_retrofit: Mapped[str] = mapped_column(nullable=False)
+    increase_material_efficiency: Mapped[str] = mapped_column(nullable=False)
+    reduce_construction_waste: Mapped[str] = mapped_column(nullable=False)

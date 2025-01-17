@@ -24,59 +24,171 @@ import {
   SCENARIO_B_MENU_TESTID,
   SCENARIO_TO_ACRONYM,
   DEFAULT_SCENARIO,
+  DEFAULT_ACTIONS_LEVELS_SUGGESTIONS,
+  isProd,
+  STRATEGY_TESTID,
+  SET_ALL_PARAMETERS_TRIGGER_TESTID,
 } from "@/lib/constants";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { getRouteApi, Link } from "@tanstack/react-router";
 import { useForm } from "react-hook-form";
-import { z } from "zod";
+import { z, type ZodNull, type ZodString, type ZodUnion } from "zod";
 import { SelectMenuStyle } from "../../data-section/SelectMenuStyle";
 import { ResetButton } from "../components/ResetButton";
 import {
+  CUSTOM_SCENARIO,
   PREDEFINED_SCENARIOS,
+  SCENARIO_PARAMETERS_OBJ,
+  SCENARIO_PARAMETERS_ORDER,
   SCENARIOS_OPTIONS,
+  type Actions,
 } from "@/lib/shared_with_backend/constants";
-import { ScenarioSchema } from "@/lib/shared_with_backend/schemas";
-import { ScenarioParameters } from "../components/ScenarioParameters";
-import { useEffect } from "react";
+import {
+  ScenarioSchema,
+  type ActionLevelSchema,
+  type StrategyAsSearchParamSchema,
+} from "@/lib/shared_with_backend/schemas";
+import { useEffect, useState } from "react";
 import { InfoButton } from "@/components/InfoButton";
-import { LinkIcon } from "lucide-react";
+import { LinkIcon, SettingsIcon } from "lucide-react";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
+import { ParameterLevel } from "../components/ParameterLevel";
+import * as ToggleGroup from "@radix-ui/react-toggle-group";
+import { fetchActionsLevelsSuggestions } from "@/lib/queries";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useToast } from "@/components/ui/use-toast";
+import { format_scenario_parameter_for_backend } from "@/lib/shared_with_backend/utils";
+import { useDebounce } from "@uidotdev/usehooks";
+import {
+  Popover,
+  PopoverClose,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
 
+const PARAMETER_LEVELS = ["1.0", "1.5", "2.0", "2.5"] as z.infer<
+  typeof ActionLevelSchema
+>[];
 const route = getRouteApi(ROUTES.DASHBOARD);
+
+type DefaultStrategies = Record<Actions, string | null>;
+const typedAcc = {} as DefaultStrategies;
+const defaultStrategiesForForm = Object.values(SCENARIO_PARAMETERS_OBJ)
+  .flatMap((category) => category.strategies)
+  .reduce<DefaultStrategies>((acc, strategy) => {
+    acc[strategy] = null;
+    return acc;
+  }, typedAcc);
+
+type StrategiesSchemaType = Record<Actions, ZodUnion<[ZodString, ZodNull]>>;
+
+const typedAccForSchema = {} as StrategiesSchemaType;
+const StrategiesSchema = Object.keys(
+  defaultStrategiesForForm,
+).reduce<StrategiesSchemaType>((acc, strategy) => {
+  acc[strategy as Actions] = z.string().or(z.null());
+  return acc;
+}, typedAccForSchema);
 
 const formSchema = z.object({
   scenarioA: ScenarioSchema,
   scenarioB: z.union([ScenarioSchema, z.literal("")]),
+  ...StrategiesSchema,
 });
+const DEFAULT_STRATEGY = [
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+] satisfies z.infer<typeof StrategyAsSearchParamSchema>;
 
 export const Scenarios = () => {
-  const { scenarioA, scenarioB, display } = route.useSearch({
+  const queryClient = useQueryClient();
+  const { toast } = useToast();
+  const [activeAccordionItem, setActiveAccordionItem] = useState<
+    keyof typeof SCENARIO_PARAMETERS_OBJ | ""
+  >();
+  const {
+    scenarioA,
+    scenarioB,
+    display,
+    strategy = DEFAULT_STRATEGY,
+  } = route.useSearch({
     select: (search) => ({
       scenarioA: search.scenarioA,
       scenarioB: search.scenarioB,
       display: search.display,
+      strategy: search.strategy,
     }),
   });
+  const isDataCached = !!queryClient.getQueryData([
+    "ACTION_LEVELS_SUGGESTIONS",
+    strategy,
+  ]);
+  const strategyDebounced = useDebounce(strategy, 1250);
+  const finalStrategy = isDataCached ? strategy : strategyDebounced;
+
+  const { error, data = { suggestions: DEFAULT_ACTIONS_LEVELS_SUGGESTIONS } } =
+    useQuery({
+      queryKey: ["ACTION_LEVELS_SUGGESTIONS", finalStrategy],
+      queryFn: () =>
+        fetchActionsLevelsSuggestions({ currentLevels: finalStrategy }),
+      staleTime: Infinity,
+    });
+
+  if (error) {
+    toast({
+      variant: "destructive",
+      title: "Uh oh! Something went wrong.",
+      description:
+        "There was a problem fetching scenario parameters levels suggestions.",
+    });
+
+    if (!isProd) {
+      console.error(error);
+    }
+  }
+
   const navigate = route.useNavigate();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       scenarioA: DEFAULT_SCENARIO,
       scenarioB: "",
+      ...defaultStrategiesForForm,
     },
   });
 
   async function onSubmit({
     scenarioA,
     scenarioB,
+    ...actions
   }: z.infer<typeof formSchema>) {
     const scenarioBIsEmpty = scenarioB === "";
+    const strategy =
+      scenarioA === CUSTOM_SCENARIO
+        ? SCENARIO_PARAMETERS_ORDER.map((action) => actions[action])
+        : undefined;
 
     await navigate({
       search: (prev) => ({
         ...prev,
         scenarioA,
         scenarioB: scenarioBIsEmpty ? undefined : scenarioB,
+        strategy,
       }),
     });
   }
@@ -86,7 +198,7 @@ export const Scenarios = () => {
     fieldOnChange: (...args: unknown[]) => void;
     form: typeof form;
   };
-  function onSelectChange({ value, fieldOnChange, form }: OnSelectChangeArgs) {
+  function onValueChange({ value, fieldOnChange, form }: OnSelectChangeArgs) {
     fieldOnChange(value);
     void form.handleSubmit(onSubmit)();
   }
@@ -108,6 +220,9 @@ export const Scenarios = () => {
     if (scenarioB) {
       form.setValue("scenarioB", scenarioB);
     }
+    strategy.forEach((actionLevel, index) => {
+      form.setValue(SCENARIO_PARAMETERS_ORDER[index], actionLevel);
+    });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -158,7 +273,7 @@ export const Scenarios = () => {
                     </FormLabel>
                     <Select
                       onValueChange={(value) => {
-                        onSelectChange({
+                        onValueChange({
                           fieldOnChange: (value) => {
                             void navigate({
                               search: (prev) => ({
@@ -169,6 +284,22 @@ export const Scenarios = () => {
                                     : display,
                               }),
                             });
+
+                            const isCustom = value === CUSTOM_SCENARIO;
+                            const hasActiveAccordionItem =
+                              activeAccordionItem !== undefined &&
+                              activeAccordionItem !== "";
+
+                            if (isCustom && !hasActiveAccordionItem) {
+                              setTimeout(() => {
+                                setActiveAccordionItem("improve");
+                              }, 0);
+                            } else if (!isCustom && hasActiveAccordionItem) {
+                              setTimeout(() => {
+                                setActiveAccordionItem(undefined);
+                              }, 0);
+                            }
+
                             field.onChange(value);
                           },
                           form,
@@ -193,7 +324,6 @@ export const Scenarios = () => {
 
                           return (
                             <SelectItem key={scenario} value={scenario}>
-                              {/* eslint-disable-next-line @typescript-eslint/no-unnecessary-condition, @typescript-eslint/restrict-template-expressions */}
                               {scenario} {acronym ? `(${acronym})` : null}
                             </SelectItem>
                           );
@@ -228,7 +358,168 @@ export const Scenarios = () => {
                     </Link>
                   </InfoButton>
                 </div>
-                <ScenarioParameters />
+                <Accordion
+                  type="single"
+                  collapsible
+                  className="pl-2"
+                  value={activeAccordionItem ?? ""}
+                  onValueChange={(value) => {
+                    setActiveAccordionItem(
+                      value as keyof typeof SCENARIO_PARAMETERS_OBJ | "",
+                    );
+                  }}
+                  data-testid={STRATEGY_TESTID}
+                >
+                  {Object.entries(SCENARIO_PARAMETERS_OBJ).map(
+                    ([category, values]) => {
+                      const actions = values.strategies;
+                      const Info = values.info;
+                      return (
+                        <AccordionItem key={category} value={category}>
+                          <div className="flex justify-between gap-2">
+                            <div className="flex flex-1 items-center gap-x-2">
+                              <InfoButton>
+                                <Info />
+                              </InfoButton>
+                              <div className="flex-1">
+                                <AccordionTrigger
+                                  className="
+                text-sm capitalize text-gray-800"
+                                >
+                                  {category}
+                                </AccordionTrigger>
+                              </div>
+                            </div>
+                            <Popover>
+                              <PopoverTrigger
+                                data-testid={SET_ALL_PARAMETERS_TRIGGER_TESTID}
+                              >
+                                <SettingsIcon className="h-6 w-7 rounded-sm bg-accent text-primary" />
+                              </PopoverTrigger>
+                              <PopoverContent className="flex flex-col gap-1">
+                                <span className="text-sm text-gray-800">
+                                  Set all {category} levels to:
+                                </span>
+                                <PopoverClose className="flex flex-col gap-2">
+                                  <div className="flex gap-2">
+                                    {PARAMETER_LEVELS.map((level) => (
+                                      <ParameterLevel
+                                        key={level}
+                                        level={level}
+                                        onClick={() => {
+                                          actions.forEach((action) => {
+                                            form.setValue(action, level);
+                                          });
+                                          form.setValue(
+                                            "scenarioA",
+                                            CUSTOM_SCENARIO,
+                                          );
+                                          void form.handleSubmit(onSubmit)();
+                                        }}
+                                      />
+                                    ))}
+                                  </div>
+                                  <ResetButton
+                                    reset={() => {
+                                      actions.forEach((action) => {
+                                        form.setValue(action, null);
+                                      });
+                                      form.setValue(
+                                        "scenarioA",
+                                        CUSTOM_SCENARIO,
+                                      );
+                                      void form.handleSubmit(onSubmit)();
+                                    }}
+                                    text={RESET_LABEL}
+                                  />
+                                </PopoverClose>
+                              </PopoverContent>
+                            </Popover>
+                          </div>
+                          <AccordionContent>
+                            <div className="flex flex-col gap-5 pl-2">
+                              {actions.map((label) => (
+                                <FormField
+                                  key={encodeURIComponent(label)}
+                                  control={form.control}
+                                  name={label}
+                                  render={({ field }) => (
+                                    <FormItem className="flex flex-col gap-1">
+                                      <FormLabel asChild>
+                                        <div className="flex items-center gap-2">
+                                          <span className="min-w-max text-sm text-gray-800">
+                                            {label}:
+                                          </span>
+                                        </div>
+                                      </FormLabel>
+                                      <FormControl>
+                                        <ToggleGroup.Root
+                                          type="single"
+                                          onValueChange={(value) => {
+                                            onValueChange({
+                                              fieldOnChange: (value) => {
+                                                form.setValue(
+                                                  "scenarioA",
+                                                  CUSTOM_SCENARIO,
+                                                );
+                                                field.onChange(value);
+                                              },
+                                              form,
+                                              value,
+                                            });
+                                          }}
+                                          value={field.value ?? undefined}
+                                          className="flex max-w-40 justify-around gap-2"
+                                        >
+                                          {PARAMETER_LEVELS.map((value) => {
+                                            const isActive =
+                                              field.value === value;
+                                            const formattedKey =
+                                              format_scenario_parameter_for_backend(
+                                                field.name,
+                                              );
+                                            const suggestedLevels =
+                                              data.suggestions[formattedKey] ??
+                                              [];
+                                            const isSuggested =
+                                              suggestedLevels.includes(value);
+                                            const status = isActive
+                                              ? "active"
+                                              : isSuggested
+                                                ? undefined
+                                                : "disable";
+                                            return (
+                                              <FormItem
+                                                key={value}
+                                                className="flex items-center space-x-3 space-y-0"
+                                              >
+                                                <FormControl>
+                                                  <ToggleGroup.Item
+                                                    value={value}
+                                                    asChild
+                                                  >
+                                                    <ParameterLevel
+                                                      level={value}
+                                                      status={status}
+                                                    />
+                                                  </ToggleGroup.Item>
+                                                </FormControl>
+                                              </FormItem>
+                                            );
+                                          })}
+                                        </ToggleGroup.Root>
+                                      </FormControl>
+                                    </FormItem>
+                                  )}
+                                />
+                              ))}
+                            </div>
+                          </AccordionContent>
+                        </AccordionItem>
+                      );
+                    },
+                  )}
+                </Accordion>
               </div>
             </div>
             <div></div>
@@ -263,7 +554,7 @@ export const Scenarios = () => {
                   </FormLabel>
                   <Select
                     onValueChange={(value) => {
-                      onSelectChange({
+                      onValueChange({
                         fieldOnChange: (value) => {
                           void navigate({
                             search: (prev) => ({

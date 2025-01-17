@@ -2,13 +2,15 @@ import { ImproveInfo } from "../../routes/-index/components/side-section/compone
 import type { Attribute, ValidOption } from "../types";
 import { ShiftInfo } from "../../routes/-index/components/side-section/components/ShiftInfo";
 import { AvoidInfo } from "../../routes/-index/components/side-section/components/AvoidInfo";
+import type { UnionToTuple } from "type-fest";
 
 /*
   /!\
-  Any variable in this file has variables in the backend sharing some of its values. Modifying anything here means modifying also the backend the variable with the same name in the share-with-frontend file
+  Any variable in this file has variables in the backend sharing some of its values. Modifying anything here means modifying also the backend the variable depending on it in the share-with-frontend folder
   /!\
  */
 
+export const TOTAL_ACTIONS = 11;
 const COMMON_IN_FILTERS_AND_BREAKDOWN = {
   country: "country",
   buildingUseType: "Building type",
@@ -49,10 +51,10 @@ export const PREDEFINED_SCENARIOS = [
   "ALL/HIGH",
 ] as const;
 export type PredefinedScenario = (typeof PREDEFINED_SCENARIOS)[number];
-
+export const CUSTOM_SCENARIO = "Custom scenario results";
 export const SCENARIOS_OPTIONS = [
   ...PREDEFINED_SCENARIOS,
-  // "Custom scenario results",
+  CUSTOM_SCENARIO,
 ] as const;
 
 export const FILTERS_OBJ = {
@@ -113,9 +115,27 @@ export const SCENARIO_PARAMETERS_OBJ = {
     ],
   },
 } as const;
+type CategoriesOfStrategies = keyof typeof SCENARIO_PARAMETERS_OBJ;
+export type Actions =
+  (typeof SCENARIO_PARAMETERS_OBJ)[CategoriesOfStrategies]["strategies"][number];
+
+export const SCENARIO_PARAMETERS_ORDER: UnionToTuple<Actions> = [
+  "Increase low carbon conventional",
+  "Reduce transport emissions",
+  "Reduce construction process",
+  "Reduce operational energy",
+  "Increase bio-based solutions",
+  "Increase circularity and reuse",
+  "Increase carbon dioxide removal",
+  "Reduce space per capita",
+  "Increase repair and retrofit",
+  "Increase material efficiency",
+  "Reduce construction waste",
+];
 
 export const API_ROUTES = {
   scenario: "/scenario",
+  suggestions: "/suggestions",
 };
 
 export const ATTRIBUTE_OPTIONS_COLOR = {

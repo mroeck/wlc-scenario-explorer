@@ -22,6 +22,7 @@ import {
   ScenarioSchema,
   IndicatorSchema,
   DividedBySchema,
+  StrategyAsSearchParamSchema,
 } from "@/lib/shared_with_backend/schemas";
 import {
   AnimationSchema,
@@ -47,6 +48,7 @@ const SearchParamsSchema = z.object({
   settingsTab: SettingsTabSchema.catch(DEFAULT_SETTINGS_TAB),
   dataTab: DataTabSchema.catch(DEFAULT_DATA_TAB),
   highlights: HighlightSchema.array().optional().catch(undefined),
+  strategy: StrategyAsSearchParamSchema.optional().catch(undefined),
 });
 const route = getRouteApi(ROUTES.DASHBOARD);
 

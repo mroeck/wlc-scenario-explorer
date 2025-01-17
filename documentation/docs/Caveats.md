@@ -48,8 +48,14 @@ The distinct values are case sensitive
 
 ### Typescript
 
-TypeScript isn't configured properly, so we can't run typecheck to catch type errors in the e2e folder right now. It's not a big deal since this won't cause the pipeline to fail or block the app from building. However, the downside is that we might miss some type errors, such as unused imports.
+- TypeScript isn't configured properly, so we can't run typecheck to catch type errors in the e2e folder right now. It's not a big deal since this won't cause the pipeline to fail or block the app from building. However, the downside is that we might miss some type errors, such as unused imports.
 That said, we still get IntelliSense/red lines in VSCode.
+
+- The @/* alias does not work somehow when importing variables from frontend. This is why some path are relative instead of using the @ alias.
+
+### Docker
+
+- In the Dockerfile (the one in monorepo root), we only COPY the files from frontend that are imported in the e2e folder. This is common to add new tests which imports files that have not been added in the Dockerfile which throw an error "could not find module" when running the e2e:update:snapshots command.
 
 ## Backend
 
