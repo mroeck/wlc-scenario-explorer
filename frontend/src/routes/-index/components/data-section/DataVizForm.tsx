@@ -39,7 +39,7 @@ import {
   DividedBySchema,
 } from "@/lib/shared_with_backend/schemas";
 import {
-  ATTRIBUTES,
+  BREAKDOWN_BY_OPTIONS,
   INDICATORS,
   DIVIDED_BY_OPTIONS,
 } from "@/lib/shared_with_backend/constants";
@@ -57,7 +57,7 @@ function getTitleAcronym({ acronym }: { acronym: string | undefined }) {
 
 const DataVizFormSchema = z.object<{
   indicator: z.ZodEnum<Writable<typeof INDICATORS>>;
-  breakdownBy: z.ZodEnum<Writable<typeof ATTRIBUTES>>;
+  breakdownBy: z.ZodEnum<Writable<typeof BREAKDOWN_BY_OPTIONS>>;
   dividedBy: z.ZodEnum<Writable<typeof DIVIDED_BY_OPTIONS>>;
 }>({
   indicator: IndicatorSchema,
@@ -309,7 +309,7 @@ export const DataVizForm = () => {
                   </SelectMenuStyle>
                 </FormControl>
                 <SelectContent>
-                  {ATTRIBUTES.sort((keyA, keyB) => {
+                  {BREAKDOWN_BY_OPTIONS.sort((keyA, keyB) => {
                     return BREAKDOWN_BY_ORDER.indexOf(
                       keyA.toLowerCase() as Writable<
                         typeof BREAKDOWN_BY_ORDER

@@ -62,3 +62,8 @@ That said, we still get IntelliSense/red lines in VSCode.
 ### Type safety
 
 Some type errors were ignored, and certain types were widened due to limited expertise and time with MyPy.
+
+### API
+
+#### /scenario
+We return a minmax value in the response, this is outdated, we get those values from the frontend now. TODO: remove the minmax code from the backend
