@@ -219,11 +219,9 @@ export const DataViz = () => {
     }),
   });
   const unit =
-    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     dividedBy === DIVIDED_BY_NONE
       ? indicator
-      : // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
-        (`${indicator} per ${dividedBy}` as const);
+      : (`${indicator} per ${dividedBy}` as const);
 
   const acronymA = SCENARIO_TO_ACRONYM[scenarioA];
   // @ts-expect-error: not all scenarios have an acronym
