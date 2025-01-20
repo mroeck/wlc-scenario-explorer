@@ -25,7 +25,6 @@ import {
   SCENARIO_TO_ACRONYM,
   DEFAULT_SCENARIO,
   DEFAULT_ACTIONS_LEVELS_SUGGESTIONS,
-  isProd,
   STRATEGY_TESTID,
   SET_ALL_PARAMETERS_TRIGGER_TESTID,
 } from "@/lib/constants";
@@ -50,7 +49,7 @@ import {
 } from "@/lib/shared_with_backend/schemas";
 import { useEffect, useState } from "react";
 import { InfoButton } from "@/components/InfoButton";
-import { LinkIcon, SettingsIcon } from "lucide-react";
+import { LinkIcon, MoreVerticalIcon, XIcon } from "lucide-react";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import {
   Accordion,
@@ -141,26 +140,18 @@ export const Scenarios = () => {
   const strategyDebounced = useDebounce(strategy, 1250);
   const finalStrategy = isDataCached ? strategy : strategyDebounced;
 
-  const { error, data = { suggestions: DEFAULT_ACTIONS_LEVELS_SUGGESTIONS } } =
+  const { data = { suggestions: DEFAULT_ACTIONS_LEVELS_SUGGESTIONS } } =
     useQuery({
       queryKey: ["ACTION_LEVELS_SUGGESTIONS", finalStrategy],
       queryFn: () =>
         fetchActionsLevelsSuggestions({ currentLevels: finalStrategy }),
       staleTime: Infinity,
+      meta: {
+        errorMessage:
+          "There was a problem fetching scenario parameters levels suggestions.",
+        toast,
+      },
     });
-
-  if (error) {
-    toast({
-      variant: "destructive",
-      title: "Uh oh! Something went wrong.",
-      description:
-        "There was a problem fetching scenario parameters levels suggestions.",
-    });
-
-    if (!isProd) {
-      console.error(error);
-    }
-  }
 
   const navigate = route.useNavigate();
   const form = useForm<z.infer<typeof formSchema>>({
@@ -394,7 +385,7 @@ export const Scenarios = () => {
                               <PopoverTrigger
                                 data-testid={SET_ALL_PARAMETERS_TRIGGER_TESTID}
                               >
-                                <SettingsIcon className="h-6 w-7 rounded-sm bg-accent text-primary" />
+                                <MoreVerticalIcon className="h-6 w-7 rounded-sm text-primary" />
                               </PopoverTrigger>
                               <PopoverContent className="flex flex-col gap-1">
                                 <span className="text-sm text-gray-800">
@@ -419,8 +410,10 @@ export const Scenarios = () => {
                                       />
                                     ))}
                                   </div>
-                                  <ResetButton
-                                    reset={() => {
+                                  <button
+                                    type="button"
+                                    className="ml-auto flex items-center gap-1 text-sm text-gray-800"
+                                    onClick={() => {
                                       actions.forEach((action) => {
                                         form.setValue(action, null);
                                       });
@@ -430,8 +423,10 @@ export const Scenarios = () => {
                                       );
                                       void form.handleSubmit(onSubmit)();
                                     }}
-                                    text={RESET_LABEL}
-                                  />
+                                  >
+                                    <XIcon className="size-[14px]" />
+                                    <span>Clear</span>
+                                  </button>
                                 </PopoverClose>
                               </PopoverContent>
                             </Popover>
