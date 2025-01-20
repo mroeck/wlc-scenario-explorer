@@ -389,7 +389,9 @@ export const Scenarios = () => {
                               </PopoverTrigger>
                               <PopoverContent className="flex flex-col gap-1">
                                 <span className="text-sm text-gray-800">
-                                  Set all {category} levels to:
+                                  Set all{" "}
+                                  <span className="font-bold">{category}</span>{" "}
+                                  levels to:
                                 </span>
                                 <PopoverClose className="flex flex-col gap-2">
                                   <div className="flex gap-2">
