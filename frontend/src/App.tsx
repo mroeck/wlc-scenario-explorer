@@ -27,7 +27,6 @@ const ReactQueryDevtools = env.PUBLIC_DEBUG
     )
   : () => null;
 
-// const queryClient = new QueryClient();
 const queryClient = new QueryClient({
   queryCache: new QueryCache({
     onError: (error, query) => {
