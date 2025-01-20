@@ -28,7 +28,7 @@ import {
   CUSTOM_SCENARIO,
   DIVIDED_BY_NONE,
   NONE,
-  type ATTRIBUTES,
+  type BREAKDOWN_BY_OPTIONS,
 } from "@/lib/shared_with_backend/constants";
 import type { ScenarioRowsAggregatedArraySchema } from "@/lib/schemas";
 import { NoDataFound } from "@/components/NoDataFound";
@@ -123,7 +123,7 @@ const defaultTab: TabName = "Stacked Area Graph";
 
 type CreateTitleArgs = {
   unit: Unit;
-  breakdownBy: (typeof ATTRIBUTES)[number];
+  breakdownBy: (typeof BREAKDOWN_BY_OPTIONS)[number];
   scenarioA: z.infer<typeof ScenarioSchema>;
   scenarioB?: z.infer<typeof ScenarioSchema> | typeof SCENARIO_B_LABEL;
   activeTab: string;

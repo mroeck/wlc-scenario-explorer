@@ -33,7 +33,9 @@ type AttributesEnum = [
   (typeof BREAKDOWN_BY_OBJ)[keyof typeof BREAKDOWN_BY_OBJ],
   ...Array<(typeof BREAKDOWN_BY_OBJ)[keyof typeof BREAKDOWN_BY_OBJ]>,
 ];
-export const ATTRIBUTES = Object.values(BREAKDOWN_BY_OBJ) as AttributesEnum;
+export const BREAKDOWN_BY_OPTIONS = Object.values(
+  BREAKDOWN_BY_OBJ,
+) as AttributesEnum;
 
 export const PREDEFINED_SCENARIOS = [
   // "Example scenario (for illustration purpose only)",

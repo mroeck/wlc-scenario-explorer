@@ -1,6 +1,6 @@
 import { z } from "zod";
 import {
-  ATTRIBUTES,
+  BREAKDOWN_BY_OPTIONS,
   type FILTERS,
   MAX_YEAR,
   MIN_YEAR,
@@ -19,7 +19,7 @@ import {
 
 export const IndicatorSchema = z.enum(INDICATORS);
 export const DividedBySchema = z.enum(DIVIDED_BY_OPTIONS);
-export const BreakdownBySchema = z.enum(ATTRIBUTES);
+export const BreakdownBySchema = z.enum(BREAKDOWN_BY_OPTIONS);
 
 export const ScenarioRowsAggregatedSchema = z
   .object({
