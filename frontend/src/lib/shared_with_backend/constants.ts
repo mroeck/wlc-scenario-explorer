@@ -79,10 +79,10 @@ export const DIVIDED_BY_NONE = "none (total)";
 
 export const DIVIDED_BY_OPTIONS = [
   DIVIDED_BY_NONE,
-  "m² (country)",
-  "m² (archetype)",
-  "capita (country)",
-  "capita (archetype)",
+  // "m² (country)",
+  // "m² (archetype)",
+  // "capita (country)",
+  // "capita (archetype)",
 ] as const;
 
 export const YEAR_KEY = "stock_projection_year";
