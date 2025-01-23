@@ -27,7 +27,10 @@ function UserInterface() {
   return (
     <div className="mx-auto h-max max-w-screen-2xl bg-[hsl(220,14%,96%)]">
       <Header />
-      <ScrollRestoration />
+      <ScrollRestoration
+        getKey={(location) => location.pathname}
+        scrollBehavior="instant"
+      />
       <Outlet />
       <Suspense>
         <TanStackRouterDevtools initialIsOpen={false} />

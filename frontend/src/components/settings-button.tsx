@@ -85,6 +85,7 @@ export function SettingsButton() {
         ...prev,
         display: newDisplay,
       }),
+      replace: true,
     });
   };
 
@@ -94,6 +95,7 @@ export function SettingsButton() {
         ...prev,
         sort: newSort,
       }),
+      replace: true,
     });
   };
 

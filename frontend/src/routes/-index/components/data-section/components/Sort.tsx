@@ -30,6 +30,7 @@ export const Sort = () => {
         ...prev,
         sort: newSort,
       }),
+      replace: true,
     });
   };
 

@@ -88,6 +88,7 @@ export const ComparisonSlider: React.FC<ComparisonSliderProps> = ({
             ...prev,
             display: SCENARIO_A_ONLY,
           }),
+          replace: true,
         });
       }
     };

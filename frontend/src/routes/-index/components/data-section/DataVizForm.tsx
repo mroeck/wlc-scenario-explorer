@@ -116,6 +116,7 @@ export const DataVizForm = () => {
         dividedBy,
         highlights: newBreakdownBy === breakdownBy ? highlights : undefined,
       }),
+      replace: true,
     });
   }
 
@@ -135,6 +136,7 @@ export const DataVizForm = () => {
         ...prev,
         display: newDisplay,
       }),
+      replace: true,
     });
   };
 
