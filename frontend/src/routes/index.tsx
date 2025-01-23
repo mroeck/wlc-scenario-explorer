@@ -2,54 +2,12 @@ import { createFileRoute, getRouteApi } from "@tanstack/react-router";
 
 import { DataViz } from "./-index/components/data-section/DataViz";
 import { cn } from "@/lib/utils";
-import {
-  DASHBOARD_HEADING,
-  DEFAULT_BREAKDOWN_BY,
-  DEFAULT_DISPLAY,
-  DEFAULT_SCENARIO,
-  DEFAULT_INDICATOR,
-  ROUTES,
-  DEFAULT_DIVIDED_BY,
-  DEFAULT_SETTINGS_TAB,
-  DEFAULT_DATA_TAB,
-  DEFAULT_SORT,
-} from "@/lib/constants";
-import { z } from "zod";
+import { DASHBOARD_HEADING, ROUTES } from "@/lib/constants";
 
-import {
-  BreakdownBySchema,
-  FiltersSchema,
-  ScenarioSchema,
-  IndicatorSchema,
-  DividedBySchema,
-  StrategyAsSearchParamSchema,
-} from "@/lib/shared_with_backend/schemas";
-import {
-  AnimationSchema,
-  DataTabSchema,
-  DisplaySchema,
-  HighlightSchema,
-  SettingsTabSchema,
-  SortSchema,
-} from "@/lib/schemas";
+import { SearchParamsSchema } from "@/lib/schemas";
 import { Settings } from "./-index/components/side-section/Settings";
 import { memo, useRef, type MouseEvent } from "react";
 
-const SearchParamsSchema = z.object({
-  filters: FiltersSchema.optional(),
-  breakdownBy: BreakdownBySchema.catch(DEFAULT_BREAKDOWN_BY),
-  indicator: IndicatorSchema.catch(DEFAULT_INDICATOR),
-  dividedBy: DividedBySchema.catch(DEFAULT_DIVIDED_BY),
-  display: DisplaySchema.catch(DEFAULT_DISPLAY),
-  sort: SortSchema.catch(DEFAULT_SORT),
-  scenarioA: ScenarioSchema.catch(DEFAULT_SCENARIO),
-  scenarioB: ScenarioSchema.optional().catch(undefined),
-  animation: AnimationSchema.optional().catch(undefined),
-  settingsTab: SettingsTabSchema.catch(DEFAULT_SETTINGS_TAB),
-  dataTab: DataTabSchema.catch(DEFAULT_DATA_TAB),
-  highlights: HighlightSchema.array().optional().catch(undefined),
-  strategy: StrategyAsSearchParamSchema.optional().catch(undefined),
-});
 const route = getRouteApi(ROUTES.DASHBOARD);
 
 const BLACKLIST_TAGS = ["HTML", "BUTTON", "INPUT", "CIRCLE", "PATH", "G"];
@@ -89,6 +47,7 @@ const Dashboard = memo(function Dashboard() {
           ...prev,
           highlights: undefined,
         }),
+        replace: true,
       });
     }
   };

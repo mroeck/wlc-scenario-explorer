@@ -20,8 +20,11 @@ export function TableOfContents({
 }: {
   sections: ToCSection<string>[];
 }) {
-  const hash = useLocation({
-    select: (location) => location.hash,
+  const { hash, currentPath } = useLocation({
+    select: (location) => ({
+      hash: location.hash,
+      currentPath: location.pathname,
+    }),
   });
   const [openSection, setOpenSection] = useState<string>(hash);
 
@@ -58,7 +61,11 @@ export function TableOfContents({
                   hash === section.id && "bg-accent",
                 )}
               >
-                <Link hash={section.id} className="flex w-full items-center">
+                <Link
+                  to={currentPath}
+                  hash={section.id}
+                  className="flex w-full items-center"
+                >
                   {section.title}
                 </Link>
               </AccordionTrigger>
@@ -68,6 +75,7 @@ export function TableOfContents({
                     {section.subsections.map((subsection, index) => (
                       <li key={subsection.id}>
                         <Link
+                          to={currentPath}
                           hash={subsection.id}
                           className={cn(
                             "flex cursor-pointer px-10 py-2 hover:bg-accent hover:no-underline",

@@ -4,26 +4,14 @@ import {
   DEFAULT_DASHBOARD_SEARCH,
 } from "@/lib/constants";
 import { cn } from "@/lib/utils";
-import {
-  type getRouteApi,
-  Link,
-  useRouterState,
-  useSearch,
-} from "@tanstack/react-router";
+import { Link, useRouterState, useSearch } from "@tanstack/react-router";
 import { Drawer, DrawerClose, DrawerContent, DrawerTrigger } from "./ui/drawer";
 import { Menu } from "lucide-react";
 import PROJECT_LOGO_URL from "@/assets/PROJECT_LOGO.webp";
+import type { SearchParamsSchema } from "@/lib/schemas";
+import type { z } from "zod";
 
-type DashboardRouteApi = ReturnType<
-  typeof getRouteApi<typeof ROUTES.DASHBOARD>
->;
-type DashboardUseSearchArgument = Parameters<DashboardRouteApi["useSearch"]>[0];
-type NonUndefinedSelectOptions = Exclude<
-  DashboardUseSearchArgument,
-  undefined
->["select"];
-type FinalSelectOptions = Exclude<NonUndefinedSelectOptions, undefined>;
-type DashboardLinkSearch = Parameters<FinalSelectOptions>[0];
+type DashboardLinkSearch = z.infer<typeof SearchParamsSchema>;
 
 type NavLinksProps = {
   className: string;

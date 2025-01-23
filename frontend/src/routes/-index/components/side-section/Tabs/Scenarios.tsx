@@ -181,6 +181,7 @@ export const Scenarios = () => {
         scenarioB: scenarioBIsEmpty ? undefined : scenarioB,
         strategy,
       }),
+      replace: true,
     });
   }
 
@@ -201,6 +202,7 @@ export const Scenarios = () => {
         ...prev,
         display: DEFAULT_DISPLAY,
       }),
+      replace: true,
     });
     void form.handleSubmit(onSubmit)();
   };
@@ -274,6 +276,7 @@ export const Scenarios = () => {
                                     ? SCENARIO_A_AND_B
                                     : display,
                               }),
+                              replace: true,
                             });
 
                             const isCustom = value === CUSTOM_SCENARIO;
@@ -390,7 +393,9 @@ export const Scenarios = () => {
                               <PopoverContent className="flex flex-col gap-1">
                                 <span className="text-sm text-gray-800">
                                   Set all{" "}
-                                  <span className="font-bold">{category}</span>{" "}
+                                  <span className="font-bold capitalize">
+                                    "{category}"
+                                  </span>{" "}
                                   levels to:
                                 </span>
                                 <PopoverClose className="flex flex-col gap-2">
@@ -561,6 +566,7 @@ export const Scenarios = () => {
                                   ? SCENARIO_A_AND_B
                                   : display,
                             }),
+                            replace: true,
                           });
                           field.onChange(value);
                         },

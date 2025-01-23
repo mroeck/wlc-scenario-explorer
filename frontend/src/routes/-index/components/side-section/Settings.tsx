@@ -32,6 +32,7 @@ export const Settings = () => {
         ...prev,
         settingsTab: newSettingsTab,
       }),
+      replace: true,
     });
   };
   return (

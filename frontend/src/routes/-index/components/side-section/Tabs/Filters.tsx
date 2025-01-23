@@ -213,6 +213,7 @@ export const Filters = () => {
         ...prev,
         filters: formattedFilters,
       }),
+      replace: true,
     });
   }
 

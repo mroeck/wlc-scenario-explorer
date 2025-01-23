@@ -35,5 +35,6 @@ export const onElementClick = ({
             : addNewHighlight,
       };
     },
+    replace: true,
   });
 };
