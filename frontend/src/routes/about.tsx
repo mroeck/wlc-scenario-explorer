@@ -70,7 +70,7 @@ const HEADERS = {
     title: "Partners",
     id: "partners",
   },
-};
+} as const;
 
 const PARTNERS = [
   {
@@ -110,7 +110,7 @@ type Ids = (typeof HEADERS)[keyof typeof HEADERS]["id"];
 
 const sections = [
   {
-    id: "generalRemarks",
+    id: "general-remarks",
     title: "General remarks",
   },
 
