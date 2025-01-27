@@ -137,7 +137,7 @@ export const Scenarios = () => {
     "ACTION_LEVELS_SUGGESTIONS",
     strategy,
   ]);
-  const strategyDebounced = useDebounce(strategy, 1250);
+  const strategyDebounced = useDebounce(strategy, 750);
   const finalStrategy = isDataCached ? strategy : strategyDebounced;
 
   const { data = { suggestions: DEFAULT_ACTIONS_LEVELS_SUGGESTIONS } } =
