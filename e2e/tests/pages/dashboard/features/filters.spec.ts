@@ -52,7 +52,7 @@ test.describe("filters", () => {
         .click();
       await page.getByRole("tab", { name: "Filters" }).click();
       const countryFilterTestId: keyof z.infer<typeof FiltersSchema> =
-        "country";
+        "EU country";
       const materialTypeFilterTestId: keyof z.infer<typeof FiltersSchema> =
         "Material Class";
       await page.getByTestId(countryFilterTestId).click();
@@ -94,7 +94,7 @@ test.describe("filters", () => {
         .click();
       await page.getByRole("tab", { name: "Filters" }).click();
       const countryFilterTestId: keyof z.infer<typeof FiltersSchema> =
-        "country";
+        "EU country";
       await page.getByTestId(countryFilterTestId).click();
       await page.getByRole("option", { name: "FR" }).click();
       await page.getByRole("option", { name: "IT" }).click();

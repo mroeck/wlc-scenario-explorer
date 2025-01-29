@@ -91,8 +91,8 @@ type BreakdownByOrderItem = Lowercase<
   ValueOf<Omit<typeof FILTERS_OBJ, "From" | "To">> | "None"
 >;
 export const BREAKDOWN_BY_ORDER = [
-  "region",
-  "country",
+  "eu region",
+  "eu country",
   "building type",
   "building subtype",
   "element class",
@@ -208,7 +208,7 @@ export const SCENARIO_TO_ACRONYM = {
   "CPOL/B": undefined,
   APOL: undefined,
   BAU: undefined,
-  "Custom scenario results": "Custom",
+  "Custom scenario": "Custom",
 } satisfies Record<(typeof SCENARIOS_OPTIONS)[number], string | undefined>;
 export const EMBODIED_CARBON = "Embodied carbon (EC)";
 export const OPERATIONAL_CARBON = "Operational carbon (OC)";

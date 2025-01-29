@@ -13,7 +13,7 @@ This endpoint retrieves scenario data from a parquet file based on the given bod
 - `breakdownBy` _(required)_: Attribute to break down the data by, maps to `AttributeEnumSchema`.
 
   - **Type**: `string`
-  - **Example**: `"country"`, `"Region"`
+  - **Example**: `"EU country"`, `"EU Region"`
 
 - `scenario` _(required)_: Specifies the scenario to retrieve, maps to `ScenarioEnumSchema`.
 
@@ -44,7 +44,7 @@ This endpoint retrieves scenario data from a parquet file based on the given bod
   "scenario": "APOL",
   "indicator": "GWP bio",
   "dividedBy": "none (total)",
-  "filters": { "country": ["AT", "BE"], "From": 2020, "To": 2025 },
+  "filters": { "EU country": ["AT", "BE"], "From": 2020, "To": 2025 },
   "strategy": [
     "1.0",
     "1.0",

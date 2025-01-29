@@ -249,7 +249,8 @@ export const Scenarios = () => {
                       </div>
                       <InfoButton>
                         <p>
-                          Choose from predefined scenarios. They represent
+                          Choose from predefined scenarios or define a custom
+                          scenario below. Predefined scenarios represent
                           aspirational policy ambitions such as current policies
                           (CPOL) and additional policies (APOL). These scenarios
                           explore the potential of various carbon reduction and
@@ -330,12 +331,12 @@ export const Scenarios = () => {
               <div className="px-2">
                 <div className="flex items-center gap-2">
                   <span className="text-sm font-medium text-gray-800">
-                    Customise scenario parameters:
+                    Define a custom scenario:
                   </span>
                   <InfoButton>
                     <p>
-                      Customise scenario parameters by adjusting the ambition
-                      levels for different carbon reduction and removal (CRR)
+                      Define a custom scenario by adjusting the ambition levels
+                      for different carbon reduction and removal (CRR)
                       strategies. Explore strategies such as improving supply
                       chains, shifting to bio-based solutions, and avoiding
                       unnecessary demand. Set ambition levels to simulate
