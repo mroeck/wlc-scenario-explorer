@@ -69,7 +69,7 @@ const sections = [
       },
       {
         id: HELP_PAGE_IDS.scenarioParametersCustomization,
-        title: "Customise scenario parameters",
+        title: "Define a custom scenario",
       },
     ],
   },
@@ -505,7 +505,7 @@ function Help() {
             </SectionForDoc>
 
             <SectionForDoc id={HELP_PAGE_IDS.scenarioParametersCustomization}>
-              <TypographyH3>Customise scenario parameters</TypographyH3>
+              <TypographyH3>Define a custom scenario</TypographyH3>
               <TypographyContent>
                 <TypographyP>
                   Beyond the pre-defined scenarios available from the dropdown

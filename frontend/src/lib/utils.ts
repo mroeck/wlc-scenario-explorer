@@ -104,6 +104,7 @@ const CATEGORIES = {
   Openings: ["Internal openings", "External openings"],
   Services: ["Technical services", "Electrical services"],
   Structure: ["Substructure", "Storey floors", "Staircases", "Roofs"],
+  Operation: ["Energy"],
   Continental: [
     "SK", // Slovakia
     "SI", // Slovenia
@@ -158,7 +159,7 @@ type AttributeOptions = keyof AttributeOptionsColor;
 type OrderedAttributes =
   | "Building subtype"
   | "Element Class"
-  | "country"
+  | "EU country"
   | "Life cycle stages";
 
 type TupleWithAsManyItemsAsGeneric<T> = ReadonlyTuple<
@@ -189,8 +190,9 @@ export const ATTRIBUTE_OPTIONS_ORDER: AttributeOptionsOrder = {
     ...CATEGORIES.Walls,
     ...CATEGORIES.Services,
     ...CATEGORIES.Openings,
+    ...CATEGORIES.Operation,
   ],
-  country: [
+  "EU country": [
     ...CATEGORIES.Oceanic,
     ...CATEGORIES.Nordic,
     ...CATEGORIES.Mediterranean,
@@ -203,7 +205,7 @@ export const ATTRIBUTE_OPTIONS_ORDER: AttributeOptionsOrder = {
 } as const satisfies Partial<Record<Attribute, string[]>>;
 
 const ORDERED_ATTRIBUTES: OrderedAttributes[] = [
-  "country",
+  "EU country",
   "Building subtype",
   "Element Class",
   "Life cycle stages",

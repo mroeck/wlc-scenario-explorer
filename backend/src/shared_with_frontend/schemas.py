@@ -34,8 +34,8 @@ class ColumnsEnumSchema(Enum):
 
 
 class AttributeEnumSchema(str, Enum):
-    STOCK_REGION_NAME = "Region"
-    COUNTRY_NAME = "country"
+    STOCK_REGION_NAME = "EU Region"
+    COUNTRY_NAME = "EU country"
     STOCK_PROJECTION_YEAR = "stock projection year"
     BUILDING_USE_TYPE_NAME = "Building type"
     BUILDING_USE_SUBTYPE_NAME = "Building subtype"
@@ -112,13 +112,13 @@ class YearSchema(BaseModel):
 class FilterFrontEnumSchema(str, Enum):
     FROM = "From"
     TO = "To"
-    country = "country"
+    country = "EU country"
     BUILDING_USE_TYPE = "Building type"
     BUILDING_ELEMENT_CLASS = "Element Class"
     MATERIAL_CLASS = "Material Class"
     BUILDING_USE_SUBTYPE = "Building subtype"
     ACTIVITY_IN_OUT = "flow type"
-    REGION = "Region"
+    REGION = "EU Region"
     STOCK_ACTIVITY_TYPE_NAME = "building stock activity"
     CARBON_CATEGORY = "Life cycle stages"
     LCA_STAGES = "Life cycle modules"
@@ -175,7 +175,7 @@ class ScenarioEnumSchema(str, Enum):
     APOS = "Current Policy + Shift strategies"
     APOA = "Current Policy + Avoid strategies"
     AASI = "Current Policy + Avoid + Shift + Improve strategies"
-    CUSR = "Custom scenario results"
+    CUSR = "Custom scenario"
 
     BAU = "BAU"
     CPOL_A = "CPOL/A"

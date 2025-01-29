@@ -12,12 +12,12 @@ import type { UnionToTuple } from "type-fest";
 
 export const TOTAL_ACTIONS = 11;
 const COMMON_IN_FILTERS_AND_BREAKDOWN = {
-  country: "country",
+  country: "EU country",
   buildingUseType: "Building type",
   buildingUseSubtype: "Building subtype",
   elementClass: "Element Class",
   material: "Material Class",
-  Region: "Region",
+  Region: "EU Region",
   activityType: "building stock activity",
   carbonCategory: "Life cycle stages",
   lcaStages: "Life cycle modules",
@@ -53,7 +53,7 @@ export const PREDEFINED_SCENARIOS = [
   "ALL/HIGH",
 ] as const;
 export type PredefinedScenario = (typeof PREDEFINED_SCENARIOS)[number];
-export const CUSTOM_SCENARIO = "Custom scenario results";
+export const CUSTOM_SCENARIO = "Custom scenario";
 export const SCENARIOS_OPTIONS = [
   ...PREDEFINED_SCENARIOS,
   CUSTOM_SCENARIO,
@@ -142,6 +142,7 @@ export const API_ROUTES = {
 
 export const ATTRIBUTE_OPTIONS_COLOR = {
   "Element Class": {
+    Energy: "#6B3A83",
     "External openings": "#882929",
     "Internal openings": "#C73B3B",
     "Electrical services": "#3C7FA8",
@@ -169,7 +170,7 @@ export const ATTRIBUTE_OPTIONS_COLOR = {
     "Non-residential": "#3ABB5C",
     Residential: "#499ACC",
   },
-  country: {
+  "EU country": {
     AT: "#95400E",
     BE: "#2D5F7E",
     BG: "#BB4F11",
@@ -219,7 +220,7 @@ export const ATTRIBUTE_OPTIONS_COLOR = {
     Steel: "#A131AF",
     Wood: "#6B3A83",
   },
-  Region: {
+  "EU Region": {
     CON: "#EE854A",
     MED: "#3ABB5C",
     NOR: "#C73B3B",

@@ -76,30 +76,44 @@ class UnitsForFrontType(str, Enum):
     MtCO2 = "MtCO₂"
     Mt = "Mt"
     MtCO2_per_capita = "MtCO₂/capita"
-    MtCO2_per_m2 = "MtCO₂/m²"
+    tCO2_per_m2 = "tCO₂/m²"
     tCO2_per_capita = "tCO₂/capita"
     Mt_per_m2 = "Mt/m²"
+    t_per_m2 = "t/m2"
     ktCO2_per_capita = "ktCO₂/capita"
     ktCO2_per_m2 = "ktCO₂/m²"
+    kgCO2_per_m2 = "kgCO₂/m²"
     t_per_capita = "t/capita"
     kt_per_capita = "kt/capita"
-    gCO2_per_capita = "gCO₂/capita"
+    kt_per_m2 = "kt/m²"
     kgCO2_per_capita = "kgCO₂/capita"
+    gCO2_per_capita = "gCO₂/capita"
+    gCO2_per_m2 = "gCO₂/m²"
 
+
+Mt = "1"
+kt = "1000"
+ton = "1000000"
+kg = "1000000000"
+g = "1000000000000"
 
 front_unit_to_factor: Dict[UnitsForFrontType, str] = {
-    UnitsForFrontType.MtCO2: "1",
-    UnitsForFrontType.Mt: "1",
-    UnitsForFrontType.Mt_per_m2: "1",
-    UnitsForFrontType.MtCO2_per_m2: "1",
-    UnitsForFrontType.MtCO2_per_capita: "1",
-    UnitsForFrontType.tCO2_per_capita: "1000000",
-    UnitsForFrontType.ktCO2_per_m2: "1000",
-    UnitsForFrontType.ktCO2_per_capita: "1000",
-    UnitsForFrontType.kt_per_capita: "1000",
-    UnitsForFrontType.t_per_capita: "1000000",
-    UnitsForFrontType.gCO2_per_capita: "1000000000000",
-    UnitsForFrontType.kgCO2_per_capita: "1000000000",
+    UnitsForFrontType.MtCO2: Mt,
+    UnitsForFrontType.Mt: Mt,
+    UnitsForFrontType.Mt_per_m2: Mt,
+    UnitsForFrontType.MtCO2_per_capita: Mt,
+    UnitsForFrontType.ktCO2_per_m2: kt,
+    UnitsForFrontType.ktCO2_per_capita: kt,
+    UnitsForFrontType.kt_per_capita: kt,
+    UnitsForFrontType.kt_per_m2: kt,
+    UnitsForFrontType.tCO2_per_capita: ton,
+    UnitsForFrontType.tCO2_per_m2: ton,
+    UnitsForFrontType.t_per_capita: ton,
+    UnitsForFrontType.t_per_m2: ton,
+    UnitsForFrontType.kgCO2_per_capita: kg,
+    UnitsForFrontType.kgCO2_per_m2: kg,
+    UnitsForFrontType.gCO2_per_capita: g,
+    UnitsForFrontType.gCO2_per_m2: g,
 }
 
 
@@ -109,36 +123,36 @@ units_for_front: Dict[
 ] = {
     ColumnsEnumSchema.IND_GWP_TOT.value: {
         DIVIDED_BY_NONE: UnitsForFrontType.MtCO2,
-        ColumnsEnumSchema.FLOOR_AREA_COUNTRY.value: UnitsForFrontType.ktCO2_per_m2,
-        ColumnsEnumSchema.FLOOR_AREA_ARCHETYPE.value: UnitsForFrontType.MtCO2_per_m2,
+        ColumnsEnumSchema.FLOOR_AREA_COUNTRY.value: UnitsForFrontType.kgCO2_per_m2,
+        ColumnsEnumSchema.FLOOR_AREA_ARCHETYPE.value: UnitsForFrontType.tCO2_per_m2,
         ColumnsEnumSchema.POPULATION_COUNTRY.value: UnitsForFrontType.tCO2_per_capita,
         ColumnsEnumSchema.POPULATION_ARCHETYPE.value: UnitsForFrontType.tCO2_per_capita,
     },
     ColumnsEnumSchema.IND_GWP_FOS.value: {
         DIVIDED_BY_NONE: UnitsForFrontType.MtCO2,
-        ColumnsEnumSchema.FLOOR_AREA_COUNTRY.value: UnitsForFrontType.ktCO2_per_m2,
-        ColumnsEnumSchema.FLOOR_AREA_ARCHETYPE.value: UnitsForFrontType.MtCO2_per_m2,
+        ColumnsEnumSchema.FLOOR_AREA_COUNTRY.value: UnitsForFrontType.kgCO2_per_m2,
+        ColumnsEnumSchema.FLOOR_AREA_ARCHETYPE.value: UnitsForFrontType.tCO2_per_m2,
         ColumnsEnumSchema.POPULATION_COUNTRY.value: UnitsForFrontType.tCO2_per_capita,
         ColumnsEnumSchema.POPULATION_ARCHETYPE.value: UnitsForFrontType.tCO2_per_capita,
     },
     ColumnsEnumSchema.IND_GWP_BIO.value: {
         DIVIDED_BY_NONE: UnitsForFrontType.MtCO2,
-        ColumnsEnumSchema.FLOOR_AREA_COUNTRY.value: UnitsForFrontType.ktCO2_per_m2,
-        ColumnsEnumSchema.FLOOR_AREA_ARCHETYPE.value: UnitsForFrontType.ktCO2_per_m2,
+        ColumnsEnumSchema.FLOOR_AREA_COUNTRY.value: UnitsForFrontType.gCO2_per_m2,
+        ColumnsEnumSchema.FLOOR_AREA_ARCHETYPE.value: UnitsForFrontType.tCO2_per_m2,
         ColumnsEnumSchema.POPULATION_COUNTRY.value: UnitsForFrontType.kgCO2_per_capita,
         ColumnsEnumSchema.POPULATION_ARCHETYPE.value: UnitsForFrontType.tCO2_per_capita,
     },
     ColumnsEnumSchema.IND_GWP_LULUC.value: {
         DIVIDED_BY_NONE: UnitsForFrontType.MtCO2,
-        ColumnsEnumSchema.FLOOR_AREA_COUNTRY.value: UnitsForFrontType.ktCO2_per_m2,
-        ColumnsEnumSchema.FLOOR_AREA_ARCHETYPE.value: UnitsForFrontType.ktCO2_per_m2,
-        ColumnsEnumSchema.POPULATION_COUNTRY.value: UnitsForFrontType.ktCO2_per_capita,
-        ColumnsEnumSchema.POPULATION_ARCHETYPE.value: UnitsForFrontType.ktCO2_per_capita,
+        ColumnsEnumSchema.FLOOR_AREA_COUNTRY.value: UnitsForFrontType.kgCO2_per_m2,
+        ColumnsEnumSchema.FLOOR_AREA_ARCHETYPE.value: UnitsForFrontType.kgCO2_per_m2,
+        ColumnsEnumSchema.POPULATION_COUNTRY.value: UnitsForFrontType.kgCO2_per_capita,
+        ColumnsEnumSchema.POPULATION_ARCHETYPE.value: UnitsForFrontType.kgCO2_per_capita,
     },
     ColumnsEnumSchema.AMOUNT_MATERIAL.value: {
         DIVIDED_BY_NONE: UnitsForFrontType.Mt,
-        ColumnsEnumSchema.FLOOR_AREA_COUNTRY.value: UnitsForFrontType.Mt_per_m2,
-        ColumnsEnumSchema.FLOOR_AREA_ARCHETYPE.value: UnitsForFrontType.Mt_per_m2,
+        ColumnsEnumSchema.FLOOR_AREA_COUNTRY.value: UnitsForFrontType.t_per_m2,
+        ColumnsEnumSchema.FLOOR_AREA_ARCHETYPE.value: UnitsForFrontType.kt_per_m2,
         ColumnsEnumSchema.POPULATION_COUNTRY.value: UnitsForFrontType.t_per_capita,
         ColumnsEnumSchema.POPULATION_ARCHETYPE.value: UnitsForFrontType.kt_per_capita,
     },
@@ -146,15 +160,25 @@ units_for_front: Dict[
 
 
 def get_indicator_as_sql(indicator: str, dividedBy: str) -> str:
-    factor = front_unit_to_factor[units_for_front[indicator][dividedBy]]
+    indicator_factor = front_unit_to_factor[units_for_front[indicator][dividedBy]]
+
+    divided_by_factor = (
+        "1000000"
+        if dividedBy
+        in {
+            ColumnsEnumSchema.FLOOR_AREA_ARCHETYPE.value,
+            ColumnsEnumSchema.FLOOR_AREA_COUNTRY.value,
+        }
+        else "1"
+    )
 
     return (
-        f"sum({indicator} * {factor})"
+        f"sum({indicator} * {indicator_factor})"
         if dividedBy == DIVIDED_BY_NONE
         else f"""sum(
                  CASE
                     WHEN {dividedBy} = 0 THEN 0
-                    ELSE {indicator} * {factor} / {dividedBy}
+                    ELSE {indicator} * {indicator_factor} / ({dividedBy} * {divided_by_factor})
                 END
             )
             """

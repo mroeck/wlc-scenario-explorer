@@ -115,7 +115,11 @@ test.describe("search params", () => {
   });
 
   test("uses filters search param on mount", async ({ page }) => {
-    const filters = { From: DEFAULT_FROM, To: DEFAULT_TO, country: ["FR"] };
+    const filters = {
+      From: DEFAULT_FROM,
+      To: DEFAULT_TO,
+      "EU country": ["FR"],
+    };
     const filtersEncoded = encodeURIComponent(JSON.stringify(filters));
     const url = `${ROUTES.DASHBOARD}?filters=${filtersEncoded}`;
 
@@ -127,7 +131,7 @@ test.describe("search params", () => {
       To: page.getByLabel("To"),
       country: page
         .getByRole("combobox")
-        .filter({ hasText: filters.country[0] }),
+        .filter({ hasText: filters["EU country"][0] }),
     };
 
     await expect(filterElements.From).toHaveText(filters.From.toString());
