@@ -7,7 +7,12 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Download } from "lucide-react";
+import {
+  Download,
+  EllipsisVerticalIcon,
+  LinkIcon,
+  ShareIcon,
+} from "lucide-react";
 import domtoimage from "dom-to-image";
 import { jsPDF } from "jspdf";
 import * as XLSX from "xlsx";
@@ -16,11 +21,21 @@ import {
   DOWNLOAD_AS_TESTID,
   imageFormats,
   LINKS,
+  SHORTCUT_LINK_TESTID,
   spreadsheetFormats,
 } from "@/lib/constants";
 import { unparse } from "papaparse";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import { useState } from "react";
+import { useLocation } from "@tanstack/react-router";
 
 const sourceText = `Source: ${LINKS.explorerWebsite}`;
 const spreadSheetText = `
@@ -209,52 +224,127 @@ type DownloadMenuProps = {
     | undefined;
 };
 export const DownloadMenu = ({ domTarget, data }: DownloadMenuProps) => {
+  const [isOpen, setIsOpen] = useState(false);
+  const { href } = useLocation({
+    select: (location) => ({
+      href: location.href,
+    }),
+  });
   const isReady = !!data && !!domTarget;
 
   return (
-    <DropdownMenu>
-      <DropdownMenuTrigger
-        data-testid={DOWNLOAD_AS_TESTID}
-        disabled={!isReady}
-        asChild
-      >
-        <Button variant="ghost" size="icon" aria-label="Settings">
-          <Download
-            className={cn(
-              !isReady && "cursor-wait text-gray-300",
-              isReady && "text-primary",
-            )}
-          />
-        </Button>
-      </DropdownMenuTrigger>
-      <DropdownMenuContent>
-        <DropdownMenuLabel className="text-gray-800">
-          Download as:
-        </DropdownMenuLabel>
-        <DropdownMenuGroup>
-          {imageFormats.map((format) => (
+    <>
+      <DropdownMenu>
+        <DropdownMenuTrigger
+          data-testid={DOWNLOAD_AS_TESTID}
+          disabled={!isReady}
+          asChild
+        >
+          <Button variant="ghost" size="icon" aria-label="Settings">
+            <Download
+              className={cn(
+                !isReady && "cursor-wait text-gray-300",
+                isReady && "text-primary",
+              )}
+            />
+          </Button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent>
+          <DropdownMenuLabel className="text-gray-800">
+            Download as:
+          </DropdownMenuLabel>
+          <DropdownMenuGroup>
+            {imageFormats.map((format) => (
+              <DropdownMenuItem
+                key={format}
+                onClick={() =>
+                  isReady && void exportAsImage({ domTarget, format })
+                }
+              >
+                <span className="text-gray-800">{format}</span>
+              </DropdownMenuItem>
+            ))}
+            <DropdownMenuSeparator />
+            {spreadsheetFormats.map((format) => (
+              <DropdownMenuItem
+                key={format}
+                onClick={() => {
+                  isReady && exportAsSpreadsheet({ data, format });
+                }}
+              >
+                {format}
+              </DropdownMenuItem>
+            ))}
+            <DropdownMenuSeparator />
             <DropdownMenuItem
-              key={format}
-              onClick={() =>
-                isReady && void exportAsImage({ domTarget, format })
-              }
-            >
-              <span className="text-gray-800">{format}</span>
-            </DropdownMenuItem>
-          ))}
-          <DropdownMenuSeparator />
-          {spreadsheetFormats.map((format) => (
-            <DropdownMenuItem
-              key={format}
               onClick={() => {
-                isReady && exportAsSpreadsheet({ data, format });
+                setIsOpen(true);
               }}
             >
-              {format}
+              Shortcut
             </DropdownMenuItem>
-          ))}
-        </DropdownMenuGroup>
-      </DropdownMenuContent>
-    </DropdownMenu>
+          </DropdownMenuGroup>
+        </DropdownMenuContent>
+      </DropdownMenu>
+
+      <Dialog open={isOpen}>
+        <DialogContent setIsOpen={setIsOpen}>
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2 pb-4">
+              How to create a shortcut to the current page?
+            </DialogTitle>
+            <DialogDescription>
+              <ol className="list-decimal pl-4">
+                <li>Hold the left mouse button on the icon below.</li>
+                <li>Drag it to your desktop.</li>
+                <li>Release the left mouse button to create a shortcut.</li>
+                <li>
+                  Double-click it to open the current page with all your
+                  selections preserved (Indicator, Breakdown, Filters, etc.)
+                </li>
+              </ol>
+            </DialogDescription>
+            <div className="pb-0"></div>
+            <DialogDescription>
+              For mobile users, your browser should have an "Add to Home Screen"
+              option. You can find it by tapping the{" "}
+              <a
+                href="https://support.google.com/chrome/answer/15085120?hl=en&co=GENIE.Platform%3DAndroid"
+                className="link"
+              >
+                three-dot menu (
+                <EllipsisVerticalIcon
+                  className="inline"
+                  width={15}
+                  height={15}
+                />
+                )
+              </a>{" "}
+              or the{" "}
+              <a
+                href="https://support.apple.com/en-il/guide/iphone/iph42ab2f3a7/ios#iph4f9a47bbc"
+                className="link"
+              >
+                share button (
+                <ShareIcon className="inline" width={15} height={15} />)
+              </a>
+              , depending on your browser.
+            </DialogDescription>
+            <div className="pb-4"></div>
+            <div className="flex items-center justify-center">
+              <a
+                href={href}
+                onClick={(event) => {
+                  event.preventDefault();
+                }}
+                data-testid={SHORTCUT_LINK_TESTID}
+              >
+                <LinkIcon className="text-primary" width={75} height={75} />
+              </a>
+            </div>
+          </DialogHeader>
+        </DialogContent>
+      </Dialog>
+    </>
   );
 };

@@ -267,3 +267,5 @@ export const DEFAULT_ACTIONS_LEVELS_SUGGESTIONS = {
 } satisfies z.infer<
   typeof ResultsActionsLevelsSuggestionsSchema
 >["suggestions"];
+
+export const SHORTCUT_LINK_TESTID = "SHORTCUT_LINK_TESTID";

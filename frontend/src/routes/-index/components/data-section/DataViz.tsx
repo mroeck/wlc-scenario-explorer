@@ -51,6 +51,7 @@ import { StackedAreaGraphIcon } from "@/components/StackedAreaGraphIcon";
 import { TableIcon } from "@/components/TableIcon";
 import { StackedBarGraphIcon } from "@/components/StackedBarGraphIcon";
 import { env } from "@/env";
+import { ShareButton } from "./components/Share";
 
 const route = getRouteApi(ROUTES.DASHBOARD);
 
@@ -366,6 +367,7 @@ export const DataViz = () => {
 
           <div className="mt-auto flex gap-1">
             <Sort />
+            <ShareButton />
             <DownloadMenu
               data={resultsA?.data}
               domTarget={visualizationElement}
