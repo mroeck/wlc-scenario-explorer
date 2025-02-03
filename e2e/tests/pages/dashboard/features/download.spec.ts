@@ -1,6 +1,7 @@
 import {
   DOWNLOAD_AS_TESTID,
   ROUTES,
+  SHORTCUT_LINK_TESTID,
   imageFormats,
   spreadsheetFormats,
 } from "@/lib/constants";
@@ -43,4 +44,26 @@ test.describe("dashboard download", () => {
       expect(buffer).toMatchSnapshot(filename);
     });
   }
+  test.describe("shortcut", () => {
+    test("shortcut icon link has expected href and do not navigate on click", async ({
+      page,
+    }) => {
+      const dialogTitle = page.getByText(
+        "How to create a shortcut to the current page?",
+      );
+
+      await page.getByTestId(DOWNLOAD_AS_TESTID).click();
+      await page.getByRole("menuitem", { name: "Shortcut" }).click();
+
+      const shortcutLink =
+        (await page.getByTestId(SHORTCUT_LINK_TESTID).getAttribute("href")) ??
+        "could not find href of locator";
+
+      await page.getByTestId(SHORTCUT_LINK_TESTID).click();
+      await expect(dialogTitle).toBeVisible();
+      await page.getByRole("button", { name: "Close" }).click();
+
+      await expect(page).toHaveURL(shortcutLink);
+    });
+  });
 });
