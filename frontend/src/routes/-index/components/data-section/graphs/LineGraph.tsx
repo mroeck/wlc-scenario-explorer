@@ -25,7 +25,7 @@ import { PortalTooltip } from "../Tooltip/PortalTooltip";
 import type { GraphProps } from "./types";
 import { getRouteApi } from "@tanstack/react-router";
 import {
-  DEFAULT_DOMAIN_ALL,
+  DEFAULT_Y_AXIS_DOMAIN_ALL,
   GRAPH_AXIS_COLOR,
   ROUTES,
   SCENARIO_A_AND_B,
@@ -50,6 +50,7 @@ export const LineGraph = ({
   unit,
   highlights,
   scenarioId,
+  xAxisDomain,
 }: GraphProps) => {
   const navigate = route.useNavigate();
   const {
@@ -88,7 +89,7 @@ export const LineGraph = ({
 
   const { data: domainsData } = useQuery({
     queryKey: [DOMAINS_QUERY_KEY, hash],
-    initialData: DEFAULT_DOMAIN_ALL,
+    initialData: DEFAULT_Y_AXIS_DOMAIN_ALL,
     staleTime: Infinity,
   });
 
@@ -108,9 +109,9 @@ export const LineGraph = ({
   }: UpdateDomainArgs) => {
     const id = (scenarioId ?? "A") as "A" | "B";
 
-    if (!lineGraphDomain.update[id]) {
+    if (!lineGraphDomain.isUpdated[id]) {
       queryClient.setQueryData<DomainAll>([DOMAINS_QUERY_KEY, hash], (old) => {
-        const currentData = old ?? DEFAULT_DOMAIN_ALL;
+        const currentData = old ?? DEFAULT_Y_AXIS_DOMAIN_ALL;
         const minValues = [currentData[graphType].min, newMin].filter(
           (item) => item != null,
         );
@@ -123,8 +124,8 @@ export const LineGraph = ({
           [graphType]: {
             min: minValues.length > 0 ? Math.min(...minValues) : null,
             max: maxValues.length > 0 ? Math.max(...maxValues) : null,
-            update: {
-              ...currentData[graphType].update,
+            isUpdated: {
+              ...currentData[graphType].isUpdated,
               [id]: true,
             },
           },
@@ -165,22 +166,28 @@ export const LineGraph = ({
     const { tickCount } = commonYaxisProps;
     const tickValues = getNiceTickValues(domainRaw, commonYaxisProps.tickCount);
 
-    const domain = [tickValues[0], tickValues[tickCount - 1]] satisfies [
-      number,
-      number,
-    ];
+    const domainStart = tickValues[0] as Exclude<
+      (typeof tickValues)[0],
+      undefined
+    >;
+    const domainEnd = tickValues[tickCount - 1] as Exclude<
+      (typeof tickValues)[number],
+      undefined
+    >;
+    const domain = [domainStart, domainEnd] satisfies [number, number];
 
     return domain;
   };
-
-  const domain = isAvsB ? getDomain : undefined;
 
   return (
     <ResponsiveContainer width="100%" height="100%" ref={chartRef}>
       <LineChart {...commonChartProps} data={data} stackOffset="sign">
         <CartesianGrid {...commonCartisianGridProps} />
-        <XAxis {...commonXaxisProps} />
-        <YAxis {...commonYaxisProps} domain={domain}>
+        <XAxis
+          {...commonXaxisProps}
+          domain={isAvsB ? xAxisDomain : undefined}
+        />
+        <YAxis {...commonYaxisProps} domain={isAvsB ? getDomain : undefined}>
           <Label value={unit} {...commonYaxisLabelProps} />
         </YAxis>
 
@@ -233,7 +240,11 @@ export const LineGraph = ({
           )}
         />
 
-        <Legend content={(props) => <CustomLegend payload={props.payload} />} />
+        <Legend
+          content={(props) => (
+            <CustomLegend payload={props.payload} scenarioId={scenarioId} />
+          )}
+        />
       </LineChart>
     </ResponsiveContainer>
   );

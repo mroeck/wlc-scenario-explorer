@@ -35,7 +35,8 @@ const getScenarioTotals = (data: DataItem[]) => {
     };
   }
 
-  const firstItemName = StringSchema.parse(data[0].name);
+  const item = data[0] as Exclude<(typeof data)[0], undefined>;
+  const firstItemName = StringSchema.parse(item.name);
   const areDataMerged =
     firstItemName.includes(SCENARIO_A_KEY_PREFIX) ||
     firstItemName.includes(SCENARIO_B_KEY_PREFIX);
@@ -105,9 +106,8 @@ function restructureData({ data }: RestructureDataArgs) {
 
   data.forEach((item) => {
     const name = StringSchema.parse(item.name);
-    const [scenario, type] = name.split(".");
+    const [scenario, type] = name.split(".") as [string, string];
 
-    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     if (!result[type]) {
       result[type] = {
         name: type,

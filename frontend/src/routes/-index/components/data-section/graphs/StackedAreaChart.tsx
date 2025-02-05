@@ -25,7 +25,7 @@ import {
 import { PortalTooltip } from "../Tooltip/PortalTooltip";
 import type { GraphProps } from "./types";
 import {
-  DEFAULT_DOMAIN_ALL,
+  DEFAULT_Y_AXIS_DOMAIN_ALL,
   GRAPH_AXIS_COLOR,
   PATTERN,
   ROUTES,
@@ -60,6 +60,7 @@ export const StackedAreaChart = ({
   unit,
   highlights,
   scenarioId = "A",
+  xAxisDomain,
 }: GraphProps) => {
   const navigate = route.useNavigate();
   const {
@@ -94,7 +95,7 @@ export const StackedAreaChart = ({
 
   const { data: domainsData } = useQuery({
     queryKey: [DOMAINS_QUERY_KEY, hash],
-    initialData: DEFAULT_DOMAIN_ALL,
+    initialData: DEFAULT_Y_AXIS_DOMAIN_ALL,
     staleTime: Infinity,
   });
 
@@ -110,7 +111,7 @@ export const StackedAreaChart = ({
     newMax: number | null;
     queryClient: QueryClient;
   };
-  const updateDomain = ({
+  const updateYaxisDomain = ({
     graphType,
     newMin,
     newMax,
@@ -118,9 +119,9 @@ export const StackedAreaChart = ({
   }: UpdateDomainArgs) => {
     const id = scenarioId;
 
-    if (!stackedAreaDomain.update[id]) {
+    if (!stackedAreaDomain.isUpdated[id]) {
       queryClient.setQueryData<DomainAll>([DOMAINS_QUERY_KEY, hash], (old) => {
-        const currentData = old ?? DEFAULT_DOMAIN_ALL;
+        const currentData = old ?? DEFAULT_Y_AXIS_DOMAIN_ALL;
         const minValues = [currentData[graphType].min, newMin].filter(
           (item) => item != null,
         );
@@ -133,8 +134,8 @@ export const StackedAreaChart = ({
           [graphType]: {
             min: minValues.length > 0 ? Math.min(...minValues) : null,
             max: maxValues.length > 0 ? Math.max(...maxValues) : null,
-            update: {
-              ...currentData[graphType].update,
+            isUpdated: {
+              ...currentData[graphType].isUpdated,
               [id]: true,
             },
           },
@@ -145,7 +146,7 @@ export const StackedAreaChart = ({
 
   type GetDomainArg = number;
   const getDomainMin = (dataMin: GetDomainArg) => {
-    updateDomain({
+    updateYaxisDomain({
       graphType: "stackedArea",
       newMin: dataMin,
       newMax: null,
@@ -156,7 +157,7 @@ export const StackedAreaChart = ({
   };
 
   const getDomainMax = (dataMax: GetDomainArg) => {
-    updateDomain({
+    updateYaxisDomain({
       graphType: "stackedArea",
       newMin: null,
       newMax: dataMax,
@@ -166,19 +167,23 @@ export const StackedAreaChart = ({
     return stackedAreaDomain.max ?? dataMax;
   };
 
-  type GetFinalDomainArg = [number, number];
-  const getDomain = ([dataMin, dataMax]: GetFinalDomainArg) => {
+  type GetFinalYaxisDomainArg = [number, number];
+  const getYaxisDomain = ([dataMin, dataMax]: GetFinalYaxisDomainArg) => {
     const domainRaw = [getDomainMin(dataMin), getDomainMax(dataMax)] satisfies [
       number,
       number,
     ];
     const { tickCount } = commonYaxisProps;
     const tickValues = getNiceTickValues(domainRaw, commonYaxisProps.tickCount);
-
-    const domain = [tickValues[0], tickValues[tickCount - 1]] satisfies [
-      number,
-      number,
-    ];
+    const domainStart = tickValues[0] as Exclude<
+      (typeof tickValues)[0],
+      undefined
+    >;
+    const domainEnd = tickValues[tickCount - 1] as Exclude<
+      (typeof tickValues)[number],
+      undefined
+    >;
+    const domain = [domainStart, domainEnd] satisfies [number, number];
 
     return domain;
   };
@@ -187,8 +192,15 @@ export const StackedAreaChart = ({
     <ResponsiveContainer width="100%" height="100%" ref={chartRef}>
       <AreaChart {...commonChartProps} data={data} stackOffset="sign">
         <CartesianGrid {...commonCartisianGridProps} />
-        <XAxis {...commonXaxisProps} />
-        <YAxis {...commonYaxisProps} domain={isAvsB ? getDomain : undefined}>
+        <XAxis
+          {...commonXaxisProps}
+          domain={isAvsB ? xAxisDomain : undefined}
+        />
+
+        <YAxis
+          {...commonYaxisProps}
+          domain={isAvsB ? getYaxisDomain : undefined}
+        >
           <Label value={unit} {...commonYaxisLabelProps} />
         </YAxis>
         {attributeOptions.map((option) => {
@@ -289,7 +301,11 @@ export const StackedAreaChart = ({
             />
           );
         })}
-        <Legend content={(props) => <CustomLegend payload={props.payload} />} />
+        <Legend
+          content={(props) => (
+            <CustomLegend payload={props.payload} scenarioId={scenarioId} />
+          )}
+        />
       </AreaChart>
     </ResponsiveContainer>
   );

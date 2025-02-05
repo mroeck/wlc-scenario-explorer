@@ -226,7 +226,6 @@ export const getAttributeOptionsOrdered = ({
     const result = optionsOrdered.filter((option) =>
       defaultOptions.includes(option),
     );
-
     return result;
   } else {
     return defaultOptions;
@@ -248,7 +247,6 @@ export function groupByCategory({ values }: { values: Payload[] }) {
   values.forEach((value) => {
     const category = findCategory(value);
     if (category) {
-      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       grouped[category] = grouped[category] || [];
 
       grouped[category].push(value);

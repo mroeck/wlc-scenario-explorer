@@ -11,6 +11,7 @@ import {
   DEFAULT_SCENARIO,
   SELECT_DIVIDED_BY_TESTID,
   SCENARIO_B_LABEL,
+  SCENARIO_TO_ACRONYM,
 } from "@/lib/constants";
 import { DIVIDED_BY_OPTIONS } from "@/lib/shared_with_backend/constants";
 import { test, expect } from "@playwright/test";
@@ -66,7 +67,8 @@ test.describe("search params", () => {
     const url = `${ROUTES.DASHBOARD}?scenarioA=${scenario}`;
 
     await page.goto(url);
-    await expect(scenarioASelect).toHaveText(scenario);
+    const acronym = SCENARIO_TO_ACRONYM[scenario];
+    await expect(scenarioASelect).toHaveText(`${scenario} (${acronym})`);
   });
 
   test("uses scenarioB search param on mount", async ({ page }) => {
@@ -78,7 +80,8 @@ test.describe("search params", () => {
     const url = `${ROUTES.DASHBOARD}?scenarioB=${scenario}`;
 
     await page.goto(url);
-    await expect(scenarioBSelect).toHaveText(scenario);
+    const acronym = SCENARIO_TO_ACRONYM[scenario];
+    await expect(scenarioBSelect).toHaveText(`${scenario} (${acronym})`);
   });
 
   test("tabs search params are used on mount", async ({ page }) => {

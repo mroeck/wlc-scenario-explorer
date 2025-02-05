@@ -23,6 +23,7 @@ import type { BreakdownByOptions } from "../graphs/types";
 import { StringSchema } from "@/lib/schemas";
 import { ColorLine } from "./ColorLine";
 import { onElementClick } from "../graphs/utils";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 
 const route = getRouteApi(ROUTES.DASHBOARD);
 
@@ -42,26 +43,101 @@ const removeDuplicates = (
     return !duplicate;
   });
 };
+type LegendData = {
+  payload: Payload[];
+  isUpdated: {
+    A: boolean;
+    B: boolean;
+  };
+};
+
+const COLOR_LEGEND_QUERY_KEY = "COLOR_LEGEND_QUERY_KEY";
+const DEFAULT_LEGEND_PAYLOAD: Payload[] = [];
+const DEFAULT_LEGEND_DATA: LegendData = {
+  payload: DEFAULT_LEGEND_PAYLOAD,
+  isUpdated: {
+    A: false,
+    B: false,
+  },
+};
 
 export type CustomLegendProps = Pick<Props, "payload"> & {
   className?: string;
+  scenarioId?: "A" | "B";
 };
-export const CustomLegend = ({ payload, className }: CustomLegendProps) => {
-  const { display, attribute, highlights, scenarioA, scenarioB, dataTab } =
-    route.useSearch({
-      select: (search) => ({
-        display: search.display,
-        attribute: search.breakdownBy,
-        highlights: search.highlights,
-        scenarioA: search.scenarioA,
-        scenarioB: search.scenarioB,
-        dataTab: search.dataTab,
-      }),
-    });
-  if (payload == null) return null;
+export const CustomLegend = ({
+  payload,
+  className,
+  scenarioId,
+}: CustomLegendProps) => {
+  const {
+    display,
+    attribute,
+    highlights,
+    scenarioA,
+    scenarioB,
+    dataTab,
+    breakdownBy,
+    dividedBy,
+    filters,
+    indicator,
+  } = route.useSearch({
+    select: (search) => ({
+      display: search.display,
+      attribute: search.breakdownBy,
+      highlights: search.highlights,
+      scenarioA: search.scenarioA,
+      scenarioB: search.scenarioB,
+      dataTab: search.dataTab,
+      breakdownBy: search.breakdownBy,
+      dividedBy: search.dividedBy,
+      filters: search.filters,
+      indicator: search.indicator,
+    }),
+  });
+
+  const queryClient = useQueryClient();
+  const hash = {
+    breakdownBy,
+    dividedBy,
+    filters,
+    indicator,
+    scenarioA,
+    scenarioB,
+  };
+
+  const { data: legendData } = useQuery({
+    queryKey: [COLOR_LEGEND_QUERY_KEY, hash],
+    initialData: DEFAULT_LEGEND_DATA,
+    staleTime: Infinity,
+  });
+
+  if (!!scenarioId && !legendData.isUpdated[scenarioId]) {
+    queryClient.setQueryData<LegendData>(
+      [COLOR_LEGEND_QUERY_KEY, hash],
+      (old) => {
+        const currentData = old ?? DEFAULT_LEGEND_DATA;
+        const currentPayload = currentData.payload;
+        const newPayload = payload ?? DEFAULT_LEGEND_PAYLOAD;
+
+        return {
+          payload:
+            newPayload.length > currentPayload.length
+              ? newPayload
+              : currentPayload,
+          isUpdated: {
+            ...currentData.isUpdated,
+            [scenarioId]: true,
+          },
+        } satisfies LegendData;
+      },
+    );
+  }
 
   const isLineGraph = dataTab === DATA_TABS_NAMES.lineChart;
-  const data = removeDuplicates(payload);
+  const finalPayload =
+    dataTab === "Stacked Bar Graph" ? payload : legendData.payload;
+  const data = removeDuplicates(finalPayload ?? []);
   const amountOfOptions = data.length;
 
   const groupedData = groupByCategory({ values: data });
@@ -132,7 +208,7 @@ export const CustomLegend = ({ payload, className }: CustomLegendProps) => {
         <ul className="flex max-w-[50ch] flex-col flex-wrap gap-x-6 px-2">
           <li className="flex items-center gap-1 text-gray-800">
             {isLineGraph ? (
-              <ColorLine color={colors[0]} lineType="solid" />
+              <ColorLine color={colors[0] as string} lineType="solid" />
             ) : (
               <ColorCube color={colors[0]} />
             )}
@@ -140,7 +216,7 @@ export const CustomLegend = ({ payload, className }: CustomLegendProps) => {
           </li>
           <li className="flex items-center gap-1 text-gray-800">
             {isLineGraph ? (
-              <ColorLine color={colors[0]} lineType="dashed" />
+              <ColorLine color={colors[0] as string} lineType="dashed" />
             ) : (
               <ColorCube color={colors[0]} showPattern />
             )}

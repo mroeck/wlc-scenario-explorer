@@ -37,7 +37,7 @@ test.describe("breakdown by", () => {
 
     for (const subtype of ATTRIBUTE_OPTIONS_ORDER["Building subtype"]) {
       await expect(
-        page.getByText(VALUE_TO_LABEL[subtype], { exact: true }),
+        page.getByText(VALUE_TO_LABEL[subtype], { exact: true }).last(),
       ).toBeVisible();
     }
   });

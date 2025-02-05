@@ -21,7 +21,10 @@ import {
   ATTRIBUTE_OPTIONS_COLOR,
   TOTAL_ACTIONS,
 } from "@/lib/shared_with_backend/constants";
-import { DEFAULT_ACTIONS_LEVELS_SUGGESTIONS } from "./constants";
+import {
+  DEFAULT_ACTIONS_LEVELS_SUGGESTIONS,
+  DEFAULT_X_AXIS_DOMAIN,
+} from "./constants";
 
 type FetchScenarioRowsArgs = {
   breakdownBy: Attribute;
@@ -52,6 +55,7 @@ export async function fetchScenarioRowsAggregated({
     return {
       data: [],
       unit: "",
+      xAxisDomain: DEFAULT_X_AXIS_DOMAIN,
     } satisfies z.infer<typeof ResultsScenarioRowsAggregatedSchema>;
   }
   const url = env.PUBLIC_API_URL + API_ROUTES.scenario;
