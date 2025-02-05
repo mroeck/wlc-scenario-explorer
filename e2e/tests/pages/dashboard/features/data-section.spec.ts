@@ -56,9 +56,13 @@ test.describe("data viz", () => {
     await buildingUseSubtypeOption.click();
 
     await expect(attributeInGraphTitle).toHaveText("Building subtype");
-    await expect(colorLegend.getByText("Multi-family house")).toBeVisible();
-    await expect(colorLegend.getByText("Office")).toBeVisible();
-    await expect(colorLegend.getByText("Single-family house")).toBeVisible();
+    await expect(
+      colorLegend.getByText("Multi-family house").first(),
+    ).toBeVisible();
+    await expect(colorLegend.getByText("Office").first()).toBeVisible();
+    await expect(
+      colorLegend.getByText("Single-family house").first(),
+    ).toBeVisible();
 
     await testScreenshot({
       page,

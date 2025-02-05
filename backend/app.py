@@ -124,7 +124,7 @@ def scenario() -> Union[ScenarioDataType, tuple[ErrorResponse, int]]:
             does_scenario_exists = session.execute(statement).scalar() is not None
 
             if not does_scenario_exists:
-                return {"data": [], "unit": "MtCO2"}
+                return {"data": [], "unit": "MtCO2", "xAxisDomain": []}
 
         scenario_filename = construct_filename(parameters_levels)
 

@@ -32,7 +32,7 @@ test.describe("graph highlight", () => {
         target: page.getByTestId(CHART_TESTID).first(),
       });
 
-      await page.getByText("Non-residential").click();
+      await page.getByText("Non-residential").last().click();
       await page
         .getByTestId(SELECT_INDICATOR_TESTID)
         .getByRole("combobox")

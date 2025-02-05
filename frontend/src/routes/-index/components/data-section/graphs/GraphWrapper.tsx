@@ -5,6 +5,8 @@ import {
   CHART_TESTID,
   SORT_OPTIONS,
   DATA_TABS_NAMES,
+  SCENARIO_A_AND_B,
+  SCENARIO_A_ONLY,
 } from "@/lib/constants";
 import { YEAR_KEY } from "@/lib/shared_with_backend/constants";
 import type { ScenarioRowsAggregatedArraySchema } from "@/lib/schemas";
@@ -14,8 +16,10 @@ import { useRef } from "react";
 import type { StackedAreaChart } from "./StackedAreaChart";
 import type { StackedBarChart } from "./StackedBarChart";
 import type { LineGraph } from "./LineGraph";
-import type { GraphDomain, UnitMinified } from "../types";
+import type { UnitMinified } from "../types";
 import type { BreakdownByOptions } from "./types";
+import { NoDataFound } from "@/components/NoDataFound";
+import type { XAxisDomain } from "@/lib/shared_with_backend/schemas";
 
 const route = getRouteApi(ROUTES.DASHBOARD);
 
@@ -26,7 +30,9 @@ type SortByValueArgs = {
 };
 function sortByValue({ keys, item, isLineGraph }: SortByValueArgs) {
   return keys.sort((keyA, keyB) => {
-    const comparison = item[keyA] - item[keyB];
+    const itemA = item[keyA] as Exclude<(typeof item)[typeof keyA], undefined>;
+    const itemB = item[keyB] as Exclude<(typeof item)[typeof keyB], undefined>;
+    const comparison = itemA - itemB;
     return isLineGraph ? comparison : -comparison;
   });
 }
@@ -66,15 +72,16 @@ function getSortedAttributeOptions({
 type CoreProps = {
   unit: UnitMinified;
   breakdownBy: Attribute;
-  domain: GraphDomain | undefined;
   data: z.infer<typeof ScenarioRowsAggregatedArraySchema>;
   scenarioId?: ScenarioId;
+  sliderValues?: number[];
+  xAxisDomain: z.infer<typeof XAxisDomain>;
 };
 
 type GraphWrapperProps = CoreProps &
   (
     | {
-        dataB?: never;
+        dataB: never;
         Graph: typeof StackedAreaChart | typeof LineGraph;
       }
     | {
@@ -88,21 +95,35 @@ export const GraphWrapper = ({
   dataB,
   unit,
   breakdownBy,
-  domain,
   Graph,
   scenarioId,
+  sliderValues,
+  xAxisDomain,
 }: GraphWrapperProps) => {
   const chartRef = useRef<HTMLDivElement>(null);
-  const { animation, sort, highlights, dataTab } = route.useSearch({
+  const { animation, sort, highlights, dataTab, display } = route.useSearch({
     select: (search) => ({
       animation: search.animation,
       sort: search.sort,
       highlights: search.highlights,
       dataTab: search.dataTab,
+      scenarioA: search.scenarioA,
+      scenarioB: search.scenarioB,
+      display: search.display,
     }),
   });
 
-  const firstItemRaw = data[0] ?? {};
+  const DEFAULT_FIRST_ITEM_RAW: Record<string, number> = {};
+  type FirstItemRaw =
+    | {
+        stock_projection_year: number;
+        [key: string]: number;
+      }
+    | typeof DEFAULT_FIRST_ITEM_RAW;
+
+  const firstItemRaw: FirstItemRaw =
+    data[0] ?? dataB[0] ?? DEFAULT_FIRST_ITEM_RAW;
+
   const firstItem = Object.fromEntries(
     Object.entries(firstItemRaw).filter(([key]) => key !== YEAR_KEY),
   );
@@ -118,37 +139,53 @@ export const GraphWrapper = ({
     firstItem,
   });
 
+  const isStackedBarChart =
+    (Graph.name as "StackedBarChart" | "StackedAreaChart" | "LineGraph") ===
+    "StackedBarChart";
+  const dataAisEmpty = data.length === 0;
+  const dataBisEmpty = dataB.length === 0;
+  const isAvsB = display === SCENARIO_A_AND_B;
+  const isAonly = display === SCENARIO_A_ONLY;
+  const showNoDataForStackedBar = isAvsB
+    ? dataAisEmpty && dataBisEmpty
+    : isAonly
+      ? dataAisEmpty
+      : dataBisEmpty;
+
   return (
     <div className="h-full overflow-x-visible">
       <div
         className="h-0 min-h-[500px] w-full sm:min-w-[600px] lg:min-h-full lg:min-w-[unset] lg:flex-1 [&_svg]:overflow-visible"
         data-testid={CHART_TESTID}
       >
-        {dataB ? (
-          <Graph
-            animation={animation}
-            attributeOptions={attributeOptions}
-            breakdownBy={breakdownBy}
-            chartRef={chartRef}
-            data={data}
-            dataB={dataB}
-            unit={unit}
-            highlights={highlights}
-            domain={domain}
-            scenarioId={scenarioId}
-          />
-        ) : (
-          <Graph
-            animation={animation}
-            attributeOptions={attributeOptions}
-            breakdownBy={breakdownBy}
-            chartRef={chartRef}
-            data={data}
-            unit={unit}
-            highlights={highlights}
-            domain={domain}
-            scenarioId={scenarioId}
-          />
+        <Graph
+          animation={animation}
+          attributeOptions={attributeOptions}
+          breakdownBy={breakdownBy}
+          chartRef={chartRef}
+          data={data}
+          dataB={dataB}
+          unit={unit}
+          highlights={highlights}
+          scenarioId={scenarioId}
+          xAxisDomain={xAxisDomain}
+        />
+
+        {!isStackedBarChart && dataAisEmpty && (
+          <div
+            className="absolute left-16 top-0 h-full"
+            style={{ width: `calc(100% * ${sliderValues?.[0] ?? 1} - 4rem)` }}
+          >
+            <NoDataFound scenarioId={scenarioId} />{" "}
+          </div>
+        )}
+        {isStackedBarChart && showNoDataForStackedBar && (
+          <div
+            className="absolute left-16 top-0 h-full"
+            style={{ width: `calc(100% * ${sliderValues?.[0] ?? 1} - 4rem)` }}
+          >
+            <NoDataFound scenarioId={scenarioId} />{" "}
+          </div>
         )}
       </div>
     </div>

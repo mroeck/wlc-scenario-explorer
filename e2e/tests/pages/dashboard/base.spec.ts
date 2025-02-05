@@ -34,6 +34,7 @@ test.describe("dashboard", () => {
       await expect(page.getByTestId(CHART_TESTID).getByText(unit)).toBeVisible({
         timeout: 10_000,
       });
+      await expect(page.getByText("Non-residential").last()).toBeVisible();
       await testPageScreenshot({ page });
     },
   );

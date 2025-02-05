@@ -4,9 +4,10 @@ import type {
 } from "@/lib/schemas";
 import type { Attribute, ScenarioId } from "@/lib/types";
 import type { z } from "zod";
-import type { GraphDomain, UnitMinified } from "../types";
+import type { UnitMinified } from "../types";
 import type { KeysOfUnion, ValueOf } from "type-fest";
 import type { ATTRIBUTE_OPTIONS_COLOR } from "@/lib/shared_with_backend/constants";
+import type { XAxisDomain } from "@/lib/shared_with_backend/schemas";
 
 export type BreakdownByOptions = KeysOfUnion<
   ValueOf<typeof ATTRIBUTE_OPTIONS_COLOR>
@@ -20,6 +21,6 @@ export type GraphProps = {
   chartRef: React.RefObject<HTMLDivElement>;
   unit: UnitMinified;
   highlights: BreakdownByOptions[] | undefined;
-  domain: GraphDomain | undefined;
   scenarioId?: ScenarioId;
+  xAxisDomain: z.infer<typeof XAxisDomain>;
 };

@@ -9,7 +9,7 @@ import {
   BarChart,
   Bar,
 } from "recharts";
-import { getColor } from "@/lib/utils";
+import { cn, getColor } from "@/lib/utils";
 import { CustomLegend } from "../Legend/CustomLegend";
 import {
   commonCartisianGridProps,
@@ -80,10 +80,18 @@ export const StackedBarChart = ({
   let finalData: MergedData[] | Data[] = dataA;
 
   if (isAvsB) {
-    finalData = dataA.map((item) => {
+    const hasAmoreData = dataA.length > dataB.length;
+    const data = hasAmoreData ? dataA : dataB;
+    const dataKey = hasAmoreData ? SCENARIO_A_LABEL : SCENARIO_B_LABEL;
+    const secondDataset = hasAmoreData ? dataB : dataA;
+    const secondDataKey = hasAmoreData ? SCENARIO_B_LABEL : SCENARIO_A_LABEL;
+
+    finalData = data.map((item) => {
       const { stock_projection_year: yearA, ...restA } = item;
 
-      const itemB = dataB.find((item) => item.stock_projection_year === yearA);
+      const itemB = secondDataset.find(
+        (item) => item.stock_projection_year === yearA,
+      );
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const { stock_projection_year: yearB, ...restB } = itemB
         ? itemB
@@ -91,8 +99,8 @@ export const StackedBarChart = ({
 
       return {
         [YEAR_KEY]: item.stock_projection_year,
-        [SCENARIO_A_LABEL]: restA,
-        [SCENARIO_B_LABEL]: restB,
+        [dataKey as typeof SCENARIO_A_LABEL]: restA,
+        [secondDataKey as typeof SCENARIO_B_LABEL]: restB,
       };
     });
   } else if (isBonly) {
@@ -103,10 +111,18 @@ export const StackedBarChart = ({
     <ResponsiveContainer width="100%" height="100%" ref={chartRef}>
       <BarChart {...commonChartProps} data={finalData} stackOffset="sign">
         <CartesianGrid {...commonCartisianGridProps} />
-
-        <YAxis {...commonYaxisProps}>
+        <XAxis {...commonXaxisProps} />
+        <YAxis
+          {...commonYaxisProps}
+          className={cn(
+            finalData.length === 0 &&
+              display !== SCENARIO_A_AND_B &&
+              "invisible",
+          )}
+        >
           <Label value={unit} {...commonYaxisLabelProps} />
         </YAxis>
+
         {COLUMNS_TYPE.map((type, index) => {
           if (display !== SCENARIO_A_AND_B && index > 0) {
             return null;
@@ -120,7 +136,7 @@ export const StackedBarChart = ({
               isSomethingHighlighted && !isHighlight ? HIGHLIGHT_OPACITY : 0.8;
             const dataKey = isAvsB ? `${type}.${option}` : option;
             const id = dataKey.toString().replaceAll(" ", "");
-            const needPattern = type === COLUMNS_TYPE[1] && isAvsB;
+            const needPattern = type === COLUMNS_TYPE[1] || isBonly;
 
             return (
               <Fragment key={dataKey}>
@@ -177,7 +193,7 @@ export const StackedBarChart = ({
             />
           )}
         />
-        <XAxis {...commonXaxisProps} />
+
         <Legend content={(props) => <CustomLegend payload={props.payload} />} />
       </BarChart>
     </ResponsiveContainer>

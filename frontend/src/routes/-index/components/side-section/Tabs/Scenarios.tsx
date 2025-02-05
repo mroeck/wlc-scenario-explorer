@@ -214,7 +214,12 @@ export const Scenarios = () => {
       form.setValue("scenarioB", scenarioB);
     }
     strategy.forEach((actionLevel, index) => {
-      form.setValue(SCENARIO_PARAMETERS_ORDER[index], actionLevel);
+      form.setValue(
+        SCENARIO_PARAMETERS_ORDER[
+          index
+        ] as (typeof SCENARIO_PARAMETERS_ORDER)[number],
+        actionLevel,
+      );
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -593,7 +598,6 @@ export const Scenarios = () => {
 
                         return (
                           <SelectItem key={scenario} value={scenario}>
-                            {/* eslint-disable-next-line @typescript-eslint/no-unnecessary-condition, @typescript-eslint/restrict-template-expressions */}
                             {scenario} {acronym ? `(${acronym})` : null}
                           </SelectItem>
                         );

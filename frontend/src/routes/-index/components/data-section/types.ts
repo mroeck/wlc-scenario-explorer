@@ -14,7 +14,7 @@ export type GraphDomain = [number, number];
 export type Domain = {
   max: null | number;
   min: null | number;
-  update: {
+  isUpdated: {
     A: boolean;
     B: boolean;
   };

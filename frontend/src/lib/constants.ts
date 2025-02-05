@@ -184,10 +184,10 @@ export const HELP_PAGE_IDS = {
   generalRemarks: "generalRemarks",
   faq: "faq",
 } as const;
-export const SCENARIO_A_LABEL = "scenario A";
-export const SCENARIO_B_LABEL = "scenario B";
-export const SCENARIO_A_ACRONYM = "A";
-export const SCENARIO_B_ACRONYM = "B";
+export const SCENARIO_A_LABEL = "scenario primary";
+export const SCENARIO_B_LABEL = "scenario secondary";
+export const SCENARIO_A_ACRONYM = "primary";
+export const SCENARIO_B_ACRONYM = "secondary";
 export const NO_SCENARIO_SELECTED_LABEL = "undefined";
 export const STORAGE_KEYS = {
   isDisclaimerAccepted: "scenarioExplorerIsDisclaimerAccepted",
@@ -203,11 +203,11 @@ export const SCENARIO_TO_ACRONYM = {
   // "Current Policy + Shift strategies": "CPOL+S",
   // "Optimistic scenario of Current Policies": "CPOL/A",
   // "Example scenario (for illustration purpose only)": undefined,
-  "ALL/HIGH": undefined,
-  "CPOL/A": undefined,
-  "CPOL/B": undefined,
-  APOL: undefined,
-  BAU: undefined,
+  "ALL/HIGH": "ALL/HIGH",
+  "CPOL/A": "CPOL/A",
+  "CPOL/B": "CPOL/B",
+  APOL: "APOL",
+  BAU: "BAU",
   "Custom scenario": "Custom",
 } satisfies Record<(typeof SCENARIOS_OPTIONS)[number], string | undefined>;
 export const EMBODIED_CARBON = "Embodied carbon (EC)";
@@ -222,11 +222,11 @@ export const PATTERN = {
 } as const;
 export const DEFAULT_UNIT_MINIMIZED =
   UNITS_FROM_BACKEND[DEFAULT_INDICATOR][DEFAULT_DIVIDED_BY];
-export const DEFAULT_DOMAIN_ALL: DomainAll = {
+export const DEFAULT_Y_AXIS_DOMAIN_ALL: DomainAll = {
   line: {
     max: null,
     min: null,
-    update: {
+    isUpdated: {
       A: false,
       B: false,
     },
@@ -234,7 +234,7 @@ export const DEFAULT_DOMAIN_ALL: DomainAll = {
   stackedArea: {
     max: null,
     min: null,
-    update: {
+    isUpdated: {
       A: false,
       B: false,
     },
@@ -269,3 +269,6 @@ export const DEFAULT_ACTIONS_LEVELS_SUGGESTIONS = {
 >["suggestions"];
 
 export const SHORTCUT_LINK_TESTID = "SHORTCUT_LINK_TESTID";
+
+export const DEFAULT_X_AXIS_DOMAIN = [];
+export const DEFAULT_SCENARIO_DATA = [];

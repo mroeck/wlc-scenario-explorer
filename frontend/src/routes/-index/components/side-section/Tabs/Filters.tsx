@@ -117,7 +117,7 @@ type FormatForBackendArgs = {
 function formatForBackend({ filters }: FormatForBackendArgs) {
   const output: Record<keyof typeof filters, string[] | string> = {};
   for (const key in filters) {
-    const value = filters[key];
+    const value = filters[key] as Exclude<(typeof filters)[string], undefined>;
     if (typeof value === "string") {
       output[key] = value;
     } else {

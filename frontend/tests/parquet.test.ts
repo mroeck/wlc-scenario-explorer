@@ -369,7 +369,10 @@ describe("parquet files data", () => {
     ).toHaveLength(EXPECTED_SCHEMA.length);
 
     actualSchema.forEach((column, index) => {
-      const expected = EXPECTED_SCHEMA[index];
+      const expected = EXPECTED_SCHEMA[index] as Exclude<
+        (typeof EXPECTED_SCHEMA)[number],
+        undefined
+      >;
 
       expect(
         column.column_name,

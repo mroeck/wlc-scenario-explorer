@@ -67,10 +67,12 @@ test.describe("scenario selection", () => {
       await page.getByRole("button").first().click();
     }
 
-    await expect(page.getByTestId(FOR_SCENARIOS_TESTID)).toHaveText(scenarioA);
+    await expect(page.getByTestId(FOR_SCENARIOS_TESTID)).toHaveText(
+      `${scenarioA} (${acronymA})`,
+    );
 
     await expect(page.getByTestId(DISPLAY_SELECT_TESTID)).toHaveText(
-      `${scenarioA} only`,
+      `${scenarioA} (${acronymA}) only`,
     );
   });
 });

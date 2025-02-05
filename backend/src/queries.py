@@ -280,6 +280,7 @@ class ScenarioDataType(TypedDict):
     data: List[Dict[str, Union[int, str]]]
     minmax: NotRequired[MinMaxDict]
     unit: str
+    xAxisDomain: list[str]
 
 
 def get_scenario_rows(
@@ -319,7 +320,7 @@ def get_scenario_rows(
         data = [row._asdict() for row in rows]
 
         if len(data) == 0:
-            return {"data": data, "unit": "MtCO2"}
+            return {"data": data, "unit": "MtCO2", "xAxisDomain": []}
 
         stacked_minmax = (
             session.execute(text(minmax_query_for_stacked_graph)).fetchone()._asdict()  # type: ignore[union-attr]
@@ -347,6 +348,10 @@ def get_scenario_rows(
                 session.execute(text(nonstacked_minmax_query)).fetchone()._asdict()  # type: ignore[union-attr]
             )
 
+    x_axis_domain = list(set(item["stock_projection_year"] for item in data))
+
+    x_axis_domain.sort(key=lambda x: int(x))
+
     return {
         "data": data,
         "minmax": {
@@ -354,6 +359,7 @@ def get_scenario_rows(
             "nonStacked": nonstacked_minmax,
         },
         "unit": unit_for_front,
+        "xAxisDomain": x_axis_domain,
     }
 
 

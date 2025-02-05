@@ -148,7 +148,7 @@ function addSourceToImage(dataUrl: string, format: string) {
 
 function saveImage(dataUrl: string, format: string): void {
   const link = document.createElement("a");
-  const fileType = format || dataUrl.split(";")[0].split("/")[1];
+  const fileType = format || (dataUrl.split(";")[0] as string).split("/")[1];
   link.download = `chart.${fileType}`;
   link.href = dataUrl;
   link.click();

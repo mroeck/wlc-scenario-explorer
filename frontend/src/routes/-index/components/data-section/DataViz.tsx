@@ -14,9 +14,12 @@ import {
   TAB_CONTENT_TESTID,
   GRAPH_TITLE_DIVIDED_BY_TESTID,
   SCENARIO_TO_ACRONYM,
-  SCENARIO_A_LABEL,
   SCENARIO_B_LABEL,
-  DEFAULT_DOMAIN_ALL,
+  DEFAULT_Y_AXIS_DOMAIN_ALL,
+  DEFAULT_X_AXIS_DOMAIN,
+  DEFAULT_SCENARIO_DATA,
+  SCENARIO_A_ACRONYM,
+  SCENARIO_B_ACRONYM,
 } from "@/lib/constants";
 import { useQuery } from "@tanstack/react-query";
 import { fetchScenarioRowsAggregated } from "@/lib/queries";
@@ -40,11 +43,13 @@ import { LineGraph } from "./graphs/LineGraph";
 import { useCallback, useState } from "react";
 import { ComparisonSlider } from "./ComparisonSlider";
 import { GraphWrapper } from "./graphs/GraphWrapper";
-import type { GraphDomain, Unit, UnitMinified } from "./types";
+import type { Unit, UnitMinified } from "./types";
 import { DOMAINS_QUERY_KEY, SCENARIO_QUERY_KEY } from "./constants";
-import { getDomainAll } from "./utils";
 import type { ValueOf } from "type-fest";
-import type { ScenarioSchema } from "@/lib/shared_with_backend/schemas";
+import type {
+  ScenarioSchema,
+  XAxisDomain,
+} from "@/lib/shared_with_backend/schemas";
 import { Sort } from "./components/Sort";
 import { LineGraphIcon } from "@/components/LineGraphIcon";
 import { StackedAreaGraphIcon } from "@/components/StackedAreaGraphIcon";
@@ -65,8 +70,8 @@ type ContentProps = {
   dataB?: z.infer<typeof ScenarioRowsAggregatedArraySchema>;
   unit: UnitMinified;
   breakdownBy: Attribute;
-  domain: GraphDomain | undefined;
   scenarioId?: ScenarioId;
+  xAxisDomain: z.infer<typeof XAxisDomain>;
 };
 
 type CreateTabArgs = {
@@ -85,17 +90,17 @@ const createTab = ({ name, Graph, icon }: CreateTabArgs) => ({
     dataB,
     unit,
     breakdownBy,
-    domain,
     scenarioId,
+    xAxisDomain,
   }: ContentProps) => (
     <GraphWrapper
       data={data}
-      dataB={dataB ?? []}
+      dataB={dataB ?? DEFAULT_SCENARIO_DATA}
       unit={unit}
       breakdownBy={breakdownBy}
-      domain={domain}
       Graph={Graph}
       scenarioId={scenarioId}
+      xAxisDomain={xAxisDomain}
     />
   ),
   icon,
@@ -231,8 +236,8 @@ export const DataViz = () => {
   const acronymB = SCENARIO_TO_ACRONYM[scenarioB ?? ""] as string | undefined;
 
   const acronyms = {
-    scenarioA: acronymA ? acronymA : SCENARIO_A_LABEL,
-    scenarioB: acronymB ? acronymB : SCENARIO_B_LABEL,
+    scenarioA: acronymA ? acronymA : SCENARIO_A_ACRONYM,
+    scenarioB: acronymB ? acronymB : SCENARIO_B_ACRONYM,
   };
 
   const fetchScenarioData = (scenario: Scenario | undefined) =>
@@ -272,8 +277,8 @@ export const DataViz = () => {
 
   useQuery({
     queryKey: [DOMAINS_QUERY_KEY, { ...commonKeys, scenarioA, scenarioB }],
-    queryFn: () => DEFAULT_DOMAIN_ALL,
-    initialData: DEFAULT_DOMAIN_ALL,
+    queryFn: () => DEFAULT_Y_AXIS_DOMAIN_ALL,
+    initialData: DEFAULT_Y_AXIS_DOMAIN_ALL,
     staleTime: Infinity,
   });
 
@@ -290,10 +295,10 @@ export const DataViz = () => {
     resultsA.data.length === 0 &&
     resultsB.data.length === 0;
   const unitMinified = resultsA?.unit ?? "";
-
-  const domains = canRenderContent
-    ? getDomainAll({ resultsA, resultsB, display })
-    : undefined;
+  const xAxisDomainA = resultsA?.xAxisDomain ?? DEFAULT_X_AXIS_DOMAIN;
+  const xAxisDomainB = resultsB?.xAxisDomain ?? DEFAULT_X_AXIS_DOMAIN;
+  const xAxisDomain =
+    xAxisDomainA.length > xAxisDomainB.length ? xAxisDomainA : xAxisDomainB;
 
   const DataStatus = () => {
     if (isLoading) return <LoadingSpinner />;
@@ -389,9 +394,7 @@ export const DataViz = () => {
           <div className="pb-10"></div>
 
           {tabs.map((tab) => {
-            const isStacked = tab.name !== DATA_TABS_NAMES.lineChart;
             const isStackedBars = tab.name === DATA_TABS_NAMES.stackedBarChart;
-            const domain = isStacked ? domains?.stacked : domains?.nonStacked;
 
             const Content = () => {
               if (!canRenderContent) return null;
@@ -401,8 +404,8 @@ export const DataViz = () => {
                   data: resultsA.data,
                   dataB: resultsB.data,
                   unit: unitMinified,
-                  domain,
                   breakdownBy,
+                  xAxisDomain,
                 })
               ) : (
                 <ComparisonSlider
@@ -413,9 +416,9 @@ export const DataViz = () => {
                         data: resultsA.data,
                         dataB: [],
                         unit: unitMinified,
-                        domain,
                         breakdownBy,
                         scenarioId: "A",
+                        xAxisDomain,
                       }),
                     },
                     {
@@ -424,9 +427,9 @@ export const DataViz = () => {
                         data: resultsB.data,
                         dataB: [],
                         unit: unitMinified,
-                        domain,
                         breakdownBy,
                         scenarioId: "B",
+                        xAxisDomain,
                       }),
                     },
                   ]}

@@ -6,8 +6,11 @@ import {
   SCENARIO_B_ONLY,
 } from "@/lib/constants";
 import { cn } from "@/lib/utils";
+import { useQueryClient } from "@tanstack/react-query";
 import { getRouteApi } from "@tanstack/react-router";
 import React, { useEffect, useRef, useState, type ReactNode } from "react";
+import { SCENARIO_QUERY_KEY } from "./constants";
+import type { fetchScenarioRowsAggregated } from "@/lib/queries";
 
 const route = getRouteApi(ROUTES.DASHBOARD);
 
@@ -31,8 +34,24 @@ export const ComparisonSlider: React.FC<ComparisonSliderProps> = ({
 
   const [isGrabbing, setIsGrabbing] = React.useState(false);
   const navigate = route.useNavigate();
-  const display = route.useSearch({
-    select: (search) => search.display,
+  const {
+    display,
+    breakdownBy,
+    filters,
+    indicator,
+    dividedBy,
+    scenarioA,
+    scenarioB,
+  } = route.useSearch({
+    select: (search) => ({
+      display: search.display,
+      breakdownBy: search.breakdownBy,
+      filters: search.filters,
+      indicator: search.indicator,
+      dividedBy: search.dividedBy,
+      scenarioA: search.scenarioA,
+      scenarioB: search.scenarioB,
+    }),
   });
   const firstGraphRef = useRef<HTMLDivElement>(null);
   const secondGraphRef = useRef<HTMLDivElement>(null);
@@ -40,9 +59,26 @@ export const ComparisonSlider: React.FC<ComparisonSliderProps> = ({
     { width: number; height: number } | undefined
   >(undefined);
   const [sliderValues, setSliderValues] = useState<number[]>([50]);
+  const sliderValue = sliderValues[0] as Exclude<
+    (typeof sliderValues)[0],
+    undefined
+  >;
+  const commonKeys = { breakdownBy, filters, indicator, dividedBy };
+  const queryClient = useQueryClient();
+  const currentDataA = queryClient.getQueryData<
+    Awaited<ReturnType<typeof fetchScenarioRowsAggregated>>
+  >([SCENARIO_QUERY_KEY, { ...commonKeys, scenario: scenarioA }]);
+
+  const currentDataB = queryClient.getQueryData<
+    Awaited<ReturnType<typeof fetchScenarioRowsAggregated>>
+  >([SCENARIO_QUERY_KEY, { ...commonKeys, scenario: scenarioB }]);
+
+  const isDataAempty = currentDataA == null || currentDataA.data.length === 0;
+  const isDataBempty = currentDataB == null || currentDataB.data.length === 0;
 
   const handleSliderChange = (values: number[]) => {
-    const newValues = values[0] < MIN_SLIDER ? [MIN_SLIDER] : values;
+    const value = values[0] as Exclude<(typeof values)[0], undefined>;
+    const newValues = value < MIN_SLIDER ? [MIN_SLIDER] : values;
     setSliderValues(newValues);
   };
 
@@ -73,10 +109,12 @@ export const ComparisonSlider: React.FC<ComparisonSliderProps> = ({
       // eslint-disable-next-line @eslint-react/hooks-extra/no-direct-set-state-in-use-effect
       setSliderValues([MIN_SLIDER]);
     } else {
+      const towardsA = isDataAempty ? 25 : 0;
+      const towardsB = isDataBempty ? 25 : 0;
       // eslint-disable-next-line @eslint-react/hooks-extra/no-direct-set-state-in-use-effect
-      setSliderValues([50]);
+      setSliderValues([50 + towardsA - towardsB]);
     }
-  }, [display]);
+  }, [display, isDataAempty, isDataBempty]);
 
   useEffect(() => {
     const mediaQuery = window.matchMedia("(max-width: 640px)");
@@ -108,7 +146,9 @@ export const ComparisonSlider: React.FC<ComparisonSliderProps> = ({
             "absolute left-0 top-0 flex h-8 w-full -translate-y-full",
             display !== SCENARIO_A_AND_B && "hidden",
           )}
-          style={{ width: sliderValues[0].toString() + "%" }}
+          style={{
+            width: sliderValue.toString() + "%",
+          }}
         >
           <div className="absolute right-0 top-0 w-fit text-nowrap rounded-l-lg border-2 border-r-0 border-solid bg-white px-2 py-1 text-sm">
             <div
@@ -136,7 +176,7 @@ export const ComparisonSlider: React.FC<ComparisonSliderProps> = ({
             "absolute inset-0 size-full overflow-y-visible sm:visible",
             display !== SCENARIO_A_ONLY && "overflow-x-hidden",
           )}
-          style={{ width: sliderValues[0].toString() + "%" }}
+          style={{ width: sliderValue.toString() + "%" }}
         >
           <div
             className="relative size-full bg-white"

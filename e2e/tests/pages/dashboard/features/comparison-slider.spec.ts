@@ -1,8 +1,6 @@
 import {
   DEFAULT_SCENARIO,
   ROUTES,
-  SCENARIO_A_ACRONYM,
-  SCENARIO_B_ACRONYM,
   SCENARIO_TO_ACRONYM,
   TAB_CONTENT_TESTID,
 } from "@/lib/constants";
@@ -37,6 +35,8 @@ test.describe("comparison slider", () => {
         // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
         SCENARIO_TO_ACRONYM[scenarioBlabel] ?? scenarioBlabel;
 
+      const acronymA = SCENARIO_TO_ACRONYM[DEFAULT_SCENARIO];
+
       await changeScenariosInUI({
         page,
         scenarios: {
@@ -53,14 +53,14 @@ test.describe("comparison slider", () => {
 
       await changeDisplayInUI({
         page,
-        option: DEFAULT_SCENARIO + " only",
+        option: `${DEFAULT_SCENARIO} (${acronymA})` + " only",
       });
 
       await testScreenshot({ page, target: graph });
 
       await changeDisplayInUI({
         page,
-        option: `${scenarioBlabel} only`,
+        option: `${scenarioBlabel} (${acronymB}) only`,
       });
 
       await testScreenshot({ page, target: graph });
