@@ -3,6 +3,8 @@ import type { Attribute, ValidOption } from "../types";
 import { ShiftInfo } from "../../routes/-index/components/side-section/components/ShiftInfo";
 import { AvoidInfo } from "../../routes/-index/components/side-section/components/AvoidInfo";
 import type { UnionToTuple } from "type-fest";
+import type { ActionLevelSchema } from "./schemas";
+import type { z } from "zod";
 
 /*
   /!\
@@ -10,6 +12,9 @@ import type { UnionToTuple } from "type-fest";
   /!\
  */
 
+export const PARAMETER_LEVELS = ["1.0", "1.5", "2.0", "2.5"] satisfies z.infer<
+  typeof ActionLevelSchema
+>[];
 export const TOTAL_ACTIONS = 11;
 const COMMON_IN_FILTERS_AND_BREAKDOWN = {
   country: "EU country",
