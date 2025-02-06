@@ -139,9 +139,7 @@ export const GraphWrapper = ({
     firstItem,
   });
 
-  const isStackedBarChart =
-    (Graph.name as "StackedBarChart" | "StackedAreaChart" | "LineGraph") ===
-    "StackedBarChart";
+  const isStackedBarChart = dataTab === "Stacked Bar Graph";
   const dataAisEmpty = data.length === 0;
   const dataBisEmpty = dataB.length === 0;
   const isAvsB = display === SCENARIO_A_AND_B;
