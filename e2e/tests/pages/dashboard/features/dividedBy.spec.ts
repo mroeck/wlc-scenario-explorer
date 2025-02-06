@@ -53,7 +53,7 @@ test.describe("dividedBy", () => {
 
         await testScreenshot({
           page,
-          target: page.getByTestId(CHART_TESTID).first(),
+          target: page.getByTestId(CHART_TESTID).nth(1),
         });
       },
     );

@@ -50,7 +50,7 @@ test.describe("data viz", () => {
     const buildingUseSubtypeOption = page
       .getByLabel("Building subtype")
       .getByText("Building subtype");
-    const colorLegend = page.getByTestId(COLOR_LEGEND_TESTID);
+    const colorLegend = page.getByTestId(COLOR_LEGEND_TESTID).nth(1);
 
     await breakdownByDropdown.click();
     await buildingUseSubtypeOption.click();
