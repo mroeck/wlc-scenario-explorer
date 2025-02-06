@@ -17,6 +17,7 @@ from .shared_with_frontend.schemas import (
     ColumnsEnumSchema,
     FilterFrontEnumSchema,
 )
+from .shared_with_frontend.constants import PARAMETER_LEVELS
 from .models import Strategies
 from .constants import DIVIDED_BY_NONE, DATA_PATH, STRATEGIES_TABLE_NAME
 from enum import Enum
@@ -376,6 +377,9 @@ def get_possible_actions_levels(
 ) -> dict[str, List[str]]:
     columns_with_values = scenario_parameters.keys()
     columns_to_query = [col for col in all_columns if col not in columns_with_values]
+    valid_suggestions_for_frontend = ", ".join(
+        f"'{value}'" for value in PARAMETER_LEVELS
+    )
 
     if columns_with_values:
         where_clause = " AND ".join(
@@ -385,7 +389,7 @@ def get_possible_actions_levels(
         where_clause = None
 
     subqueries = [
-        f"(SELECT GROUP_CONCAT(DISTINCT {col}) FROM {STRATEGIES_TABLE_NAME}"
+        f"(SELECT GROUP_CONCAT(DISTINCT CASE WHEN {col} IN ({valid_suggestions_for_frontend}) THEN {col} END) FROM {STRATEGIES_TABLE_NAME}"
         + (f" WHERE {where_clause}" if where_clause else "")
         + f") AS {col}"
         for col in columns_to_query

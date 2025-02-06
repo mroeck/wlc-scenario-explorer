@@ -36,6 +36,7 @@ import { SelectMenuStyle } from "../../data-section/SelectMenuStyle";
 import { ResetButton } from "../components/ResetButton";
 import {
   CUSTOM_SCENARIO,
+  PARAMETER_LEVELS,
   PREDEFINED_SCENARIOS,
   SCENARIO_PARAMETERS_OBJ,
   SCENARIO_PARAMETERS_ORDER,
@@ -44,7 +45,6 @@ import {
 } from "@/lib/shared_with_backend/constants";
 import {
   ScenarioSchema,
-  type ActionLevelSchema,
   type StrategyAsSearchParamSchema,
 } from "@/lib/shared_with_backend/schemas";
 import { useEffect, useState } from "react";
@@ -71,9 +71,6 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 
-const PARAMETER_LEVELS = ["1.0", "1.5", "2.0", "2.5"] as z.infer<
-  typeof ActionLevelSchema
->[];
 const route = getRouteApi(ROUTES.DASHBOARD);
 
 type DefaultStrategies = Record<Actions, string | null>;
@@ -114,6 +111,8 @@ const DEFAULT_STRATEGY = [
   null,
 ] satisfies z.infer<typeof StrategyAsSearchParamSchema>;
 
+const SUGGESTIONS_QUERY_KEY = "SUGGESTIONS_QUERY_KEY";
+
 export const Scenarios = () => {
   const queryClient = useQueryClient();
   const { toast } = useToast();
@@ -134,7 +133,7 @@ export const Scenarios = () => {
     }),
   });
   const isDataCached = !!queryClient.getQueryData([
-    "ACTION_LEVELS_SUGGESTIONS",
+    SUGGESTIONS_QUERY_KEY,
     strategy,
   ]);
   const strategyDebounced = useDebounce(strategy, 750);
@@ -142,7 +141,7 @@ export const Scenarios = () => {
 
   const { data = { suggestions: DEFAULT_ACTIONS_LEVELS_SUGGESTIONS } } =
     useQuery({
-      queryKey: ["ACTION_LEVELS_SUGGESTIONS", finalStrategy],
+      queryKey: [SUGGESTIONS_QUERY_KEY, finalStrategy],
       queryFn: () =>
         fetchActionsLevelsSuggestions({ currentLevels: finalStrategy }),
       staleTime: Infinity,
@@ -452,7 +451,10 @@ export const Scenarios = () => {
                                   control={form.control}
                                   name={label}
                                   render={({ field }) => (
-                                    <FormItem className="flex flex-col gap-1">
+                                    <FormItem
+                                      className="flex flex-col gap-1"
+                                      key={`${label}${field.value ?? "null"} `}
+                                    >
                                       <FormLabel asChild>
                                         <div className="flex items-center gap-2">
                                           <span className="min-w-max text-sm text-gray-800">
@@ -465,11 +467,23 @@ export const Scenarios = () => {
                                           type="single"
                                           onValueChange={(value) => {
                                             onValueChange({
-                                              fieldOnChange: (value) => {
+                                              fieldOnChange: (valueRaw) => {
+                                                const isEmpty = valueRaw === "";
+                                                const value = isEmpty
+                                                  ? null
+                                                  : valueRaw;
                                                 form.setValue(
                                                   "scenarioA",
                                                   CUSTOM_SCENARIO,
                                                 );
+
+                                                void queryClient.cancelQueries({
+                                                  queryKey: [
+                                                    SUGGESTIONS_QUERY_KEY,
+                                                    finalStrategy,
+                                                  ],
+                                                });
+
                                                 field.onChange(value);
                                               },
                                               form,

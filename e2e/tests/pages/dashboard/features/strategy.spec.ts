@@ -136,4 +136,59 @@ test.describe("Strategy", () => {
       });
     },
   );
+  test("unselecting a level should not reset the strategy in search param", async ({
+    page,
+  }) => {
+    const expectedBefore = [
+      null,
+      null,
+      null,
+      null,
+      "1.0",
+      "1.0",
+      "1.5",
+      null,
+      null,
+      null,
+      null,
+    ];
+    const expectedAfter = [
+      null,
+      null,
+      null,
+      null,
+      null,
+      "1.0",
+      "1.5",
+      null,
+      null,
+      null,
+      null,
+    ];
+
+    await openStrategySection({
+      page,
+      section: "shift",
+      lastAction: "Increase carbon dioxide removal:",
+    });
+
+    await page.getByRole("button", { name: "1.0" }).first().click();
+    await page.getByRole("button", { name: "1.0" }).nth(1).click();
+    await page.getByRole("button", { name: "1.5" }).nth(2).click();
+    const strategyBeforeAsString =
+      new URL(page.url()).searchParams.get("strategy") ?? "[]";
+    const strategyBefore = JSON.parse(strategyBeforeAsString) as Array<
+      null | string
+    >;
+
+    await page.getByRole("button", { name: "1.0" }).first().click();
+    const strategyAfterAsString =
+      new URL(page.url()).searchParams.get("strategy") ?? "[]";
+    const strategyAfter = JSON.parse(strategyAfterAsString) as Array<
+      null | string
+    >;
+
+    expect(strategyBefore).toEqual(expectedBefore);
+    expect(strategyAfter).toEqual(expectedAfter);
+  });
 });
