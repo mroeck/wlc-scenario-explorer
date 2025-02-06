@@ -23,13 +23,13 @@ test.describe("graph highlight", () => {
 
       await testScreenshot({
         page,
-        target: page.getByTestId(CHART_TESTID).first(),
+        target: page.getByTestId(CHART_TESTID).nth(1),
       });
 
       await emptySpace.click();
       await testScreenshot({
         page,
-        target: page.getByTestId(CHART_TESTID).first(),
+        target: page.getByTestId(CHART_TESTID).nth(1),
       });
 
       await page.getByText("Non-residential").last().click();
@@ -41,7 +41,7 @@ test.describe("graph highlight", () => {
 
       await testScreenshot({
         page,
-        target: page.getByTestId(CHART_TESTID).first(),
+        target: page.getByTestId(CHART_TESTID).nth(1),
       });
     },
   );
@@ -52,24 +52,25 @@ test.describe("graph highlight", () => {
       tag: TAGS.snapshot,
     },
     async ({ page }) => {
-      const areaFromGraph = page.locator(".recharts-area");
+      const graph = page.getByTestId(CHART_TESTID);
+      const areaFromGraph = graph.locator(".recharts-area");
 
       await areaFromGraph.last().click();
       await testScreenshot({
         page,
-        target: page.getByTestId(CHART_TESTID).first(),
+        target: graph.nth(1),
       });
 
       await page.getByRole("tab", { name: "Line Graph" }).click();
       await testScreenshot({
         page,
-        target: page.getByTestId(CHART_TESTID).first(),
+        target: graph.nth(1),
       });
 
       await page.getByRole("tab", { name: "Stacked Bar Graph" }).click();
       await testScreenshot({
         page,
-        target: page.getByTestId(CHART_TESTID).first(),
+        target: graph,
       });
     },
   );

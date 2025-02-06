@@ -1,4 +1,4 @@
-import { getAttributeOptionsOrdered } from "@/lib/utils";
+import { cn, getAttributeOptionsOrdered } from "@/lib/utils";
 import { type z } from "zod";
 import {
   ROUTES,
@@ -7,6 +7,7 @@ import {
   DATA_TABS_NAMES,
   SCENARIO_A_AND_B,
   SCENARIO_A_ONLY,
+  SCENARIO_B_ONLY,
 } from "@/lib/constants";
 import { YEAR_KEY } from "@/lib/shared_with_backend/constants";
 import type { ScenarioRowsAggregatedArraySchema } from "@/lib/schemas";
@@ -74,7 +75,6 @@ type CoreProps = {
   breakdownBy: Attribute;
   data: z.infer<typeof ScenarioRowsAggregatedArraySchema>;
   scenarioId?: ScenarioId;
-  sliderValues?: number[];
   xAxisDomain: z.infer<typeof XAxisDomain>;
 };
 
@@ -97,11 +97,16 @@ export const GraphWrapper = ({
   breakdownBy,
   Graph,
   scenarioId,
-  sliderValues,
   xAxisDomain,
 }: GraphWrapperProps) => {
   const chartRef = useRef<HTMLDivElement>(null);
-  const { animation, sort, highlights, dataTab, display } = route.useSearch({
+  const {
+    animation = true,
+    sort,
+    highlights,
+    dataTab,
+    display,
+  } = route.useSearch({
     select: (search) => ({
       animation: search.animation,
       sort: search.sort,
@@ -149,11 +154,26 @@ export const GraphWrapper = ({
     : isAonly
       ? dataAisEmpty
       : dataBisEmpty;
+  const isGraphShowed =
+    (scenarioId === "A" && display !== SCENARIO_B_ONLY) ||
+    (scenarioId === "B" && display !== SCENARIO_A_ONLY);
+
+  const shouldShowNoDataFound =
+    (!isStackedBarChart && dataAisEmpty && isGraphShowed) ||
+    (isStackedBarChart && showNoDataForStackedBar);
 
   return (
-    <div className="h-full overflow-x-visible">
+    <div
+      className={cn(
+        "h-full overflow-x-visible",
+        !isStackedBarChart && !isGraphShowed && "invisible",
+      )}
+    >
       <div
-        className="h-0 min-h-[500px] w-full sm:min-w-[600px] lg:min-h-full lg:min-w-[unset] lg:flex-1 [&_svg]:overflow-visible"
+        className={cn(
+          animation && "animate-fade-in opacity-0",
+          "h-0 min-h-[500px] w-full sm:min-w-[600px] lg:min-h-full lg:min-w-[unset] lg:flex-1 [&_svg]:overflow-visible",
+        )}
         data-testid={CHART_TESTID}
       >
         <Graph
@@ -169,20 +189,12 @@ export const GraphWrapper = ({
           xAxisDomain={xAxisDomain}
         />
 
-        {!isStackedBarChart && dataAisEmpty && (
+        {shouldShowNoDataFound && (
           <div
-            className="absolute left-16 top-0 h-full"
-            style={{ width: `calc(100% * ${sliderValues?.[0] ?? 1} - 4rem)` }}
+            className="absolute left-16 top-0 h-full animate-fade-in opacity-0"
+            style={{ width: "calc(100% - 4rem)" }}
           >
-            <NoDataFound scenarioId={scenarioId} />{" "}
-          </div>
-        )}
-        {isStackedBarChart && showNoDataForStackedBar && (
-          <div
-            className="absolute left-16 top-0 h-full"
-            style={{ width: `calc(100% * ${sliderValues?.[0] ?? 1} - 4rem)` }}
-          >
-            <NoDataFound scenarioId={scenarioId} />{" "}
+            <NoDataFound scenarioId={scenarioId} />
           </div>
         )}
       </div>

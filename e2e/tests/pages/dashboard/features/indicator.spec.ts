@@ -26,6 +26,7 @@ test.describe("indicator", () => {
         .getByRole("combobox");
       const option1 = { name: "Material mass", minified: "Mt" };
       const option2 = { name: "GWP total", minified: "MtCO₂" };
+      const graph = page.getByTestId(CHART_TESTID).nth(1);
 
       await indicatorSelect.click();
       await page.getByLabel(option1.name).click();
@@ -36,7 +37,7 @@ test.describe("indicator", () => {
 
       await testScreenshot({
         page,
-        target: page.getByTestId(CHART_TESTID).first(),
+        target: graph,
       });
 
       await indicatorSelect.click();
@@ -48,7 +49,7 @@ test.describe("indicator", () => {
 
       await testScreenshot({
         page,
-        target: page.getByTestId(CHART_TESTID).first(),
+        target: graph,
       });
     },
   );

@@ -28,7 +28,7 @@ export const NoDataFound = ({ scenarioId }: { scenarioId?: "A" | "B" }) => {
       display: search.display,
     }),
   });
-  const isCustom = scenarioA === CUSTOM_SCENARIO;
+  const isCustom = scenarioA === CUSTOM_SCENARIO && display !== SCENARIO_B_ONLY;
   const hasDefaultTimeframeFilters =
     !!filters &&
     Object.values(filters).length === 2 &&

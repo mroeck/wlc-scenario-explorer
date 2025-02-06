@@ -42,6 +42,7 @@ export const ComparisonSlider: React.FC<ComparisonSliderProps> = ({
     dividedBy,
     scenarioA,
     scenarioB,
+    animation = true,
   } = route.useSearch({
     select: (search) => ({
       display: search.display,
@@ -51,6 +52,7 @@ export const ComparisonSlider: React.FC<ComparisonSliderProps> = ({
       dividedBy: search.dividedBy,
       scenarioA: search.scenarioA,
       scenarioB: search.scenarioB,
+      animation: search.animation,
     }),
   });
   const firstGraphRef = useRef<HTMLDivElement>(null);
@@ -139,15 +141,17 @@ export const ComparisonSlider: React.FC<ComparisonSliderProps> = ({
   }, [display, navigate]);
 
   return (
-    <div className="flex flex-col items-center space-y-4 md:h-full md:max-h-[600px]">
+    <div className="flex  flex-col items-center space-y-4 md:h-full md:max-h-[600px]">
       <div className="relative size-full">
         <div
           className={cn(
+            animation && "animate-fade-in opacity-0",
             "absolute left-0 top-0 flex h-8 w-full -translate-y-full",
             display !== SCENARIO_A_AND_B && "hidden",
           )}
           style={{
             width: sliderValue.toString() + "%",
+            animationDelay: "0.75s",
           }}
         >
           <div className="absolute right-0 top-0 w-fit text-nowrap rounded-l-lg border-2 border-r-0 border-solid bg-white px-2 py-1 text-sm">
@@ -194,17 +198,20 @@ export const ComparisonSlider: React.FC<ComparisonSliderProps> = ({
           </div>
           <div
             className={cn(
+              animation && "animate-fade-in opacity-0",
               "absolute right-0 top-0 h-full border-r-2 border-solid",
               display !== SCENARIO_A_AND_B && "hidden",
             )}
-            style={{ borderColor: "hsl(223 0% 40%)" }}
+            style={{ borderColor: "hsl(223 0% 40%)", animationDelay: "0.75s" }}
           ></div>
         </div>
         <Slider
           className={cn(
+            animation && "animate-fade-in opacity-0",
             "absolute left-[-15px] top-1/2 z-10 w-[calc(100%+28px)] origin-center",
             display !== SCENARIO_A_AND_B && "hidden",
           )}
+          style={{ animationDelay: "0.75s" }}
           value={sliderValues}
           onValueChange={handleSliderChange}
           min={0}

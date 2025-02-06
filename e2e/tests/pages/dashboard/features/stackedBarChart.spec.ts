@@ -28,7 +28,7 @@ test.describe("stacked bar chart", () => {
     async ({ page }) => {
       await testScreenshot({
         page,
-        target: page.getByTestId(CHART_TESTID).first(),
+        target: page.getByTestId(CHART_TESTID),
       });
 
       const option = SCENARIO_B_LABEL + " only";
@@ -36,7 +36,7 @@ test.describe("stacked bar chart", () => {
 
       await testScreenshot({
         page,
-        target: page.getByTestId(CHART_TESTID).first(),
+        target: page.getByTestId(CHART_TESTID),
       });
     },
   );
@@ -60,7 +60,7 @@ test.describe("stacked bar chart", () => {
 
       await testScreenshot({
         page,
-        target: page.getByTestId(CHART_TESTID).first(),
+        target: page.getByTestId(CHART_TESTID),
       });
     },
   );

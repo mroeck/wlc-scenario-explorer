@@ -47,7 +47,7 @@ const setAllParameter = async ({
 test.describe("Strategy", () => {
   test.skip(({ isMobile }) => isMobile, "Desktop only!");
   test.beforeEach(async ({ page }) => {
-    await page.goto(ROUTES.DASHBOARD);
+    await page.goto(ROUTES.DASHBOARD + "?animation=false");
   });
   test(
     "strategy accordion snapshot",
@@ -128,11 +128,9 @@ test.describe("Strategy", () => {
       await setAllParameter({ page, section: "avoid", level: "1.0" });
       await setAllParameter({ page, section: "shift", level: "1.0" });
 
-      await waitLoadingEnds({ page });
-
       await testScreenshot({
         page,
-        target: page.getByTestId(CHART_TESTID).first(),
+        target: page.getByTestId(CHART_TESTID).nth(1),
       });
     },
   );
