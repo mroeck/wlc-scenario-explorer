@@ -32,6 +32,10 @@ ID: first release of the month means id = 1, second id = 2 and so on.
 3. Merge the release branch to main (with a [create a merge request](https://gitlab.kuleuven.be/ae/sustainable-construction/dg-grow-eu-scenariotool/scenario-explorer/-/merge_requests/new?merge_request%5Bsource_branch%5D=release-[YEAR].[MONTH]-[ID]&merge_request%5Btarget_branch%5D=main
 ) or force push)
 
+:::warning
+Do not squash the commits, it will conflict when merging main to develop
+:::
+
 4. Merge the main branch to develop to avoid merge conflicts next time
 
 :::info
@@ -39,7 +43,7 @@ In case you get merge conflicts you can also force push to main:<br/>
 Settings > repository > Protected branches > [allow force push](https://gitlab.kuleuven.be/ae/sustainable-construction/dg-grow-eu-scenariotool/scenario-explorer/-/settings/repository) for main and:
 
 ```bash
-git push -u origin develop:main --force
+git push origin develop:main --force
 ```
 :::
 
