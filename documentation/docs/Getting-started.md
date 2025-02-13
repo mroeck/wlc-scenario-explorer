@@ -7,16 +7,14 @@ sidebar_position: 1
 
 Welcome to the Scenario Explorer, an application designed to visualize scenarios generated as parquet files by the [study](https://c.ramboll.com/life-cycle-emissions-of-eu-building-and-construction) team. The app is accessible at [https://ae-scenario-explorer.cloud.set.kuleuven.be](https://ae-scenario-explorer.cloud.set.kuleuven.be).
 
-This application was developed in 2024 by Benjamin Lesné, a temporary contractor.
-
 It is hosted on the [KU Leuven university](https://architectuur.kuleuven.be/architectural-engineering) infrastructure, and the DevOps referent is Ronny Moreas.
 
 The terminal commands in this documentation are for linux machines.
 
 ### Contacts
 
-- **Ronny Moreas**: it-support@set.kuleuven.be
-- **Benjamin Lesné**: benjamin.lesne@outlook.fr
+- **Ronny Moreas**: it-support@set.kuleuven.be (DevOps referent)
+- **Benjamin Lesné**: benjamin.lesne@outlook.fr (contracted developer to build the app)
 
 ## Start the app
 
@@ -36,9 +34,9 @@ You don't need the following to start the app locally:
 
 ```bash
 git clone git@gitlab.kuleuven.be:ae/sustainable-construction/dg-grow-eu-scenariotool/scenario-explorer.git &&
-cd scenario-explorer/backend && poetry install &
-cd ../frontend && pnpm install &
-cd ../e2e && npm install &
+cd scenario-explorer/backend && poetry install &&
+cd ../frontend && pnpm install &&
+cd ../e2e && npm install &&
 cd ../documentation && pnpm install
 ```
 
@@ -49,15 +47,26 @@ cd ../documentation && pnpm install
 
 ```
 cd ../backend && cp ./.env.example .env &
-cd ../frontend && cp ./.env.example .env &
+cd ../frontend && cp ./.env.example .env
 ```
 
 <br/>
 
-* add some parquet files to your backend
-  [IN PROGRESS]
+* Open the project in the root directory with your favorite code editor
+
+```bash
+code ../
+```
 
 <br/>
+
+* add some parquet files to your data
+  [IN PROGRESS]
+
+  Add the parquet files in root/data/scenarios
+
+<br/>
+
 
 * Start the dev servers from the root directory (one terminal for each):
 
