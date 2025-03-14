@@ -97,19 +97,9 @@ const formSchema = z.object({
   scenarioB: z.union([ScenarioSchema, z.literal("")]),
   ...StrategiesSchema,
 });
-const DEFAULT_STRATEGY = [
-  null,
-  null,
-  null,
-  null,
-  null,
-  null,
-  null,
-  null,
-  null,
-  null,
-  null,
-] satisfies z.infer<typeof StrategyAsSearchParamSchema>;
+const DEFAULT_STRATEGY = [null, null, null, null, null, null] satisfies z.infer<
+  typeof StrategyAsSearchParamSchema
+>;
 
 const SUGGESTIONS_QUERY_KEY = "SUGGESTIONS_QUERY_KEY";
 
@@ -457,7 +447,7 @@ export const Scenarios = () => {
                                     >
                                       <FormLabel asChild>
                                         <div className="flex items-center gap-2">
-                                          <span className="min-w-max text-sm text-gray-800">
+                                          <span className="text-sm text-gray-800">
                                             {label}:
                                           </span>
                                         </div>

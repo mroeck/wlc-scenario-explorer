@@ -3,19 +3,14 @@ def format_scenario_parameter(parameter: str) -> str:
 
 
 SCENARIO_PARAMETERS_ORDER = [
-    format_scenario_parameter("Increase low carbon conventional"),
-    format_scenario_parameter("Reduce transport emissions"),
-    format_scenario_parameter("Reduce construction process"),
-    format_scenario_parameter("Reduce operational energy"),
-    format_scenario_parameter("Increase bio-based solutions"),
-    format_scenario_parameter("Increase circularity and reuse"),
-    format_scenario_parameter("Increase carbon dioxide removal"),
+    format_scenario_parameter("Increase of circularity measures"),
     format_scenario_parameter("Reduce space per capita"),
-    format_scenario_parameter("Increase repair and retrofit"),
-    format_scenario_parameter("Increase material efficiency"),
-    format_scenario_parameter("Reduce construction waste"),
+    format_scenario_parameter("Shift to low carbon and bio-based solutions"),
+    format_scenario_parameter("Reduce transport and construction emissions"),
+    format_scenario_parameter("Increase use of improved materials"),
+    format_scenario_parameter("Reduce operational emissions"),
 ]
 
-TOTAL_ACTIONS = 11
+TOTAL_ACTIONS = 6
 
 PARAMETER_LEVELS = ["1.0", "1.5", "2.0", "2.5"]

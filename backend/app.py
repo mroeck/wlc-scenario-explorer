@@ -40,7 +40,7 @@ class SuggestionPayload(TypedDict):
     current_parameters: List[Union[str, None]]
 
 
-CURRENT_VALUES_LENGTH = 11
+CURRENT_VALUES_LENGTH = 6
 
 
 @app.route("/suggestions", methods=["POST"])

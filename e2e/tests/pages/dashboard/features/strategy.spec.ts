@@ -8,7 +8,7 @@ import type { SCENARIO_PARAMETERS_OBJ } from "@/lib/shared_with_backend/constant
 import type { Level } from "@/lib/types";
 import { expect, test, type Page } from "@playwright/test";
 import { TAGS } from "@tests/constants";
-import { testScreenshot, waitLoadingEnds } from "@tests/functions";
+import { testScreenshot } from "@tests/functions";
 
 const openStrategySection = async ({
   page,
@@ -58,7 +58,7 @@ test.describe("Strategy", () => {
       await openStrategySection({
         page,
         section: "improve",
-        lastAction: "Reduce operational energy:",
+        lastAction: "Reduce operational emissions:",
       });
 
       await testScreenshot({
@@ -77,7 +77,7 @@ test.describe("Strategy", () => {
       await openStrategySection({
         page,
         section: "improve",
-        lastAction: "Reduce operational energy:",
+        lastAction: "Reduce operational emissions:",
       });
 
       await page.getByRole("button", { name: "1.0" }).first().click();
@@ -102,7 +102,7 @@ test.describe("Strategy", () => {
       await openStrategySection({
         page,
         section: "improve",
-        lastAction: "Reduce operational energy:",
+        lastAction: "Reduce operational emissions:",
       });
 
       await page.getByTestId(SET_ALL_PARAMETERS_TRIGGER_TESTID).first().click();
@@ -137,42 +137,17 @@ test.describe("Strategy", () => {
   test("unselecting a level should not reset the strategy in search param", async ({
     page,
   }) => {
-    const expectedBefore = [
-      null,
-      null,
-      null,
-      null,
-      "1.0",
-      "1.0",
-      "1.5",
-      null,
-      null,
-      null,
-      null,
-    ];
-    const expectedAfter = [
-      null,
-      null,
-      null,
-      null,
-      null,
-      "1.0",
-      "1.5",
-      null,
-      null,
-      null,
-      null,
-    ];
+    const expectedBefore = [null, null, "1.0", null, null, null];
+    const expectedAfter = [null, null, null, null, null, null];
 
     await openStrategySection({
       page,
       section: "shift",
-      lastAction: "Increase carbon dioxide removal:",
+      lastAction: "Shift to low carbon and bio-based solutions:",
     });
 
     await page.getByRole("button", { name: "1.0" }).first().click();
-    await page.getByRole("button", { name: "1.0" }).nth(1).click();
-    await page.getByRole("button", { name: "1.5" }).nth(2).click();
+
     const strategyBeforeAsString =
       new URL(page.url()).searchParams.get("strategy") ?? "[]";
     const strategyBefore = JSON.parse(strategyBeforeAsString) as Array<

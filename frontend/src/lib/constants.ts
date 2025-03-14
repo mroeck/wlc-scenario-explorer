@@ -253,17 +253,12 @@ export const DEFAULT_DASHBOARD_SEARCH = {
 } as const;
 
 export const DEFAULT_ACTIONS_LEVELS_SUGGESTIONS = {
-  increase_bio_based_solutions: [],
-  increase_carbon_dioxide_removal: [],
-  increase_circularity_and_reuse: [],
-  increase_low_carbon_conventional: [],
-  increase_material_efficiency: [],
-  increase_repair_and_retrofit: [],
-  reduce_construction_process: [],
-  reduce_construction_waste: [],
-  reduce_operational_energy: [],
+  reduce_transport_and_construction_emissions: [],
+  increase_use_of_improved_materials: [],
+  increase_of_circularity_measures: [],
+  shift_to_low_carbon_and_bio_based_solutions: [],
+  reduce_operational_emissions: [],
   reduce_space_per_capita: [],
-  reduce_transport_emissions: [],
 } satisfies z.infer<
   typeof ResultsActionsLevelsSuggestionsSchema
 >["suggestions"];

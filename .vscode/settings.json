@@ -4,5 +4,6 @@
   "hadolint.hadolintPath": "/usr/bin/hadolint",
   "mypy-type-checker.cwd": "${workspaceFolder}/backend",
   "mypy-type-checker.args": ["--strict", "--config-file=pyproject.toml"],
-  "eslint.useFlatConfig": false
+  "eslint.useFlatConfig": false,
+  "typescript.tsdk": "frontend/node_modules/typescript/lib"
 }
