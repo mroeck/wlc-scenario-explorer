@@ -56,13 +56,9 @@ export const StrategyAsSearchParamSchema = z
     StrategyItem,
     StrategyItem,
     StrategyItem,
-    StrategyItem,
-    StrategyItem,
-    StrategyItem,
-    StrategyItem,
-    StrategyItem,
   ])
   .and(StrategyItem.array().length(TOTAL_ACTIONS));
+
 export const ActionsLevelsSuggestionSchema = ActionLevelSchema.array();
 
 const SuggestionSchema = ActionsLevelsSuggestionSchema.optional();

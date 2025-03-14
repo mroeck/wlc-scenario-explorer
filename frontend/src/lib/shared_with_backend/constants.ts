@@ -15,7 +15,7 @@ import type { z } from "zod";
 export const PARAMETER_LEVELS = ["1.0", "1.5", "2.0", "2.5"] satisfies z.infer<
   typeof ActionLevelSchema
 >[];
-export const TOTAL_ACTIONS = 11;
+export const TOTAL_ACTIONS = 6;
 const COMMON_IN_FILTERS_AND_BREAKDOWN = {
   country: "EU country",
   buildingUseType: "Building type",
@@ -95,30 +95,20 @@ export const MAX_YEAR = 2500;
 export const MIN_YEAR = 1900;
 
 export const SCENARIO_PARAMETERS_OBJ = {
-  improve: {
-    info: ImproveInfo,
-    strategies: [
-      "Increase low carbon conventional",
-      "Reduce transport emissions",
-      "Reduce construction process",
-      "Reduce operational energy",
-    ],
+  avoid: {
+    info: AvoidInfo,
+    strategies: ["Increase of circularity measures", "Reduce space per capita"],
   },
   shift: {
     info: ShiftInfo,
-    strategies: [
-      "Increase bio-based solutions",
-      "Increase circularity and reuse",
-      "Increase carbon dioxide removal",
-    ],
+    strategies: ["Shift to low carbon and bio-based solutions"],
   },
-  avoid: {
-    info: AvoidInfo,
+  improve: {
+    info: ImproveInfo,
     strategies: [
-      "Reduce space per capita",
-      "Increase repair and retrofit",
-      "Increase material efficiency",
-      "Reduce construction waste",
+      "Reduce operational emissions",
+      "Increase use of improved materials",
+      "Reduce transport and construction emissions",
     ],
   },
 } as const;
@@ -127,17 +117,12 @@ export type Actions =
   (typeof SCENARIO_PARAMETERS_OBJ)[CategoriesOfStrategies]["strategies"][number];
 
 export const SCENARIO_PARAMETERS_ORDER: UnionToTuple<Actions> = [
-  "Increase low carbon conventional",
-  "Reduce transport emissions",
-  "Reduce construction process",
-  "Reduce operational energy",
-  "Increase bio-based solutions",
-  "Increase circularity and reuse",
-  "Increase carbon dioxide removal",
+  "Increase of circularity measures",
   "Reduce space per capita",
-  "Increase repair and retrofit",
-  "Increase material efficiency",
-  "Reduce construction waste",
+  "Shift to low carbon and bio-based solutions",
+  "Reduce operational emissions",
+  "Increase use of improved materials",
+  "Reduce transport and construction emissions",
 ];
 
 export const API_ROUTES = {

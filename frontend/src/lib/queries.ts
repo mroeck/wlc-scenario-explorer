@@ -111,11 +111,6 @@ type FetchActionsLevelsSuggestionsArgs = {
     CurrentLevel,
     CurrentLevel,
     CurrentLevel,
-    CurrentLevel,
-    CurrentLevel,
-    CurrentLevel,
-    CurrentLevel,
-    CurrentLevel,
   ];
 };
 
@@ -125,7 +120,7 @@ export async function fetchActionsLevelsSuggestions({
   const levelsSelected = currentLevels.filter(
     (currentLevel) => currentLevel !== null,
   );
-  if (levelsSelected.length === 11) {
+  if (levelsSelected.length === TOTAL_ACTIONS) {
     return {
       suggestions: DEFAULT_ACTIONS_LEVELS_SUGGESTIONS,
     } satisfies z.infer<typeof ResultsActionsLevelsSuggestionsSchema>;
