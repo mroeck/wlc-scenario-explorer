@@ -18,7 +18,7 @@ test.describe("dashboard", () => {
 
   test("has tab title and data header", async ({ page }) => {
     await expect(page).toHaveTitle(/Scenario Explorer/);
-    await expect(page.getByText("Residential")).toBeVisible();
+    await expect(page.getByText("Non-residential").last()).toBeVisible();
     await expect(page.getByText(DEFAULT_GRAPH_TITLE)).toBeVisible();
   });
 

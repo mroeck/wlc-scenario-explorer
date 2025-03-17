@@ -28,15 +28,10 @@ export async function testScreenshot({
   await page.evaluate(() => document.fonts.ready);
   await waitLoadingEnds({ page });
 
-  for (const img of await page.getByRole("img").all()) {
+  for (const img of await page.locator("img").all()) {
     // https://github.com/microsoft/playwright/issues/6046#issuecomment-1803609118
-    const isSvg = await img.evaluate(
-      (el) => el.tagName.toLowerCase() === "svg",
-    );
 
-    if (!isSvg) {
-      await expect(img).toHaveJSProperty("complete", true);
-    }
+    await expect(img).toHaveJSProperty("complete", true);
     await expect(img).not.toHaveJSProperty("naturalWidth", 0);
   }
 
