@@ -1,5 +1,5 @@
 include:
-  - component: "gitlab.kuleuven.be/to-be-continuous/docker/gitlab-ci-docker@6.0"
+  - component: "gitlab.kuleuven.be/to-be-continuous/docker/gitlab-ci-docker@6.1"
     # Ref: https://to-be-continuous.pages.gitlab.kuleuven.be/doc/ref/docker/
     inputs:
       # Docker file and image names for frontend and backend are defined in the
@@ -10,7 +10,7 @@ include:
       healthcheck-disabled: true
       trivy-disabled: true
       hadolint-args: "--ignore DL3059"
-  - component: "gitlab.kuleuven.be/to-be-continuous/helmfile/gitlab-ci-helmfile@3.2"
+  - component: "gitlab.kuleuven.be/to-be-continuous/helmfile/gitlab-ci-helmfile@3.3"
     # Ref: https://to-be-continuous.pages.gitlab.kuleuven.be/doc/ref/helmfile/
     inputs:
       scripts-dir: "./deploy"
@@ -23,6 +23,7 @@ include:
       prod-enabled: true
       prod-deploy-strategy: "auto"
       review-namespace: "${CI_PROJECT_NAME}-${CI_PROJECT_ID}-review"
+      cli-image: "ghcr.io/helmfile/helmfile:v0.165.0"
   - component: "gitlab.kuleuven.be/to-be-continuous/python/gitlab-ci-python@7.5"
     # Ref: https://to-be-continuous.pages.gitlab.kuleuven.be/doc/ref/python/
     inputs:
