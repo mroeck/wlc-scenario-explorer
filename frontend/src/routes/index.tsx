@@ -45,6 +45,11 @@ const Dashboard = memo(function Dashboard() {
       void navigate({
         search: (prev) => ({
           ...prev,
+          filters: {
+            ...prev.filters,
+            To: prev.filters?.To?.toString(),
+            From: prev.filters?.From?.toString(),
+          },
           highlights: undefined,
         }),
         replace: true,

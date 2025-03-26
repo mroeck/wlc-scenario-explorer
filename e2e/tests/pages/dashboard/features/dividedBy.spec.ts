@@ -18,7 +18,7 @@ test.describe("dividedBy", () => {
   test.skip(({ isMobile }) => isMobile, "Desktop only!");
 
   test.beforeEach(async ({ page }) => {
-    await page.goto(ROUTES.DASHBOARD + "?animation=false");
+    await page.goto(ROUTES.DASHBOARD + "?animation=false&dataTab=Line%20Graph");
   });
 
   for (const option of DIVIDED_BY_OPTIONS) {

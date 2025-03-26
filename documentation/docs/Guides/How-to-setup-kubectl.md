@@ -21,10 +21,11 @@ Copy KubeConfig to Clipboard
 ```bash
 xclip -selection clipboard -o > $HOME/.kube/config
 ```
+
 :::warning
-if you copy/paste the command above, make sure to copy the kubernetes config before executing the command 
+if you copy/paste the command above, make sure to copy the kubernetes config before executing the command
 :::
 
 :::info
-This config will include a token to authenticate you, which I believe is linked to the account you used to connect to the Rancher instance.
+This config will include a token to authenticate you, which I believe is linked to the account you used to connect to the Rancher instance. This token can expired after a while.
 :::

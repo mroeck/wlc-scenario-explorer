@@ -50,6 +50,7 @@ test.describe("dashboard", () => {
 
       await page.setViewportSize({ width: 3840, height: 2160 });
 
+      await expect(page.getByText("Non-residential").last()).toBeVisible();
       await waitLoadingEnds({ page });
 
       await testPageScreenshot({ page });

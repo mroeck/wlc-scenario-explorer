@@ -84,9 +84,9 @@ export const DIVIDED_BY_NONE = "none (total)";
 
 export const DIVIDED_BY_OPTIONS = [
   DIVIDED_BY_NONE,
-  // "m² (country)",
+  "m² (floor area)",
   // "m² (archetype)",
-  // "capita (country)",
+  "capita (users)",
   // "capita (archetype)",
 ] as const;
 
@@ -280,7 +280,6 @@ export const VALUE_TO_LABEL: Record<Exclude<ValidOption, number>, string> = {
   Process: "Process",
   Sand: "Sand",
   Steel: "Steel",
-  Undefined: "Undefined",
   Wood: "Wood",
   "Existing buildings": "Existing buildings",
   "New buildings": "New buildings",
@@ -358,9 +357,9 @@ export const LABEL_TO_VALUE = Object.fromEntries(
 export const UNITS_FROM_BACKEND = {
   "GWP total": {
     [DIVIDED_BY_NONE]: "MtCO₂",
-    "m² (country)": "ktCO₂/m²",
-    "m² (archetype)": "MtCO₂/m²",
-    "capita (country)": "tCO₂/capita",
-    "capita (archetype)": "tCO₂/capita",
+    "m² (floor area)": "kgCO₂/m²",
+    "capita (users)": "tCO₂/capita",
+    // "m² (archetype)": "MtCO₂/m²",
+    // "capita (archetype)": "tCO₂/capita",
   },
 } as const;

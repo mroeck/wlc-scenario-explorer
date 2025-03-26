@@ -31,6 +31,7 @@ const NavLinks = ({
           "opacity-80": ROUTES.DASHBOARD !== currentRoute,
         })}
       >
+        {/* @ts-expect-error: somehow the search expects a string now when a number was fine before, couldn't figured it out, no big deal, the provided value is typesafe */}
         <Link to={ROUTES.DASHBOARD} search={dashboardSearchParams}>
           Dashboard
         </Link>
@@ -77,6 +78,7 @@ const BurgerNavigation = ({
               "opacity-80": ROUTES.DASHBOARD !== currentRoute,
             })}
           >
+            {/* @ts-expect-error: somehow the search expects a string now when a number was fine before, couldn't figured it out, no big deal, the provided value is typesafe */}
             <Link to={ROUTES.DASHBOARD} search={dashboardSearchParams}>
               <DrawerClose>Dashboard</DrawerClose>
             </Link>

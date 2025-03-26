@@ -102,13 +102,16 @@ const DEFAULT_STRATEGY = [null, null, null, null, null, null] satisfies z.infer<
 >;
 
 const SUGGESTIONS_QUERY_KEY = "SUGGESTIONS_QUERY_KEY";
+const DEFAULT_ACCORDION_ITEMS: MyAccordionItem[] = [];
+
+type MyAccordionItem = keyof typeof SCENARIO_PARAMETERS_OBJ | "";
 
 export const Scenarios = () => {
   const queryClient = useQueryClient();
   const { toast } = useToast();
-  const [activeAccordionItem, setActiveAccordionItem] = useState<
-    keyof typeof SCENARIO_PARAMETERS_OBJ | ""
-  >();
+  const [activeAccordionItems, setActiveAccordionItems] = useState<
+    MyAccordionItem[]
+  >(DEFAULT_ACCORDION_ITEMS);
   const {
     scenarioA,
     scenarioB,
@@ -166,6 +169,11 @@ export const Scenarios = () => {
     await navigate({
       search: (prev) => ({
         ...prev,
+        filters: {
+          ...prev.filters,
+          To: prev.filters?.To?.toString(),
+          From: prev.filters?.From?.toString(),
+        },
         scenarioA,
         scenarioB: scenarioBIsEmpty ? undefined : scenarioB,
         strategy,
@@ -189,6 +197,11 @@ export const Scenarios = () => {
     void navigate({
       search: (prev) => ({
         ...prev,
+        filters: {
+          ...prev.filters,
+          To: prev.filters?.To?.toString(),
+          From: prev.filters?.From?.toString(),
+        },
         display: DEFAULT_DISPLAY,
       }),
       replace: true,
@@ -266,6 +279,11 @@ export const Scenarios = () => {
                             void navigate({
                               search: (prev) => ({
                                 ...prev,
+                                filters: {
+                                  ...prev.filters,
+                                  To: prev.filters?.To?.toString(),
+                                  From: prev.filters?.From?.toString(),
+                                },
                                 display:
                                   display === SCENARIO_B_ONLY
                                     ? SCENARIO_A_AND_B
@@ -276,16 +294,17 @@ export const Scenarios = () => {
 
                             const isCustom = value === CUSTOM_SCENARIO;
                             const hasActiveAccordionItem =
-                              activeAccordionItem !== undefined &&
-                              activeAccordionItem !== "";
+                              activeAccordionItems.length > 0;
 
                             if (isCustom && !hasActiveAccordionItem) {
                               setTimeout(() => {
-                                setActiveAccordionItem("improve");
+                                setActiveAccordionItems(
+                                  DEFAULT_ACCORDION_ITEMS,
+                                );
                               }, 0);
                             } else if (!isCustom && hasActiveAccordionItem) {
                               setTimeout(() => {
-                                setActiveAccordionItem(undefined);
+                                setActiveAccordionItems([]);
                               }, 0);
                             }
 
@@ -348,14 +367,11 @@ export const Scenarios = () => {
                   </InfoButton>
                 </div>
                 <Accordion
-                  type="single"
-                  collapsible
+                  type="multiple"
                   className="pl-2"
-                  value={activeAccordionItem ?? ""}
+                  value={activeAccordionItems}
                   onValueChange={(value) => {
-                    setActiveAccordionItem(
-                      value as keyof typeof SCENARIO_PARAMETERS_OBJ | "",
-                    );
+                    setActiveAccordionItems(value as MyAccordionItem[]);
                   }}
                   data-testid={STRATEGY_TESTID}
                 >
@@ -571,6 +587,11 @@ export const Scenarios = () => {
                           void navigate({
                             search: (prev) => ({
                               ...prev,
+                              filters: {
+                                ...prev.filters,
+                                To: prev.filters?.To?.toString(),
+                                From: prev.filters?.From?.toString(),
+                              },
                               display:
                                 display === SCENARIO_A_ONLY
                                   ? SCENARIO_A_AND_B

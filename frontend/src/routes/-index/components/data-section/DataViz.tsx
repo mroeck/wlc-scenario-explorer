@@ -113,14 +113,14 @@ const tabs = [
     icon: StackedAreaGraphIcon,
   }),
   createTab({
-    name: DATA_TABS_NAMES.lineChart,
-    Graph: LineGraph,
-    icon: LineGraphIcon,
-  }),
-  createTab({
     name: DATA_TABS_NAMES.stackedBarChart,
     Graph: StackedBarChart,
     icon: StackedBarGraphIcon,
+  }),
+  createTab({
+    name: DATA_TABS_NAMES.lineChart,
+    Graph: LineGraph,
+    icon: LineGraphIcon,
   }),
 ] as const;
 
@@ -225,11 +225,9 @@ export const DataViz = () => {
     }),
   });
   const unit =
-    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     dividedBy === DIVIDED_BY_NONE
       ? indicator
-      : // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
-        (`${indicator} per ${dividedBy}` as const);
+      : (`${indicator} per ${dividedBy}` as const);
 
   const acronymA = SCENARIO_TO_ACRONYM[scenarioA];
   // @ts-expect-error: not all scenarios have an acronym
@@ -320,6 +318,11 @@ export const DataViz = () => {
     void navigate({
       search: (prev) => ({
         ...prev,
+        filters: {
+          ...prev.filters,
+          To: prev.filters?.To?.toString(),
+          From: prev.filters?.From?.toString(),
+        },
         dataTab: newDataTab,
       }),
       replace: true,

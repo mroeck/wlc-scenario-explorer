@@ -57,27 +57,27 @@ export const NoDataFound = ({ scenarioId }: { scenarioId?: "A" | "B" }) => {
         <CircleAlert className="size-12 text-yellow-400" />
         <div className="space-y-2 text-center">
           <h2 className="font-bold text-yellow-400 sm:text-lg xl:text-2xl">
-            {NO_DATA_FOUND} {!!scenarioId && `for scenario ${acronym}`}
+            {NO_DATA_FOUND} {!!scenarioId && `for ${acronym} scenario`}
           </h2>
           {match(true as boolean)
             .with(isScenarioB && isScenarioBempty, () => (
-              <p className="max-w-[40ch] text-muted-foreground">
+              <p className="mx-auto max-w-[40ch] text-center text-muted-foreground">
                 Please select a {SCENARIO_B_ACRONYM} scenario to proceed.
               </p>
             ))
             .with(isCustom && !hasCompleteStrategy, () => (
-              <p className="max-w-[40ch] text-muted-foreground">
+              <p className="mx-auto max-w-[40ch] text-center text-muted-foreground">
                 Please select a level for each scenario parameter to proceed.
               </p>
             ))
             .with(isCustom && !hasFilters && hasCompleteStrategy, () => (
-              <p className="max-w-[40ch] text-muted-foreground">
+              <p className="mx-auto max-w-[40ch] text-center text-muted-foreground">
                 Sorry, we couldn't find a scenario for the selected parameter
                 combination. Please try a different set of parameters.
               </p>
             ))
             .with(isCustom && hasFilters && hasCompleteStrategy, () => (
-              <p className="max-w-[40ch] text-muted-foreground">
+              <p className="mx-auto max-w-[40ch] text-center text-muted-foreground">
                 No data available with the current filters or scenario
                 parameters. This might be due to incompatible selections, such
                 as a Region not matching the selected Country, a mismatch
@@ -85,7 +85,7 @@ export const NoDataFound = ({ scenarioId }: { scenarioId?: "A" | "B" }) => {
               </p>
             ))
             .with(!isCustom && hasFilters, () => (
-              <p className="max-w-[40ch] text-muted-foreground">
+              <p className="mx-auto max-w-[40ch] text-center text-muted-foreground">
                 No data available with the current filters. This might be due to
                 incompatible selections, such as a Region not matching the
                 selected Country, a mismatch between Building Type and Subtype,
@@ -93,7 +93,7 @@ export const NoDataFound = ({ scenarioId }: { scenarioId?: "A" | "B" }) => {
               </p>
             ))
             .otherwise(() => (
-              <p className="max-w-[40ch] text-muted-foreground">
+              <p className="mx-auto max-w-[40ch] text-center text-muted-foreground">
                 No data available. Please review your selections or try again.
                 If the issue persists, contact us, our email addresses are
                 listed on the{" "}

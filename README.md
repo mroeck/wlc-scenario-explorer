@@ -15,12 +15,11 @@ The terminal commands in this documentation are for linux machines.
 
 ## Start the app
 
-Here is the content of the [root/README.md](https://gitlab.kuleuven.be/ae/sustainable-construction/dg-grow-eu-scenariotool/scenario-explorer/-/blob/develop/README.md?ref_type=heads) file:
-
 You need [python ^3.12.6](https://www.python.org/downloads/), [node ^20.13.1](https://nodejs.org/en/download/package-manager), [poetry ^1.8.3](https://python-poetry.org/docs/) and [pnpm ^9.4.0](https://pnpm.io/installation#using-other-package-managers) installed on your machine (or higher versions).
 
 :::info
 You don't need the following to start the app locally:
+
 - docker (required to update the tests snapshots , see more in [Tests end to end section](./Guides/Tests/end-to-end.md))
 - pulse secure (required to access non production deployments, see more in [the VPN section](./Guides/How-to-setup-the-VPN.md))
   :::
@@ -40,7 +39,7 @@ cd ../documentation && pnpm install
 <br/>
 <br/>
 
-* add the env files
+- add the env files
 
 ```
 cd ../backend && cp ./.env.example .env &
@@ -49,7 +48,7 @@ cd ../frontend && cp ./.env.example .env
 
 <br/>
 
-* Open the project in the root directory with your favorite code editor
+- Open the project in the root directory with your favorite code editor
 
 ```bash
 code ../
@@ -57,15 +56,55 @@ code ../
 
 <br/>
 
-* add some parquet files to your data
-  [IN PROGRESS]
+- Setup kubectl
 
-  Add the parquet files in root/data/scenarios
+1- Browse to the [Rancher instance](https://kaas.cloud.set.kuleuven.be/dashboard/auth/login)
+
+2- Click on the [ae-01 cluster](https://kaas.cloud.set.kuleuven.be/dashboard/c/c-m-mv6j8shj/explorer#cluster-events)
+
+3- At the top right of the page, click on the icon showing the following text when hovered:
+
+```text
+Copy KubeConfig to Clipboard
+```
+
+4- Add the config from the clipboard to your machine
+
+```bash
+xclip -selection clipboard -o > $HOME/.kube/config
+```
+
+:::warning
+if you copy/paste the command above, make sure to copy the kubernetes config before executing the command
+:::
+
+:::info
+This config will include a token to authenticate you, which I believe is linked to the account you used to connect to the Rancher instance. This token can expired after a while.
+:::
+
+- Place the Parquet files for testing into your data folder using [kubectl](https://kubernetes.io/docs/tasks/tools/)
+
+1. get the backend pod name
+
+```bash
+kubectl -n scenario-explorer-19853-integration get pods
+```
+
+2. copy the parquet files from the pod to your local machine
+
+```bash
+kubectl cp <some-namespace>/<some-pod>:/app/data /path/to/repo/data/
+```
+
+Example:
+
+```bash
+kubectl cp scenario-explorer-19853-integration/scenario-explorer-backend-integration-6b4d698fcb-md4w5:/app/data ~/code/scenario-explorer/data/
+```
 
 <br/>
 
-
-* Start the dev servers from the root directory (one terminal for each):
+- Start the dev servers from the root directory (one terminal for each):
 
 ```bash
 cd backend && poetry run task dev
@@ -76,13 +115,13 @@ cd frontend && pnpm run dev
 ```
 
 ```bash
-cd documentation && npm run start
+cd documentation && pnpm run start
 ```
 
 The app should be running on [localhost:3000](http://localhost:3000) and the documentation on [localhost:4000](http://localhost:4000).
 
 For more info: see the documentation.
-If somehow you can't run the documentation server, you can still access the doc in root/documentation/docs
+If somehow you can't run the documentation server, you can still access the doc in repo/documentation/docs
 
 <br/>
 

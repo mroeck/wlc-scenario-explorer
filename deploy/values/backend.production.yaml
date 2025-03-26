@@ -2,4 +2,4 @@ persistence:
   enabled: true
   storageClass: lvm-type-1
   accessMode: ReadWriteOnce
-  size: 50Gi
+  size: 700Gi

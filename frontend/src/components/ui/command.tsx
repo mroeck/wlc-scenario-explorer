@@ -44,7 +44,7 @@ const CommandInput = React.forwardRef<
 >(({ className, hidden = false, ...props }, ref) => (
   <div
     className={cn("flex items-center border-b px-3", hidden && "sr-only")}
-    // eslint-disable-next-line react/no-unknown-property -- https://github.com/shadcn-ui/ui/issues/3366#issuecomment-2129978300
+    // eslint-disable-next-line react/no-unknown-property, @eslint-react/dom/no-unknown-property -- https://github.com/shadcn-ui/ui/issues/3366#issuecomment-2129978300
     cmdk-input-wrapper=""
   >
     <Search

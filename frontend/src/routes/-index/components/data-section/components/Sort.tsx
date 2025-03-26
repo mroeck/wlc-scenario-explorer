@@ -28,6 +28,11 @@ export const Sort = () => {
     void navigate({
       search: (prev) => ({
         ...prev,
+        filters: {
+          ...prev.filters,
+          To: prev.filters?.To?.toString(),
+          From: prev.filters?.From?.toString(),
+        },
         sort: newSort,
       }),
       replace: true,

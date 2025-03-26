@@ -10,8 +10,8 @@ const basePath = env.PUBLIC_DATA_PATH
   ? path.resolve(__dirname, env.PUBLIC_DATA_PATH)
   : "/app/data";
 // const DATA_PATH = basePath + "/AT-SHIFT-1-1-1-4-1-1-1-4-1-1-4.parquet";
-const DATA_PATH = basePath + "/scenarios/New scenarios/CPOL B.parquet";
-// const DATA_PATH = basePath + "/FULL.parquet";
+const DATA_PATH = basePath + "/latest/1.0-1.0-1.0-1.0-1.0-1.0.parquet";
+// const DATA_PATH = basePath + "/scenarios/1.0-1.0-1.0-1.0-1.0-1.0.parquet";
 
 const EXPECTED_SCHEMA = [
   {
@@ -315,7 +315,6 @@ export const EXPECTED_VALUES = {
     "Process",
     "Sand",
     "Steel",
-    "Undefined",
     "Wood",
   ],
   population_archetype: undefined,

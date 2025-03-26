@@ -169,6 +169,7 @@ export const CustomLegend = ({
         {hasCategory ? (
           <div className="grid max-w-prose grid-cols-[max-content,1fr] gap-x-2 px-2">
             {Object.entries(groupedData)
+              .sort((a, b) => b[0].localeCompare(a[0]))
               .reverse()
               .map(([category, values]) => (
                 <React.Fragment key={category}>

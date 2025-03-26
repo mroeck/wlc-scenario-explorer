@@ -8,11 +8,10 @@ import {
 } from "@/components/ui/dialog";
 import { useLocation } from "@tanstack/react-router";
 import { Share2Icon, Mail } from "lucide-react";
-import { TwitterIcon } from "./logos/TwitterIcon";
-import { FacebookIcon } from "./logos/FacebookIcon";
 import { cn } from "@/lib/utils";
 import { BlueskyIcon } from "./logos/BlueskyIcon";
 import { LinkedinIcon } from "./logos/LinkedinIcon";
+import { CopyButton } from "@/components/CopyToClipboard";
 
 const MailIcon = () => (
   <Mail
@@ -30,31 +29,20 @@ export const ShareButton = () => {
   });
 
   const currentUrlRaw =
-    location.hostname.replace("localhost", "example.com") + href;
+    "https://" + location.hostname.replace("localhost", "example.com") + href;
 
   const messageRaw =
     "Just discovered this interactive tool for visualizing carbon emissions of Europe's building stock & reduction strategies. Explore building types, life cycle stages & more.";
-  const message = encodeURIComponent(messageRaw);
   const messageWithLink = encodeURIComponent(
     `${messageRaw} \n\n${currentUrlRaw}`,
   );
-  const currentUrl = encodeURIComponent(currentUrlRaw);
+  const currentUrl = encodeURI(currentUrlRaw);
   const title = encodeURIComponent("Checkout this scenarioe explorer!");
 
   const socialMediaUrls = {
-    x: {
-      link: `https://x.com/intent/post?text=${message}&url=${currentUrl}`,
-      Icon: TwitterIcon,
-      backgroundColor: "black",
-    },
     bluesky: {
       link: `https://bsky.app/intent/compose?text=${messageWithLink}`,
       Icon: BlueskyIcon,
-      backgroundColor: "white",
-    },
-    facebook: {
-      link: `https://www.facebook.com/sharer/sharer.php?u=${currentUrl}`,
-      Icon: FacebookIcon,
       backgroundColor: "white",
     },
     linkedin: {
@@ -105,6 +93,8 @@ export const ShareButton = () => {
               </li>
             ))}
           </ul>
+
+          <CopyButton value={currentUrl} />
         </DialogContent>
       </Dialog>
     </div>
