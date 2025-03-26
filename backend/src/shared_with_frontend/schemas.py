@@ -79,9 +79,9 @@ class IndicatorEnumSchema(str, Enum):
 
 class DividedByEnumSchema(str, Enum):
     NONE = "none (total)"
-    FLOOR_AREA_COUNTRY = "m² (country)"
+    FLOOR_AREA_COUNTRY = "m² (floor area)"
     FLOOR_AREA_ARCHETYPE = "m² (archetype)"
-    POPULATION_COUNTRY = "capita (country)"
+    POPULATION_COUNTRY = "capita (users)"
     POPULATION_ARCHETYPE = "capita (archetype)"
 
 

@@ -126,6 +126,11 @@ export const ComparisonSlider: React.FC<ComparisonSliderProps> = ({
         void navigate({
           search: (prev) => ({
             ...prev,
+            filters: {
+              ...prev.filters,
+              To: prev.filters?.To?.toString(),
+              From: prev.filters?.From?.toString(),
+            },
             display: SCENARIO_A_ONLY,
           }),
           replace: true,

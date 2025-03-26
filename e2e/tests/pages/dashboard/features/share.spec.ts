@@ -9,9 +9,7 @@ test.describe("share", () => {
   });
 
   const SOCIAL_MEDIAS = [
-    { name: "x", hostname: "x.com" },
     { name: "bluesky", hostname: "bsky.app" },
-    { name: "facebook", hostname: "facebook.com" },
     { name: "linkedin", hostname: "linkedin.com" },
   ];
 

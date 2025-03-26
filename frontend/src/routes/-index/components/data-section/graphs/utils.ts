@@ -28,6 +28,11 @@ export const onElementClick = ({
 
       return {
         ...prev,
+        filters: {
+          ...prev.filters,
+          To: prev.filters?.To?.toString(),
+          From: prev.filters?.From?.toString(),
+        },
         highlights: isAlreadyHighlighted
           ? removeNewHighlight
           : willEverythingBeHighlighted

@@ -52,7 +52,7 @@ test.describe("search params", () => {
       .getByRole("combobox");
     const dividedBy = DIVIDED_BY_OPTIONS[1];
 
-    const url = `${ROUTES.DASHBOARD}?dividedBy=${dividedBy}`;
+    const url = `${ROUTES.DASHBOARD}?dividedBy=${dividedBy}&dataTab=Line%20Graph`;
 
     await page.goto(url);
     await expect(dividedBySelect).toHaveText(dividedBy);

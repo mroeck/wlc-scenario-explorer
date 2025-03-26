@@ -16,7 +16,7 @@ export const InfoButton = ({
     <Popover>
       <PopoverTrigger disabled={disabled} className={cn(className)}>
         <div className="p-1">
-          <InfoIcon className="size-[18px] fill-primary-900 text-white [&>circle:first-child]:stroke-primary-900" />
+          <InfoIcon className="size-[18px] fill-primary-100 text-primary [&>circle:first-child]:stroke-primary-900" />
         </div>
       </PopoverTrigger>
       <PopoverContent className="max-w-[50ch] bg-primary-900 text-sm text-white">

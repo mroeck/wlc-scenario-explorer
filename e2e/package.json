@@ -19,7 +19,7 @@
     "pre-push": "sh ./scripts/prevent-.only-page.pause-push.sh"
   },
   "devDependencies": {
-    "@playwright/test": "^1.44.1",
+    "@playwright/test": "^1.51.1",
     "@types/node": "^20.14.10",
     "@typescript-eslint/eslint-plugin": "^7.2.0",
     "@typescript-eslint/parser": "^7.2.0",

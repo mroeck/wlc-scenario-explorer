@@ -49,7 +49,7 @@ include:
   - component: "gitlab.kuleuven.be/to-be-continuous/playwright/gitlab-ci-playwright@1.4"
     # Ref: https://to-be-continuous.pages.gitlab.kuleuven.be/doc/ref/playwright/
     inputs:
-      image: "mcr.microsoft.com/playwright:v1.45.1-jammy"
+      image: "mcr.microsoft.com/playwright:v1.51.1-jammy"
       project-dir: "./e2e"
       review-enabled: true
 
@@ -112,10 +112,10 @@ docker-kaniko-build:
   rules:
     - if: '$DOCKER_BUILD_TOOL != "kaniko"'
       when: never
-    - if: '$CI_COMMIT_REF_NAME =~ $PROD_REF || $CI_COMMIT_TAG'
+    - if: "$CI_COMMIT_REF_NAME =~ $PROD_REF || $CI_COMMIT_TAG"
       variables:
         DOCKER_BUILD_ARGS: "--build-arg VITE_NODE_ENV=production"
-    - if: '$CI_COMMIT_REF_NAME =~ $INTEG_REF'
+    - if: "$CI_COMMIT_REF_NAME =~ $INTEG_REF"
       variables:
         DOCKER_BUILD_ARGS: "--build-arg VITE_NODE_ENV=integration"
     - when: always

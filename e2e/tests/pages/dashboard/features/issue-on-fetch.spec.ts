@@ -16,7 +16,9 @@ test.describe("issue when scenario fetching", () => {
     });
 
     await page.goto(ROUTES.DASHBOARD + "?animation=false");
+    await expect(page.locator('[role="progressbar"]')).toHaveCount(1);
     await waitLoadingEnds({ page });
+    await page.bringToFront();
     await expect(
       page.getByRole("heading", { name: ERROR_OCCURED }),
     ).toBeVisible();

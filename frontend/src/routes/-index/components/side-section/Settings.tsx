@@ -30,6 +30,11 @@ export const Settings = () => {
     void navigate({
       search: (prev) => ({
         ...prev,
+        filters: {
+          ...prev.filters,
+          To: prev.filters?.To?.toString(),
+          From: prev.filters?.From?.toString(),
+        },
         settingsTab: newSettingsTab,
       }),
       replace: true,

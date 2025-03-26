@@ -5,7 +5,7 @@ import path from "path";
 
 export default defineConfig(() => ({
   base: "/",
-  plugins: [react(), TanStackRouterVite()],
+  plugins: [TanStackRouterVite(), react()],
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./src"),
