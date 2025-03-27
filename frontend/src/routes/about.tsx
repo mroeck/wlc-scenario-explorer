@@ -24,6 +24,8 @@ import AALBORG_IMAGE_URL from "@/assets/partners/aalborg.svg";
 import { TableOfContents, type ToCSection } from "@/components/TableOfContents";
 import { cn } from "@/lib/utils";
 import { createFileRoute } from "@tanstack/react-router";
+import PROJECT_LOGO_URL from "@/assets/PROJECT_LOGO.webp";
+import { Separator } from "@/components/ui/separator";
 
 export const Route = createFileRoute("/about")({
   component: () => <About />,
@@ -304,9 +306,9 @@ function About() {
                   The scenario results in this scenario modelling tool are
                   generated using a custom modelling pipeline combining building
                   archetype data from the SLiCE<sup>1</sup> model with upscaling
-                  and scenario analyses based on the PULSE<sup>2</sup> model.
-                  The collection of scenario results data will be separately
-                  published.
+                  and scenario analyses based on the PULSE
+                  <sup>2</sup> model. The collection of scenario results data
+                  will be separately published.
                 </TypographyP>
               </TypographyContent>
               <TypographyMuted>
@@ -444,6 +446,15 @@ function About() {
             </TypographyContent>
           </SectionForDoc>
         </SectionForDoc>
+        <footer className="flex flex-col items-center">
+          <Separator />
+          <div className="flex size-32 items-center justify-center">
+            <img
+              src={PROJECT_LOGO_URL}
+              className="max-h-full max-w-full border border-white"
+            />
+          </div>
+        </footer>
       </Section>
     </main>
   );

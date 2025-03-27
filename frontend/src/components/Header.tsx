@@ -7,7 +7,6 @@ import { cn } from "@/lib/utils";
 import { Link, useRouterState, useSearch } from "@tanstack/react-router";
 import { Drawer, DrawerClose, DrawerContent, DrawerTrigger } from "./ui/drawer";
 import { Menu } from "lucide-react";
-import PROJECT_LOGO_URL from "@/assets/PROJECT_LOGO.webp";
 import type { SearchParamsSchema } from "@/lib/schemas";
 import type { z } from "zod";
 
@@ -135,9 +134,6 @@ export const Header = () => {
           )}
         >
           <div className="flex items-center gap-2 font-semibold">
-            <div className="flex aspect-[1.161px] h-1 w-[48px] items-center">
-              <img src={PROJECT_LOGO_URL} className="border border-white" />
-            </div>
             <span>{PROJECT_NAME}</span>
           </div>
           <NavLinks
