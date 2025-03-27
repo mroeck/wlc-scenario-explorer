@@ -298,9 +298,7 @@ export const Scenarios = () => {
 
                             if (isCustom && !hasActiveAccordionItem) {
                               setTimeout(() => {
-                                setActiveAccordionItems(
-                                  DEFAULT_ACCORDION_ITEMS,
-                                );
+                                setActiveAccordionItems(["avoid"]);
                               }, 0);
                             } else if (!isCustom && hasActiveAccordionItem) {
                               setTimeout(() => {
