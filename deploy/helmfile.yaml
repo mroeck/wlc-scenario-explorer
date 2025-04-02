@@ -167,3 +167,31 @@ releases:
     ##
   - values/backend.{{ .Environment.Name }}.yaml
 
+- name: globus-connect
+  chart: setit/globus-connect-personal
+  version: "^0.1.5"
+  installed: {{ .Values.globus.installed }}
+  namespace: {{ .Values.backend.releaseNamespace }}
+  values:
+  - globus:
+      setupKey: {{ .Values.globus.setupKey }}
+      restrictPaths:
+      - "rw/data/"
+      sharedPaths:
+      - "rw/data/"
+
+    nameOverride: globus-connect
+    #args: [ "debug" ]
+
+    persistence:
+      enabled: true
+      storageClass: lvm-type-1
+
+    extraVolumes:
+    - name: data
+      persistentVolumeClaim:
+        claimName: {{ default .Values.backend.releaseName .Values.globus.dataVolumeClaim }}
+
+    extraVolumeMounts:
+    - name: data
+      mountPath: /data

@@ -54,3 +54,8 @@ backend:
     repository: {{ regexReplaceAll "^([^/]+)\\/([^:^@]+)(@|:|)(.*)$" $backend_image "${2}" }}
     tag: "{{ $image_tag }}"
 
+globus:
+  installed: false
+  setupkey:
+  # Name of the data volume claim to mount. Defaults to the release name of the backend.
+  dataVolumeClaim:
