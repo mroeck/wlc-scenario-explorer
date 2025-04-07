@@ -31,13 +31,14 @@ This endpoint retrieves scenario data from a parquet file based on the given bod
   - **Example**: `"m² (country)"`
 
 - `filters` _(optional)_: Dictionary of filters with keys mapping to `FilterFrontEnumSchema`.
+
   - **Type**: `object`
 
 - `strategy` _(required when scenario is custom)_: Array of actions levels mapping to `SCENARIO_PARAMETERS_ORDER`.
   - **Type**: `array`
 
-
 ### Body example:
+
 ```json
 {
   "breakdownBy": "Building type",
@@ -48,14 +49,14 @@ This endpoint retrieves scenario data from a parquet file based on the given bod
   "strategy": [
     "1.0",
     "1.0",
-    "2.0",
+    "3.0",
+    "1.0",
+    "3.0",
+    "1.0",
+    "1.0",
+    "3.0",
     "1.0",
     "2.0",
-    "1.0",
-    "1.0",
-    "2.0",
-    "1.0",
-    "1.5",
     "1.0"
   ]
 }
@@ -93,5 +94,4 @@ This endpoint retrieves scenario data from a parquet file based on the given bod
   },
   "unit": "MtCO\u2082"
 }
-
 ```

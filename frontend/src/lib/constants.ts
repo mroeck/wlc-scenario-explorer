@@ -2,9 +2,10 @@ import type { UnionToTuple, ValueOf } from "type-fest";
 import {
   UNITS_FROM_BACKEND,
   type FILTERS_OBJ,
+  type PredefinedScenario,
   type SCENARIOS_OPTIONS,
 } from "./shared_with_backend/constants";
-import type { Attribute, Indicator, DividedBy } from "./types";
+import type { Attribute, Indicator, DividedBy, Level } from "./types";
 import type { DomainAll } from "@/routes/-index/components/data-section/types";
 import { env } from "../env";
 import type { z } from "zod";
@@ -77,7 +78,7 @@ export const DATA_TABLE_TESTID = "dataTable";
 export const NO_DATA_FOUND = "No data found";
 export const PARAMETER_STATUS = {
   active: "active",
-  disable: "disable",
+  approximation: "approximation",
 } as const;
 export const DEFAULT_COLOR = "#499ACC";
 export const DASHBOARD_HEADING = "Dashboard";
@@ -267,3 +268,16 @@ export const SHORTCUT_LINK_TESTID = "SHORTCUT_LINK_TESTID";
 
 export const DEFAULT_X_AXIS_DOMAIN = [];
 export const DEFAULT_SCENARIO_DATA = [];
+export const LEVEL_TO_LABEL = {
+  "1.0": "0.0",
+  "2.0": "0.5",
+  "3.0": "1.0",
+  "4.0": "max",
+} satisfies Record<Level, string>;
+export const PREDEFINED_SCENARIO_TO_APPROXIMATION = {
+  "ALL/HIGH": "1.0",
+  "CPOL/A": "2.0",
+  "CPOL/B": "3.0",
+  APOL: "4.0",
+  BAU: "1.0",
+} satisfies Record<PredefinedScenario, Level>;

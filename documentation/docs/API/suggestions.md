@@ -9,23 +9,25 @@ The `/suggestions` endpoint provides action level suggestions based on the curre
 **Method**: `POST`
 
 **Headers**:
+
 - `Content-Type: application/json`
 
 **Body**:
+
 ```json
 {
   "current_parameters": [
     "1.0",
-    "1.5",
-    null,
-    null,
-    null,
-    "1.5",
     "2.0",
     null,
     null,
     null,
+    "2.0",
+    "3.0",
     null,
+    null,
+    null,
+    null
   ]
 }
 ```
@@ -35,26 +37,21 @@ The `/suggestions` endpoint provides action level suggestions based on the curre
 #### Response
 
 **Success Response**:
+
 - **Code**: `200 OK`
 - **Content**:
+
 ```json
 {
   "suggestions": {
-    "increase_bio_based_solutions": [
-      "1.0",
-      "2.0",
-      "2.5"
-    ],
-    "increase_carbon_dioxide_removal": [
-      "2.0",
-      "1.0",
-      "1.5"
-    ],
+    "increase_bio_based_solutions": ["1.0", "3.0", "4.0"],
+    "increase_carbon_dioxide_removal": ["3.0", "1.0", "2.0"]
   }
 }
 ```
 
 **Error Responses**:
+
 - **Code**: `400 Bad Request`
   - **Content**:
   ```json
@@ -70,5 +67,6 @@ The `/suggestions` endpoint provides action level suggestions based on the curre
   ```
 
 #### Notes
+
 - Ensure the `current_parameters` array matches the required length (`CURRENT_VALUES_LENGTH`).
 - The response includes suggested levels for various actions based on the provided parameters.

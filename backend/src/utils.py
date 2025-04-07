@@ -31,4 +31,4 @@ def construct_filename(
         scenario_parameters[action] for action in SCENARIO_PARAMETERS_ORDER
     )
 
-    return filename
+    return f"AUTO-{filename}"

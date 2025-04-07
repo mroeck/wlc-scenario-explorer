@@ -24,9 +24,9 @@ import {
   SCENARIO_B_MENU_TESTID,
   SCENARIO_TO_ACRONYM,
   DEFAULT_SCENARIO,
-  DEFAULT_ACTIONS_LEVELS_SUGGESTIONS,
   STRATEGY_TESTID,
   SET_ALL_PARAMETERS_TRIGGER_TESTID,
+  PREDEFINED_SCENARIO_TO_APPROXIMATION,
 } from "@/lib/constants";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { getRouteApi, Link } from "@tanstack/react-router";
@@ -59,10 +59,7 @@ import {
 } from "@/components/ui/accordion";
 import { ParameterLevel } from "../components/ParameterLevel";
 import * as ToggleGroup from "@radix-ui/react-toggle-group";
-import { fetchActionsLevelsSuggestions } from "@/lib/queries";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { useToast } from "@/components/ui/use-toast";
-import { format_scenario_parameter_for_backend } from "@/lib/shared_with_backend/utils";
+import { useQueryClient } from "@tanstack/react-query";
 import { useDebounce } from "@uidotdev/usehooks";
 import {
   Popover,
@@ -102,13 +99,12 @@ const DEFAULT_STRATEGY = [null, null, null, null, null, null] satisfies z.infer<
 >;
 
 const SUGGESTIONS_QUERY_KEY = "SUGGESTIONS_QUERY_KEY";
-const DEFAULT_ACCORDION_ITEMS: MyAccordionItem[] = [];
+const DEFAULT_ACCORDION_ITEMS: MyAccordionItem[] = ["avoid"];
 
 type MyAccordionItem = keyof typeof SCENARIO_PARAMETERS_OBJ | "";
 
 export const Scenarios = () => {
   const queryClient = useQueryClient();
-  const { toast } = useToast();
   const [activeAccordionItems, setActiveAccordionItems] = useState<
     MyAccordionItem[]
   >(DEFAULT_ACCORDION_ITEMS);
@@ -131,19 +127,6 @@ export const Scenarios = () => {
   ]);
   const strategyDebounced = useDebounce(strategy, 750);
   const finalStrategy = isDataCached ? strategy : strategyDebounced;
-
-  const { data = { suggestions: DEFAULT_ACTIONS_LEVELS_SUGGESTIONS } } =
-    useQuery({
-      queryKey: [SUGGESTIONS_QUERY_KEY, finalStrategy],
-      queryFn: () =>
-        fetchActionsLevelsSuggestions({ currentLevels: finalStrategy }),
-      staleTime: Infinity,
-      meta: {
-        errorMessage:
-          "There was a problem fetching scenario parameters levels suggestions.",
-        toast,
-      },
-    });
 
   const navigate = route.useNavigate();
   const form = useForm<z.infer<typeof formSchema>>({
@@ -300,10 +283,6 @@ export const Scenarios = () => {
                               setTimeout(() => {
                                 setActiveAccordionItems(["avoid"]);
                               }, 0);
-                            } else if (!isCustom && hasActiveAccordionItem) {
-                              setTimeout(() => {
-                                setActiveAccordionItems([]);
-                              }, 0);
                             }
 
                             field.onChange(value);
@@ -336,6 +315,14 @@ export const Scenarios = () => {
                         })}
                       </SelectContent>
                     </Select>
+                    <Link
+                      to={ROUTES.HELP}
+                      hash={HELP_PAGE_IDS.predefinedScenarioSelection}
+                      className="flex items-center gap-1 py-2 text-xs font-medium underline"
+                    >
+                      <LinkIcon className="size-3" /> Learn about predefined
+                      scenarios parameters
+                    </Link>
                   </FormItem>
                 )}
               />
@@ -500,20 +487,18 @@ export const Scenarios = () => {
                                           {PARAMETER_LEVELS.map((value) => {
                                             const isActive =
                                               field.value === value;
-                                            const formattedKey =
-                                              format_scenario_parameter_for_backend(
-                                                field.name,
-                                              );
-                                            const suggestedLevels =
-                                              data.suggestions[formattedKey] ??
-                                              [];
-                                            const isSuggested =
-                                              suggestedLevels.includes(value);
+                                            const isApproximation =
+                                              scenarioA !== CUSTOM_SCENARIO &&
+                                              PREDEFINED_SCENARIO_TO_APPROXIMATION[
+                                                scenarioA
+                                              ] === value;
+
                                             const status = isActive
                                               ? "active"
-                                              : isSuggested
-                                                ? undefined
-                                                : "disable";
+                                              : isApproximation
+                                                ? "approximation"
+                                                : undefined;
+
                                             return (
                                               <FormItem
                                                 key={value}

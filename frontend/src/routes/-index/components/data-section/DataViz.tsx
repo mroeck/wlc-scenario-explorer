@@ -57,6 +57,7 @@ import { TableIcon } from "@/components/TableIcon";
 import { StackedBarGraphIcon } from "@/components/StackedBarGraphIcon";
 import { env } from "@/env";
 import { ShareButton } from "./components/Share";
+import PROJECT_LOGO_URL from "@/assets/PROJECT_LOGO.webp";
 
 const route = getRouteApi(ROUTES.DASHBOARD);
 
@@ -330,45 +331,50 @@ export const DataViz = () => {
   };
 
   return (
-    <Section className="min-w-0 flex-1">
+    <Section className="relative min-w-0 flex-1">
       <Tabs
         defaultValue={defaultTab}
         className="flex h-full flex-col"
         value={dataTab}
         onValueChange={onTabChange}
       >
-        <div className="flex flex-col items-start justify-between gap-4 lg:flex-row">
-          <div className="w-full md:w-auto">
-            <TabsList className="mx-auto flex flex-col md:flex-row lg:flex-row">
-              {tabs.map((tab) => (
+        <div className="flex w-full flex-col items-start gap-4 lg:flex-row">
+          <div className="w-full justify-between md:w-auto xl:flex xl:w-full">
+            <div>
+              <TabsList className="mx-auto flex flex-col md:flex-row">
+                {tabs.map((tab) => (
+                  <TabsTrigger
+                    key={tab.name}
+                    value={tab.name}
+                    className="flex w-full items-center gap-1 md:w-auto"
+                  >
+                    <div className="flex size-5 items-center justify-center">
+                      <tab.icon colorful={dataTab === tab.name} />
+                    </div>
+                    <span>{tab.name}</span>
+                  </TabsTrigger>
+                ))}
                 <TabsTrigger
-                  key={tab.name}
-                  value={tab.name}
+                  key="Table"
+                  value="Table"
                   className="flex w-full items-center gap-1 md:w-auto"
                 >
                   <div className="flex size-5 items-center justify-center">
-                    <tab.icon colorful={dataTab === tab.name} />
+                    <TableIcon colorful={dataTab === DATA_TABS_NAMES.table} />
                   </div>
-                  <span>{tab.name}</span>
+                  <span>Table</span>
                 </TabsTrigger>
-              ))}
-              <TabsTrigger
-                key="Table"
-                value="Table"
-                className="flex w-full items-center gap-1 md:w-auto"
-              >
-                <div className="flex size-5 items-center justify-center">
-                  <TableIcon colorful={dataTab === DATA_TABS_NAMES.table} />
-                </div>
-                <span>Table</span>
-              </TabsTrigger>
-            </TabsList>
+              </TabsList>
+            </div>
+            <div className="ml-auto mt-1 xl:mt-0 xl:flex">
+              <img src={PROJECT_LOGO_URL} className="w-24 border" />
+            </div>
           </div>
           <div className="ml-auto lg:hidden">
             <SettingsDrawer />
           </div>
         </div>
-        <div className="flex flex-col justify-between gap-5 pt-8 md:flex-row">
+        <div className="mt-[5px] flex flex-col justify-between gap-5 pt-8 xl:pt-0 2xl:flex-row">
           <div className="flex flex-1 gap-5">
             <DataVizForm />
           </div>

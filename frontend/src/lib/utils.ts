@@ -105,6 +105,25 @@ const CATEGORIES = {
   Services: ["Technical services", "Electrical services"],
   Structure: ["Substructure", "Storey floors", "Staircases", "Roofs"],
   Operation: ["Energy"],
+  Materials: [
+    "Aluminium",
+    "Brick",
+    "Ceramics",
+    "Concrete",
+    "Copper",
+    "Electronics",
+    "Glass",
+    "Gypsum",
+    "Insulation",
+    "Other Construction Materials",
+    "Other Metal",
+    "Paint and Glue",
+    "Plastic",
+    "Sand",
+    "Steel",
+    "Wood",
+  ],
+  Others: ["Process", "Cleaning"],
   Continental: [
     "SK", // Slovakia
     "SI", // Slovenia

@@ -248,7 +248,7 @@ export const Filters = () => {
           <Form {...form}>
             <form
               onSubmit={void form.handleSubmit(onSubmit)}
-              className="space-y-8"
+              className="space-y-8 pt-3"
             >
               <div className="flex flex-col gap-1">
                 <span className="font-medium">Year:</span>
