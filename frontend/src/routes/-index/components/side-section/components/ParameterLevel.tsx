@@ -1,11 +1,11 @@
-import { PARAMETER_STATUS } from "@/lib/constants";
+import { LEVEL_TO_LABEL, PARAMETER_STATUS } from "@/lib/constants";
+import type { Level } from "@/lib/types";
 import { cn } from "@/lib/utils";
 import { forwardRef } from "react";
 
 type ParameterLevelProps = {
-  level: string | undefined;
+  level: Level;
   status?: (typeof PARAMETER_STATUS)[keyof typeof PARAMETER_STATUS];
-  editable?: boolean;
   className?: string;
   onClick?: React.MouseEventHandler;
 };
@@ -15,39 +15,23 @@ const commonStyles = cn(
 export const ParameterLevel = forwardRef<
   HTMLButtonElement,
   ParameterLevelProps
->(function ParameterLevel(
-  { level, status, editable = false, className, onClick },
-  ref,
-) {
-  if (editable) {
-    return (
-      <input
-        className={cn(
-          commonStyles,
-          "text-center",
-          status === PARAMETER_STATUS.active && "bg-accent text-primary",
-          status === PARAMETER_STATUS.disable && "opacity-30",
-          className,
-        )}
-        defaultValue={level}
-      />
-    );
-  }
+>(function ParameterLevel({ level, status, className, onClick }, ref) {
+  const label = LEVEL_TO_LABEL[level];
 
   return (
     <button
       ref={ref}
       className={cn(
         commonStyles,
+        status === PARAMETER_STATUS.approximation && "bg-orange-600 text-white",
         status === PARAMETER_STATUS.active && "bg-primary text-white",
-        status === PARAMETER_STATUS.disable && "opacity-30",
         "aspect-auto size-[unset] px-2 py-0",
         className,
       )}
       type="button"
       onClick={onClick}
     >
-      {level}
+      {label}
     </button>
   );
 });

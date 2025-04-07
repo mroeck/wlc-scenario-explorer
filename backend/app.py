@@ -1,6 +1,6 @@
 from flask import Flask, request
 from flask_cors import CORS, cross_origin
-from src.queries import get_scenario_rows, ScenarioDataType, get_possible_actions_levels
+from src.queries import get_scenario_rows, ScenarioDataType
 from src.shared_with_frontend.schemas import (
     AttributeEnumSchema,
     ScenarioEnumSchema,
@@ -16,9 +16,6 @@ from src.shared_with_frontend.constants import SCENARIO_PARAMETERS_ORDER, TOTAL_
 from src.utils import convert_keys_to_columns, construct_filename
 from typing import cast, Any, TypedDict, Union, List
 from dotenv import load_dotenv
-from src.db import StrategiesSession
-from src.models import Strategies
-from sqlalchemy.sql import exists, select, literal
 
 load_dotenv()
 
@@ -41,31 +38,6 @@ class SuggestionPayload(TypedDict):
 
 
 CURRENT_VALUES_LENGTH = 6
-
-
-@app.route("/suggestions", methods=["POST"])
-@cross_origin()  # type:ignore[misc]
-def suggestion() -> Union[dict[str, Any], tuple[ErrorResponse, int]]:
-    body = request.json
-    if body is None:
-        return {"error": "Invalid request: body cannot be None"}, 400
-    if len(body["current_parameters"]) is not CURRENT_VALUES_LENGTH:
-        return {
-            "error": f"Invalid request: parameters length is not {CURRENT_VALUES_LENGTH}"
-        }, 400
-
-    payload = SuggestionPayload(**body)  # type:ignore[typeddict-item]
-
-    current_actions_levels = {
-        action: value
-        for action, value in zip(
-            SCENARIO_PARAMETERS_ORDER, payload["current_parameters"]
-        )
-        if value is not None
-    }
-    suggested_action_levels = get_possible_actions_levels(current_actions_levels)
-
-    return {"suggestions": suggested_action_levels}
 
 
 @app.route("/scenario", methods=["POST"])
@@ -98,9 +70,9 @@ def scenario() -> Union[ScenarioDataType, tuple[ErrorResponse, int]]:
         expected_length = TOTAL_ACTIONS
         expected_values = {
             "1.0",
-            "1.5",
             "2.0",
-            "2.5",
+            "3.0",
+            "4.0",
         }
         parameters = body["strategy"]
         if len(parameters) != expected_length or not all(
@@ -112,19 +84,6 @@ def scenario() -> Union[ScenarioDataType, tuple[ErrorResponse, int]]:
         parameters_levels = {
             key: value for key, value in zip(SCENARIO_PARAMETERS_ORDER, parameters)
         }
-
-        with StrategiesSession() as session:
-            conditions = [
-                getattr(Strategies, key) == value
-                for key, value in parameters_levels.items()
-            ]
-
-            statement = select(literal(1)).where(exists().where(*conditions))
-
-            does_scenario_exists = session.execute(statement).scalar() is not None
-
-            if not does_scenario_exists:
-                return {"data": [], "unit": "MtCO2", "xAxisDomain": []}
 
         scenario_filename = construct_filename(parameters_levels)
 

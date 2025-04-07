@@ -12,7 +12,7 @@ import type { z } from "zod";
   /!\
  */
 
-export const PARAMETER_LEVELS = ["1.0", "1.5", "2.0", "2.5"] satisfies z.infer<
+export const PARAMETER_LEVELS = ["1.0", "2.0", "3.0", "4.0"] satisfies z.infer<
   typeof ActionLevelSchema
 >[];
 export const TOTAL_ACTIONS = 6;

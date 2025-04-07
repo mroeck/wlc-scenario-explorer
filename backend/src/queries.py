@@ -8,18 +8,16 @@ from typing import (
     NotRequired,
     Never,
 )
-from sqlalchemy import text, column, select, func, Select, ColumnClause, inspect
+from sqlalchemy import text, column, select, func, Select, ColumnClause
 from sqlalchemy.sql import ClauseElement
-from .db import Session, StrategiesSession, StrategiesEngine
+from .db import Session
 from .shared_with_frontend.schemas import (
     AttributeEnumSchema,
     FiltersSchema,
     ColumnsEnumSchema,
     FilterFrontEnumSchema,
 )
-from .shared_with_frontend.constants import PARAMETER_LEVELS
-from .models import Strategies
-from .constants import DIVIDED_BY_NONE, DATA_PATH, STRATEGIES_TABLE_NAME
+from .constants import DIVIDED_BY_NONE, DATA_PATH
 from enum import Enum
 
 TOTAL_LABEL = "Total"
@@ -362,47 +360,3 @@ def get_scenario_rows(
         "unit": unit_for_front,
         "xAxisDomain": x_axis_domain,
     }
-
-
-inspector = inspect(StrategiesEngine)
-all_columns = [
-    col["name"]
-    for col in inspector.get_columns(Strategies.__tablename__)
-    if col["name"] != "id"
-]
-
-
-def get_possible_actions_levels(
-    scenario_parameters: Dict[str, str],
-) -> dict[str, List[str]]:
-    columns_with_values = scenario_parameters.keys()
-    columns_to_query = [col for col in all_columns if col not in columns_with_values]
-    valid_suggestions_for_frontend = ", ".join(
-        f"'{value}'" for value in PARAMETER_LEVELS
-    )
-
-    if columns_with_values:
-        where_clause = " AND ".join(
-            [f"{col} = '{scenario_parameters[col]}'" for col in columns_with_values]
-        )
-    else:
-        where_clause = None
-
-    subqueries = [
-        f"(SELECT GROUP_CONCAT(DISTINCT CASE WHEN {col} IN ({valid_suggestions_for_frontend}) THEN {col} END) FROM {STRATEGIES_TABLE_NAME}"
-        + (f" WHERE {where_clause}" if where_clause else "")
-        + f") AS {col}"
-        for col in columns_to_query
-    ]
-
-    final_query = f"SELECT {', '.join(subqueries)}"
-
-    with StrategiesSession() as session:
-        row = session.execute(text(final_query)).fetchone()
-
-        suggestions = {
-            key: value.split(",") if value else []
-            for key, value in row._asdict().items()  # type: ignore[union-attr]
-        }
-
-        return suggestions

@@ -42,6 +42,7 @@ import {
   BREAKDOWN_BY_OPTIONS,
   INDICATORS,
   DIVIDED_BY_OPTIONS,
+  DIVIDED_BY_NONE,
 } from "@/lib/shared_with_backend/constants";
 import { InfoButton } from "@/components/InfoButton";
 import { Link } from "@tanstack/react-router";
@@ -89,6 +90,11 @@ export const DataVizForm = () => {
       sort: search.sort,
     }),
   });
+  const isStacked = [
+    DATA_TABS_NAMES.stackedAreaChart,
+    DATA_TABS_NAMES.stackedBarChart,
+  ].includes(dataTab);
+  const isDividedbyNone = dividedBy === DIVIDED_BY_NONE;
   const displaySelectRef = useRef<HTMLButtonElement>(null);
   const form = useForm<z.infer<typeof DataVizFormSchema>>({
     resolver: zodResolver(DataVizFormSchema),
@@ -163,6 +169,11 @@ export const DataVizForm = () => {
 
   const acronymAForTitle = getTitleAcronym({ acronym: acronymA });
   const acronymBForTitle = getTitleAcronym({ acronym: acronymB });
+
+  if (isStacked && !isDividedbyNone) {
+    form.setValue("dividedBy", DIVIDED_BY_NONE);
+    void form.handleSubmit(onSubmit)();
+  }
 
   return (
     <Form {...form}>
@@ -343,65 +354,67 @@ export const DataVizForm = () => {
             </FormItem>
           )}
         />
-        {![
-          DATA_TABS_NAMES.stackedAreaChart,
-          DATA_TABS_NAMES.stackedBarChart,
-        ].includes(dataTab) && (
-          <FormField
-            control={form.control}
-            name="dividedBy"
-            render={({ field }) => (
-              <FormItem data-testid={SELECT_DIVIDED_BY_TESTID}>
-                <FormLabel className="flex items-center gap-2">
-                  <span className="font-medium">Divided by:</span>
-                  <InfoButton>
-                    <p>
-                      Select a reference unit to divide the indicator results
-                      by, such as per square meter, per capita, or show total
-                      sums with no division.
-                    </p>
-                    <Link
-                      to={ROUTES.HELP}
-                      hash={HELP_PAGE_IDS.dividedBy}
-                      className="flex items-center gap-1 underline"
-                    >
-                      <LinkIcon className="size-3" /> Read more here
-                    </Link>
-                  </InfoButton>
-                </FormLabel>
-                <Select
-                  onValueChange={(value) => {
-                    onSelectChange({
-                      fieldOnChange: field.onChange,
-                      form,
-                      value,
-                    });
-                  }}
-                  defaultValue={field.value}
-                >
-                  <FormControl>
-                    <SelectMenuStyle>
-                      <SelectTrigger className="text-left">
-                        <SelectValue placeholder="Select an option.." />
-                      </SelectTrigger>
-                    </SelectMenuStyle>
-                  </FormControl>
-                  <SelectContent>
-                    {DIVIDED_BY_OPTIONS.map((option) => (
+
+        <FormField
+          control={form.control}
+          name="dividedBy"
+          render={({ field }) => (
+            <FormItem data-testid={SELECT_DIVIDED_BY_TESTID}>
+              <FormLabel className="flex items-center gap-2">
+                <span className="font-medium">Divided by:</span>
+                <InfoButton>
+                  <p>
+                    Select a reference unit to divide the indicator results by,
+                    such as per square meter, per capita, or show total sums
+                    with no division. Some options are not available in stacked
+                    graphs and will default to "none".
+                  </p>
+                  <Link
+                    to={ROUTES.HELP}
+                    hash={HELP_PAGE_IDS.dividedBy}
+                    className="flex items-center gap-1 underline"
+                  >
+                    <LinkIcon className="size-3" /> Read more here
+                  </Link>
+                </InfoButton>
+              </FormLabel>
+              <Select
+                onValueChange={(value) => {
+                  onSelectChange({
+                    fieldOnChange: field.onChange,
+                    form,
+                    value,
+                  });
+                }}
+                value={field.value}
+              >
+                <FormControl>
+                  <SelectMenuStyle>
+                    <SelectTrigger className="text-left">
+                      <SelectValue placeholder="Select an option.." />
+                    </SelectTrigger>
+                  </SelectMenuStyle>
+                </FormControl>
+                <SelectContent>
+                  {DIVIDED_BY_OPTIONS.map((option) => {
+                    const isDisabled = isStacked && option !== DIVIDED_BY_NONE;
+                    return (
                       <SelectItem
                         key={option}
                         value={option}
                         className="normal-case"
+                        disabled={isDisabled}
+                        aria-disabled={isDisabled}
                       >
                         {option}
                       </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </FormItem>
-            )}
-          />
-        )}
+                    );
+                  })}
+                </SelectContent>
+              </Select>
+            </FormItem>
+          )}
+        />
       </form>
     </Form>
   );

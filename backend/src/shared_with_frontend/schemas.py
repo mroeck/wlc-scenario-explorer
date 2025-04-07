@@ -197,10 +197,10 @@ SCENARIO_TO_FILE_NAME: Dict[str, str] = {
     ScenarioEnumSchema.CUSR.value: ScenarioEnumSchema.CUSR.value,
     ScenarioEnumSchema.Example.value: DEFAULT_SCENARIO,
     ScenarioEnumSchema.BAU.value: "1.0-1.0-1.0-1.0-1.0-1.0",
-    ScenarioEnumSchema.CPOL_A.value: "1.0-1.0-1.5-2.0-2.5-1.0",
-    ScenarioEnumSchema.CPOL_B.value: "1.5-2.5-1.0-1.5-2.0-2.0",
-    ScenarioEnumSchema.APOL.value: "2.5-2.0-1.5-1.0-1.0-2.5",
-    ScenarioEnumSchema.ALL_HIGH.value: "2.0-2.0-2.0-2.0-2.0-2.0",
+    ScenarioEnumSchema.CPOL_A.value: "1.0-1.0-2.0-2.0-3.0-1.0",
+    ScenarioEnumSchema.CPOL_B.value: "2.0-2.0-2.0-2.0-2.0-2.0",
+    ScenarioEnumSchema.APOL.value: "2.0-3.0-1.0-2.0-3.0-2.0",
+    ScenarioEnumSchema.ALL_HIGH.value: "4.0-2.0-2.0-1.0-1.0-4.0",
 }
 
 

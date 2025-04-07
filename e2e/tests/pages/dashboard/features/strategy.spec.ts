@@ -6,6 +6,7 @@ import {
 } from "@/lib/constants";
 import type { SCENARIO_PARAMETERS_OBJ } from "@/lib/shared_with_backend/constants";
 import type { Level } from "@/lib/types";
+import type { LEVEL_TO_LABEL } from "@/routes/-index/components/side-section/components/ParameterLevel";
 import { expect, test, type Page } from "@playwright/test";
 import { TAGS } from "@tests/constants";
 import { testScreenshot } from "@tests/functions";
@@ -31,7 +32,7 @@ const setAllParameter = async ({
 }: {
   page: Page;
   section: Section;
-  level: Level;
+  level: (typeof LEVEL_TO_LABEL)[Level];
 }) => {
   const dialog = page.getByRole("dialog");
   const sections = ["improve", "shift", "avoid"] as const satisfies Section[];
@@ -69,7 +70,7 @@ test.describe("Strategy", () => {
   );
 
   test(
-    "selecting some levels should update the levels suggestions and a text asking to provide all parameters should be visible",
+    "selecting some levels should show a text asking to provide all parameters",
     {
       tag: TAGS.snapshot,
     },
@@ -80,9 +81,8 @@ test.describe("Strategy", () => {
         lastAction: "Reduce operational emissions:",
       });
 
-      await page.getByRole("button", { name: "1.0" }).first().click();
-      await page.getByRole("button", { name: "1.0" }).nth(1).click();
-      await page.waitForResponse("**/suggestions");
+      await page.getByRole("button", { name: "0.0" }).first().click();
+      await page.getByRole("button", { name: "0.0" }).nth(1).click();
 
       await expect(page.getByText("Please select a level for")).toBeVisible();
 
@@ -108,7 +108,7 @@ test.describe("Strategy", () => {
       await page.getByTestId(SET_ALL_PARAMETERS_TRIGGER_TESTID).first().click();
       await page
         .getByRole("dialog")
-        .getByRole("button", { name: "1.0", exact: true })
+        .getByRole("button", { name: "0.0", exact: true })
         .click();
 
       await testScreenshot({
@@ -124,9 +124,9 @@ test.describe("Strategy", () => {
       tag: TAGS.snapshot,
     },
     async ({ page }) => {
-      await setAllParameter({ page, section: "improve", level: "1.0" });
-      await setAllParameter({ page, section: "avoid", level: "1.0" });
-      await setAllParameter({ page, section: "shift", level: "1.0" });
+      await setAllParameter({ page, section: "improve", level: "0.0" });
+      await setAllParameter({ page, section: "avoid", level: "0.0" });
+      await setAllParameter({ page, section: "shift", level: "0.0" });
 
       await testScreenshot({
         page,
@@ -137,7 +137,7 @@ test.describe("Strategy", () => {
   test("unselecting a level should not reset the strategy in search param", async ({
     page,
   }) => {
-    const expectedBefore = [null, null, "1.0", null, null, null];
+    const expectedBefore = ["1.0", null, null, null, null, null];
     const expectedAfter = [null, null, null, null, null, null];
 
     await openStrategySection({
@@ -146,7 +146,7 @@ test.describe("Strategy", () => {
       lastAction: "Shift to low carbon and bio-based solutions:",
     });
 
-    await page.getByRole("button", { name: "1.0" }).first().click();
+    await page.getByRole("button", { name: "0.0" }).first().click();
 
     const strategyBeforeAsString =
       new URL(page.url()).searchParams.get("strategy") ?? "[]";
@@ -154,7 +154,7 @@ test.describe("Strategy", () => {
       null | string
     >;
 
-    await page.getByRole("button", { name: "1.0" }).first().click();
+    await page.getByRole("button", { name: "0.0" }).first().click();
     const strategyAfterAsString =
       new URL(page.url()).searchParams.get("strategy") ?? "[]";
     const strategyAfter = JSON.parse(strategyAfterAsString) as Array<

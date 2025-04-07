@@ -110,6 +110,9 @@ export const CustomLegend = ({
     queryKey: [COLOR_LEGEND_QUERY_KEY, hash],
     initialData: DEFAULT_LEGEND_DATA,
     staleTime: Infinity,
+    gcTime: Infinity,
+    networkMode: "always",
+    retry: 0,
   });
 
   if (!!scenarioId && !legendData.isUpdated[scenarioId]) {

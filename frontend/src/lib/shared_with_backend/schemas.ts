@@ -46,7 +46,7 @@ export const ResultsScenarioRowsAggregatedSchema = z.strictObject({
   unit: UnitSchema,
   xAxisDomain: XAxisDomain,
 });
-export const ActionLevelSchema = z.enum(["1.0", "1.5", "2.0", "2.5"]);
+export const ActionLevelSchema = z.enum(["1.0", "2.0", "3.0", "4.0"]);
 const StrategyItem = ActionLevelSchema.or(z.null());
 export const StrategyAsSearchParamSchema = z
   .tuple([
