@@ -22,7 +22,7 @@ export const DEFAULT_FILTERS = undefined;
 export const DEFAULT_BREAKDOWN_BY: Attribute = "Building type";
 export const DEFAULT_INDICATOR = "GWP total" satisfies Indicator;
 export const DEFAULT_DIVIDED_BY: DividedBy = "none (total)";
-export const INDICATORS_UNITS = ["MtCO₂", "Mt"] as const;
+export const INDICATORS_UNITS = ["MtCO₂", "Gt"] as const;
 export const INDICATOR_TO_UNIT: Record<
   Indicator,
   (typeof INDICATORS_UNITS)[number]
@@ -30,7 +30,7 @@ export const INDICATOR_TO_UNIT: Record<
   "GWP bio": "MtCO₂",
   "GWP fossil": "MtCO₂",
   "GWP luluc": "MtCO₂",
-  "Material mass": "Mt",
+  "Material mass": "Gt",
   "GWP total": "MtCO₂",
 } as const;
 export const SCENARIO_A_ONLY = "Scenario A only";
