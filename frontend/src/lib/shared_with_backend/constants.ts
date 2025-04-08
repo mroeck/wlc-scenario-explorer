@@ -359,7 +359,5 @@ export const UNITS_FROM_BACKEND = {
     [DIVIDED_BY_NONE]: "MtCO₂",
     "m² (floor area)": "kgCO₂/m²",
     "capita (users)": "tCO₂/capita",
-    // "m² (archetype)": "MtCO₂/m²",
-    // "capita (archetype)": "tCO₂/capita",
   },
 } as const;

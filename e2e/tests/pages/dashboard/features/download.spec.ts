@@ -8,6 +8,7 @@ import {
 import { test, expect } from "@playwright/test";
 import { TAGS } from "@tests/constants";
 import { waitLoadingEnds } from "@tests/functions";
+import * as XLSX from "xlsx";
 
 test.describe("dashboard download", () => {
   test.skip(({ isMobile }) => isMobile, "Desktop only!");
@@ -31,7 +32,7 @@ test.describe("dashboard download", () => {
       const download = await downloadPromise;
 
       const stream = await download.createReadStream();
-      const chunks = [];
+      const chunks: Buffer[] = [];
 
       for await (const chunk of stream) {
         chunks.push(chunk);
@@ -40,10 +41,75 @@ test.describe("dashboard download", () => {
       const buffer = Buffer.concat(chunks);
       const filenameRaw = download.suggestedFilename();
       const filename = filenameRaw.replace(".svg+xml", ".svg");
+      const MAX_DECIMALS = 6;
 
-      expect(buffer).toMatchSnapshot(filename);
+      // After six decimal places, the values may vary due to floating point precision, to prevent false negatives we round to six decimals
+      if (format === "csv") {
+        const content = buffer.toString();
+        const lines = content.split("\n");
+        const processedLines = lines.map((line) => {
+          const values = line.split(",");
+          return values
+            .map((value) => {
+              const num = parseFloat(value);
+              if (!isNaN(num)) {
+                return num.toFixed(MAX_DECIMALS);
+              }
+              return value;
+            })
+            .join(",");
+        });
+        const processedContent = processedLines.join("\n");
+        expect(Buffer.from(processedContent)).toMatchSnapshot(filename);
+      } else if (format === "xlsx") {
+        const workbook = XLSX.read(buffer, { type: "buffer" });
+        const firstSheetName = workbook.SheetNames[0];
+        if (!firstSheetName) {
+          throw new Error("No sheets found in workbook");
+        }
+        const worksheet = workbook.Sheets[firstSheetName];
+        const rawData = XLSX.utils.sheet_to_json(worksheet, {
+          header: 1,
+        });
+
+        const processedData = rawData.map((row) => {
+          if (!Array.isArray(row)) return row;
+
+          const result = row.map((cell) => {
+            if (typeof cell === "number") {
+              return Number(cell.toFixed(MAX_DECIMALS));
+            }
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-return
+            return cell;
+          });
+
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-return
+          return result;
+        });
+
+        const processedWorksheet = XLSX.utils.aoa_to_sheet(
+          processedData as unknown[][],
+        );
+        const processedWorkbook = XLSX.utils.book_new();
+
+        XLSX.utils.book_append_sheet(
+          processedWorkbook,
+          processedWorksheet,
+          "Sheet1",
+        );
+
+        const processedBuffer = XLSX.write(processedWorkbook, {
+          type: "buffer",
+          bookType: "xlsx",
+        }) as unknown;
+
+        expect(processedBuffer).toMatchSnapshot(filename);
+      } else {
+        expect(buffer).toMatchSnapshot(filename);
+      }
     });
   }
+
   test.describe("shortcut", () => {
     test("shortcut icon link has expected href and do not navigate on click", async ({
       page,

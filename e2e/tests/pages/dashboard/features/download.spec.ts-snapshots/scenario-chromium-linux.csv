@@ -1,11 +1,11 @@
 stock_projection_year,Non-residential,Residential
-2020,267.289004,527.785518
-2025,262.565466,507.3796
-2030,258.778498,493.55589
-2035,254.88822,480.585165
-2040,251.481461,467.339775
-2045,248.329292,452.586723
-2050,245.442244,437.623499
+2020.000000,267.289004,527.785518
+2025.000000,262.565466,507.379600
+2030.000000,258.778498,493.555890
+2035.000000,254.888220,480.585165
+2040.000000,251.481461,467.339775
+2045.000000,248.329292,452.586723
+2050.000000,245.442244,437.623499
 
 
 "
@@ -19,7 +19,7 @@ This tool has been developed as part of GROW/2022/OP/0005. Courtesy of the Europ
 
 Licensed under a Creative Commons Attribution-ShareAlike 4.0 (CC BY-SA 4.0) International License. When using or improving this tool or parts of it, consider giving appropriate credit. Cite as:
 
-Röck M, Eissa S, Lesné B, and Allacker K. “Scenario Modelling Tool - Analysis of Life-cycle Greenhouse Gas Emissions and Removals of EU Buildings and Construction” European Commission DG GROW, 2024. DOI: https://doi.org/10.5281/zenodo.13315281. Web-app available online via: https://consistent-url-for-testing.com
+Röck M, Eissa S, Lesné B, and Allacker K. “Scenario Modelling Tool - Analysis of Life-cycle Greenhouse Gas Emissions and Removals of EU Buildings and Construction” European Commission DG GROW,2024.000000
 
 Contact details:
 We encourage users to get in touch with feedback and/or questions on both the study and the tool:

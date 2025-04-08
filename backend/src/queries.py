@@ -7,6 +7,7 @@ from typing import (
     Union,
     NotRequired,
     Never,
+    Tuple,
 )
 from sqlalchemy import text, column, select, func, Select, ColumnClause
 from sqlalchemy.sql import ClauseElement
@@ -18,7 +19,6 @@ from .shared_with_frontend.schemas import (
     FilterFrontEnumSchema,
 )
 from .constants import DIVIDED_BY_NONE, DATA_PATH
-from enum import Enum
 
 TOTAL_LABEL = "Total"
 YEAR_COLUMN: ColumnClause[Never] = column("stock_projection_year")
@@ -71,117 +71,67 @@ def get_base_statement(
     return select(*select_columns)
 
 
-class UnitsForFrontType(str, Enum):
-    MtCO2 = "MtCO₂"
-    Mt = "Mt"
-    MtCO2_per_capita = "MtCO₂/capita"
-    tCO2_per_m2 = "tCO₂/m²"
-    tCO2_per_capita = "tCO₂/capita"
-    Mt_per_m2 = "Mt/m²"
-    t_per_m2 = "t/m2"
-    ktCO2_per_capita = "ktCO₂/capita"
-    ktCO2_per_m2 = "ktCO₂/m²"
-    kgCO2_per_m2 = "kgCO₂/m²"
-    t_per_capita = "t/capita"
-    kt_per_capita = "kt/capita"
-    kt_per_m2 = "kt/m²"
-    kgCO2_per_capita = "kgCO₂/capita"
-    gCO2_per_capita = "gCO₂/capita"
-    gCO2_per_m2 = "gCO₂/m²"
+def determine_appropriate_unit(
+    min_value: float, max_value: float, indicator: str, divided_by: str
+) -> Tuple[str, float]:
+    """
+    Determine the most appropriate unit scale based on data ranges.
+    Returns the unit string and the conversion factor to apply to the data.
+    """
 
+    largest_abs = max(abs(min_value or 0), abs(max_value or 0))
 
-Mt = "1"
-kt = "1000"
-ton = "1000000"
-kg = "1000000000"
-g = "1000000000000"
+    is_co2 = indicator != ColumnsEnumSchema.AMOUNT_MATERIAL.value
 
-front_unit_to_factor: Dict[UnitsForFrontType, str] = {
-    UnitsForFrontType.MtCO2: Mt,
-    UnitsForFrontType.Mt: Mt,
-    UnitsForFrontType.Mt_per_m2: Mt,
-    UnitsForFrontType.MtCO2_per_capita: Mt,
-    UnitsForFrontType.ktCO2_per_m2: kt,
-    UnitsForFrontType.ktCO2_per_capita: kt,
-    UnitsForFrontType.kt_per_capita: kt,
-    UnitsForFrontType.kt_per_m2: kt,
-    UnitsForFrontType.tCO2_per_capita: ton,
-    UnitsForFrontType.tCO2_per_m2: ton,
-    UnitsForFrontType.t_per_capita: ton,
-    UnitsForFrontType.t_per_m2: ton,
-    UnitsForFrontType.kgCO2_per_capita: kg,
-    UnitsForFrontType.kgCO2_per_m2: kg,
-    UnitsForFrontType.gCO2_per_capita: g,
-    UnitsForFrontType.gCO2_per_m2: g,
-}
+    factor = 1.0
 
+    if largest_abs >= 1e3:
+        prefix = "Gt"
+        factor = 1e-3
+    elif largest_abs >= 1 and largest_abs < 1e3:
+        prefix = "Mt"
+    elif largest_abs >= 1e-3 and largest_abs < 1:
+        prefix = "kt"
+        factor = 1e3
+    elif largest_abs >= 1e-6 and largest_abs < 1e-3:
+        prefix = "t"
+        factor = 1e6
+    elif largest_abs >= 1e-9 and largest_abs < 1e-6:
+        prefix = "kg"
+        factor = 1e9
+    else:
+        prefix = "mg"
+        factor = 1e12
 
-units_for_front: Dict[
-    str,
-    Dict[str, UnitsForFrontType],
-] = {
-    ColumnsEnumSchema.IND_GWP_TOT.value: {
-        DIVIDED_BY_NONE: UnitsForFrontType.MtCO2,
-        ColumnsEnumSchema.FLOOR_AREA_COUNTRY.value: UnitsForFrontType.kgCO2_per_m2,
-        ColumnsEnumSchema.FLOOR_AREA_ARCHETYPE.value: UnitsForFrontType.tCO2_per_m2,
-        ColumnsEnumSchema.POPULATION_COUNTRY.value: UnitsForFrontType.tCO2_per_capita,
-        ColumnsEnumSchema.POPULATION_ARCHETYPE.value: UnitsForFrontType.tCO2_per_capita,
-    },
-    ColumnsEnumSchema.IND_GWP_FOS.value: {
-        DIVIDED_BY_NONE: UnitsForFrontType.MtCO2,
-        ColumnsEnumSchema.FLOOR_AREA_COUNTRY.value: UnitsForFrontType.kgCO2_per_m2,
-        ColumnsEnumSchema.FLOOR_AREA_ARCHETYPE.value: UnitsForFrontType.tCO2_per_m2,
-        ColumnsEnumSchema.POPULATION_COUNTRY.value: UnitsForFrontType.tCO2_per_capita,
-        ColumnsEnumSchema.POPULATION_ARCHETYPE.value: UnitsForFrontType.tCO2_per_capita,
-    },
-    ColumnsEnumSchema.IND_GWP_BIO.value: {
-        DIVIDED_BY_NONE: UnitsForFrontType.MtCO2,
-        ColumnsEnumSchema.FLOOR_AREA_COUNTRY.value: UnitsForFrontType.gCO2_per_m2,
-        ColumnsEnumSchema.FLOOR_AREA_ARCHETYPE.value: UnitsForFrontType.tCO2_per_m2,
-        ColumnsEnumSchema.POPULATION_COUNTRY.value: UnitsForFrontType.kgCO2_per_capita,
-        ColumnsEnumSchema.POPULATION_ARCHETYPE.value: UnitsForFrontType.tCO2_per_capita,
-    },
-    ColumnsEnumSchema.IND_GWP_LULUC.value: {
-        DIVIDED_BY_NONE: UnitsForFrontType.MtCO2,
-        ColumnsEnumSchema.FLOOR_AREA_COUNTRY.value: UnitsForFrontType.kgCO2_per_m2,
-        ColumnsEnumSchema.FLOOR_AREA_ARCHETYPE.value: UnitsForFrontType.kgCO2_per_m2,
-        ColumnsEnumSchema.POPULATION_COUNTRY.value: UnitsForFrontType.kgCO2_per_capita,
-        ColumnsEnumSchema.POPULATION_ARCHETYPE.value: UnitsForFrontType.kgCO2_per_capita,
-    },
-    ColumnsEnumSchema.AMOUNT_MATERIAL.value: {
-        DIVIDED_BY_NONE: UnitsForFrontType.Mt,
-        ColumnsEnumSchema.FLOOR_AREA_COUNTRY.value: UnitsForFrontType.t_per_m2,
-        ColumnsEnumSchema.FLOOR_AREA_ARCHETYPE.value: UnitsForFrontType.kt_per_m2,
-        ColumnsEnumSchema.POPULATION_COUNTRY.value: UnitsForFrontType.t_per_capita,
-        ColumnsEnumSchema.POPULATION_ARCHETYPE.value: UnitsForFrontType.kt_per_capita,
-    },
-}
+    suffix = ""
+    if divided_by != DIVIDED_BY_NONE:
+        if "population" in divided_by:
+            suffix = "/capita"
+        elif "floor_area" in divided_by:
+            suffix = "/m²"
+
+    if is_co2:
+        unit_final = f"{prefix}CO₂{suffix}"
+    else:
+        unit_final = f"{prefix}{suffix}"
+
+    return unit_final, factor
 
 
 def get_indicator_as_sql(indicator: str, dividedBy: str) -> str:
-    indicator_factor = front_unit_to_factor[units_for_front[indicator][dividedBy]]
+    """Generate SQL for calculating indicator values without unit conversion"""
+    if dividedBy == DIVIDED_BY_NONE:
+        return f"sum({indicator})"
+    else:
+        area_factor = "1000000" if "floor_area" in dividedBy else "1"
 
-    divided_by_factor = (
-        "1000000"
-        if dividedBy
-        in {
-            ColumnsEnumSchema.FLOOR_AREA_ARCHETYPE.value,
-            ColumnsEnumSchema.FLOOR_AREA_COUNTRY.value,
-        }
-        else "1"
-    )
-
-    return (
-        f"sum({indicator} * {indicator_factor})"
-        if dividedBy == DIVIDED_BY_NONE
-        else f"""sum(
+        return f"""sum(
                  CASE
                     WHEN {dividedBy} = 0 THEN 0
-                    ELSE {indicator} * {indicator_factor} / ({dividedBy} * {divided_by_factor})
+                    ELSE {indicator} / ({dividedBy} * {area_factor})
                 END
             )
             """
-    )
 
 
 def get_pivot_query(
@@ -193,7 +143,7 @@ def get_pivot_query(
 
     query = f"""
         SELECT
-            round(COLUMNS(*), 6),
+            COLUMNS(*),
             stock_projection_year
         FROM (
             PIVOT filtered_data
@@ -276,7 +226,7 @@ class MinMaxDict(TypedDict):
 
 
 class ScenarioDataType(TypedDict):
-    data: List[Dict[str, Union[int, str]]]
+    data: List[Dict[str, Union[int, str, float]]]
     minmax: NotRequired[MinMaxDict]
     unit: str
     xAxisDomain: list[str]
@@ -289,7 +239,6 @@ def get_scenario_rows(
     filters: Optional[FiltersSchema],
     dividedBy: str,
 ) -> ScenarioDataType:
-    unit_for_front = units_for_front[indicator][dividedBy]
     base_statement = get_base_statement(attribute, indicator, dividedBy)
     filtered_statement = apply_filters(base_statement, filters)
     compiled_statement = compile_statement(filtered_statement, scenario)
@@ -319,7 +268,7 @@ def get_scenario_rows(
         data = [row._asdict() for row in rows]
 
         if len(data) == 0:
-            return {"data": data, "unit": "MtCO2", "xAxisDomain": []}
+            return {"data": data, "unit": "MtCO₂", "xAxisDomain": []}
 
         stacked_minmax = (
             session.execute(text(minmax_query_for_stacked_graph)).fetchone()._asdict()  # type: ignore[union-attr]
@@ -347,8 +296,19 @@ def get_scenario_rows(
                 session.execute(text(nonstacked_minmax_query)).fetchone()._asdict()  # type: ignore[union-attr]
             )
 
-    x_axis_domain = list(set(item["stock_projection_year"] for item in data))
+    min_value = stacked_minmax.get("min", 0)
+    max_value = stacked_minmax.get("max", 0)
 
+    unit_for_front, conversion_factor = determine_appropriate_unit(
+        min_value, max_value, indicator, dividedBy
+    )
+
+    for item in data:
+        for key, value in item.items():
+            if key != "stock_projection_year" and isinstance(value, (int, float)):
+                item[key] = value * conversion_factor
+
+    x_axis_domain = list(set(item["stock_projection_year"] for item in data))
     x_axis_domain.sort(key=lambda x: int(x))
 
     return {
