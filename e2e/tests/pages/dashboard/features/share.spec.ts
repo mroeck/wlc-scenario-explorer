@@ -18,8 +18,15 @@ test.describe("share", () => {
       page,
     }) => {
       await page.locator(".mt-auto > .flex > .inline-flex").click();
+      const pagePromise = page.waitForEvent("popup");
       await page.getByRole("figure", { name: media.name }).click();
-      await expect(page).toHaveURL(new RegExp(`${media.hostname}(/.*)?$`));
+      const newPage = await pagePromise;
+
+      await newPage.waitForLoadState();
+
+      await expect(newPage).toHaveURL(new RegExp(`${media.hostname}(/.*)?$`));
+
+      await newPage.close();
     });
   }
 });

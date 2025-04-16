@@ -73,7 +73,12 @@ export const ShareButton = () => {
             {Object.entries(socialMediaUrls).map(([plateform, data]) => (
               <li key={data.link} className="h-20">
                 <figure className="flex h-full flex-col items-center gap-2">
-                  <a href={data.link} className="flex-1">
+                  <a
+                    href={data.link}
+                    className="flex-1"
+                    target="_blank"
+                    rel="noreferrer"
+                  >
                     <div
                       className={cn(
                         "h-full max-h-12 max-w-12 rounded-full p-0",

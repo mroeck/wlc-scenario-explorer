@@ -281,3 +281,4 @@ export const PREDEFINED_SCENARIO_TO_APPROXIMATION = {
   APOL: "4.0",
   BAU: "1.0",
 } satisfies Record<PredefinedScenario, Level>;
+export const MIN_TICK_AMOUNT = 4;

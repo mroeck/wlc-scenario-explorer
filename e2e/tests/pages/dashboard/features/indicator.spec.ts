@@ -25,7 +25,7 @@ test.describe("indicator", () => {
         .getByTestId(SELECT_INDICATOR_TESTID)
         .getByRole("combobox");
       const option1 = { name: "Material mass", minified: "Gt" };
-      const option2 = { name: "GWP total", minified: "MtCO₂" };
+      const option2 = { name: "GWP total", minified: "GtCO₂" };
       const graph = page.getByTestId(CHART_TESTID).nth(1);
 
       await indicatorSelect.click();

@@ -26,6 +26,7 @@ import type { GraphProps } from "./types";
 import { getRouteApi } from "@tanstack/react-router";
 import {
   GRAPH_AXIS_COLOR,
+  MIN_TICK_AMOUNT,
   PATTERN,
   ROUTES,
   SCENARIO_A_AND_B,
@@ -36,7 +37,8 @@ import {
 import { HIGHLIGHT_OPACITY } from "./constants";
 import { YEAR_KEY } from "@/lib/shared_with_backend/constants";
 import { Fragment } from "react/jsx-runtime";
-import { onElementClick } from "./utils";
+import { getDefaultDomain, onElementClick } from "./utils";
+import { useState } from "react";
 
 const route = getRouteApi(ROUTES.DASHBOARD);
 const COLUMNS_TYPE: [typeof SCENARIO_A_LABEL, typeof SCENARIO_B_LABEL] = [
@@ -58,6 +60,7 @@ export const StackedBarChart = ({
   unit,
   highlights,
 }: StackedBarChartProps) => {
+  const [tickCount, setTickCount] = useState<number>(MIN_TICK_AMOUNT);
   const navigate = route.useNavigate();
   const { display } = route.useSearch({
     select: (search) => ({
@@ -114,6 +117,14 @@ export const StackedBarChart = ({
         <XAxis {...commonXaxisProps} />
         <YAxis
           {...commonYaxisProps}
+          tickCount={tickCount}
+          domain={(domainRaw) =>
+            getDefaultDomain({
+              domainRaw,
+              initialTickCount: tickCount,
+              setTickCount,
+            })
+          }
           className={cn(
             finalData.length === 0 &&
               display !== SCENARIO_A_AND_B &&

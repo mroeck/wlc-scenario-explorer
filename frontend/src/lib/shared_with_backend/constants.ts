@@ -356,8 +356,8 @@ export const LABEL_TO_VALUE = Object.fromEntries(
 
 export const UNITS_FROM_BACKEND = {
   "GWP total": {
-    [DIVIDED_BY_NONE]: "MtCO₂",
-    "m² (floor area)": "kgCO₂/m²",
+    [DIVIDED_BY_NONE]: "GtCO₂",
+    "m² (floor area)": "tCO₂/m²",
     "capita (users)": "tCO₂/capita",
   },
 } as const;

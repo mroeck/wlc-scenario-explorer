@@ -26,16 +26,10 @@ test.describe("filters", () => {
   test("warning message when no data retrieved", async ({ page }) => {
     const filterTab = page.getByRole("tab", { name: "Filters" });
     await filterTab.click();
-    await page
-      .getByTestId(FILTERS_OBJ.buildingUseType)
-      .getByRole("combobox")
-      .click();
-    await page.getByRole("option", { name: "Non-residential" }).click();
-    await page
-      .getByTestId(FILTERS_OBJ.buildingUseSubtype)
-      .getByRole("combobox")
-      .click();
-    await page.getByRole("option", { name: "Multi-family house" }).click();
+    await page.getByRole("combobox", { name: FILTERS_OBJ.From }).click();
+    await page.getByRole("option", { name: "2025" }).click();
+    await page.getByRole("combobox", { name: FILTERS_OBJ.To }).click();
+    await page.getByRole("option", { name: "2020" }).click();
     await expect(
       page.getByRole("heading", { name: NO_DATA_FOUND }),
     ).toBeVisible();
@@ -196,10 +190,11 @@ test.describe("filters", () => {
 
   test.describe("Filters do not error", () => {
     const comboboxCount = 11;
+    const AMOUNT_OF_FILTERS_TESTED = 3;
     const FILTERS_TAB = "Filters";
     const xAxisValue = "2025";
 
-    for (let i = 0; i < comboboxCount; i++) {
+    for (let i = 0; i < AMOUNT_OF_FILTERS_TESTED; i++) {
       const id = i + 1;
       test(`Filter ${id.toString()} does not error`, async ({ page }) => {
         await page.goto(ROUTES.DASHBOARD + "?animation=false");

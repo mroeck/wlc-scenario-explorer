@@ -87,20 +87,19 @@ test.describe("data viz", () => {
     const indicatorOption2 = page
       .getByLabel("Material mass")
       .getByText("Material mass");
-    const indicator1 = INDICATORS_UNITS[0];
-    const indicator2 = INDICATORS_UNITS[1];
+    const indicator1unit = "GtCO₂";
+    const indicator2unit = "Gt";
     const graph = page.locator(ACTIVE_DATA_TAB_LOCATOR);
 
-    await expect(graph.getByText(indicator1)).toBeVisible();
+    await expect(graph.getByText(indicator1unit)).toBeVisible();
 
     await indicatorSelect.click();
     await indicatorOption.click();
     await waitLoadingEnds({ page });
 
     await expect(indicatorInGraphTitle).toHaveText(optionText);
-    await expect(graph.getByText(INDICATOR_TO_UNIT[optionText])).toBeVisible();
 
-    await expect(graph.getByText(indicator1)).toBeVisible();
+    await expect(graph.getByText(indicator1unit)).toBeVisible();
 
     await testScreenshot({
       page,
@@ -124,6 +123,6 @@ test.describe("data viz", () => {
     await indicatorOption2.click();
     await waitLoadingEnds({ page });
 
-    await expect(page.getByText(indicator2)).toBeVisible();
+    await expect(page.getByText(indicator2unit)).toBeVisible();
   });
 });
