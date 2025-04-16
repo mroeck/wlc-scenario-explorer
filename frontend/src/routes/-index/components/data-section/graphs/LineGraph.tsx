@@ -27,18 +27,14 @@ import { getRouteApi } from "@tanstack/react-router";
 import {
   DEFAULT_Y_AXIS_DOMAIN_ALL,
   GRAPH_AXIS_COLOR,
+  MIN_TICK_AMOUNT,
   ROUTES,
   SCENARIO_A_AND_B,
 } from "@/lib/constants";
 import { HIGHLIGHT_OPACITY } from "./constants";
-import { onElementClick } from "./utils";
-import { getNiceTickValues } from "recharts-scale";
-import {
-  useQuery,
-  useQueryClient,
-  type QueryClient,
-} from "@tanstack/react-query";
-import type { DomainAll } from "../types";
+import { getDefaultDomain, onElementClick, updateDomain } from "./utils";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useState } from "react";
 
 const route = getRouteApi(ROUTES.DASHBOARD);
 
@@ -52,6 +48,7 @@ export const LineGraph = ({
   scenarioId,
   xAxisDomain,
 }: GraphProps) => {
+  const [tickCount, setTickCount] = useState<number>(MIN_TICK_AMOUNT);
   const navigate = route.useNavigate();
   const {
     display,
@@ -95,45 +92,6 @@ export const LineGraph = ({
 
   const lineGraphDomain = domainsData.line;
 
-  type UpdateDomainArgs = {
-    graphType: "stackedArea" | "line";
-    newMin: number | null;
-    newMax: number | null;
-    queryClient: QueryClient;
-  };
-  const updateDomain = ({
-    graphType,
-    newMin,
-    newMax,
-    queryClient,
-  }: UpdateDomainArgs) => {
-    const id = (scenarioId ?? "A") as "A" | "B";
-
-    if (!lineGraphDomain.isUpdated[id]) {
-      queryClient.setQueryData<DomainAll>([DOMAINS_QUERY_KEY, hash], (old) => {
-        const currentData = old ?? DEFAULT_Y_AXIS_DOMAIN_ALL;
-        const minValues = [currentData[graphType].min, newMin].filter(
-          (item) => item != null,
-        );
-        const maxValues = [currentData[graphType].max, newMax].filter(
-          (item) => item != null,
-        );
-
-        return {
-          ...currentData,
-          [graphType]: {
-            min: minValues.length > 0 ? Math.min(...minValues) : null,
-            max: maxValues.length > 0 ? Math.max(...maxValues) : null,
-            isUpdated: {
-              ...currentData[graphType].isUpdated,
-              [id]: true,
-            },
-          },
-        };
-      });
-    }
-  };
-
   type GetDomainArg = number;
   const getDomainMin = (dataMin: GetDomainArg) => {
     updateDomain({
@@ -141,6 +99,9 @@ export const LineGraph = ({
       newMin: dataMin,
       newMax: null,
       queryClient,
+      scenarioId,
+      graphDomain: lineGraphDomain,
+      hash,
     });
 
     return lineGraphDomain.min ?? dataMin;
@@ -152,31 +113,27 @@ export const LineGraph = ({
       newMin: null,
       newMax: dataMax,
       queryClient,
+      scenarioId,
+      graphDomain: lineGraphDomain,
+      hash,
     });
 
     return lineGraphDomain.max ?? dataMax;
   };
 
   type GetFinalDomainArg = [number, number];
+
   const getDomain = ([dataMin, dataMax]: GetFinalDomainArg) => {
     const domainRaw = [getDomainMin(dataMin), getDomainMax(dataMax)] satisfies [
       number,
       number,
     ];
-    const { tickCount } = commonYaxisProps;
-    const tickValues = getNiceTickValues(domainRaw, commonYaxisProps.tickCount);
 
-    const domainStart = tickValues[0] as Exclude<
-      (typeof tickValues)[0],
-      undefined
-    >;
-    const domainEnd = tickValues[tickCount - 1] as Exclude<
-      (typeof tickValues)[number],
-      undefined
-    >;
-    const domain = [domainStart, domainEnd] satisfies [number, number];
-
-    return domain;
+    return getDefaultDomain({
+      domainRaw,
+      initialTickCount: tickCount,
+      setTickCount,
+    });
   };
 
   return (
@@ -187,7 +144,20 @@ export const LineGraph = ({
           {...commonXaxisProps}
           domain={isAvsB ? xAxisDomain : undefined}
         />
-        <YAxis {...commonYaxisProps} domain={isAvsB ? getDomain : undefined}>
+        <YAxis
+          {...commonYaxisProps}
+          tickCount={tickCount}
+          domain={
+            isAvsB
+              ? getDomain
+              : (domainRaw) =>
+                  getDefaultDomain({
+                    domainRaw,
+                    initialTickCount: tickCount,
+                    setTickCount,
+                  })
+          }
+        >
           <Label value={unit} {...commonYaxisLabelProps} />
         </YAxis>
 

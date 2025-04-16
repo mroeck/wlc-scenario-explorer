@@ -296,17 +296,19 @@ def get_scenario_rows(
                 session.execute(text(nonstacked_minmax_query)).fetchone()._asdict()  # type: ignore[union-attr]
             )
 
-    min_value = stacked_minmax.get("min", 0)
-    max_value = stacked_minmax.get("max", 0)
+    nonstacked_min_value = nonstacked_minmax.get("min", 0)
+    nonstacked_max_value = nonstacked_minmax.get("max", 0)
 
-    unit_for_front, conversion_factor = determine_appropriate_unit(
-        min_value, max_value, indicator, dividedBy
+    unit_for_nonstacked_graph, nonstacked_conversion_factor = (
+        determine_appropriate_unit(
+            nonstacked_min_value, nonstacked_max_value, indicator, dividedBy
+        )
     )
 
     for item in data:
         for key, value in item.items():
             if key != "stock_projection_year" and isinstance(value, (int, float)):
-                item[key] = value * conversion_factor
+                item[key] = value * nonstacked_conversion_factor
 
     x_axis_domain = list(set(item["stock_projection_year"] for item in data))
     x_axis_domain.sort(key=lambda x: int(x))
@@ -317,6 +319,6 @@ def get_scenario_rows(
             "stacked": stacked_minmax,
             "nonStacked": nonstacked_minmax,
         },
-        "unit": unit_for_front,
+        "unit": unit_for_nonstacked_graph,
         "xAxisDomain": x_axis_domain,
     }

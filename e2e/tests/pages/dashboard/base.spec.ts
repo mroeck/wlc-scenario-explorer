@@ -32,9 +32,11 @@ test.describe("dashboard", () => {
         timeout: 5_000,
       });
       const unit = UNITS_FROM_BACKEND[DEFAULT_INDICATOR][DEFAULT_DIVIDED_BY];
-      await expect(page.getByTestId(CHART_TESTID).getByText(unit)).toBeVisible({
+      const unitElement = page.getByTestId(CHART_TESTID).getByText(unit);
+      await expect(unitElement).toBeVisible({
         timeout: 10_000,
       });
+
       await expect(page.getByText("Non-residential").last()).toBeVisible();
       await testPageScreenshot({ page });
     },

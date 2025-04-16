@@ -9,8 +9,8 @@ import type {
   StrategyAsSearchParamSchema,
 } from "./shared_with_backend/schemas";
 import type { SortSchema } from "./schemas";
-import type { EXPECTED_VALUES } from "tests/parquet.test";
 import type { TupleToUnion } from "type-fest";
+import type { EXPECTED_VALUES } from "tests/constants";
 
 export type Attribute = z.infer<typeof BreakdownBySchema>;
 export type Scenario = z.infer<typeof ScenarioSchema>;

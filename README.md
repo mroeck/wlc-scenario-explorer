@@ -2,19 +2,33 @@
 
 ## Introduction
 
-Welcome to the Scenario Explorer, an application designed to visualize scenarios generated as parquet files by the [study](https://c.ramboll.com/life-cycle-emissions-of-eu-building-and-construction) team. The app is accessible at [https://ae-scenario-explorer.cloud.set.kuleuven.be](https://ae-scenario-explorer.cloud.set.kuleuven.be).
+🚀 Welcome to the Scenario Explorer source code!
 
-It is hosted on the [KU Leuven university](https://architectuur.kuleuven.be/architectural-engineering) infrastructure, and the DevOps referent is Ronny Moreas.
+This tool allows exploration of different future scenarios for whole life cycle greenhouse gas (GHG) emissions of buildings across Europe
 
-The terminal commands in this documentation are for linux machines.
+THE GOAL: help policymakers and practitioners as well as researchers to explore the impact of various strategies on carbon footprints like:
 
-### Contacts
+- Increase of circularity measures
+- Reduce space per capita
+- Reduce transport and construction emissions
+- Shift to low carbon and bio-based solutions
+- Reduce operational emissions
+- Increase use of improved materials
 
-- **Ronny Moreas**: it-support@set.kuleuven.be (DevOps referent)
-- **Benjamin Lesné**: benjamin.lesne@outlook.fr (contracted developer to build the app)
+Users can view emissions for each building type, country, material, and more!
 
-## Start the app
+You can download the displayed data as an image or as a spreadsheet and visualize it with three type of graphs in the app.
 
+The data comes from building LCAs and building stock modelling of KU Leuven and TU Graz developed as part of the ‘Analysis of Life-cycle Greenhouse Gas Emissions and Removals of EU Buildings and Construction’ study funded by the European Commission.
+
+https://c.ramboll.com/life-cycle-emissions-of-eu-building-and-construction.
+
+The app is accessible at [https://ae-scenario-explorer.cloud.set.kuleuven.be](https://ae-scenario-explorer.cloud.set.kuleuven.be) and is hosted on the [KU Leuven university](https://architectuur.kuleuven.be/architectural-engineering) infrastructure.
+
+Disclaimer: The terminal commands in this documentation are for linux machines.
+
+
+## Installation
 You need [python ^3.12.6](https://www.python.org/downloads/), [node ^20.13.1](https://nodejs.org/en/download/package-manager), [poetry ^1.8.3](https://python-poetry.org/docs/) and [pnpm ^9.4.0](https://pnpm.io/installation#using-other-package-managers) installed on your machine (or higher versions).
 
 :::info
@@ -36,12 +50,15 @@ cd ../e2e && npm install &&
 cd ../documentation && pnpm install
 ```
 
+If needed see [giltab documentation related to ssh](https://docs.gitlab.com/ee/user/ssh.html)
+
+
 <br/>
 <br/>
 
 - add the env files
 
-```
+```bash
 cd ../backend && cp ./.env.example .env &
 cd ../frontend && cp ./.env.example .env
 ```
@@ -56,53 +73,16 @@ code ../
 
 <br/>
 
-- Setup kubectl
-
-1- Browse to the [Rancher instance](https://kaas.cloud.set.kuleuven.be/dashboard/auth/login)
-
-2- Click on the [ae-01 cluster](https://kaas.cloud.set.kuleuven.be/dashboard/c/c-m-mv6j8shj/explorer#cluster-events)
-
-3- At the top right of the page, click on the icon showing the following text when hovered:
-
-```text
-Copy KubeConfig to Clipboard
-```
-
-4- Add the config from the clipboard to your machine
+- Create the root/data/scenarios folder and generate the seeds
 
 ```bash
-xclip -selection clipboard -o > $HOME/.kube/config
-```
-
-:::warning
-if you copy/paste the command above, make sure to copy the kubernetes config before executing the command
-:::
-
-:::info
-This config will include a token to authenticate you, which I believe is linked to the account you used to connect to the Rancher instance. This token can expired after a while.
-:::
-
-- Place the Parquet files for testing into your data folder using [kubectl](https://kubernetes.io/docs/tasks/tools/)
-
-1. get the backend pod name
-
-```bash
-kubectl -n scenario-explorer-19853-integration get pods
-```
-
-2. copy the parquet files from the pod to your local machine
-
-```bash
-kubectl cp <some-namespace>/<some-pod>:/app/data /path/to/repo/data/
-```
-
-Example:
-
-```bash
-kubectl cp scenario-explorer-19853-integration/scenario-explorer-backend-integration-6b4d698fcb-md4w5:/app/data ~/code/scenario-explorer/data/
+mkdir ./data/scenarios && cd frontend && 
+pnpm dlx tsx ./scripts/generateSeeds.ts
 ```
 
 <br/>
+
+## Start the app
 
 - Start the dev servers from the root directory (one terminal for each):
 
@@ -125,6 +105,22 @@ If somehow you can't run the documentation server, you can still access the doc 
 
 <br/>
 
-#### Useful links:
+## Example usage
 
-- [giltab documentation related to ssh](https://docs.gitlab.com/ee/user/ssh.html)
+[TODO: ADD SCENARIO EXPLORER DEMO VIDEO LINK]
+
+[![Watch the video](https://img.youtube.com/vi/VIDEO_ID/0.jpg)](https://www.youtube.com/watch?v=VIDEO_ID)
+
+
+
+## API documentation
+
+There is only one API endpoint. After starting the documentation server (see intallation)  go to: http://localhost:4000/docs/API/scenario
+
+or go to ./documentation/docs/API/scenario.md
+
+
+## Contacts
+
+- **KU Leuven IT Support**: it-support@set.kuleuven.be (DevOps referent)
+- **Benjamin Lesné**: benjamin.lesne@outlook.fr (contracted developer to build the app)

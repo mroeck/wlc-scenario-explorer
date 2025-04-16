@@ -9,9 +9,19 @@
 From the root directory, add the .env and install the depdencies with:
 
 ```bash
-cd e2e && npm install &
+cd e2e && npm install &&
+npx playwright install &&
 cp ./.env.example .env
 ```
+
+:::warning
+For arch linux, to install the browser binaries, you might need to run:
+
+```bash
+npx playwright install chromium &&
+npx playwright install chrome
+```
+:::
 
 ## How to make a test?
 
