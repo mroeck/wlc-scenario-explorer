@@ -27,8 +27,8 @@ The app is accessible at [https://ae-scenario-explorer.cloud.set.kuleuven.be](ht
 
 Disclaimer: The terminal commands in this documentation are for linux machines.
 
-
 ## Installation
+
 You need [python ^3.12.6](https://www.python.org/downloads/), [node ^20.13.1](https://nodejs.org/en/download/package-manager), [poetry ^1.8.3](https://python-poetry.org/docs/) and [pnpm ^9.4.0](https://pnpm.io/installation#using-other-package-managers) installed on your machine (or higher versions).
 
 :::info
@@ -51,7 +51,6 @@ cd ../documentation && pnpm install
 ```
 
 If needed see [giltab documentation related to ssh](https://docs.gitlab.com/ee/user/ssh.html)
-
 
 <br/>
 <br/>
@@ -76,7 +75,7 @@ code ../
 - Create the root/data/scenarios folder and generate the seeds
 
 ```bash
-mkdir ./data/scenarios && cd frontend && 
+mkdir ../data/scenarios &&
 pnpm dlx tsx ./scripts/generateSeeds.ts
 ```
 
@@ -111,14 +110,11 @@ If somehow you can't run the documentation server, you can still access the doc 
 
 [![Watch the video](https://img.youtube.com/vi/VIDEO_ID/0.jpg)](https://www.youtube.com/watch?v=VIDEO_ID)
 
-
-
 ## API documentation
 
-There is only one API endpoint. After starting the documentation server (see intallation)  go to: http://localhost:4000/docs/API/scenario
+There is only one API endpoint. After starting the documentation server (see intallation) go to: http://localhost:4000/docs/API/scenario
 
 or go to ./documentation/docs/API/scenario.md
-
 
 ## Contacts
 

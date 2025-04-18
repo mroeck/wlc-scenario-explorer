@@ -134,7 +134,6 @@ export const getDefaultDomain = ({
     const maxGap = Math.max(startGap, endGap);
 
     if (maxGap < bestGap) {
-      console.log("best tick", currentTickCount);
       bestDomain = [domainStart, domainEnd];
       bestGap = maxGap;
       bestTickCount = currentTickCount;
