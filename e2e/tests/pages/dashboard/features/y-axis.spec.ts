@@ -16,12 +16,12 @@ test.describe("Y axis", () => {
 
     const Yaxis = {
       stackedArea: {
-        max: page.getByText("7.5").nth(1),
+        max: page.getByText("7.2").nth(1),
         min: page.getByText("0").nth(1),
       },
       line: {
-        max: page.getByText("3.64").nth(1),
-        min: page.getByText("3.54").nth(1),
+        max: page.getByText("3.62").nth(1),
+        min: page.getByText("3.53").nth(1),
       },
     };
     await expect(Yaxis.stackedArea.max).toBeVisible();

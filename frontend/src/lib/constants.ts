@@ -207,7 +207,8 @@ export const SCENARIO_TO_ACRONYM = {
   "ALL/HIGH": "ALL/HIGH",
   "CPOL/A": "CPOL/A",
   "CPOL/B": "CPOL/B",
-  APOL: "APOL",
+  "APOL/A": "APOL/A",
+  "APOL/B": "APOL/B",
   BAU: "BAU",
   "Custom scenario": "Custom",
 } satisfies Record<(typeof SCENARIOS_OPTIONS)[number], string | undefined>;
@@ -278,7 +279,8 @@ export const PREDEFINED_SCENARIO_TO_APPROXIMATION = {
   "ALL/HIGH": "1.0",
   "CPOL/A": "2.0",
   "CPOL/B": "3.0",
-  APOL: "4.0",
+  "APOL/A": "4.0",
+  "APOL/B": "4.0",
   BAU: "1.0",
 } satisfies Record<PredefinedScenario, Level>;
 export const MIN_TICK_AMOUNT = 4;

@@ -43,18 +43,11 @@ export const BREAKDOWN_BY_OPTIONS = Object.values(
 ) as AttributesEnum;
 
 export const PREDEFINED_SCENARIOS = [
-  // "Example scenario (for illustration purpose only)",
-  // "Optimistic scenario of Current Policies",
-  // "Conservative scenario of Current Policies",
-  // "Additional Policy scenario",
-  // "Current Policy + Improve strategies",
-  // "Current Policy + Shift strategies",
-  // "Current Policy + Avoid strategies",
-  // "Current Policy + Avoid + Shift + Improve strategies",
   "BAU",
   "CPOL/A",
   "CPOL/B",
-  "APOL",
+  "APOL/A",
+  "APOL/B",
   "ALL/HIGH",
 ] as const;
 export type PredefinedScenario = (typeof PREDEFINED_SCENARIOS)[number];

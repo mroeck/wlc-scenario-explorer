@@ -167,40 +167,26 @@ class FiltersSchema(BaseModel, extra=Extra.forbid):
 
 
 class ScenarioEnumSchema(str, Enum):
-    Example = "Example scenario (for illustration purpose only)"
-    CPOO = "Optimistic scenario of Current Policies"
-    CPOC = "Conservative scenario of Current Policies"
-    # APOL = "Additional Policy scenario"
-    APOI = "Current Policy + Improve strategies"
-    APOS = "Current Policy + Shift strategies"
-    APOA = "Current Policy + Avoid strategies"
-    AASI = "Current Policy + Avoid + Shift + Improve strategies"
-    CUSR = "Custom scenario"
-
     BAU = "BAU"
     CPOL_A = "CPOL/A"
     CPOL_B = "CPOL/B"
+    APOL_A = "APOL/A"
+    APOL_B = "APOL/B"
     APOL = "APOL"
     ALL_HIGH = "ALL/HIGH"
+    CUSR = "Custom scenario"
 
 
-DEFAULT_SCENARIO = "1.5-2.5-1.0-1.5-2.0-2.0-1.5-1.5-1.0-1.0-1.0"
+DEFAULT_SCENARIO = ScenarioEnumSchema.CPOL_A.value
 
 SCENARIO_TO_FILE_NAME: Dict[str, str] = {
-    ScenarioEnumSchema.AASI.value: "2.5-2.5-2.5-2.5-2.5-2.5-2.5-2.5-2.5-2.5-2.5",
-    ScenarioEnumSchema.APOA.value: DEFAULT_SCENARIO,
-    ScenarioEnumSchema.APOI.value: DEFAULT_SCENARIO,
-    ScenarioEnumSchema.APOL.value: DEFAULT_SCENARIO,
-    ScenarioEnumSchema.APOS.value: DEFAULT_SCENARIO,
-    ScenarioEnumSchema.CPOC.value: DEFAULT_SCENARIO,
-    ScenarioEnumSchema.CPOO.value: DEFAULT_SCENARIO,
+    ScenarioEnumSchema.BAU.value: "BAU",
+    ScenarioEnumSchema.CPOL_A.value: "CPOLA",
+    ScenarioEnumSchema.CPOL_B.value: "CPOLB",
+    ScenarioEnumSchema.APOL_A.value: "APOLA",
+    ScenarioEnumSchema.APOL_B.value: "APOLB",
+    ScenarioEnumSchema.ALL_HIGH.value: "ALL_HIGH",
     ScenarioEnumSchema.CUSR.value: ScenarioEnumSchema.CUSR.value,
-    ScenarioEnumSchema.Example.value: DEFAULT_SCENARIO,
-    ScenarioEnumSchema.BAU.value: "1.0-1.0-1.0-1.0-1.0-1.0",
-    ScenarioEnumSchema.CPOL_A.value: "1.0-1.0-2.0-2.0-3.0-1.0",
-    ScenarioEnumSchema.CPOL_B.value: "2.0-2.0-2.0-2.0-2.0-2.0",
-    ScenarioEnumSchema.APOL.value: "2.0-3.0-1.0-2.0-3.0-2.0",
-    ScenarioEnumSchema.ALL_HIGH.value: "4.0-2.0-2.0-1.0-1.0-4.0",
 }
 
 

@@ -104,11 +104,12 @@ async function generateSeedFile(
 
 async function generateSeedFiles() {
   const files = [
-    "1.0-1.0-1.0-1.0-1.0-1.0.parquet",
-    "1.0-1.0-2.0-2.0-3.0-1.0.parquet",
-    "2.0-2.0-2.0-2.0-2.0-2.0.parquet",
-    "2.0-3.0-1.0-2.0-3.0-2.0.parquet",
-    "4.0-2.0-2.0-1.0-1.0-4.0.parquet",
+    "CPOLB.parquet",
+    "BAU.parquet",
+    "CPOLA.parquet",
+    "APOLB.parquet",
+    "ALL_HIGH.parquet",
+    "APOLA.parquet",
     "AUTO-1.0-1.0-1.0-1.0-1.0-1.0.parquet",
   ];
 
