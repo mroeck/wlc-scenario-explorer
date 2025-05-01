@@ -59,6 +59,7 @@ export const StackedAreaChart = ({
   xAxisDomain,
 }: GraphProps) => {
   const [tickCount, setTickCount] = useState<number>(MIN_TICK_AMOUNT);
+
   const navigate = route.useNavigate();
   const {
     display,
@@ -139,7 +140,7 @@ export const StackedAreaChart = ({
 
     return getDefaultDomain({
       domainRaw,
-      initialTickCount: tickCount,
+      initialTickCount: MIN_TICK_AMOUNT,
       setTickCount,
     });
   };
@@ -162,7 +163,7 @@ export const StackedAreaChart = ({
               : (domainRaw) =>
                   getDefaultDomain({
                     domainRaw,
-                    initialTickCount: tickCount,
+                    initialTickCount: MIN_TICK_AMOUNT,
                     setTickCount,
                   })
           }

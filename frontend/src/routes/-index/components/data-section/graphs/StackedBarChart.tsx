@@ -121,10 +121,11 @@ export const StackedBarChart = ({
           domain={(domainRaw) =>
             getDefaultDomain({
               domainRaw,
-              initialTickCount: tickCount,
+              initialTickCount: MIN_TICK_AMOUNT,
               setTickCount,
             })
           }
+          interval={0}
           className={cn(
             finalData.length === 0 &&
               display !== SCENARIO_A_AND_B &&

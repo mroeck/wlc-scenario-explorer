@@ -58,6 +58,7 @@ import { StackedBarGraphIcon } from "@/components/StackedBarGraphIcon";
 import { env } from "@/env";
 import { ShareButton } from "./components/Share";
 import PROJECT_LOGO_URL from "@/assets/PROJECT_LOGO.webp";
+import { NoDataFoundInline } from "@/components/NoDataFoundInline";
 
 const route = getRouteApi(ROUTES.DASHBOARD);
 
@@ -225,6 +226,7 @@ export const DataViz = () => {
       strategy: search.strategy,
     }),
   });
+
   const unit =
     dividedBy === DIVIDED_BY_NONE
       ? indicator
@@ -293,7 +295,13 @@ export const DataViz = () => {
     !!resultsB &&
     resultsA.data.length === 0 &&
     resultsB.data.length === 0;
-  const unitMinified = resultsA?.unit ?? "";
+
+  const unitMinified =
+    resultsA?.unit !== "" && resultsA?.unit !== undefined
+      ? resultsA.unit
+      : resultsB?.unit !== undefined
+        ? resultsB.unit
+        : "";
   const xAxisDomainA = resultsA?.xAxisDomain ?? DEFAULT_X_AXIS_DOMAIN;
   const xAxisDomainB = resultsB?.xAxisDomain ?? DEFAULT_X_AXIS_DOMAIN;
   const xAxisDomain =
@@ -400,6 +408,8 @@ export const DataViz = () => {
               display,
             })}
           </div>
+          {dataTab === DATA_TABS_NAMES.stackedBarChart && <NoDataFoundInline />}
+
           <div className="pb-10"></div>
 
           {tabs.map((tab) => {

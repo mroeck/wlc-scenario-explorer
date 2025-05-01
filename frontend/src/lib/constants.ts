@@ -185,8 +185,8 @@ export const HELP_PAGE_IDS = {
   generalRemarks: "generalRemarks",
   faq: "faq",
 } as const;
-export const SCENARIO_A_LABEL = "scenario primary";
-export const SCENARIO_B_LABEL = "scenario secondary";
+export const SCENARIO_A_LABEL = "Primary scenario";
+export const SCENARIO_B_LABEL = "Secondary scenario";
 export const SCENARIO_A_ACRONYM = "primary";
 export const SCENARIO_B_ACRONYM = "secondary";
 export const NO_SCENARIO_SELECTED_LABEL = "undefined";

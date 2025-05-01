@@ -144,5 +144,7 @@ export const getDefaultDomain = ({
 
   setTickCount(bestTickCount);
 
-  return bestDomain ?? [dataMin, dataMax];
+  const result = bestDomain ?? [dataMin, dataMax];
+
+  return result;
 };
