@@ -125,7 +125,6 @@ export const StackedBarChart = ({
               setTickCount,
             })
           }
-          interval={0}
           className={cn(
             finalData.length === 0 &&
               display !== SCENARIO_A_AND_B &&

@@ -37,6 +37,7 @@ export const commonYaxisProps = {
   tickCount: 4,
   stroke: GRAPH_AXIS_COLOR,
   tick: { fontSize: GRAPH_FONT_SIZE },
+  interval: 0,
 } as const satisfies YAxisProps;
 
 export const commonYaxisLabelProps: LabelProps = {
