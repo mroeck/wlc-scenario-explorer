@@ -318,7 +318,7 @@ export const Scenarios = () => {
                     <Link
                       to={ROUTES.HELP}
                       hash={HELP_PAGE_IDS.predefinedScenarioSelection}
-                      className="flex items-center gap-1 py-2 text-xs font-medium underline"
+                      className="flex items-center gap-1 py-2 text-xs font-medium text-gray-600 underline"
                     >
                       <LinkIcon className="size-3" /> Learn about predefined
                       scenarios parameters
@@ -374,7 +374,7 @@ export const Scenarios = () => {
                               <div className="flex-1">
                                 <AccordionTrigger
                                   className="
-                text-sm capitalize text-gray-800"
+                text-sm font-bold capitalize text-gray-800"
                                 >
                                   {category}
                                 </AccordionTrigger>

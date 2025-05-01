@@ -53,14 +53,14 @@ test.describe("comparison slider", () => {
 
       await changeDisplayInUI({
         page,
-        option: `${DEFAULT_SCENARIO} (${acronymA})` + " only",
+        option: acronymA + " only",
       });
 
       await testScreenshot({ page, target: graph });
 
       await changeDisplayInUI({
         page,
-        option: `${scenarioBlabel} (${acronymB}) only`,
+        option: `${acronymB} only`,
       });
 
       await testScreenshot({ page, target: graph });

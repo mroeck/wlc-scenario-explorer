@@ -54,9 +54,9 @@ export const NoDataFound = ({ scenarioId }: { scenarioId?: "A" | "B" }) => {
   return (
     <div className="flex h-full flex-col justify-center">
       <div className="flex flex-col items-center justify-center space-y-4 pb-10 lg:-translate-y-1/2 lg:pb-0">
-        <CircleAlert className="size-12 text-yellow-400" />
+        <CircleAlert className="size-12 text-yellow-500" />
         <div className="space-y-2 text-center">
-          <h2 className="font-bold text-yellow-400 sm:text-lg xl:text-2xl">
+          <h2 className="font-bold text-yellow-500 sm:text-lg xl:text-2xl">
             {NO_DATA_FOUND} {!!scenarioId && `for ${acronym} scenario`}
           </h2>
           {match(true as boolean)

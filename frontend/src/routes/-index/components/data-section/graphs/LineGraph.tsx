@@ -131,7 +131,7 @@ export const LineGraph = ({
 
     return getDefaultDomain({
       domainRaw,
-      initialTickCount: tickCount,
+      initialTickCount: MIN_TICK_AMOUNT,
       setTickCount,
     });
   };
@@ -153,7 +153,7 @@ export const LineGraph = ({
               : (domainRaw) =>
                   getDefaultDomain({
                     domainRaw,
-                    initialTickCount: tickCount,
+                    initialTickCount: MIN_TICK_AMOUNT,
                     setTickCount,
                   })
           }

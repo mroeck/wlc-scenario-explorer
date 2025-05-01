@@ -23,7 +23,7 @@ export const ParameterLevel = forwardRef<
       ref={ref}
       className={cn(
         commonStyles,
-        status === PARAMETER_STATUS.approximation && "bg-orange-600 text-white",
+        status === PARAMETER_STATUS.approximation && "bg-[#56B5F0] text-white",
         status === PARAMETER_STATUS.active && "bg-primary text-white",
         "aspect-auto size-[unset] px-2 py-0",
         className,

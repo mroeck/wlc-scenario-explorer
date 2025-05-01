@@ -22,6 +22,7 @@ import {
   SCENARIO_B_ONLY,
   SCENARIO_A_AND_B,
   SCENARIO_TO_ACRONYM,
+  SCENARIO_A_LABEL,
 } from "@/lib/constants";
 import {
   Select,
@@ -51,10 +52,6 @@ import { Label } from "@/components/ui/label";
 import { useId, useRef } from "react";
 
 const route = getRouteApi(ROUTES.DASHBOARD);
-
-function getTitleAcronym({ acronym }: { acronym: string | undefined }) {
-  return acronym ? ` (${acronym})` : "";
-}
 
 const DataVizFormSchema = z.object<{
   indicator: z.ZodEnum<Writable<typeof INDICATORS>>;
@@ -167,9 +164,6 @@ export const DataVizForm = () => {
       ? SCENARIO_TO_ACRONYM[scenarioB as Keys]
       : undefined;
 
-  const acronymAForTitle = getTitleAcronym({ acronym: acronymA });
-  const acronymBForTitle = getTitleAcronym({ acronym: acronymB });
-
   if (isStacked && !isDividedbyNone) {
     form.setValue("dividedBy", DIVIDED_BY_NONE);
     void form.handleSubmit(onSubmit)();
@@ -207,7 +201,7 @@ export const DataVizForm = () => {
             <Select value={display} onValueChange={onDisplayChange}>
               <SelectTrigger
                 ref={displaySelectRef}
-                className="text-left capitalize"
+                className="text-left normal-case"
                 data-testid={DISPLAY_SELECT_TESTID}
               >
                 <SelectValue />
@@ -215,11 +209,13 @@ export const DataVizForm = () => {
               <SelectContent>
                 <SelectItem
                   value={SCENARIO_A_ONLY}
-                >{`${scenarioA}${acronymAForTitle} only`}</SelectItem>
+                  className="normal-case"
+                >{`${acronymA ?? SCENARIO_A_LABEL} only`}</SelectItem>
                 <SelectItem
                   value={SCENARIO_B_ONLY}
-                >{`${scenarioB}${acronymBForTitle} only`}</SelectItem>
-                <SelectItem value={SCENARIO_A_AND_B}>
+                  className="normal-case"
+                >{`${acronymB ?? SCENARIO_B_LABEL} only`}</SelectItem>
+                <SelectItem value={SCENARIO_A_AND_B} className="normal-case">
                   <span className="block w-full overflow-hidden text-ellipsis text-nowrap font-medium">
                     {acronymA || scenarioA}
                     <span className="mx-2 font-bold">VS</span>

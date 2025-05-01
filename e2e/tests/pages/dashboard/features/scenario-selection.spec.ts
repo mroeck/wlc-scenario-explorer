@@ -72,7 +72,7 @@ test.describe("scenario selection", () => {
     );
 
     await expect(page.getByTestId(DISPLAY_SELECT_TESTID)).toHaveText(
-      `${scenarioA} (${acronymA}) only`,
+      `${acronymA} only`,
     );
   });
 });
