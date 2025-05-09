@@ -1,0 +1,20 @@
+meta {
+  name: scenario
+  type: http
+  seq: 2
+}
+
+post {
+  url: http://localhost:8080/scenario
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+      "breakdownBy": "Building type",
+      "scenarioA": "CPOL/A",
+      "indicator": "GWP total",
+      "dividedBy": "none (total)"
+  }
+}

@@ -42,14 +42,27 @@ CURRENT_VALUES_LENGTH = 6
 
 @app.route("/scenario", methods=["POST"])
 @cross_origin()  # type:ignore[misc]
-def scenario() -> Union[ScenarioDataType, tuple[ErrorResponse, int]]:
+def scenario() -> Union[ScenarioDataType, dict[str, Any], tuple[ErrorResponse, int]]:
     body = request.json
     if body is None:
         return {"error": "Invalid request: body cannot be None"}, 400
 
     breakdown_by = ATTRIBUTE_TO_DB_COLUMNS[AttributeEnumSchema(body["breakdownBy"])]
-    scenario = ScenarioEnumSchema(body["scenario"])
-    scenario_filename = SCENARIO_TO_FILE_NAME[scenario]
+    scenarioA = None
+    scenarioB = None
+    scenarioA_filename = None
+    scenarioB_filename = None
+
+    if "scenarioA" in body and body["scenarioA"] is not None:
+        scenarioA = ScenarioEnumSchema(body["scenarioA"])
+        scenarioA_filename = SCENARIO_TO_FILE_NAME[scenarioA]
+
+    if "scenarioB" in body and body["scenarioB"] is not None:
+        scenarioB = ScenarioEnumSchema(body["scenarioB"])
+        if scenarioB == ScenarioEnumSchema.CUSR:
+            return {"error": "scenarioB cannot be Custom scenario"}, 400
+        scenarioB_filename = SCENARIO_TO_FILE_NAME[scenarioB]
+
     indicator = UNIT_TO_DB_COLUMNS[IndicatorEnumSchema(body["indicator"])]
     divided_by = UNIT_TO_DB_COLUMNS[DividedByEnumSchema(body["dividedBy"])]
     filters = None
@@ -65,7 +78,7 @@ def scenario() -> Union[ScenarioDataType, tuple[ErrorResponse, int]]:
     if (
         "strategy" in body
         and body["strategy"] is not None
-        and scenario == ScenarioEnumSchema.CUSR.value
+        and scenarioA == ScenarioEnumSchema.CUSR.value
     ):
         expected_length = TOTAL_ACTIONS
         expected_values = {
@@ -85,10 +98,11 @@ def scenario() -> Union[ScenarioDataType, tuple[ErrorResponse, int]]:
             key: value for key, value in zip(SCENARIO_PARAMETERS_ORDER, parameters)
         }
 
-        scenario_filename = construct_filename(parameters_levels)
+        scenarioA_filename = construct_filename(parameters_levels)
 
     data = get_scenario_rows(
-        scenario_filename,
+        scenarioA_filename,
+        scenarioB_filename,
         breakdown_by,
         indicator,
         cast(FiltersSchema | None, filters),

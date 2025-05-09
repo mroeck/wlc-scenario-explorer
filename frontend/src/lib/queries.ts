@@ -12,6 +12,7 @@ import {
   FiltersSchema,
   ResultsScenarioRowsAggregatedSchema,
   ResultsActionsLevelsSuggestionsSchema,
+  type SingleScenarioResponseSchema,
 } from "./shared_with_backend/schemas";
 import { z } from "zod";
 import {
@@ -28,17 +29,25 @@ import {
 
 type FetchScenarioRowsArgs = {
   breakdownBy: Attribute;
-  scenario: Scenario | undefined;
+  scenarioA?: Scenario;
+  scenarioB?: Scenario;
   indicator: Indicator;
   dividedBy: DividedBy;
   filters: Filters | undefined;
   strategy: StrategyAsSearchParam | undefined;
 };
 
+const DEFAULT_SCENARIO_DATA: z.infer<typeof SingleScenarioResponseSchema> = {
+  data: [],
+  unit: "",
+  xAxisDomain: DEFAULT_X_AXIS_DOMAIN,
+};
+
 export async function fetchScenarioRowsAggregated({
   breakdownBy,
   filters,
-  scenario,
+  scenarioA,
+  scenarioB,
   indicator,
   dividedBy,
   strategy,
@@ -46,18 +55,20 @@ export async function fetchScenarioRowsAggregated({
   const isValidCustom =
     !!strategy &&
     strategy.filter((level) => level !== null).length === TOTAL_ACTIONS;
-  const isValidScenario = scenario !== undefined;
+  const isValidScenarioA = scenarioA !== undefined;
 
-  const shouldReturnEmptyData =
-    scenario === CUSTOM_SCENARIO ? !isValidCustom : !isValidScenario;
+  const shouldReturnEmptyDataForA =
+    scenarioA === CUSTOM_SCENARIO ? !isValidCustom : !isValidScenarioA;
 
-  if (shouldReturnEmptyData) {
+  if (shouldReturnEmptyDataForA && !scenarioB) {
     return {
-      data: [],
-      unit: "",
-      xAxisDomain: DEFAULT_X_AXIS_DOMAIN,
+      data: {
+        scenarioA: DEFAULT_SCENARIO_DATA,
+        scenarioB: DEFAULT_SCENARIO_DATA,
+      },
     } satisfies z.infer<typeof ResultsScenarioRowsAggregatedSchema>;
   }
+
   const url = env.PUBLIC_API_URL + API_ROUTES.scenario;
   const response = await fetch(url, {
     method: "POST",
@@ -66,7 +77,8 @@ export async function fetchScenarioRowsAggregated({
     },
     body: JSON.stringify({
       breakdownBy,
-      scenario,
+      scenarioA,
+      scenarioB,
       indicator,
       dividedBy,
       filters,
@@ -75,6 +87,12 @@ export async function fetchScenarioRowsAggregated({
   });
   const bodyUnvalidated = await response.json();
   const body = ResultsScenarioRowsAggregatedSchema.parse(bodyUnvalidated);
+  body.data.scenarioA =
+    body.data.scenarioA == null || shouldReturnEmptyDataForA
+      ? DEFAULT_SCENARIO_DATA
+      : body.data.scenarioA;
+  body.data.scenarioB ??= DEFAULT_SCENARIO_DATA;
+
   return body;
 }
 
