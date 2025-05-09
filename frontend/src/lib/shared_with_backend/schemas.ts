@@ -35,7 +35,7 @@ const MinmaxSchema = z.strictObject({
 const UnitSchema = z.string().min(1);
 export const XAxisDomain = z.number().array();
 
-export const ResultsScenarioRowsAggregatedSchema = z.strictObject({
+export const SingleScenarioResponseSchema = z.strictObject({
   data: ScenarioRowsAggregatedSchema.array(),
   minmax: z
     .strictObject({
@@ -46,6 +46,14 @@ export const ResultsScenarioRowsAggregatedSchema = z.strictObject({
   unit: UnitSchema,
   xAxisDomain: XAxisDomain,
 });
+
+export const ResultsScenarioRowsAggregatedSchema = z.strictObject({
+  data: z.object({
+    scenarioA: SingleScenarioResponseSchema.nullable(),
+    scenarioB: SingleScenarioResponseSchema.nullable(),
+  }),
+});
+
 export const ActionLevelSchema = z.enum(["1.0", "2.0", "3.0", "4.0"]);
 const StrategyItem = ActionLevelSchema.or(z.null());
 export const StrategyAsSearchParamSchema = z

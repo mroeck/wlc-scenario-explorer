@@ -15,13 +15,12 @@ import {
   GRAPH_TITLE_DIVIDED_BY_TESTID,
   SCENARIO_TO_ACRONYM,
   SCENARIO_B_LABEL,
-  DEFAULT_Y_AXIS_DOMAIN_ALL,
   DEFAULT_X_AXIS_DOMAIN,
   DEFAULT_SCENARIO_DATA,
   SCENARIO_A_ACRONYM,
   SCENARIO_B_ACRONYM,
 } from "@/lib/constants";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { fetchScenarioRowsAggregated } from "@/lib/queries";
 import { getRouteApi } from "@tanstack/react-router";
 import type { z } from "zod";
@@ -31,6 +30,7 @@ import {
   CUSTOM_SCENARIO,
   DIVIDED_BY_NONE,
   NONE,
+  TOTAL_ACTIONS,
   type BREAKDOWN_BY_OPTIONS,
 } from "@/lib/shared_with_backend/constants";
 import type { ScenarioRowsAggregatedArraySchema } from "@/lib/schemas";
@@ -38,13 +38,13 @@ import { NoDataFound } from "@/components/NoDataFound";
 import { StackedBarChart } from "./graphs/StackedBarChart";
 import { DataTable } from "./DataTable";
 import { SettingsDrawer } from "./SettingsDrawer";
-import type { Attribute, Scenario, ScenarioId } from "@/lib/types";
+import type { Attribute, ScenarioId } from "@/lib/types";
 import { LineGraph } from "./graphs/LineGraph";
 import { useCallback, useState } from "react";
 import { ComparisonSlider } from "./ComparisonSlider";
 import { GraphWrapper } from "./graphs/GraphWrapper";
 import type { Unit, UnitMinified } from "./types";
-import { DOMAINS_QUERY_KEY, SCENARIO_QUERY_KEY } from "./constants";
+import { SCENARIO_QUERY_KEY } from "./constants";
 import type { ValueOf } from "type-fest";
 import type {
   ScenarioSchema,
@@ -227,6 +227,8 @@ export const DataViz = () => {
     }),
   });
 
+  const queryClient = useQueryClient();
+
   const unit =
     dividedBy === DIVIDED_BY_NONE
       ? indicator
@@ -241,50 +243,73 @@ export const DataViz = () => {
     scenarioB: acronymB ? acronymB : SCENARIO_B_ACRONYM,
   };
 
-  const fetchScenarioData = (scenario: Scenario | undefined) =>
+  const isStrategyComplete =
+    !!strategy &&
+    strategy.filter((level) => level !== null).length === TOTAL_ACTIONS;
+  const isValidCustom = scenarioA === CUSTOM_SCENARIO && isStrategyComplete;
+  const strategyForA = isValidCustom ? strategy : undefined;
+
+  const scenarioAforBackend =
+    scenarioA === CUSTOM_SCENARIO
+      ? isStrategyComplete
+        ? CUSTOM_SCENARIO
+        : undefined
+      : scenarioA;
+  const strategyForBackend = isStrategyComplete ? strategyForA : undefined;
+
+  const fetchScenarioData = () =>
     fetchScenarioRowsAggregated({
       breakdownBy,
       filters,
-      scenario,
+      strategy: strategyForBackend,
+      scenarioA: scenarioAforBackend,
+      scenarioB,
       indicator,
       dividedBy,
-      strategy,
     });
 
   const commonKeys = { breakdownBy, filters, indicator, dividedBy };
-  const strategyForA = scenarioA === CUSTOM_SCENARIO ? strategy : undefined;
-  const {
-    isLoading: isLoadingA,
-    error: errorA,
-    data: resultsA,
-  } = useQuery({
-    queryKey: [
-      SCENARIO_QUERY_KEY,
-      { ...commonKeys, strategy: strategyForA, scenario: scenarioA },
-    ],
-    queryFn: () => fetchScenarioData(scenarioA),
-    staleTime: Infinity,
-  });
+
+  const queryKey = {
+    ...commonKeys,
+    strategy: strategyForBackend,
+    scenarioA: scenarioAforBackend,
+    scenarioB,
+  };
+  const cachedData = queryClient.getQueryData<
+    Awaited<ReturnType<typeof fetchScenarioData>>
+  >([
+    SCENARIO_QUERY_KEY,
+    {
+      ...queryKey,
+      scenarioA: queryKey.scenarioB,
+      scenarioB: queryKey.scenarioA,
+    },
+  ]);
+  const isDataCached = !!cachedData;
+  const dataToUse = isDataCached
+    ? {
+        ...cachedData,
+        scenarioA: cachedData.data.scenarioB,
+        scenarioB: cachedData.data.scenarioA,
+      }
+    : undefined;
 
   const {
-    isLoading: isLoadingB,
-    error: errorB,
-    data: resultsB,
+    isLoading,
+    error,
+    data: results,
   } = useQuery({
-    queryKey: [SCENARIO_QUERY_KEY, { ...commonKeys, scenario: scenarioB }],
-    queryFn: () => fetchScenarioData(scenarioB),
+    // eslint-disable-next-line @tanstack/query/exhaustive-deps
+    queryKey: [SCENARIO_QUERY_KEY, queryKey],
+    queryFn: () => (isDataCached ? dataToUse : fetchScenarioData()),
     staleTime: Infinity,
   });
 
-  useQuery({
-    queryKey: [DOMAINS_QUERY_KEY, { ...commonKeys, scenarioA, scenarioB }],
-    queryFn: () => DEFAULT_Y_AXIS_DOMAIN_ALL,
-    initialData: DEFAULT_Y_AXIS_DOMAIN_ALL,
-    staleTime: Infinity,
-  });
+  const resultsA = results?.data.scenarioA;
+  const resultsB = results?.data.scenarioB;
 
-  const hasError = !!errorA || !!errorB;
-  const isLoading = isLoadingA || isLoadingB;
+  const hasError = !!error;
   const hasSomeData =
     !!resultsA &&
     !!resultsB &&
@@ -311,8 +336,7 @@ export const DataViz = () => {
     if (isLoading) return <LoadingSpinner />;
     if (hasError) {
       if (env.PUBLIC_NODE_ENV !== "production") {
-        console.error(errorA);
-        console.error(errorB);
+        console.error(error);
       }
       return <ErrorOccurred />;
     }

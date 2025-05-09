@@ -16,7 +16,6 @@ import {
 import domtoimage from "dom-to-image";
 import { jsPDF } from "jspdf";
 import * as XLSX from "xlsx";
-import type { fetchScenarioRowsAggregated } from "@/lib/queries";
 import {
   DOWNLOAD_AS_TESTID,
   imageFormats,
@@ -36,6 +35,8 @@ import {
 } from "@/components/ui/dialog";
 import { useState } from "react";
 import { useLocation } from "@tanstack/react-router";
+import type { SingleScenarioResponseSchema } from "@/lib/shared_with_backend/schemas";
+import type { z } from "zod";
 
 const sourceText = `Source: ${LINKS.explorerWebsite}`;
 const spreadSheetText = `
@@ -219,9 +220,7 @@ function exportAsCsv({ data }: ExportAsCsvArgs) {
 
 type DownloadMenuProps = {
   domTarget: Parameters<typeof domtoimage.toPng>[0] | null;
-  data:
-    | Awaited<ReturnType<typeof fetchScenarioRowsAggregated>>["data"]
-    | undefined;
+  data: z.infer<typeof SingleScenarioResponseSchema>["data"] | undefined;
 };
 export const DownloadMenu = ({ domTarget, data }: DownloadMenuProps) => {
   const [isOpen, setIsOpen] = useState(false);

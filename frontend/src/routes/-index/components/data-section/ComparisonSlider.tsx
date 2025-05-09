@@ -11,6 +11,10 @@ import { getRouteApi } from "@tanstack/react-router";
 import React, { useEffect, useRef, useState, type ReactNode } from "react";
 import { SCENARIO_QUERY_KEY } from "./constants";
 import type { fetchScenarioRowsAggregated } from "@/lib/queries";
+import {
+  CUSTOM_SCENARIO,
+  TOTAL_ACTIONS,
+} from "@/lib/shared_with_backend/constants";
 
 const route = getRouteApi(ROUTES.DASHBOARD);
 
@@ -43,6 +47,7 @@ export const ComparisonSlider: React.FC<ComparisonSliderProps> = ({
     scenarioA,
     scenarioB,
     animation = true,
+    strategy,
   } = route.useSearch({
     select: (search) => ({
       display: search.display,
@@ -53,8 +58,23 @@ export const ComparisonSlider: React.FC<ComparisonSliderProps> = ({
       scenarioA: search.scenarioA,
       scenarioB: search.scenarioB,
       animation: search.animation,
+      strategy: search.strategy,
     }),
   });
+  const isStrategyComplete =
+    !!strategy &&
+    strategy.filter((level) => level !== null).length === TOTAL_ACTIONS;
+  const isValidCustom = scenarioA === CUSTOM_SCENARIO && isStrategyComplete;
+  const strategyForA = isValidCustom ? strategy : undefined;
+
+  const scenarioAforBackend =
+    scenarioA === CUSTOM_SCENARIO
+      ? isStrategyComplete
+        ? CUSTOM_SCENARIO
+        : undefined
+      : scenarioA;
+  const strategyForBackend = isStrategyComplete ? strategyForA : undefined;
+
   const firstGraphRef = useRef<HTMLDivElement>(null);
   const secondGraphRef = useRef<HTMLDivElement>(null);
   const [graphDimensions, setGraphDimensions] = useState<
@@ -67,16 +87,23 @@ export const ComparisonSlider: React.FC<ComparisonSliderProps> = ({
   >;
   const commonKeys = { breakdownBy, filters, indicator, dividedBy };
   const queryClient = useQueryClient();
-  const currentDataA = queryClient.getQueryData<
+  const currentData = queryClient.getQueryData<
     Awaited<ReturnType<typeof fetchScenarioRowsAggregated>>
-  >([SCENARIO_QUERY_KEY, { ...commonKeys, scenario: scenarioA }]);
+  >([
+    SCENARIO_QUERY_KEY,
+    {
+      ...commonKeys,
+      scenarioA: scenarioAforBackend,
+      scenarioB,
+      strategy: strategyForBackend,
+    },
+  ]);
 
-  const currentDataB = queryClient.getQueryData<
-    Awaited<ReturnType<typeof fetchScenarioRowsAggregated>>
-  >([SCENARIO_QUERY_KEY, { ...commonKeys, scenario: scenarioB }]);
+  const currentDataA = currentData?.data.scenarioA;
+  const currentDataB = currentData?.data.scenarioB;
 
-  const isDataAempty = currentDataA == null || currentDataA.data.length === 0;
-  const isDataBempty = currentDataB == null || currentDataB.data.length === 0;
+  const isDataAempty = currentData == null || currentDataA?.data.length === 0;
+  const isDataBempty = currentData == null || currentDataB?.data.length === 0;
 
   const handleSliderChange = (values: number[]) => {
     const value = values[0] as Exclude<(typeof values)[0], undefined>;

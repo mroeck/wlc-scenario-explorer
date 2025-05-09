@@ -233,92 +233,119 @@ class ScenarioDataType(TypedDict):
 
 
 def get_scenario_rows(
-    scenario: str,
+    scenarioA: Optional[str],
+    scenarioB: Optional[str],
     attribute: str,
     indicator: str,
     filters: Optional[FiltersSchema],
     dividedBy: str,
-) -> ScenarioDataType:
-    base_statement = get_base_statement(attribute, indicator, dividedBy)
-    filtered_statement = apply_filters(base_statement, filters)
-    compiled_statement = compile_statement(filtered_statement, scenario)
+) -> dict[str, Any]:
+    if not scenarioA and not scenarioB:
+        raise ValueError("scenarioA and scenarioB cannot both be undefined")
 
-    indicator_as_sql = get_indicator_as_sql(indicator, dividedBy)
-    pivot_query = get_pivot_query(attribute, indicator_as_sql)
-
-    attribute_none_query = compiled_statement
-
-    default_query = f"""
-        WITH filtered_data AS (
-            {compiled_statement}
+    def fetch_for_scenario(
+        scenario: str,
+    ) -> tuple[list[dict[str, Any]], dict[str, dict[str, float]], list[str]]:
+        base_statement = get_base_statement(attribute, indicator, dividedBy)
+        filtered_statement = apply_filters(base_statement, filters)
+        compiled_statement = compile_statement(filtered_statement, scenario)
+        indicator_as_sql = get_indicator_as_sql(indicator, dividedBy)
+        pivot_query = get_pivot_query(attribute, indicator_as_sql)
+        attribute_none_query = compiled_statement
+        default_query = f"""
+            WITH filtered_data AS (
+                {compiled_statement}
+            )
+            {pivot_query}
+        """
+        scenario_query = (
+            attribute_none_query
+            if attribute == AttributeEnumSchema.NONE
+            else default_query
         )
-        {pivot_query}
-    """
-
-    scenario_query = (
-        attribute_none_query if attribute == AttributeEnumSchema.NONE else default_query
-    )
-
-    minmax_query_for_stacked_graph = get_minmax_query(
-        compiled_statement, attribute, indicator_as_sql
-    )
-
-    with Session() as session:
-        rows = session.execute(text(scenario_query)).fetchall()
-        data = [row._asdict() for row in rows]
-
-        if len(data) == 0:
-            return {"data": data, "unit": "MtCO₂", "xAxisDomain": []}
-
-        stacked_minmax = (
-            session.execute(text(minmax_query_for_stacked_graph)).fetchone()._asdict()  # type: ignore[union-attr]
+        minmax_query_for_stacked_graph = get_minmax_query(
+            compiled_statement, attribute, indicator_as_sql
         )
-
-        nonstacked_minmax = stacked_minmax
-
-        if attribute != AttributeEnumSchema.NONE:
-            columns_query = f"""
-                WITH filtered_data AS (
-                    {compiled_statement}
-                ), pivoted_data AS (
-                    {pivot_query}
+        with Session() as session:
+            rows = session.execute(text(scenario_query)).fetchall()
+            data = [row._asdict() for row in rows]
+            if not data:
+                return (
+                    data,
+                    {
+                        "stacked": {"min": 0, "max": 0},
+                        "nonStacked": {"min": 0, "max": 0},
+                    },
+                    [],
                 )
-                SELECT column_name as columns
-                FROM (DESCRIBE (SELECT * EXCLUDE (stock_projection_year, stock_projection_year_1) FROM pivoted_data))
-            """
-            columns_raw = session.execute(text(columns_query)).fetchall()
-            columns = [col[0] for col in columns_raw]
-
-            nonstacked_minmax_query = get_nonstacked_minmax_query(
-                compiled_statement, pivot_query, columns
+            stacked_minmax = (
+                session.execute(text(minmax_query_for_stacked_graph))
+                .fetchone()
+                ._asdict()  # type: ignore[union-attr]
             )
-            nonstacked_minmax = (
-                session.execute(text(nonstacked_minmax_query)).fetchone()._asdict()  # type: ignore[union-attr]
-            )
-
-    nonstacked_min_value = nonstacked_minmax.get("min", 0)
-    nonstacked_max_value = nonstacked_minmax.get("max", 0)
-
-    unit_for_nonstacked_graph, nonstacked_conversion_factor = (
-        determine_appropriate_unit(
-            nonstacked_min_value, nonstacked_max_value, indicator, dividedBy
+            nonstacked_minmax = stacked_minmax
+            if attribute != AttributeEnumSchema.NONE:
+                columns_query = f"""
+                    WITH filtered_data AS (
+                        {compiled_statement}
+                    ), pivoted_data AS (
+                        {pivot_query}
+                    )
+                    SELECT column_name as columns
+                    FROM (DESCRIBE (SELECT * EXCLUDE (stock_projection_year, stock_projection_year_1) FROM pivoted_data))
+                """
+                columns_raw = session.execute(text(columns_query)).fetchall()
+                columns = [col[0] for col in columns_raw]
+                nonstacked_minmax_query = get_nonstacked_minmax_query(
+                    compiled_statement, pivot_query, columns
+                )
+                nonstacked_minmax = (
+                    session.execute(text(nonstacked_minmax_query)).fetchone()._asdict()  # type: ignore[union-attr]
+                )
+            x_axis_domain = list(set(item["stock_projection_year"] for item in data))
+            x_axis_domain.sort(key=lambda x: int(x))
+        return (
+            data,
+            {"stacked": stacked_minmax, "nonStacked": nonstacked_minmax},
+            x_axis_domain,
         )
+
+    results: dict[str, Any] = {}
+    for name, scen in (("scenarioA", scenarioA), ("scenarioB", scenarioB)):
+        if scen:
+            data, minmax, x_axis_domain = fetch_for_scenario(scen)
+            results[name] = {
+                "data": data,
+                "minmax": minmax,
+                "xAxisDomain": x_axis_domain,
+            }
+        else:
+            results[name] = None
+
+    mins: list[float] = []
+    maxs: list[float] = []
+    for res in results.values():
+        if res:
+            nonstack = res["minmax"]["nonStacked"]
+            mins.append(nonstack.get("min", 0))
+            maxs.append(nonstack.get("max", 0))
+    combined_min = min(mins) if mins else 0
+    combined_max = max(maxs) if maxs else 0
+
+    unit, conversion_factor = determine_appropriate_unit(
+        combined_min, combined_max, indicator, dividedBy
     )
 
-    for item in data:
-        for key, value in item.items():
-            if key != "stock_projection_year" and isinstance(value, (int, float)):
-                item[key] = value * nonstacked_conversion_factor
+    for res in results.values():
+        if res:
+            for item in res["data"]:
+                for key, val in item.items():
+                    if key != "stock_projection_year" and isinstance(val, (int, float)):
+                        item[key] = val * conversion_factor
+            res["minmax"]["stacked"]["min"] *= conversion_factor
+            res["minmax"]["stacked"]["max"] *= conversion_factor
+            res["minmax"]["nonStacked"]["min"] *= conversion_factor
+            res["minmax"]["nonStacked"]["max"] *= conversion_factor
+            res["unit"] = unit
 
-    x_axis_domain = list(set(item["stock_projection_year"] for item in data))
-    x_axis_domain.sort(key=lambda x: int(x))
-
-    return {
-        "data": data,
-        "minmax": {
-            "stacked": stacked_minmax,
-            "nonStacked": nonstacked_minmax,
-        },
-        "unit": unit_for_nonstacked_graph,
-        "xAxisDomain": x_axis_domain,
-    }
+    return {"data": results}
