@@ -491,7 +491,7 @@ export const Scenarios = () => {
                                               scenarioA !== CUSTOM_SCENARIO &&
                                               PREDEFINED_SCENARIO_TO_APPROXIMATION[
                                                 scenarioA
-                                              ] === value;
+                                              ][label] === value;
 
                                             const status = isActive
                                               ? "active"

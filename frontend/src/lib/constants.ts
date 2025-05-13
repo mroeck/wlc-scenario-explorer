@@ -4,6 +4,7 @@ import {
   type FILTERS_OBJ,
   type PredefinedScenario,
   type SCENARIOS_OPTIONS,
+  type Strategies,
 } from "./shared_with_backend/constants";
 import type { Attribute, Indicator, DividedBy, Level } from "./types";
 import type { DomainAll } from "@/routes/-index/components/data-section/types";
@@ -276,11 +277,53 @@ export const LEVEL_TO_LABEL = {
   "4.0": "max",
 } satisfies Record<Level, string>;
 export const PREDEFINED_SCENARIO_TO_APPROXIMATION = {
-  "ALL/HIGH": "1.0",
-  "CPOL/A": "2.0",
-  "CPOL/B": "3.0",
-  "APOL/A": "4.0",
-  "APOL/B": "4.0",
-  BAU: "1.0",
-} satisfies Record<PredefinedScenario, Level>;
+  "ALL/HIGH": {
+    "Increase of circularity measures": "4.0",
+    "Shift to low carbon and bio-based solutions": "4.0",
+    "Reduce transport and construction emissions": "4.0",
+    "Reduce operational emissions": "4.0",
+    "Reduce space per capita": "4.0",
+    "Increase use of improved materials": "4.0",
+  },
+  "CPOL/A": {
+    "Increase of circularity measures": "1.0",
+    "Shift to low carbon and bio-based solutions": "1.0",
+    "Reduce transport and construction emissions": "2.0",
+    "Reduce operational emissions": "4.0",
+    "Reduce space per capita": "1.0",
+    "Increase use of improved materials": "4.0",
+  },
+  "CPOL/B": {
+    "Increase of circularity measures": "1.0",
+    "Shift to low carbon and bio-based solutions": "1.0",
+    "Reduce transport and construction emissions": "2.0",
+    "Reduce operational emissions": "3.0",
+    "Reduce space per capita": "1.0",
+    "Increase use of improved materials": "3.0",
+  },
+  "APOL/A": {
+    "Increase of circularity measures": "2.0",
+    "Shift to low carbon and bio-based solutions": "3.0",
+    "Reduce transport and construction emissions": "3.0",
+    "Reduce operational emissions": "4.0",
+    "Reduce space per capita": "1.0",
+    "Increase use of improved materials": "4.0",
+  },
+  "APOL/B": {
+    "Increase of circularity measures": "2.0",
+    "Shift to low carbon and bio-based solutions": "3.0",
+    "Reduce transport and construction emissions": "3.0",
+    "Reduce operational emissions": "4.0",
+    "Reduce space per capita": "1.0",
+    "Increase use of improved materials": "4.0",
+  },
+  BAU: {
+    "Increase of circularity measures": "1.0",
+    "Shift to low carbon and bio-based solutions": "1.0",
+    "Reduce transport and construction emissions": "1.0",
+    "Reduce operational emissions": "1.0",
+    "Reduce space per capita": "1.0",
+    "Increase use of improved materials": "1.0",
+  },
+} satisfies Record<PredefinedScenario, Record<Strategies, Level>>;
 export const MIN_TICK_AMOUNT = 4;
