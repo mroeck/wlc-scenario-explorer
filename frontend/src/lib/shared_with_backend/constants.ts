@@ -105,6 +105,10 @@ export const SCENARIO_PARAMETERS_OBJ = {
     ],
   },
 } as const;
+
+export type Strategies =
+  (typeof SCENARIO_PARAMETERS_OBJ)[CategoriesOfStrategies]["strategies"][number];
+
 type CategoriesOfStrategies = keyof typeof SCENARIO_PARAMETERS_OBJ;
 export type Actions =
   (typeof SCENARIO_PARAMETERS_OBJ)[CategoriesOfStrategies]["strategies"][number];
