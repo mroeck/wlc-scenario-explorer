@@ -31,12 +31,11 @@ Disclaimer: The terminal commands in this documentation are for linux machines.
 
 You need [python ^3.12.6](https://www.python.org/downloads/), [node ^20.13.1](https://nodejs.org/en/download/package-manager), [poetry ^1.8.3](https://python-poetry.org/docs/) and [pnpm ^9.4.0](https://pnpm.io/installation#using-other-package-managers) installed on your machine (or higher versions).
 
-:::info
-You don't need the following to start the app locally:
+<details><summary>You don't need the following to start the app locally (click to see more)</summary>
 
 - docker (required to update the tests snapshots , see more in [Tests end to end section](./Guides/Tests/end-to-end.md))
 - pulse secure (required to access non production deployments, see more in [the VPN section](./Guides/How-to-setup-the-VPN.md))
-  :::
+</details>
 
 <br/>
 
@@ -112,9 +111,22 @@ If somehow you can't run the documentation server, you can still access the doc 
 
 ## API documentation
 
-There is only one API endpoint. After starting the documentation server (see intallation) go to: http://localhost:4000/docs/API/scenario
+There is only one API endpoint. After starting the documentation server (see intallation) go to:
 
-or go to ./documentation/docs/API/scenario.md
+```url
+http://localhost:4000/docs/API/scenario
+```
+or open the file at: 
+
+```
+./documentation/docs/API/scenario.md
+```
+
+There is also a [bruno](https://www.usebruno.com/) collection at:
+
+```
+./backend/bruno
+```
 
 ## Contacts
 
