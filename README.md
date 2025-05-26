@@ -2,9 +2,9 @@
 
 ## Introduction
 
-🚀 Welcome to the Scenario Explorer source code!
+🚀 Welcome to the WLC Scenario Explorer source code!
 
-This tool allows exploration of different future scenarios for whole life cycle greenhouse gas (GHG) emissions of buildings across Europe
+This tool allows exploration of different future scenarios for **W**hole **L**ife **C**ycle greenhouse gas (GHG) emissions of buildings across Europe
 
 THE GOAL: help policymakers and practitioners as well as researchers to explore the impact of various strategies on carbon footprints like:
 
@@ -105,9 +105,9 @@ If somehow you can't run the documentation server, you can still access the doc 
 
 ## Example usage
 
-[TODO: ADD SCENARIO EXPLORER DEMO VIDEO LINK]
+### Video:
 
-[![Watch the video](https://img.youtube.com/vi/VIDEO_ID/0.jpg)](https://www.youtube.com/watch?v=VIDEO_ID)
+[![Watch the video](https://img.youtube.com/vi/S7O1V5hLee8/maxresdefault.jpg)](https://www.youtube.com/watch?v=S7O1V5hLee8)
 
 ## API documentation
 
@@ -116,7 +116,8 @@ There is only one API endpoint. After starting the documentation server (see int
 ```url
 http://localhost:4000/docs/API/scenario
 ```
-or open the file at: 
+
+or open the file at:
 
 ```
 ./documentation/docs/API/scenario.md

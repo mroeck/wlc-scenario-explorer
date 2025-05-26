@@ -318,7 +318,7 @@ function Help() {
               <TypographyH3>Main page: Dashboard </TypographyH3>
               <TypographyContent>
                 <TypographyP>
-                  This is the main page of the scenario explorer tool web
+                  This is the main page of the wlc scenario explorer tool web
                   application. As illustrated in Figure 1, it consists of two
                   main sections: The side panel and the data visualization
                   section. Each of these sections provides graphical user
