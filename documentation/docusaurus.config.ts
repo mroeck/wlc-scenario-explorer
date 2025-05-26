@@ -3,7 +3,7 @@ import type {Config} from '@docusaurus/types';
 import type * as Preset from '@docusaurus/preset-classic';
 
 const config: Config = {
-  title: 'Scenario Explorer Doc',
+  title: 'WLC Scenario Explorer Doc',
   tagline: '',
   favicon: 'img/favicon.ico',
 
@@ -16,7 +16,7 @@ const config: Config = {
   // GitHub pages deployment config.
   // If you aren't using GitHub pages, you don't need these.
   organizationName: '', // Usually your GitHub org/user name.
-  projectName: 'scenario explorer', // Usually your repo name.
+  projectName: 'wlc scenario explorer', // Usually your repo name.
 
   onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'warn',
@@ -51,7 +51,7 @@ const config: Config = {
     // Replace with your project's social card
     image: 'img/docusaurus-social-card.jpg',
     navbar: {
-      title: 'Scenario Explorer Doc',
+      title: 'WLC Scenario Explorer Doc',
       logo: {
         alt: 'My Site Logo',
         src: 'img/logo.svg',

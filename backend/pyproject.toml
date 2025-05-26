@@ -8,12 +8,12 @@ package-mode = false
 
 [tool.poetry.dependencies]
 python = "^3.12"
-Flask = "^3.0.3"
+Flask = "3.1.1"
 gunicorn = "^23.0.0"
 duckdb = "1.1.1"
 numpy = "^1.26.4"
 pandas = "^2.2.2"
-flask-cors = "^4.0.1"
+flask-cors = "6.0.0"
 pydantic = "^2.8.0"
 sqlalchemy = "^2.0.31"
 duckdb-engine = "^0.13.0"
