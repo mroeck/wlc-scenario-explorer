@@ -81,7 +81,7 @@ class DividedByEnumSchema(str, Enum):
     NONE = "none (total)"
     FLOOR_AREA_COUNTRY = "m² (floor area)"
     FLOOR_AREA_ARCHETYPE = "m² (archetype)"
-    POPULATION_COUNTRY = "capita (users)"
+    POPULATION_COUNTRY = "capita (population)"
     POPULATION_ARCHETYPE = "capita (archetype)"
 
 
@@ -92,7 +92,7 @@ UNIT_TO_DB_COLUMNS: Dict[IndicatorEnumSchema | DividedByEnumSchema, str] = {
     IndicatorEnumSchema.LULUC_GWP: ColumnsEnumSchema.IND_GWP_LULUC.value,
     IndicatorEnumSchema.MATERIAL_AMOUNT_PER_BUILDING: ColumnsEnumSchema.AMOUNT_MATERIAL.value,
     DividedByEnumSchema.NONE: DIVIDED_BY_NONE,
-    DividedByEnumSchema.FLOOR_AREA_COUNTRY: ColumnsEnumSchema.FLOOR_AREA_COUNTRY.value,
+    DividedByEnumSchema.FLOOR_AREA_COUNTRY: ColumnsEnumSchema.STOCK_FLOOR_AREA_MM2.value,
     DividedByEnumSchema.FLOOR_AREA_ARCHETYPE: ColumnsEnumSchema.FLOOR_AREA_ARCHETYPE.value,
     DividedByEnumSchema.POPULATION_COUNTRY: ColumnsEnumSchema.POPULATION_COUNTRY.value,
     DividedByEnumSchema.POPULATION_ARCHETYPE: ColumnsEnumSchema.POPULATION_ARCHETYPE.value,
@@ -167,13 +167,13 @@ class FiltersSchema(BaseModel, extra=Extra.forbid):
 
 
 class ScenarioEnumSchema(str, Enum):
-    BAU = "BAU"
-    CPOL_A = "CPOL/A"
-    CPOL_B = "CPOL/B"
-    APOL_A = "APOL/A"
-    APOL_B = "APOL/B"
+    BAU = "Business-as-usual"
+    CPOL_A = "Optimistic current policy scenario"
+    CPOL_B = "Conservative current policy scenario"
+    APOL_A = "Optimistic additional policy scenario"
+    APOL_B = "Conservative additional policy scenario"
     APOL = "APOL"
-    ALL_HIGH = "ALL/HIGH"
+    ALL_HIGH = "High diffusion across all Member States"
     CUSR = "Custom scenario"
 
 

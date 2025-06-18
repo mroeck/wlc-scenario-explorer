@@ -18,7 +18,7 @@ This endpoint retrieves scenario data from a parquet file based on the given bod
 - `scenario` _(required)_: Specifies the scenario to retrieve, maps to `ScenarioEnumSchema`.
 
   - **Type**: `string`
-  - **Example**: `"CPOL/B"`
+  - **Example**: `"Conservative current policy scenario"`
 
 - `indicator` _(required)_: Indicator for the scenario, maps to `IndicatorEnumSchema`.
 

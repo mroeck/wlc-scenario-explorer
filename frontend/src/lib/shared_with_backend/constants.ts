@@ -43,12 +43,12 @@ export const BREAKDOWN_BY_OPTIONS = Object.values(
 ) as AttributesEnum;
 
 export const PREDEFINED_SCENARIOS = [
-  "BAU",
-  "CPOL/A",
-  "CPOL/B",
-  "APOL/A",
-  "APOL/B",
-  "ALL/HIGH",
+  "Business-as-usual",
+  "Optimistic current policy scenario",
+  "Conservative current policy scenario",
+  "Optimistic additional policy scenario",
+  "Conservative additional policy scenario",
+  "High diffusion across all Member States",
 ] as const;
 export type PredefinedScenario = (typeof PREDEFINED_SCENARIOS)[number];
 export const CUSTOM_SCENARIO = "Custom scenario";
@@ -78,9 +78,7 @@ export const DIVIDED_BY_NONE = "none (total)";
 export const DIVIDED_BY_OPTIONS = [
   DIVIDED_BY_NONE,
   "m² (floor area)",
-  // "m² (archetype)",
-  "capita (users)",
-  // "capita (archetype)",
+  "capita (population)",
 ] as const;
 
 export const YEAR_KEY = "stock_projection_year";
@@ -355,6 +353,6 @@ export const UNITS_FROM_BACKEND = {
   "GWP total": {
     [DIVIDED_BY_NONE]: "GtCO₂",
     "m² (floor area)": "tCO₂/m²",
-    "capita (users)": "tCO₂/capita",
+    "capita (population)": "tCO₂/capita",
   },
 } as const;

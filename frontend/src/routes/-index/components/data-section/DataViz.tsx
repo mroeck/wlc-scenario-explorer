@@ -59,6 +59,7 @@ import { env } from "@/env";
 import { ShareButton } from "./components/Share";
 import PROJECT_LOGO_URL from "@/assets/PROJECT_LOGO.webp";
 import { NoDataFoundInline } from "@/components/NoDataFoundInline";
+import { WarningTextLayout } from "@/components/WarningTextLayout";
 
 const route = getRouteApi(ROUTES.DASHBOARD);
 
@@ -433,6 +434,13 @@ export const DataViz = () => {
             })}
           </div>
           {dataTab === DATA_TABS_NAMES.stackedBarChart && <NoDataFoundInline />}
+          {dividedBy !== DIVIDED_BY_NONE && (
+            <div className="text-center">
+              <WarningTextLayout>
+                Warning: "divided by" is an experimental feature
+              </WarningTextLayout>
+            </div>
+          )}
 
           <div className="pb-10"></div>
 

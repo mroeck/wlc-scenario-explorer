@@ -23,9 +23,17 @@ export const BreakdownBySchema = z.enum(BREAKDOWN_BY_OPTIONS);
 
 export const ScenarioRowsAggregatedSchema = z
   .object({
-    [YEAR_KEY]: z.number(),
+    [YEAR_KEY]: z
+      .number()
+      .nullable()
+      .transform((val) => val ?? 0),
   })
-  .catchall(z.number());
+  .catchall(
+    z
+      .number()
+      .nullable()
+      .transform((val) => val ?? 0),
+  );
 
 const MinmaxSchema = z.strictObject({
   min: z.number(),

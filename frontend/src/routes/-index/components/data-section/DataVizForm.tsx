@@ -50,6 +50,7 @@ import { Link } from "@tanstack/react-router";
 import { LinkIcon } from "lucide-react";
 import { Label } from "@/components/ui/label";
 import { useId, useRef } from "react";
+import { DividedByDisclaimerModal } from "@/components/DividedByDisclaimerModal";
 
 const route = getRouteApi(ROUTES.DASHBOARD);
 
@@ -87,6 +88,7 @@ export const DataVizForm = () => {
       sort: search.sort,
     }),
   });
+  const modalMayOpen = useRef(false);
   const isStacked = [
     DATA_TABS_NAMES.stackedAreaChart,
     DATA_TABS_NAMES.stackedBarChart,
@@ -111,6 +113,8 @@ export const DataVizForm = () => {
     indicator,
     dividedBy,
   }: z.infer<typeof DataVizFormSchema>) {
+    modalMayOpen.current = dividedBy !== DIVIDED_BY_NONE;
+
     await navigate({
       search: (prev) => ({
         ...prev,
@@ -170,248 +174,254 @@ export const DataVizForm = () => {
   }
 
   return (
-    <Form {...form}>
-      <form
-        onSubmit={void form.handleSubmit(onSubmit)}
-        className="flex flex-wrap gap-5"
-      >
-        {dataTab !== DATA_TABS_NAMES.table && (
-          <div className="flex flex-col gap-1">
-            <Label
-              htmlFor={SELECT_IDS.display}
-              className="flex items-center gap-2 font-medium"
-            >
-              <span>Display:</span>
-              <InfoButton>
-                <p>
-                  Choose how to display scenarios in the chart: show one of the
-                  selected scenarios in the Scenarios panel, or compare both
-                  side-by-side for a detailed visual analysis.
-                </p>
-                <p>For the table tab, only the primary scenario is displayed</p>
-                <Link
-                  to={ROUTES.HELP}
-                  hash={HELP_PAGE_IDS.display}
-                  className="flex items-center gap-1 underline"
-                >
-                  <LinkIcon className="size-3" /> Read more here
-                </Link>
-              </InfoButton>
-            </Label>
-            <Select value={display} onValueChange={onDisplayChange}>
-              <SelectTrigger
-                ref={displaySelectRef}
-                className="text-left normal-case"
-                data-testid={DISPLAY_SELECT_TESTID}
+    <>
+      <Form {...form}>
+        <form
+          onSubmit={void form.handleSubmit(onSubmit)}
+          className="flex flex-wrap gap-5"
+        >
+          {dataTab !== DATA_TABS_NAMES.table && (
+            <div className="flex flex-col gap-1">
+              <Label
+                htmlFor={SELECT_IDS.display}
+                className="flex items-center gap-2 font-medium"
               >
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem
-                  value={SCENARIO_A_ONLY}
-                  className="normal-case"
-                >{`${acronymA ?? SCENARIO_A_LABEL} only`}</SelectItem>
-                <SelectItem
-                  value={SCENARIO_B_ONLY}
-                  className="normal-case"
-                >{`${acronymB ?? SCENARIO_B_LABEL} only`}</SelectItem>
-                <SelectItem value={SCENARIO_A_AND_B} className="normal-case">
-                  <span className="block w-full overflow-hidden text-ellipsis text-nowrap font-medium">
-                    {acronymA || scenarioA}
-                    <span className="mx-2 font-bold">VS</span>
-                    {acronymB || scenarioB}
-                  </span>
-                </SelectItem>
-              </SelectContent>
-            </Select>{" "}
-          </div>
-        )}
-        <FormField
-          control={form.control}
-          name="breakdownBy"
-          render={({ field }) => (
-            <FormItem data-testid={BREAKDOWN_BY_TESTID}>
-              <FormLabel className="flex items-center gap-2">
-                <span className="font-medium">Breakdown by:</span>
+                <span>Display:</span>
                 <InfoButton>
                   <p>
-                    Select an attribute to break down the results for detailed
-                    contribution analysis. Choose attributes like building
-                    types, elements, or life cycle stages to see how each
-                    contributes to the overall indicator. Customize which values
-                    to include or exclude via the filter settings.
+                    Choose how to display scenarios in the chart: show one of
+                    the selected scenarios in the Scenarios panel, or compare
+                    both side-by-side for a detailed visual analysis.
+                  </p>
+                  <p>
+                    For the table tab, only the primary scenario is displayed
                   </p>
                   <Link
                     to={ROUTES.HELP}
-                    hash={HELP_PAGE_IDS.breakdownBy}
+                    hash={HELP_PAGE_IDS.display}
                     className="flex items-center gap-1 underline"
                   >
                     <LinkIcon className="size-3" /> Read more here
                   </Link>
                 </InfoButton>
-              </FormLabel>
-              <Select
-                onValueChange={(value) => {
-                  onSelectChange({
-                    fieldOnChange: field.onChange,
-                    form,
-                    value,
-                  });
-                }}
-                defaultValue={field.value}
-              >
-                <FormControl>
-                  <SelectMenuStyle>
-                    <SelectTrigger className="text-left capitalize">
-                      <SelectValue />
-                    </SelectTrigger>
-                  </SelectMenuStyle>
-                </FormControl>
+              </Label>
+              <Select value={display} onValueChange={onDisplayChange}>
+                <SelectTrigger
+                  ref={displaySelectRef}
+                  className="text-left normal-case"
+                  data-testid={DISPLAY_SELECT_TESTID}
+                >
+                  <SelectValue />
+                </SelectTrigger>
                 <SelectContent>
-                  {BREAKDOWN_BY_OPTIONS.sort((keyA, keyB) => {
-                    return BREAKDOWN_BY_ORDER.indexOf(
-                      keyA.toLowerCase() as Writable<
-                        typeof BREAKDOWN_BY_ORDER
-                      >[number],
-                    ) <
-                      BREAKDOWN_BY_ORDER.indexOf(
-                        keyB.toLowerCase() as Writable<
+                  <SelectItem
+                    value={SCENARIO_A_ONLY}
+                    className="normal-case"
+                  >{`${acronymA ?? SCENARIO_A_LABEL} only`}</SelectItem>
+                  <SelectItem
+                    value={SCENARIO_B_ONLY}
+                    className="normal-case"
+                  >{`${acronymB ?? SCENARIO_B_LABEL} only`}</SelectItem>
+                  <SelectItem value={SCENARIO_A_AND_B} className="normal-case">
+                    <span className="block w-full overflow-hidden text-ellipsis text-nowrap font-medium">
+                      {acronymA || scenarioA}
+                      <span className="mx-2 font-bold">VS</span>
+                      {acronymB || scenarioB}
+                    </span>
+                  </SelectItem>
+                </SelectContent>
+              </Select>{" "}
+            </div>
+          )}
+          <FormField
+            control={form.control}
+            name="breakdownBy"
+            render={({ field }) => (
+              <FormItem data-testid={BREAKDOWN_BY_TESTID}>
+                <FormLabel className="flex items-center gap-2">
+                  <span className="font-medium">Breakdown by:</span>
+                  <InfoButton>
+                    <p>
+                      Select an attribute to break down the results for detailed
+                      contribution analysis. Choose attributes like building
+                      types, elements, or life cycle stages to see how each
+                      contributes to the overall indicator. Customize which
+                      values to include or exclude via the filter settings.
+                    </p>
+                    <Link
+                      to={ROUTES.HELP}
+                      hash={HELP_PAGE_IDS.breakdownBy}
+                      className="flex items-center gap-1 underline"
+                    >
+                      <LinkIcon className="size-3" /> Read more here
+                    </Link>
+                  </InfoButton>
+                </FormLabel>
+                <Select
+                  onValueChange={(value) => {
+                    onSelectChange({
+                      fieldOnChange: field.onChange,
+                      form,
+                      value,
+                    });
+                  }}
+                  defaultValue={field.value}
+                >
+                  <FormControl>
+                    <SelectMenuStyle>
+                      <SelectTrigger className="text-left capitalize">
+                        <SelectValue />
+                      </SelectTrigger>
+                    </SelectMenuStyle>
+                  </FormControl>
+                  <SelectContent>
+                    {BREAKDOWN_BY_OPTIONS.sort((keyA, keyB) => {
+                      return BREAKDOWN_BY_ORDER.indexOf(
+                        keyA.toLowerCase() as Writable<
                           typeof BREAKDOWN_BY_ORDER
                         >[number],
-                      )
-                      ? -1
-                      : 1;
-                  }).map((attribute) => (
-                    <SelectItem
-                      key={attribute}
-                      value={attribute}
-                      className="capitalize"
-                    >
-                      {attribute}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="indicator"
-          render={({ field }) => (
-            <FormItem data-testid={SELECT_INDICATOR_TESTID}>
-              <FormLabel className="flex items-center gap-2">
-                <span className="font-medium">Indicator:</span>
-                <InfoButton>
-                  <p>
-                    Select an indicator to visualize GHG emissions and carbon
-                    removals, such as total global warming potential (GWP) or
-                    specific sub-indicators like GWP fossil, GWP bio, and GWP
-                    luluc.
-                  </p>
-                  <Link
-                    to={ROUTES.HELP}
-                    hash={HELP_PAGE_IDS.indicator}
-                    className="flex items-center gap-1 underline"
-                  >
-                    <LinkIcon className="size-3" /> Read more here
-                  </Link>
-                </InfoButton>
-              </FormLabel>
-              <Select
-                onValueChange={(value) => {
-                  onSelectChange({
-                    fieldOnChange: field.onChange,
-                    form,
-                    value,
-                  });
-                }}
-                defaultValue={field.value}
-              >
-                <FormControl>
-                  <SelectMenuStyle>
-                    <SelectTrigger className="text-left capitalize">
-                      <SelectValue placeholder="Select a indicator" />
-                    </SelectTrigger>
-                  </SelectMenuStyle>
-                </FormControl>
-                <SelectContent>
-                  {INDICATORS.map((indicator) => (
-                    <SelectItem
-                      key={indicator}
-                      value={indicator}
-                      className="normal-case"
-                    >
-                      {indicator}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </FormItem>
-          )}
-        />
-
-        <FormField
-          control={form.control}
-          name="dividedBy"
-          render={({ field }) => (
-            <FormItem data-testid={SELECT_DIVIDED_BY_TESTID}>
-              <FormLabel className="flex items-center gap-2">
-                <span className="font-medium">Divided by:</span>
-                <InfoButton>
-                  <p>
-                    Select a reference unit to divide the indicator results by,
-                    such as per square meter, per capita, or show total sums
-                    with no division. Some options are not available in stacked
-                    graphs and will default to "none".
-                  </p>
-                  <Link
-                    to={ROUTES.HELP}
-                    hash={HELP_PAGE_IDS.dividedBy}
-                    className="flex items-center gap-1 underline"
-                  >
-                    <LinkIcon className="size-3" /> Read more here
-                  </Link>
-                </InfoButton>
-              </FormLabel>
-              <Select
-                onValueChange={(value) => {
-                  onSelectChange({
-                    fieldOnChange: field.onChange,
-                    form,
-                    value,
-                  });
-                }}
-                value={field.value}
-              >
-                <FormControl>
-                  <SelectMenuStyle>
-                    <SelectTrigger className="text-left">
-                      <SelectValue placeholder="Select an option.." />
-                    </SelectTrigger>
-                  </SelectMenuStyle>
-                </FormControl>
-                <SelectContent>
-                  {DIVIDED_BY_OPTIONS.map((option) => {
-                    const isDisabled = isStacked && option !== DIVIDED_BY_NONE;
-                    return (
+                      ) <
+                        BREAKDOWN_BY_ORDER.indexOf(
+                          keyB.toLowerCase() as Writable<
+                            typeof BREAKDOWN_BY_ORDER
+                          >[number],
+                        )
+                        ? -1
+                        : 1;
+                    }).map((attribute) => (
                       <SelectItem
-                        key={option}
-                        value={option}
-                        className="normal-case"
-                        disabled={isDisabled}
-                        aria-disabled={isDisabled}
+                        key={attribute}
+                        value={attribute}
+                        className="capitalize"
                       >
-                        {option}
+                        {attribute}
                       </SelectItem>
-                    );
-                  })}
-                </SelectContent>
-              </Select>
-            </FormItem>
-          )}
-        />
-      </form>
-    </Form>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="indicator"
+            render={({ field }) => (
+              <FormItem data-testid={SELECT_INDICATOR_TESTID}>
+                <FormLabel className="flex items-center gap-2">
+                  <span className="font-medium">Indicator:</span>
+                  <InfoButton>
+                    <p>
+                      Select an indicator to visualize GHG emissions and carbon
+                      removals, such as total global warming potential (GWP) or
+                      specific sub-indicators like GWP fossil, GWP bio, and GWP
+                      luluc.
+                    </p>
+                    <Link
+                      to={ROUTES.HELP}
+                      hash={HELP_PAGE_IDS.indicator}
+                      className="flex items-center gap-1 underline"
+                    >
+                      <LinkIcon className="size-3" /> Read more here
+                    </Link>
+                  </InfoButton>
+                </FormLabel>
+                <Select
+                  onValueChange={(value) => {
+                    onSelectChange({
+                      fieldOnChange: field.onChange,
+                      form,
+                      value,
+                    });
+                  }}
+                  defaultValue={field.value}
+                >
+                  <FormControl>
+                    <SelectMenuStyle>
+                      <SelectTrigger className="text-left capitalize">
+                        <SelectValue placeholder="Select a indicator" />
+                      </SelectTrigger>
+                    </SelectMenuStyle>
+                  </FormControl>
+                  <SelectContent>
+                    {INDICATORS.map((indicator) => (
+                      <SelectItem
+                        key={indicator}
+                        value={indicator}
+                        className="normal-case"
+                      >
+                        {indicator}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name="dividedBy"
+            render={({ field }) => (
+              <FormItem data-testid={SELECT_DIVIDED_BY_TESTID}>
+                <FormLabel className="flex items-center gap-2">
+                  <span className="font-medium">Divided by:</span>
+                  <InfoButton>
+                    <p>
+                      Select a reference unit to divide the indicator results
+                      by, such as per square meter, per capita, or show total
+                      sums with no division. Some options are not available in
+                      stacked graphs and will default to "none".
+                    </p>
+                    <Link
+                      to={ROUTES.HELP}
+                      hash={HELP_PAGE_IDS.dividedBy}
+                      className="flex items-center gap-1 underline"
+                    >
+                      <LinkIcon className="size-3" /> Read more here
+                    </Link>
+                  </InfoButton>
+                </FormLabel>
+                <Select
+                  onValueChange={(value) => {
+                    onSelectChange({
+                      fieldOnChange: field.onChange,
+                      form,
+                      value,
+                    });
+                  }}
+                  value={field.value}
+                >
+                  <FormControl>
+                    <SelectMenuStyle>
+                      <SelectTrigger className="text-left">
+                        <SelectValue placeholder="Select an option.." />
+                      </SelectTrigger>
+                    </SelectMenuStyle>
+                  </FormControl>
+                  <SelectContent>
+                    {DIVIDED_BY_OPTIONS.map((option) => {
+                      const isDisabled =
+                        isStacked && option !== DIVIDED_BY_NONE;
+                      return (
+                        <SelectItem
+                          key={option}
+                          value={option}
+                          className="normal-case"
+                          disabled={isDisabled}
+                          aria-disabled={isDisabled}
+                        >
+                          {option}
+                        </SelectItem>
+                      );
+                    })}
+                  </SelectContent>
+                </Select>
+              </FormItem>
+            )}
+          />
+        </form>
+      </Form>
+      <DividedByDisclaimerModal mayOpen={modalMayOpen.current} />
+    </>
   );
 };

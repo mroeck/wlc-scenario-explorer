@@ -17,6 +17,7 @@ export default defineConfig({
         {
           localStorage: [
             { name: STORAGE_KEYS.isDisclaimerAccepted, value: "true" },
+            { name: STORAGE_KEYS.isDividedByDisclaimerAccepted, value: "true" },
           ],
           origin: env.BASE_URL,
         },
