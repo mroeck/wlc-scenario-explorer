@@ -53,7 +53,8 @@ export const DEFAULT_DISPLAY: (typeof DISPLAY_OPTIONS)[number] =
   SCENARIO_A_ONLY;
 export const DEFAULT_SORT: (typeof SORT_OPTIONS)[keyof typeof SORT_OPTIONS] =
   "group / alphabetical";
-export const DEFAULT_SCENARIO: (typeof SCENARIOS_OPTIONS)[number] = "CPOL/A";
+export const DEFAULT_SCENARIO: (typeof SCENARIOS_OPTIONS)[number] =
+  "Optimistic current policy scenario";
 export const DEFAULT_FROM = 2020;
 export const DEFAULT_TO = 2050;
 export const HEADER_HEIGHT = "72";
@@ -193,24 +194,18 @@ export const SCENARIO_B_ACRONYM = "secondary";
 export const NO_SCENARIO_SELECTED_LABEL = "undefined";
 export const STORAGE_KEYS = {
   isDisclaimerAccepted: "scenarioExplorerIsDisclaimerAccepted",
+  isDividedByDisclaimerAccepted:
+    "scenarioExplorerIsDividedByDisclaimerAccepted",
 };
 export const DISCLAIMER_MODAL_TITLE = "Website Disclaimer";
 export const GRAPH_AXIS_COLOR = "hsl(223 0% 20%)";
 export const SCENARIO_TO_ACRONYM = {
-  // "Additional Policy scenario": "APOL",
-  // "Conservative scenario of Current Policies": "CPOL/B",
-  // "Current Policy + Avoid + Shift + Improve strategies": "CPOL+ASI",
-  // "Current Policy + Avoid strategies": "CPOL+A",
-  // "Current Policy + Improve strategies": "CPOL+I",
-  // "Current Policy + Shift strategies": "CPOL+S",
-  // "Optimistic scenario of Current Policies": "CPOL/A",
-  // "Example scenario (for illustration purpose only)": undefined,
-  "ALL/HIGH": "ALL/HIGH",
-  "CPOL/A": "CPOL/A",
-  "CPOL/B": "CPOL/B",
-  "APOL/A": "APOL/A",
-  "APOL/B": "APOL/B",
-  BAU: "BAU",
+  "High diffusion across all Member States": "ALL/HIGH",
+  "Optimistic current policy scenario": "CPOL/A",
+  "Conservative current policy scenario": "CPOL/B",
+  "Optimistic additional policy scenario": "APOL/A",
+  "Conservative additional policy scenario": "APOL/B",
+  "Business-as-usual": "BAU",
   "Custom scenario": "Custom",
 } satisfies Record<(typeof SCENARIOS_OPTIONS)[number], string | undefined>;
 export const EMBODIED_CARBON = "Embodied carbon (EC)";
@@ -277,7 +272,7 @@ export const LEVEL_TO_LABEL = {
   "4.0": "max",
 } satisfies Record<Level, string>;
 export const PREDEFINED_SCENARIO_TO_APPROXIMATION = {
-  "ALL/HIGH": {
+  "High diffusion across all Member States": {
     "Increase of circularity measures": "4.0",
     "Shift to low carbon and bio-based solutions": "4.0",
     "Reduce transport and construction emissions": "4.0",
@@ -285,7 +280,7 @@ export const PREDEFINED_SCENARIO_TO_APPROXIMATION = {
     "Reduce space per capita": "4.0",
     "Increase use of improved materials": "4.0",
   },
-  "CPOL/A": {
+  "Optimistic current policy scenario": {
     "Increase of circularity measures": "1.0",
     "Shift to low carbon and bio-based solutions": "1.0",
     "Reduce transport and construction emissions": "2.0",
@@ -293,7 +288,7 @@ export const PREDEFINED_SCENARIO_TO_APPROXIMATION = {
     "Reduce space per capita": "1.0",
     "Increase use of improved materials": "4.0",
   },
-  "CPOL/B": {
+  "Conservative current policy scenario": {
     "Increase of circularity measures": "1.0",
     "Shift to low carbon and bio-based solutions": "1.0",
     "Reduce transport and construction emissions": "2.0",
@@ -301,7 +296,7 @@ export const PREDEFINED_SCENARIO_TO_APPROXIMATION = {
     "Reduce space per capita": "1.0",
     "Increase use of improved materials": "3.0",
   },
-  "APOL/A": {
+  "Optimistic additional policy scenario": {
     "Increase of circularity measures": "2.0",
     "Shift to low carbon and bio-based solutions": "3.0",
     "Reduce transport and construction emissions": "3.0",
@@ -309,7 +304,7 @@ export const PREDEFINED_SCENARIO_TO_APPROXIMATION = {
     "Reduce space per capita": "1.0",
     "Increase use of improved materials": "4.0",
   },
-  "APOL/B": {
+  "Conservative additional policy scenario": {
     "Increase of circularity measures": "2.0",
     "Shift to low carbon and bio-based solutions": "3.0",
     "Reduce transport and construction emissions": "3.0",
@@ -317,7 +312,7 @@ export const PREDEFINED_SCENARIO_TO_APPROXIMATION = {
     "Reduce space per capita": "1.0",
     "Increase use of improved materials": "4.0",
   },
-  BAU: {
+  "Business-as-usual": {
     "Increase of circularity measures": "1.0",
     "Shift to low carbon and bio-based solutions": "1.0",
     "Reduce transport and construction emissions": "1.0",

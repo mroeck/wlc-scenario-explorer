@@ -10,18 +10,9 @@ import {
 } from "@/lib/shared_with_backend/constants";
 import { getRouteApi } from "@tanstack/react-router";
 import { match } from "ts-pattern";
+import { WarningTextLayout } from "./WarningTextLayout";
 
 const route = getRouteApi(ROUTES.DASHBOARD);
-
-type TextLayoutProps = {
-  children: React.ReactNode;
-};
-
-const TextLayout = ({ children }: TextLayoutProps) => {
-  return (
-    <p className="mx-auto text-center font-bold text-yellow-500">{children}</p>
-  );
-};
 
 export const NoDataFoundInline = () => {
   const { scenarioA, scenarioB, strategy, display } = route.useSearch({
@@ -51,17 +42,17 @@ export const NoDataFoundInline = () => {
     <div className="text-center">
       {match(true as boolean)
         .with(shouldDisplayInlineWarning && isScenarioBempty, () => (
-          <TextLayout>
+          <WarningTextLayout>
             Warning: no {SCENARIO_B_ACRONYM} scenario have been selected.
-          </TextLayout>
+          </WarningTextLayout>
         ))
         .with(
           shouldDisplayInlineWarning && isCustom && !hasCompleteStrategy,
           () => (
-            <TextLayout>
+            <WarningTextLayout>
               Warning: Some parameter levels are missing, please select them to
               complete your custom scenario.
-            </TextLayout>
+            </WarningTextLayout>
           ),
         )
         .otherwise(() => null)}

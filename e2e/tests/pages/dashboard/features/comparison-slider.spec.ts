@@ -29,7 +29,7 @@ test.describe("comparison slider", () => {
         // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
         SCENARIO_TO_ACRONYM[DEFAULT_SCENARIO] ?? DEFAULT_SCENARIO;
 
-      const scenarioBlabel: Keys = "BAU";
+      const scenarioBlabel: Keys = "Business-as-usual";
 
       const acronymB =
         // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition

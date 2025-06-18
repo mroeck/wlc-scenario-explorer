@@ -266,6 +266,7 @@ def get_scenario_rows(
         minmax_query_for_stacked_graph = get_minmax_query(
             compiled_statement, attribute, indicator_as_sql
         )
+
         with Session() as session:
             rows = session.execute(text(scenario_query)).fetchall()
             data = [row._asdict() for row in rows]
