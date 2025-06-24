@@ -322,11 +322,15 @@ function About() {
                 </TypographyP>
 
                 <TypographyP>
-                  <sup>2</sup> Alaux N, Schwark B, Hörmann M, Ruschi Mendes
-                  Saade M, and Passer A. “Assessing the Prospective
-                  Environmental Impacts and Circularity Potentials of Building 3
-                  Stocks: An Open-Source Model from Austria (PULSE-AT).”
-                  (Forthcoming), 2024.
+                  <sup>2</sup> Alaux, N., Schwark, B., Hörmann, M., Ruschi
+                  Mendes Saade, M., Passer, A. (2024). Assessing the prospective
+                  environmental impacts and circularity potentials of building
+                  stocks: An open-source model from Austria (PULSE-AT). Journal
+                  of Industrial Ecology, 28, 1435–1448.
+                  <br />
+                  <a href="https://doi.org/10.1111/jiec.13558" className="link">
+                    https://doi.org/10.1111/jiec.13558
+                  </a>
                 </TypographyP>
               </TypographyMuted>
               <TypographyH2 id={HEADERS.contactDetails.id}>
@@ -400,8 +404,8 @@ function About() {
                 </TypographyP>
 
                 <TypographyP>
-                  Martin Röck, Shadwa Eissa, Benjamin Lesné, Nicolas Alaux,
-                  Alexander Passer, Delphine Ramon and Karen Allacker.
+                  Martin Röck, Benjamin Lesné, Shadwa Eissa, Nicolas Alaux,
+                  Delphine Ramon, Alexander Passer and Karen Allacker.
                   “wlc-scenario-explorer: An open-source tool for exploring
                   whole life cycle emission scenarios of transnational building
                   stocks”, 2025. DOI:{" "}
