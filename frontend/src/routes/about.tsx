@@ -400,10 +400,11 @@ function About() {
                 </TypographyP>
 
                 <TypographyP>
-                  Röck M, Eissa S, Lesné B, and Allacker K. “Scenario Modelling
-                  Tool - Analysis of Life-cycle Greenhouse Gas Emissions and
-                  Removals of EU Buildings and Construction” European Commission
-                  DG GROW, 2024. DOI:{" "}
+                  Martin Röck, Shadwa Eissa, Benjamin Lesné, Nicolas Alaux,
+                  Alexander Passer, Delphine Ramon and Karen Allacker.
+                  “wlc-scenario-explorer: An open-source tool for exploring
+                  whole life cycle emission scenarios of transnational building
+                  stocks”, 2025. DOI:{" "}
                   <a href={LINKS.doi} className="link">
                     {LINKS.doi}
                   </a>
