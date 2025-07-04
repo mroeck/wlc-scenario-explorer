@@ -130,6 +130,7 @@ There is also a [bruno](https://www.usebruno.com/) collection at:
 ```
 
 ## Contacts
-
+- **Martin Röck**: martin.roeck@kuleuven.be (scientific project lead)
+- **Benjamin Lesné**: benjamin.lesne@outlook.fr (developer of the app)
 - **KU Leuven IT Support**: it-support@set.kuleuven.be (DevOps referent)
-- **Benjamin Lesné**: benjamin.lesne@outlook.fr (contracted developer to build the app)
+
